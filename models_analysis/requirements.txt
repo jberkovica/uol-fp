@@ -1,0 +1,22 @@
+# Core dependencies
+python-dotenv==1.0.0
+pandas==2.0.3
+matplotlib==3.7.2
+seaborn==0.12.2
+requests==2.31.0
+tqdm==4.66.1
+ipython==8.15.0
+pillow==10.0.1
+numpy==1.24.3
+json5==0.9.14
+
+# API client libraries
+openai==1.6.1     # For GPT-4o
+anthropic==0.8.1  # For Claude 3.5 Sonnet
+google-generativeai==0.3.2  # For Gemini models
+huggingface_hub==0.19.4  # For Hugging Face models
+
+# For TTS evaluation
+pydub==0.25.1
+elevenlabs==0.2.27  # For ElevenLabs TTS
+google-cloud-texttospeech==2.14.1  # For Google Cloud TTS
