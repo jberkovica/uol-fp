@@ -1,0 +1,33 @@
+file_name,model_name,description,execution_time,cost
+toy_01.jpeg,blip,Caption: a doll laying on a couch with her hands in the air,4.47,0.0010
+toy_01.jpeg,blip-2,a doll sitting on a couch,7.00,0.0010
+drawing_04.jpeg,blip,Caption: a drawing of a purple and white monster on a piece of paper,1.65,0.0010
+drawing_04.jpeg,blip-2,a drawing of a cartoon character,1.82,0.0010
+drawing_05.jpeg,blip,Caption: a child's drawing of a fish on a piece of paper,1.20,0.0010
+drawing_05.jpeg,blip-2,a child's drawing of a unicorn,1.98,0.0010
+drawing_02.jpeg,blip,Caption: a drawing of a bear on a piece of paper,1.75,0.0010
+drawing_02.jpeg,blip-2,a teddy bear,1.73,0.0010
+toy_07.jpeg,blip,Caption: a room with legos on the wall and toys on the floor,4.17,0.0010
+toy_07.jpeg,blip-2,a lego set in a room,3.79,0.0010
+toy_06.jpeg,blip,Caption: a stuffed animal laying on top of a bed next to pillows,3.16,0.0010
+toy_06.jpeg,blip-2,a stuffed animal,2.97,0.0010
+toy_10.jpeg,blip,Caption: a doll house with a sink and a toilet,3.86,0.0010
+toy_10.jpeg,blip-2,a doll house,5.99,0.0010
+drawing_03.jpeg,blip,Caption: a drawing of a green leaf on a white background,1.24,0.0010
+drawing_03.jpeg,blip-2,a leaf,1.56,0.0010
+toy_09.jpeg,blip,Caption: a group of stuffed animals laying on top of a bed,14.73,0.0010
+toy_09.jpeg,blip-2,stuffed animals in a tent,4.99,0.0010
+toy_05.jpeg,blip,Caption: a toy oven sitting on top of a counter,3.59,0.0010
+toy_05.jpeg,blip-2,a child's room,2.86,0.0010
+toy_04.jpeg,blip,Caption: a stuffed animal is hanging on a wall,4.38,0.0010
+toy_04.jpeg,blip-2,a stuffed animal,4.47,0.0010
+drawing_01.jpeg,blip,Caption: a child's drawing of a cat on a piece of paper,1.64,0.0010
+drawing_01.jpeg,blip-2,a drawing of a cat,2.80,0.0010
+toy_08.jpeg,blip,Caption: a toy car and other toys on a table,6.56,0.0010
+toy_08.jpeg,blip-2,a toy car in a room,6.66,0.0010
+toy_03.jpeg,blip,Caption: a person holding a stuffed animal in their hand,3.27,0.0010
+toy_03.jpeg,blip-2,a stuffed animal,3.45,0.0010
+drawing_06.jpeg,blip,Caption: a drawing of two birds on a piece of paper,1.24,0.0010
+drawing_06.jpeg,blip-2,a child's drawing of a princess and a chicken,1.76,0.0010
+toy_02.jpeg,blip,Caption: a stuffed animal hanging from the side of a wall,2.90,0.0010
+toy_02.jpeg,blip-2,a stuffed bunny in a rocking chair,1.96,0.0010

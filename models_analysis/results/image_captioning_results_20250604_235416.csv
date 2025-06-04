@@ -1,0 +1,6 @@
+file_name,model_name,description,execution_time,cost
+toy_01.jpeg,gemini-2.5-pro-preview,Error from Gemini API: Unknown field for Part: type,0.00,0.0025
+toy_01.jpeg,blip,Caption: a doll laying on a couch with her hands in the air,4.03,0.0046
+toy_01.jpeg,blip-2,a doll sitting on a couch,3.83,0.0060
+toy_01.jpeg,gpt-4o,"The image shows a doll with curly blonde hair and blue eyes, seated on a light gray fabric surface. The doll is dressed in a burgundy outfit, consisting of a sleeveless top and matching pants. The overall scene has a soft, natural lighting, creating a serene setting.",7.15,0.0100
+drawing_04.jpeg,gemini-2.5-pro-preview,Error from Gemini API: Unknown field for Part: type,0.00,0.0025
