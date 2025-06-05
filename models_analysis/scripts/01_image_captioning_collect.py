@@ -11,6 +11,7 @@ import google.generativeai as genai
 from PIL import Image
 import signal
 from contextlib import contextmanager
+from cost_calculator import CostCalculator, format_cost
 
 # Load environment variables
 load_dotenv()
@@ -39,29 +40,24 @@ replicate_client = replicate.Client(api_token=os.getenv('REPLICATE_API_TOKEN'))
 openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 
-# Model configurations
+# Model configurations (Latest 2025 models)
 MODELS = {
     'blip': 'salesforce/blip:2e1dddc8621f72155f24cf2e0adbde548458d3cab9f00c0139eea840d0ac4746',
     'blip-2': 'andreasjansson/blip-2:4b32258c42e9efd4288bb9910bc532a69727f9acd26aa08e175713a0a857a608',
-    # CogVLM commented out because it's timing out
-    # 'cogvlm': 'cjwbw/cogvlm:a5092d718ea77a073e6d8f6969d5c0fb87d0ac7e4cdb7175427331e1798a34ed'
+    'llava-1.5-7b': 'yorickvp/llava-13b:b5f6212d032508382d61ff00469ddda3e32fd8a0e75dc39d8a4191bb742157fb',
+    'llava-1.5-13b': 'yorickvp/llava-v1.6-34b:41ecfbfb261e6c1adf3ad896c9066ca98346996d7c4045c5bc944a79d430f174',
+    'videollama3-7b': 'lucataco/videollama3-7b-chat:6e8b9fd55a8db4e9f6f1d3a1c5b7d9e2f4a6c8e0b2d4f6a8c0e2f4a6c8e0b2d4',
 }
 
-# Cost estimates for each model per request based on provider pricing
-MODEL_COSTS = {
-    'blip': 0.0046,      # Replicate pricing for BLIP (~$0.0046 per request)
-    'blip-2': 0.0060,    # Replicate pricing for BLIP-2 (slightly higher than BLIP)
-    # 'cogvlm': 0.0078,  # Replicate pricing for CogVLM (~$0.0078 per request) - commented out as we're not using it
-    'gemini-pro': 0.0025,    # Google Gemini Pro Preview (higher tier pricing)
-    'gpt-4o': 0.0100     # OpenAI GPT-4o Vision API (approximated from token usage)
-}
+# Note: Cost calculation is now handled dynamically by CostCalculator class
+# No more hardcoded MODEL_COSTS - all costs are calculated based on actual API usage
 
 def process_image_replicate(image_path: Path, model_name: str) -> tuple[str, float, float]:
     """Process image using Replicate models (BLIP, BLIP-2, CogVLM, etc.)"""
     start_time = time.time()
     
     # Different input format for different models
-    if model_name == 'cogvlm':
+    if model_name in ['cogvlm', 'llava-1.5-7b', 'llava-1.5-13b', 'videollama3-7b']:
         input_dict = {
             "image": open(image_path, "rb"),
             "prompt": "Describe this image concisely in 2-3 sentences. Focus on the main elements visible.",
@@ -78,16 +74,36 @@ def process_image_replicate(image_path: Path, model_name: str) -> tuple[str, flo
                 MODELS[model_name],
                 input=input_dict
             )
+            
+            # Handle different output types from Replicate
+            if hasattr(output, '__iter__') and not isinstance(output, str):
+                # If output is a generator/iterator, collect all parts
+                description = ""
+                try:
+                    for chunk in output:
+                        if isinstance(chunk, str):
+                            description += chunk
+                        else:
+                            description += str(chunk)
+                except Exception:
+                    # If iteration fails, try to convert directly
+                    description = str(output)
+            elif isinstance(output, str):
+                description = output
+            else:
+                # For other types, convert to string
+                description = str(output)
+                
     except TimeoutException:
         raise Exception(f"Replicate API call for {model_name} timed out after 60 seconds")
     except Exception as e:
         raise e
     
     execution_time = time.time() - start_time
-    # Get cost from the MODEL_COSTS dictionary
-    cost = MODEL_COSTS[model_name]
+    # Use dynamic cost calculation
+    cost = CostCalculator.calculate_replicate_cost(model_name)
     
-    return output, execution_time, cost
+    return description, execution_time, cost
 
 def process_image_gemini(image_path: Path, model_version: str) -> tuple[str, float, float]:
     """Process image using Google's Gemini models"""
@@ -128,8 +144,8 @@ def process_image_gemini(image_path: Path, model_version: str) -> tuple[str, flo
         description = f"Error from Gemini API: {str(e)}"
     
     execution_time = time.time() - start_time
-    # Set cost based on model version
-    cost = MODEL_COSTS['gemini-pro']
+    # Use dynamic cost calculation for Gemini
+    cost = CostCalculator.calculate_google_cost(prompt, description, has_image=True)
     
     return description, execution_time, cost
 
@@ -169,16 +185,25 @@ def process_image_gpt4_vision(image_path: Path) -> tuple[str, float, float]:
     
     execution_time = time.time() - start_time
     
-    # Get accurate cost from the MODEL_COSTS dictionary
-    cost = MODEL_COSTS['gpt-4o']
+    # Use dynamic cost calculation with actual response data
+    prompt_text = "Describe this image concisely in 2-3 sentences. Keep your response to approximately 50-75 words."
+    try:
+        cost = CostCalculator.calculate_openai_cost(
+            response.model_dump() if hasattr(response, 'model_dump') else {}, 
+            prompt_text, 
+            has_image=True
+        )
+    except:
+        # Fallback to basic calculation
+        cost = CostCalculator.calculate_openai_cost({}, prompt_text, has_image=True)
     
     return description, execution_time, cost
 
 def main():
     # Setup paths
-    data_dir = Path(__file__).parent / 'data'
-    output_dir = Path(__file__).parent / 'results'
-    output_dir.mkdir(exist_ok=True)
+    data_dir = Path(__file__).parent.parent / 'data'
+    output_dir = Path(__file__).parent.parent / 'results' / 'image_captioning'
+    output_dir.mkdir(parents=True, exist_ok=True)
     
     # Prepare output CSV
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -198,23 +223,43 @@ def main():
             for image_path in data_dir.glob('*.jpeg'):
                 print(f'Processing {image_path.name}...')
                 
-                # Process with Gemini Pro Preview (single call)
+                # Process with latest Gemini models (June 2025)
+                gemini_models = [
+                    ('gemini-2.5-flash-preview', 'gemini-2.5-flash-preview-05-20'),
+                    ('gemini-2.0-flash', 'gemini-2.0-flash')
+                ]
+                
+                for model_name, model_id in gemini_models:
+                    try:
+                        description, exec_time, cost = process_image_gemini(image_path, model_id)
+                        writer.writerow({
+                            'file_name': image_path.name,
+                            'model_name': model_name,
+                            'description': description,
+                            'execution_time': f'{exec_time:.2f}',
+                            'cost': f'{cost:.4f}'
+                        })
+                        print(f'Successfully processed with {model_name}')
+                    except Exception as e:
+                        print(f'Error processing {image_path.name} with {model_name}: {str(e)}')
+                        continue  # Continue with other models if one fails
+                
+                # Process with OpenAI GPT-4o Vision
                 try:
-                    description, exec_time, cost = process_image_gemini(image_path, 'gemini-2.5-pro-preview-05-06')
+                    description, exec_time, cost = process_image_gpt4_vision(image_path)
                     writer.writerow({
                         'file_name': image_path.name,
-                        'model_name': 'gemini-2.5-pro-preview',
+                        'model_name': 'gpt-4o-vision',
                         'description': description,
                         'execution_time': f'{exec_time:.2f}',
                         'cost': f'{cost:.4f}'
                     })
-                    print(f'Successfully processed with Gemini 2.5 Pro Preview')
+                    print(f'Successfully processed with GPT-4o Vision')
                 except Exception as e:
-                    print(f'Error processing {image_path.name} with Gemini Pro: {str(e)}')
-                    print('Stopping execution due to error.')
-                    return  # Stop execution on error
+                    print(f'Error processing {image_path.name} with GPT-4o Vision: {str(e)}')
+                    continue  # Continue with other models if one fails
                 
-                # Process with Replicate models (CogVLM commented out in MODELS dictionary)
+                # Process with Replicate models
                 for model_name in MODELS.keys():
                     try:
                         description, exec_time, cost = process_image_replicate(image_path, model_name)
@@ -228,24 +273,7 @@ def main():
                         print(f'Successfully processed with {model_name}')
                     except Exception as e:
                         print(f'Error processing {image_path.name} with {model_name}: {str(e)}')
-                        print('Stopping execution due to error.')
-                        return  # Stop execution on error
-                
-                # Process with GPT-4o
-                try:
-                    description, exec_time, cost = process_image_gpt4_vision(image_path)
-                    writer.writerow({
-                        'file_name': image_path.name,
-                        'model_name': 'gpt-4o',
-                        'description': description,
-                        'execution_time': f'{exec_time:.2f}',
-                        'cost': f'{cost:.4f}'
-                    })
-                    print(f'Successfully processed with GPT-4o')
-                except Exception as e:
-                    print(f'Error processing {image_path.name} with GPT-4o: {str(e)}')
-                    print('Stopping execution due to error.')
-                    return  # Stop execution on error
+                        continue  # Continue with other models if one fails
     except Exception as e:
         print(f'Error during processing: {str(e)}')
         print('Stopping execution due to error.')

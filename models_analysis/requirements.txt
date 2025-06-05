@@ -1,20 +1,25 @@
 # Core dependencies
 python-dotenv==1.0.0
-pandas==2.0.3
-matplotlib==3.7.2
-seaborn==0.12.2
+pandas==2.1.4       # Updated for 2025
+matplotlib==3.8.2   # Updated for 2025  
+seaborn==0.13.1     # Updated for 2025
 requests==2.31.0
 tqdm==4.66.1
-ipython==8.15.0
-pillow==10.0.1
-numpy==1.24.3
+ipython==8.18.0     # Updated for 2025
+pillow==10.2.0      # Updated for 2025
+numpy==1.26.4       # Updated for 2025
 json5==0.9.14
+jupyter==1.0.0      # For notebook analysis
+jupyterlab==4.0.9   # Lab environment
+plotly==5.17.0      # Interactive plotting
+scikit-learn==1.4.0 # ML metrics for evaluation
 
 # API client libraries
 openai==1.6.1     # For GPT-4o
 anthropic==0.8.1  # For Claude 3.5 Sonnet
 google-generativeai==0.3.2  # For Gemini models
 replicate==0.22.0  # For Replicate models
+tiktoken==0.5.1   # For accurate token counting
 
 # For TTS evaluation
 pydub==0.25.1

@@ -1,83 +1,67 @@
 {
     "toy_01.jpeg": {
       "type": "toy",
-      "expected_caption": "A baby doll with curly blonde hair and a red jumpsuit sitting on a couch",
-      "notes": "Realistic baby doll; neutral background makes it easy for detection"
+      "base_caption": "A doll with curly blonde hair and a red jumpsuit sitting on a couch"
     },
     "toy_02.jpeg": {
       "type": "toy",
-      "expected_caption": "A fabric bunny doll wearing a striped outfit sitting on a coral chair",
-      "notes": "Simple composition, muted lighting, small facial features"
+      "base_caption": "A fabric bunny toy wearing a striped outfit sitting on a coral chair"
     },
     "toy_03.jpeg": {
       "type": "toy",
-      "expected_caption": "A white plush toy with yellow hair and a blue bow held in a hand",
-      "notes": "Strong foreground-background contrast, face is round and minimalistic"
+      "base_caption": "A white plush toy with yellow hair and a blue bow held in a hand"
     },
     "toy_04.jpeg": {
       "type": "toy",
-      "expected_caption": "A brown fabric dog toy wearing a pink hoodie",
-      "notes": "Dog has pointed ears and visible facial contrast; dressed in clothing"
+      "base_caption": "A brown fabric dog toy wearing a pink hoodie"
     },
     "toy_05.jpeg": {
       "type": "toy",
-      "expected_caption": "A wooden toy kitchen with knobs, a pot, and toy food items",
-      "notes": "Scene has context and many objects — good for complexity testing"
+      "base_caption": "A wooden toy kitchen with knobs, a pot, and toy food items"
     },
     "toy_06.jpeg": {
       "type": "toy",
-      "expected_caption": "A small fabric mouse doll in a pink dress lying on patterned bedding",
-      "notes": "Subtle colors and textures; partially obscured toy"
+      "base_caption": "A small fabric mouse doll in a pink dress lying on patterned bedding"
     },
     "toy_07.jpeg": {
       "type": "toy",
-      "expected_caption": "A colorful LEGO scene with animals, trees, and a house on a green baseplate",
-      "notes": "High detail, many small objects and animal miniatures"
+      "base_caption": "A colorful LEGO scene with animals, trees, and a house on a green baseplate"
     },
     "toy_08.jpeg": {
       "type": "toy",
-      "expected_caption": "A LEGO scene with a car, pool, and several small figures",
-      "notes": "Multiple characters; action scene with toy interaction"
+      "base_caption": "A LEGO scene with a car, pool, and several small figures"
     },
     "toy_09.jpeg": {
       "type": "toy",
-      "expected_caption": "A pile of stuffed animals and plush toys on a dark green blanket",
-      "notes": "Group photo; objects overlapping and some partially visible"
+      "base_caption": "A pile of stuffed animals and plush toys on a dark green blanket"
     },
     "toy_10.jpeg": {
       "type": "toy",
-      "expected_caption": "A miniature mouse toy in a bathroom with a tub, sink, and rug",
-      "notes": "Indoor dollhouse scene, great for scene/context awareness testing"
+      "base_caption": "A miniature mouse toy in a bathroom with a tub, sink, and rug"
     },
     "drawing_01.jpeg": {
         "type": "drawing",
-        "expected_caption": "A smiling creature with cat ears, striped fur, and purple cheeks",
-        "notes": "Simple style, bold outlines, cartoon-like, expressive face"
+        "base_caption": "A smiling creature with cat ears, striped fur, and purple cheeks"
     },
     "drawing_02.jpeg": {
         "type": "drawing",
-        "expected_caption": "A fluffy grey bear with white ears standing on a blue background",
-        "notes": "Painted texture, more realistic, good lighting and contrast"
+        "base_caption": "A fluffy grey bear with white ears standing on a blue background"
     },
     "drawing_03.jpeg": {
         "type": "drawing",
-        "expected_caption": "A green leaf with detailed veins lying on a white surface",
-        "notes": "Natural object, realistic drawing, clear structure"
+        "base_caption": "A green leaf with detailed veins lying on a white surface"
     },
     "drawing_04.jpeg": {
         "type": "drawing",
-        "expected_caption": "A purple monster with big eyes, spots and horns standing in grass",
-        "notes": "Cartoon style, watercolor look, background details"
+        "base_caption": "A purple monster with big eyes, spots and horns standing in grass"
     },
     "drawing_05.jpeg": {
         "type": "drawing",
-        "expected_caption": "A bear with rainbow unicorn horn and round ears",
-        "notes": "Mixed fantasy elements, simplified shape, cute expression"
+        "base_caption": "A bear with rainbow unicorn horn and round ears"
     },
     "drawing_06.jpeg": {
         "type": "drawing",
-        "expected_caption": "A girl with a crown and long hair standing next to a bird",
-        "notes": "Narrative scene, two characters, dress details, simple style"
+        "base_caption": "A girl with a crown and long hair standing next to a bird"
     }      
   }
   
