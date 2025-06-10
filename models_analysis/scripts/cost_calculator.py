@@ -1,6 +1,7 @@
 """
 Dynamic Cost Calculator for AI Models
 Provides accurate cost estimation based on actual API usage
+Updated with 2025 pricing for all major providers
 """
 
 import tiktoken
@@ -10,73 +11,78 @@ import re
 class CostCalculator:
     """Calculate costs for various AI model APIs based on actual usage"""
     
-    # Current pricing as of June 2025 (prices in USD)
-    PRICING = {
-        # OpenAI GPT-4o Vision (June 2025)
-        'gpt-4o': {
-            'input_tokens_per_1k': 0.005,  # $5 per 1M tokens
-            'output_tokens_per_1k': 0.015, # $15 per 1M tokens
-            'image_detail_low': 0.00085,   # $0.85 per image (low detail)
-            'image_detail_high': 0.00255   # $2.55 per image (high detail)
-        },
-        
-        # Google Gemini 2.5 Flash (June 2025) - Latest model
-        'gemini-2.5-flash': {
-            'input_tokens_per_1k': 0.00015,   # $0.15 per 1M tokens
-            'output_tokens_per_1k': 0.0006,   # $0.60 per 1M tokens (non-thinking)
-            'output_thinking_per_1k': 0.0035, # $3.50 per 1M tokens (thinking)
-            'image_input': 0.0001935          # $0.0001935 per image
-        },
-        
-        # Google Gemini 2.0 Flash (June 2025)
-        'gemini-2.0-flash': {
-            'input_tokens_per_1k': 0.0001,    # $0.10 per 1M tokens
-            'output_tokens_per_1k': 0.0004,   # $0.40 per 1M tokens
-            'image_input': 0.0001935          # $0.0001935 per image
-        },
-        
-        # Google Gemini Pro (legacy)
-        'gemini-pro': {
-            'input_tokens_per_1k': 0.00125,  # $1.25 per 1M tokens
-            'output_tokens_per_1k': 0.00375, # $3.75 per 1M tokens
-            'image_requests': 0.0025        # $0.0025 per image
-        },
-        
-        # Replicate models (per prediction) - June 2025
-        'replicate': {
-            'blip': 0.0046,                    # ~$0.0046 per request
-            'blip-2': 0.0060,                  # ~$0.0060 per request  
-            'cogvlm': 0.0078,                  # ~$0.0078 per request
-            'videollama3-7b': 0.008,           # ~$0.008 per request
-            'llava-1.5-7b': 0.005,             # ~$0.005 per request
-            'llava-1.5-13b': 0.012,            # ~$0.012 per request
-            'llama-4-scout': 0.015,            # Token-based pricing
-            'llama-4-maverick': 0.020,         # Token-based pricing  
-            'ltx-video': 0.027                 # ~$0.027 per request
-        },
-        
-        # Anthropic Claude 3.7 Sonnet (June 2025) - Latest model
-        'claude-3.7-sonnet': {
-            'input_tokens_per_1k': 0.003,   # $3 per 1M tokens  
-            'output_tokens_per_1k': 0.015   # $15 per 1M tokens
-        },
-        
-        # Anthropic Claude 3.5 Sonnet (legacy)
-        'claude-3.5-sonnet': {
-            'input_tokens_per_1k': 0.003,   # $3 per 1M tokens
-            'output_tokens_per_1k': 0.015   # $15 per 1M tokens
-        },
-        
-        # Text-to-Speech Services (June 2025)
-        'tts': {
-            'elevenlabs_multilingual': 0.15,  # $0.15 per 1K characters (Creator plan)
-            'elevenlabs_flash': 0.075,        # Flash model is cheaper
-            'openai_tts': 0.015,              # $15 per 1M characters  
-            'google_tts_2.5_flash': 0.5,      # $0.50 per 1M input tokens
-            'google_tts_2.5_pro': 1.0,        # $1.00 per 1M input tokens
-            'azure_tts': 0.000016,            # $16 per 1M characters
-            'aws_polly': 0.000004             # $4 per 1M characters
-        }
+    # Updated 2025 pricing per million tokens (USD)
+    OPENAI_PRICING = {
+        'gpt-4o': {'input': 2.50, 'output': 10.00},
+        'gpt-4o-mini': {'input': 0.15, 'output': 0.60},
+        'gpt-4.1': {'input': 2.00, 'output': 8.00},
+        'gpt-4.1-2025-04-14': {'input': 2.00, 'output': 8.00},
+        'gpt-4.1-mini': {'input': 0.40, 'output': 1.60},
+        'gpt-4.1-nano': {'input': 0.10, 'output': 0.40},
+        'gpt-4.5': {'input': 75.00, 'output': 150.00},
+        'gpt-4.5-preview': {'input': 75.00, 'output': 150.00},
+        'gpt-4-turbo': {'input': 10.00, 'output': 30.00},
+        'gpt-4': {'input': 30.00, 'output': 60.00},
+        'gpt-3.5-turbo': {'input': 0.50, 'output': 1.50},
+        'o1': {'input': 15.00, 'output': 60.00},
+        'o1-preview': {'input': 15.00, 'output': 60.00},
+        'o1-mini': {'input': 1.10, 'output': 4.40},
+        'o3': {'input': 10.00, 'output': 40.00},
+        'o3-mini': {'input': 1.10, 'output': 4.40}
+    }
+
+    ANTHROPIC_PRICING = {
+        'claude-3-opus': {'input': 15.00, 'output': 75.00},
+        'claude-3-opus-20240229': {'input': 15.00, 'output': 75.00},
+        'claude-3.7-sonnet': {'input': 3.00, 'output': 15.00},
+        'claude-3-7-sonnet-20250219': {'input': 3.00, 'output': 15.00},
+        'claude-3.5-sonnet': {'input': 3.00, 'output': 15.00},
+        'claude-3-5-sonnet-20241022': {'input': 3.00, 'output': 15.00},
+        'claude-3.5-haiku': {'input': 0.80, 'output': 4.00},
+        'claude-3-5-haiku-20241022': {'input': 0.80, 'output': 4.00},
+        'claude-3-haiku': {'input': 0.25, 'output': 1.25},
+        'claude-3-haiku-20240307': {'input': 0.25, 'output': 1.25}
+    }
+
+    GOOGLE_PRICING = {
+        'gemini-2.5-pro': {'input': 2.50, 'output': 15.00},  # >200k tokens
+        'gemini-2.5-pro-preview': {'input': 2.50, 'output': 15.00},
+        'gemini-2.0-flash': {'input': 0.10, 'output': 0.40},
+        'gemini-2.0-flash-lite': {'input': 0.075, 'output': 0.30},
+        'gemini-1.5-pro': {'input': 2.50, 'output': 10.00},  # >128k tokens
+        'gemini-1.5-flash': {'input': 0.15, 'output': 0.60},  # >128k tokens
+        'gemini-1.5-flash-8b': {'input': 0.075, 'output': 0.30},  # >128k tokens
+        'gemini-pro': {'input': 0.50, 'output': 1.50},  # Legacy
+        'gemini-flash': {'input': 0.075, 'output': 0.30}  # Legacy
+    }
+
+    # Replicate/Other models
+    REPLICATE_PRICING = {
+        'blip': 0.0046,                    # ~$0.0046 per request
+        'blip-2': 0.0060,                  # ~$0.0060 per request  
+        'cogvlm': 0.0078,                  # ~$0.0078 per request
+        'videollama3-7b': 0.008,           # ~$0.008 per request
+        'llava-1.5-7b': 0.005,             # ~$0.005 per request
+        'llava-1.5-13b': 0.012,            # ~$0.012 per request
+        'llama-4-scout': 0.015,            # Token-based pricing
+        'llama-4-maverick': 0.020,         # Token-based pricing  
+        'ltx-video': 0.027                 # ~$0.027 per request
+    }
+
+    # DeepSeek pricing (with off-peak discounts)
+    DEEPSEEK_PRICING = {
+        'deepseek-r1': {'input': 0.55, 'output': 2.19, 'input_cached': 0.14},
+        'deepseek-v3': {'input': 0.27, 'output': 1.10, 'input_cached': 0.07},
+        'deepseek-chat': {'input': 0.27, 'output': 1.10, 'input_cached': 0.07}
+    }
+    
+    # TTS pricing (per million characters - updated 2025)
+    TTS_PRICING = {
+        'elevenlabs_multilingual': 0.30,  # ~$0.30 per 1M characters
+        'elevenlabs_flash': 0.10,         # ~$0.10 per 1M characters  
+        'openai_tts': 15.00,              # $15.00 per 1M characters
+        'google_cloud_tts': 4.00,         # $4.00 per 1M characters (standard voices)
+        'google_cloud_tts_neural': 16.00  # $16.00 per 1M characters (neural voices)
     }
     
     @classmethod
@@ -103,7 +109,7 @@ class CostCalculator:
     
     @classmethod
     def calculate_openai_cost(cls, response_data: Dict, prompt_text: str, 
-                             has_image: bool = False, image_detail: str = "low") -> float:
+                             has_image: bool = False, model: str = "gpt-4o") -> float:
         """Calculate OpenAI API cost from response metadata"""
         try:
             # Try to get usage from response
@@ -112,17 +118,12 @@ class CostCalculator:
                 prompt_tokens = usage.get('prompt_tokens', 0)
                 completion_tokens = usage.get('completion_tokens', 0)
                 
-                pricing = cls.PRICING['gpt-4o']
+                pricing = cls.OPENAI_PRICING.get(model, cls.OPENAI_PRICING['gpt-4o'])
                 
                 cost = (
-                    (prompt_tokens / 1000) * pricing['input_tokens_per_1k'] +
-                    (completion_tokens / 1000) * pricing['output_tokens_per_1k']
+                    (prompt_tokens / 1000000) * pricing['input'] +
+                    (completion_tokens / 1000000) * pricing['output']
                 )
-                
-                # Add image cost if applicable
-                if has_image:
-                    image_key = f'image_detail_{image_detail}'
-                    cost += pricing.get(image_key, pricing['image_detail_low'])
                 
                 return cost
                 
@@ -131,70 +132,79 @@ class CostCalculator:
         
         # Fallback calculation
         prompt_tokens = cls.count_tokens(prompt_text)
-        estimated_response_tokens = 75  # Average response length
+        estimated_response_tokens = 200  # Average for story generation
         
-        pricing = cls.PRICING['gpt-4o']
+        pricing = cls.OPENAI_PRICING.get(model, cls.OPENAI_PRICING['gpt-4o'])
         cost = (
-            (prompt_tokens / 1000) * pricing['input_tokens_per_1k'] +
-            (estimated_response_tokens / 1000) * pricing['output_tokens_per_1k']
+            (prompt_tokens / 1000000) * pricing['input'] +
+            (estimated_response_tokens / 1000000) * pricing['output']
         )
-        
-        if has_image:
-            cost += pricing['image_detail_low']
             
         return cost
     
     @classmethod
-    def calculate_anthropic_cost(cls, prompt_text: str, response_text: str) -> float:
+    def calculate_anthropic_cost(cls, prompt_text: str, response_text: str, 
+                                model: str = "claude-3-7-sonnet-20250219") -> float:
         """Calculate Anthropic Claude cost"""
         prompt_tokens = cls.count_tokens(prompt_text, 'claude')
         response_tokens = cls.count_tokens(response_text, 'claude')
         
-        pricing = cls.PRICING['claude-3.5-sonnet']
+        pricing = cls.ANTHROPIC_PRICING.get(model, cls.ANTHROPIC_PRICING['claude-3.5-sonnet'])
         
         return (
-            (prompt_tokens / 1000) * pricing['input_tokens_per_1k'] +
-            (response_tokens / 1000) * pricing['output_tokens_per_1k']
+            (prompt_tokens / 1000000) * pricing['input'] +
+            (response_tokens / 1000000) * pricing['output']
         )
     
     @classmethod
     def calculate_google_cost(cls, prompt_text: str, response_text: str, 
-                             has_image: bool = False) -> float:
+                             has_image: bool = False, model: str = "gemini-2.5-pro-preview") -> float:
         """Calculate Google Gemini cost"""
         prompt_tokens = cls.count_tokens(prompt_text, 'gemini')
         response_tokens = cls.count_tokens(response_text, 'gemini')
         
-        pricing = cls.PRICING['gemini-pro']
+        pricing = cls.GOOGLE_PRICING.get(model, cls.GOOGLE_PRICING['gemini-pro'])
         
         cost = (
-            (prompt_tokens / 1000) * pricing['input_tokens_per_1k'] +
-            (response_tokens / 1000) * pricing['output_tokens_per_1k']
+            (prompt_tokens / 1000000) * pricing['input'] +
+            (response_tokens / 1000000) * pricing['output']
         )
-        
-        if has_image:
-            cost += pricing['image_requests']
             
         return cost
     
     @classmethod
-    def calculate_replicate_cost(cls, model_name: str) -> float:
-        """Calculate Replicate model cost (fixed per prediction)"""
-        return cls.PRICING['replicate'].get(model_name, 0.005)  # Default fallback
+    def calculate_deepseek_cost(cls, prompt_text: str, response_text: str, 
+                               model: str = "deepseek-chat", cached: bool = False) -> float:
+        """Calculate DeepSeek cost with off-peak discount considerations"""
+        prompt_tokens = cls.count_tokens(prompt_text)
+        response_tokens = cls.count_tokens(response_text)
+        
+        pricing = cls.DEEPSEEK_PRICING.get(model, cls.DEEPSEEK_PRICING['deepseek-chat'])
+        
+        input_rate = pricing['input_cached'] if cached else pricing['input']
+        
+        return (
+            (prompt_tokens / 1000000) * input_rate +
+            (response_tokens / 1000000) * pricing['output']
+        )
     
     @classmethod
-    def calculate_tts_cost(cls, text: str, provider: str) -> float:
-        """Calculate Text-to-Speech cost"""
+    def calculate_replicate_cost(cls, model_name: str) -> float:
+        """Calculate Replicate model cost (fixed per prediction)"""
+        return cls.REPLICATE_PRICING.get(model_name, 0.005)  # Default fallback
+    
+    @classmethod
+    def calculate_tts_cost(cls, text: str, provider: str = "openai_tts") -> float:
+        """Calculate TTS cost based on character count"""
         char_count = len(text)
         
-        if provider in cls.PRICING['tts']:
-            rate = cls.PRICING['tts'][provider]
-            
-            if provider == 'elevenlabs':
-                return (char_count / 1000) * rate
-            else:
-                return (char_count / 1000000) * rate
+        # Get pricing per million characters
+        pricing = cls.TTS_PRICING.get(provider, cls.TTS_PRICING['openai_tts'])
         
-        return 0.0  # Unknown provider
+        # Calculate cost
+        cost = (char_count / 1000000) * pricing
+        
+        return cost
     
     @classmethod
     def estimate_monthly_cost(cls, daily_requests: int, cost_per_request: float) -> Dict[str, float]:
@@ -219,29 +229,38 @@ class CostCalculator:
         
         # OpenAI GPT-4o
         costs['gpt-4o'] = cls.calculate_openai_cost(
-            {}, prompt_text, has_image
+            {}, prompt_text, has_image, 'gpt-4o'
         )
         
         # Google Gemini
-        costs['gemini-pro'] = cls.calculate_google_cost(
-            prompt_text, response_text, has_image
+        costs['gemini-2.5-pro'] = cls.calculate_google_cost(
+            prompt_text, response_text, has_image, 'gemini-2.5-pro-preview'
         )
         
-        # Anthropic Claude (text only)
-        if not has_image:
-            costs['claude-3.5-sonnet'] = cls.calculate_anthropic_cost(
-                prompt_text, response_text
-            )
+        # Anthropic Claude
+        costs['claude-3.7-sonnet'] = cls.calculate_anthropic_cost(
+            prompt_text, response_text, 'claude-3-7-sonnet-20250219'
+        )
+        
+        # DeepSeek
+        costs['deepseek-v3'] = cls.calculate_deepseek_cost(
+            prompt_text, response_text, 'deepseek-v3'
+        )
         
         return costs
     
     @classmethod
     def get_pricing_info(cls) -> Dict:
         """Return current pricing information for reference"""
-        return cls.PRICING.copy()
+        return {
+            'openai': cls.OPENAI_PRICING,
+            'anthropic': cls.ANTHROPIC_PRICING,
+            'google': cls.GOOGLE_PRICING,
+            'deepseek': cls.DEEPSEEK_PRICING,
+            'replicate': cls.REPLICATE_PRICING,
+            'tts': cls.TTS_PRICING
+        }
 
-
-# Utility functions for cost analysis
 def format_cost(cost: float) -> str:
     """Format cost for display"""
     if cost < 0.01:
@@ -257,8 +276,7 @@ def cost_per_1000_requests(cost_per_request: float) -> float:
 
 def break_even_analysis(fixed_costs: float, cost_per_request: float, 
                        revenue_per_user: float) -> int:
-    """Calculate break-even point in number of users"""
+    """Calculate break-even point for usage-based services"""
     if revenue_per_user <= cost_per_request:
-        return float('inf')  # Never breaks even
-    
+        return -1  # Cannot break even
     return int(fixed_costs / (revenue_per_user - cost_per_request)) 

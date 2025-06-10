@@ -2,6 +2,7 @@
 """
 Text-to-Speech Models Evaluation Script
 Tests various TTS providers for generating child-friendly story narrations
+Updated for 2025 with simplified Google Cloud TTS using Google AI API key
 """
 
 import os
@@ -58,10 +59,10 @@ TTS_PROVIDERS = {
         'voice': 'nova',  # Child-friendly voice
         'timeout': 25
     },
-    'google_tts_2.5_flash': {
+    'google_cloud_tts': {
         'api_key_env': 'GOOGLE_API_KEY',
-        'model': 'gemini-2.5-flash-preview-tts',
-        'voice': 'male-1',  # Child-friendly voice
+        'voice_name': 'en-US-Neural2-F',  # Child-friendly female voice
+        'language_code': 'en-US',
         'timeout': 30
     }
 }
@@ -170,28 +171,28 @@ def test_openai_tts(story_text, provider_config, provider_name):
         return None, execution_time, 0, f"Error: {str(e)}"
 
 def test_google_tts(story_text, provider_config, provider_name):
-    """Test Google Gemini TTS API"""
+    """Test Google Cloud Text-to-Speech API using Google AI API key"""
     api_key = os.getenv(provider_config['api_key_env'])
     if not api_key:
         return None, 0, 0, f"Missing API key for {provider_name}"
     
     start_time = time.time()
     
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{provider_config['model']}:generateContent?key={api_key}"
+    # Use the correct Google Cloud TTS endpoint
+    url = f"https://texttospeech.googleapis.com/v1/text:synthesize?key={api_key}"
     
     headers = {
         "Content-Type": "application/json"
     }
     
     data = {
-        "contents": [{
-            "parts": [{
-                "text": f"Convert this story to speech: {story_text}"
-            }]
-        }],
-        "generationConfig": {
-            "voice": provider_config['voice'],
-            "audioFormat": "MP3"
+        "input": {"text": story_text},
+        "voice": {
+            "languageCode": provider_config['language_code'],
+            "name": provider_config['voice_name']
+        },
+        "audioConfig": {
+            "audioEncoding": "MP3"
         }
     }
     
@@ -203,12 +204,20 @@ def test_google_tts(story_text, provider_config, provider_name):
                 execution_time = time.time() - start_time
                 
                 # Calculate cost
-                cost = CostCalculator.calculate_tts_cost(story_text, 'google_tts_2.5_flash')
+                cost = CostCalculator.calculate_tts_cost(story_text, 'google_cloud_tts')
                 
-                return "Audio generated successfully", execution_time, cost, None
+                # Verify audio content is returned
+                response_data = response.json()
+                if 'audioContent' in response_data:
+                    return "Audio generated successfully", execution_time, cost, None
+                else:
+                    return None, execution_time, 0, "No audio content in response"
             else:
                 execution_time = time.time() - start_time
-                return None, execution_time, 0, f"API error: {response.status_code} - {response.text[:200]}"
+                error_msg = response.text[:200]
+                if response.status_code == 403:
+                    error_msg = "API key lacks TTS permissions. Enable Cloud Text-to-Speech API"
+                return None, execution_time, 0, f"API error: {response.status_code} - {error_msg}"
                 
     except TimeoutException:
         return None, provider_config['timeout'], 0, f"Request timed out after {provider_config['timeout']} seconds"
@@ -307,7 +316,7 @@ def main():
                     'story_length': story_length,
                     'provider': provider_name,
                     'model': provider_config.get('model', 'N/A'),
-                    'voice': provider_config.get('voice_id', provider_config.get('voice', 'N/A')),
+                    'voice': provider_config.get('voice_id', provider_config.get('voice', provider_config.get('voice_name', 'N/A'))),
                     'audio_output': audio_output or 'Failed',
                     'execution_time': round(execution_time, 2),
                     'cost_usd': round(cost, 6),

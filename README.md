@@ -117,8 +117,8 @@ pip install -r models_analysis/requirements.txt
 **Application Development**: Future implementation phase
 
 -   📅 Planned following model analysis completion
--   🎯 Focus on child-friendly interface design
--   🔧 Integration of optimal model selection
+-   Focus on child-friendly interface design
+-   Integration of optimal model selection
 
 ### Documentation
 
