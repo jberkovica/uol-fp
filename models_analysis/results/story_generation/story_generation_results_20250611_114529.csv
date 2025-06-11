@@ -1,0 +1,1430 @@
+image_file,image_type,image_caption,story_model,generated_story,execution_time,cost,word_count,quality_score,meets_length_req,has_title,contains_dialogue,positive_tone,story_structure,age_appropriate,bedtime_suitable
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gpt-4.5-preview,"Title: Dolly's Special Wish
+
+In a cozy home, there was a doll named Dolly who had soft, curly blonde hair and wore a bright red jumpsuit. Dolly sat on the couch each day, patiently waiting for her best friend, Lily, to come home from school.
+
+One afternoon, Lily seemed sad. She hugged Dolly tightly and whispered, ""I had a hard day. I wish tomorrow would be better.""
+
+That night, while the stars twinkled gently outside, Dolly wished very hard for Lily's happiness.
+
+The next day, Lily came home smiling. She hugged Dolly, saying, ""Today was wonderful! Your special wish worked, Dolly!""
+
+From then on, whenever Lily felt sad or worried, she held Dolly close and whispered her wishes. Dolly taught Lily that believing in hope and kindness helps make wishes come true.
+
+Each night, Dolly and Lily snuggled together, dreaming peacefully under the soft moonlight. Dolly knew her gentle wishes made a difference because, after all, love is the strongest magic of all.
+
+And tonight, Dolly has a special wish just for you: May your dreams be sweet, your heart be happy, and your nights be filled with peaceful sleep.",10.26,0.008570,190,24.62,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gpt-4.1,"Title: Dolly’s Cozy Couch Adventure
+
+On a soft, comfy couch sat Dolly, a little doll with curly blonde hair and a bright red jumpsuit. Every evening, when the sun dipped low, Dolly watched her family laugh and read stories together. She wished she could join their fun, but she was just a doll.
+
+One quiet night, the room filled with golden moonlight. Dolly blinked her button eyes and noticed Teddy Bear, her fluffy friend, beside her on the couch.
+
+“Do you ever feel left out?” she whispered.
+
+Teddy Bear nodded. “Sometimes. But we can make our own fun!”
+
+So, Dolly and Teddy Bear imagined the couch was a magical boat floating on a peaceful sea. They sailed past islands made of pillows and waved at the shadowy shapes on the walls. They giggled softly, feeling warm and happy.
+
+Soon, Dolly realized something special. She didn’t need to move or talk like people to feel loved. Just being together, sharing quiet moments, was enough.
+
+As the family turned off the lights, Dolly closed her eyes, feeling safe and cozy. She knew that even the stillest friends can have the biggest adventures—right from the comfort of a couch.
+
+And with a gentle smile, Dolly drifted into a peaceful sleep.",4.80,0.004570,207,26.62,True,True,False,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gpt-4o,"Title: The Doll on the Cozy Couch
+
+Once upon a time, in a snug little living room, there sat a doll named Daisy. Daisy had curly blonde hair that bounced with every little breeze and wore a bright red jumpsuit that made her feel brave and cheerful.
+
+Every evening, as the sun dipped behind the hills, Daisy would sit on the couch by the window, gazing at the stars that twinkled above. She loved listening to the gentle whispers of the night as the world slowly quieted down.
+
+One peaceful night, Daisy noticed a tiny, shy star struggling to shine. The star looked downcast and dim. Daisy wished she could help. So, she whispered, ""Little star, you are special just the way you are."" Her gentle words floated up, wrapping the star in warmth and love.
+
+To Daisy's delight, the star began to twinkle brightly, dancing with joy among its celestial friends. From that day on, the little star shone with confidence, knowing it was truly unique.
+
+As Daisy settled down for the night, she felt a cozy warmth in her heart. She had learned that kindness and encouragement could make a big difference, even to the smallest star. And with that thought, Daisy drifted into a peaceful sleep, dreaming of twinkling stars.",5.95,0.004615,213,27.50,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gpt-4o-mini,"Title: Daisy's Cozy Evening
+
+Once upon a time, in a cheerful little house, there lived a doll named Daisy. Daisy had curly blonde hair and wore a bright red jumpsuit that sparkled like her smile. Every evening, she would sit on the soft, squishy couch, ready for her favorite time of day—storytime!
+
+One cozy night, as the sun set and the stars twinkled, Daisy noticed her friend Tommy looking sad. He had lost his favorite toy and didn’t know where to find it. Daisy wanted to help. “Let’s look together!” she said, her eyes shining with kindness.
+
+They searched under cushions and behind curtains, sharing giggles and silly stories. Finally, they found the toy hiding under the couch! Tommy’s face lit up like a bright star. “Thank you, Daisy! You helped me feel better!”
+
+Daisy smiled, knowing that helping a friend was the best adventure of all. As they settled back on the couch, Daisy whispered, “Remember, it’s always good to lend a hand. Kindness makes the heart grow.”
+
+With a warm hug and a smile, they drifted off to sleep, dreaming of joyful adventures together.",4.03,0.000166,186,24.12,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-4-opus,"Title: Rosie's Couch Adventure
+
+Rosie was a special doll with bouncy golden curls and a bright red jumpsuit. Every night, she sat on the big, soft couch waiting for her best friend Emma to come home.
+
+One evening, Emma forgot to take Rosie to bed. Feeling lonely, Rosie noticed the family cat, Whiskers, crying softly in the corner.
+
+""What's wrong?"" Rosie whispered, even though dolls aren't supposed to talk.
+
+""I'm scared of the dark,"" Whiskers meowed.
+
+Rosie smiled warmly. ""Come sit with me. We can keep each other company.""
+
+Whiskers curled up next to Rosie on the couch. They watched the moonlight dance through the window and counted the twinkling stars together.
+
+When Emma found them the next morning, they were snuggled close, fast asleep. She gently carried both friends to her room.
+
+""You're such a kind doll, Rosie,"" Emma whispered, tucking them into bed.
+
+From that night on, Rosie knew that being brave meant helping others feel safe, and the best way to chase away loneliness was to share kindness with a friend.",10.77,0.019080,174,22.62,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-4-sonnet,"**Title: Ruby's Cozy Evening**
+
+Ruby was a special doll with bouncy golden curls and a bright red jumpsuit. Every evening, she sat on the big, soft couch in the living room, watching over the house while everyone slept.
+
+One night, Ruby noticed the family's new kitten, Whiskers, hiding under the coffee table. The little kitten looked scared and lonely in his new home.
+
+""Hello there,"" Ruby whispered gently. ""Are you feeling worried?""
+
+Whiskers nodded with his tiny head.
+
+Ruby smiled warmly. ""When I first came to this house, I felt nervous too. But you know what helped me? I discovered that being kind to others made me feel brave and happy inside.""
+
+Ruby patted the couch cushion beside her. ""Would you like to sit with me? We can watch the stars together.""
+
+Whiskers climbed up and curled next to Ruby's soft jumpsuit. As they gazed out the window at the twinkling stars, both friends felt peaceful and safe.
+
+From that night on, Ruby and Whiskers shared cozy evenings together, proving that kindness creates the most wonderful friendships.
+
+**Word count: 176 words**",8.73,0.003951,181,23.50,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-3.7-sonnet,"# Rosie's Waiting Place
+
+Rosie the doll sat on the big green couch, her curly blonde hair bouncing as she looked toward the door. Her bright red jumpsuit made her easy to spot in the quiet living room.
+
+""Emma will be home from school soon,"" Rosie thought. Every day, she waited in this special spot so Emma would find her right away.
+
+Today was different. Emma rushed in with tears on her cheeks. ""No one wanted to play with me at recess,"" she sniffled, scooping Rosie into her arms.
+
+Rosie wished she could speak. She would tell Emma about patience and how sometimes making friends takes time. Instead, she just listened as Emma shared her sad day.
+
+""Maybe tomorrow I'll try again,"" Emma whispered. ""I could ask Lily to play hopscotch. She looks lonely too.""
+
+That night, Emma tucked Rosie beside her pillow instead of leaving her on the couch.
+
+""Thank you for always being there,"" Emma murmured, drifting to sleep. ""Tomorrow, I'll be someone's Rosie—the friend who's always waiting.""
+
+Rosie's button eyes twinkled in the moonlight. Being a good listener was her special magic.
+
+(Word count: 167)",6.62,0.004071,188,24.25,True,False,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-3.5-sonnet,"Title: Sally's Special Spot
+
+Sally was a sweet little doll with bouncy blonde curls who loved her cozy spot on the living room couch. Every day, she watched the family come and go, sharing their laughter and stories. But sometimes, Sally felt lonely being the only doll there.
+
+One morning, a new stuffed elephant named Gray appeared on the other end of the couch. Sally noticed that Gray seemed shy and nervous in his new home. Though it meant leaving her familiar corner, she decided to be brave and scoot over to say hello.
+
+""Would you like to share my special spot?"" Sally asked kindly, smoothing her red jumpsuit. ""It's the perfect place to watch the sunset through the window.""
+
+Gray's trunk wiggled happily as he moved closer. ""I'd love that,"" he whispered.
+
+From that day on, Sally and Gray shared the couch together. They watched morning cartoons with the kids, enjoyed afternoon naps in the warm sunlight, and always saved the best part of the day for watching the sunset side by side.
+
+Sally learned that making room for new friends made her special spot even more special than before.
+
+[Word count: 156]",6.59,0.003966,194,25.00,True,True,True,True,True,True,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-3.5-haiku,"Title: Rosie's Cozy Night Adventure
+
+In a quiet corner of Emma's bedroom, Rosie the doll sat on the soft blue couch, her golden curls bouncing softly in the gentle lamplight. She wore her favorite red jumpsuit and watched the room with bright, caring eyes.
+
+One peaceful evening, Rosie noticed her friend Teddy Bear looking a bit lonely across the room. Even though dolls aren't supposed to move, Rosie felt a special warmth in her heart. She wanted to make Teddy feel better.
+
+Slowly, carefully, Rosie wiggled her way across the bedroom floor. Each tiny step was brave and kind. When she reached Teddy, she snuggled close and whispered, ""You're never alone. Friends are always here for each other.""
+
+Teddy's button eyes sparkled with happiness. He felt comforted knowing someone cared about his feelings.
+
+As moonlight drifted through the window, Rosie and Teddy sat together, sharing a quiet moment of friendship. They knew that being brave doesn't mean never feeling scared - it means being there for each other when you do.
+
+And so, they watched the night together, safe and loved.",6.55,0.001022,181,23.50,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.5-pro-preview,"Error with gemini-2.5-pro-preview: 404 models/gemini-2.5-pro-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.40,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.5-flash-preview,"Error with gemini-2.5-flash-preview: 404 models/gemini-2.5-flash-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.29,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.0-flash,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-1.5-pro,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gpt-4.5-preview,"Title: Bunny's Cozy Chair
+
+In a cozy room bathed in soft moonlight, a fabric bunny named Button sat quietly on his favorite coral chair. Button wore his special striped pajamas, which Grandma had lovingly sewn, making him feel warm and safe.
+
+Every night, Button waited patiently for his best friend, Mia, to climb into bed. Mia hugged him close, whispering wishes and dreams before drifting off to sleep.
+
+But tonight, Mia seemed upset. She whispered softly, ""I had a tough day, Button. I made mistakes, and I feel bad.""
+
+Button listened quietly, his gentle eyes sparkling kindly in the moonlight. Mia hugged him tighter, feeling calmness surround her. ""Maybe it's okay, Button. Mistakes help me learn, right?""
+
+Button's quiet smile seemed to agree.
+
+Mia took a deep breath and whispered, ""Tomorrow, I'll try again. Thank you, Button.""
+
+Feeling peaceful once more, Mia snuggled under her soft blankets. Button returned to his coral chair, his striped outfit glowing softly in the moon's gentle glow.
+
+As Mia drifted into sweet dreams, Button watched over her, reminding her quietly that each new day brings another chance to grow, learn, and smile again.",12.19,0.008820,189,24.50,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gpt-4.1,"Title: Benny Bunny’s Cozy Chair
+
+Benny Bunny was a soft, fabric bunny who wore a striped outfit of blue and white. He lived in a bright, happy room and loved to sit on his favorite coral chair. Every morning, Benny would watch the sunbeams dance across the walls, giggling as they made funny shapes.
+
+Benny had many friends—teddy bears, dolls, and even a toy dinosaur—but sometimes, he liked quiet moments just for himself. On his coral chair, Benny felt safe and calm. He would close his button eyes and imagine gentle adventures, like sailing on a soft cloud or bouncing over fields of cotton candy.
+
+One day, the other toys asked Benny why he liked his coral chair so much. Benny smiled and said, “My chair is my special place to rest and dream. It helps me feel peaceful and ready for anything.”
+
+The toys thought that sounded lovely. That night, they all found cozy spots of their own. As the room grew quiet and the stars twinkled outside, Benny whispered, “Everyone needs a little place to feel calm and happy.”
+
+Soon, all the toys drifted into sweet dreams, feeling safe, loved, and perfectly at peace—just like Benny on his coral chair.",7.77,0.004470,202,26.00,True,True,False,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gpt-4o,"Title: Benny's Cozy Chair Adventure
+
+Once upon a time, in a cozy bedroom, there sat a fabric bunny named Benny. Benny wore a cheerful striped outfit and loved sitting on his favorite coral chair. Every night, Benny waited patiently, hoping for an adventure before bedtime.
+
+One evening, as the moonlight softly lit the room, Benny imagined the chair as a magical ship. ""Ahoy, Captain Benny!"" he whispered, setting sail on an ocean of dreams. The chair gently rocked, as if the waves were carrying him to a distant land.
+
+On this adventure, Benny met friendly starfish, playful dolphins, and a wise old turtle. The turtle shared stories of kindness and friendship, teaching Benny that being kind makes the heart feel warm and happy.
+
+As Benny's eyes grew heavy, the coral chair floated back to the bedroom. Benny yawned, feeling grateful for his new friends and the lesson he learned. He realized that even small acts of kindness can make a big difference.
+
+With a peaceful heart, Benny snuggled into the chair, ready for a good night's sleep. ""Thank you for the adventure,"" he whispered to the moon, drifting off to dreamland, where kindness always shined.
+
+And so, Benny slept soundly, dreaming of more gentle adventures to come.",6.36,0.004590,207,26.75,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gpt-4o-mini,"Title: Benny the Bunny’s Cozy Night
+
+Once upon a time, in a sunny little room, there sat a charming fabric bunny named Benny. He wore a bright striped outfit that made him look cheerful and friendly. Benny loved his coral chair, where he watched the world go by.
+
+One evening, as the sun began to set, Benny noticed his friend, Lily, the little girl who owned him, looking sad. She had lost her favorite book. Benny wanted to help! “Don’t worry, Lily,” he said softly, “let’s find it together!”
+
+With Benny’s encouragement, Lily searched under the bed, behind the curtains, and even in the toy box. Finally, they found the book hiding beneath a fluffy blanket. Lily’s face lit up with joy, and she hugged Benny tight. 
+
+“Thank you, Benny!” she whispered, her heart full of happiness. 
+
+As the stars twinkled outside, Benny snuggled in the coral chair, knowing he had made his friend smile. 
+
+“Remember,” Benny said with a yawn, “helping others brings joy to everyone.” 
+
+And with that lovely thought, they drifted off to sleep, dreaming of more adventures together.",6.96,0.000167,182,23.50,True,True,False,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-4-opus,"Title: Buttercup's Cozy Corner
+
+In a sunny bedroom lived Buttercup, a soft fabric bunny wearing her favorite blue and white striped pajamas. She loved sitting in her special coral chair by the window, watching the world go by.
+
+One evening, Buttercup heard tiny sniffles coming from under the bed. It was Squeaky, a little mouse who had lost his way home.
+
+""Don't cry,"" said Buttercup gently, hopping down from her chair. ""You can share my cozy spot until morning.""
+
+She helped Squeaky climb onto the coral chair. They sat together, watching the stars twinkle outside. Buttercup told him stories about cloud shapes and rainbow dreams until his tears dried.
+
+""Thank you for being so kind,"" whispered Squeaky, yawning.
+
+""That's what friends do,"" Buttercup smiled, tucking her new friend under her soft ear like a blanket.
+
+As moonlight filled the room, both friends drifted off to sleep in the coral chair, dreaming of tomorrow's adventures together. Buttercup learned that sharing your special places makes them even more special.
+
+The end.",10.34,0.018675,169,22.00,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-4-sonnet,"**Title: Bella Bunny's Special Chair**
+
+Bella Bunny loved her beautiful coral chair more than anything in the whole world. Every evening, she would sit in her favorite striped pajamas, watching the sunset through her bedroom window.
+
+One night, Bella noticed her friend Mouse crying outside. Mouse had nowhere comfortable to sleep because his bed was broken. Even though the coral chair was Bella's most precious possession, she knew what she had to do.
+
+""Mouse, would you like to share my special chair tonight?"" Bella asked gently.
+
+Mouse's eyes sparkled with gratitude. ""But it's your favorite chair, Bella!""
+
+""That's exactly why I want to share it,"" Bella smiled. ""Special things become even more special when we share them with friends.""
+
+Together, they snuggled in the cozy coral chair, telling quiet stories until their eyelids grew heavy. As they drifted off to sleep, Bella realized something wonderful – her chair felt twice as comfortable and her heart felt twice as happy.
+
+From that night on, the coral chair became their special sharing spot, making bedtime the best time of all.
+
+**Word count: 174 words**",8.07,0.003810,182,23.62,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-3.7-sonnet,"# Title: The Waiting Chair
+
+In a cozy bedroom with walls painted like the sky, there lived a fabric bunny named Benny. Benny wore his favorite blue and white striped outfit every day and had the most important job in the whole house.
+
+Each afternoon, Benny would hop onto the coral-colored chair by the window. There he would sit, very still and very patient, waiting for Emma to return from school.
+
+""Being a good friend means being there when someone needs you,"" Benny would whisper to himself as he watched the driveway.
+
+Sometimes the waiting felt long. Sometimes the sunbeams would make him sleepy. But Benny never left his post.
+
+When Emma's school bus finally arrived, she would race inside, scoop Benny into her arms and tell him about her day – the good parts and the hard parts too.
+
+""You're the best listener,"" Emma would say, hugging him tight.
+
+At bedtime, Emma always placed Benny on his special coral chair beside her bed.
+
+""Goodnight, Benny,"" she'd whisper. ""Thank you for always being there.""
+
+And though fabric bunnies can't smile with their stitched mouths, Benny's heart smiled every night, knowing that sometimes the bravest kind of friendship is simply being there.
+
+(Word count: 180)",7.70,0.004185,204,26.38,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-3.5-sonnet,"Title: The Lonely Chair's New Friend
+
+In a cozy corner of little Emma's playroom sat a coral-colored chair that always felt lonely. Day after day, it watched the other toys playing together while it remained empty.
+
+One morning, Emma noticed the chair looking sad. She reached into her toy basket and pulled out her favorite stuffed bunny, Benjamin, who wore blue and white striped pajamas.
+
+""Benjamin,"" she whispered, ""I think the chair needs a friend. Would you like to be its special companion?""
+
+Benjamin's floppy ears seemed to perk up at the idea. Emma gently placed him on the soft coral cushion, and something magical happened. The chair suddenly felt warm and happy, while Benjamin discovered he had the most wonderful view of the entire playroom.
+
+From that day on, Benjamin made the chair his special spot. Other toys would gather around to hear his bedtime stories, and the chair glowed with joy at having so many friends nearby. Even when Emma was asleep, Benjamin and the chair would whisper sweet dreams to each other.
+
+The lonely chair had learned that sometimes the best friendships come when you least expect them, and Benjamin discovered that helping others feel loved makes your own heart grow bigger.
+
+[Word count: 159]",7.02,0.004140,208,26.88,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-3.5-haiku,"Title: Pip's Cozy Chair Adventure
+
+In a quiet corner of a soft, warm bedroom, there sat a little fabric bunny named Pip. His striped outfit was bright and cheerful, and he loved his special coral chair more than anything in the world. Every night, Pip would sit perfectly still, watching over his sleeping friend with loving button eyes.
+
+One evening, Pip noticed a small teddy bear looking lonely on the floor. Even though Pip had never left his comfortable chair before, he felt a gentle courage growing inside him. Slowly, carefully, he hopped down and approached the teddy bear.
+
+""Would you like to sit with me?"" Pip asked kindly.
+
+The teddy bear's eyes sparkled with happiness. Together, they climbed back onto the coral chair, snuggling close. Pip realized that being brave meant helping others and sharing his special space.
+
+As moonlight danced through the window, Pip and his new friend sat quietly, watching over the sleeping child. They knew that true friendship means being there for one another, offering comfort and warmth.
+
+And so, they settled in for a peaceful night, surrounded by love and kindness.",335.55,0.001020,186,24.12,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.5-pro-preview,"Error with gemini-2.5-pro-preview: 404 models/gemini-2.5-pro-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.21,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.5-flash-preview,"Error with gemini-2.5-flash-preview: 404 models/gemini-2.5-flash-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.14,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.0-flash,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-1.5-pro,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gpt-4.5-preview,"Title: Lily and the Little Plush Friend
+
+Lily loved bedtime, especially because it meant cuddling her favorite plush friend, Daisy. Daisy was soft and fluffy, with snowy white fur, golden yellow hair, and a pretty blue bow on her head.
+
+Every night, Lily whispered secrets to Daisy, sharing adventures of her day. Daisy listened carefully, smiling gently back, as if saying, ""I'm always here.""
+
+One evening, Lily couldn't find Daisy. She searched under pillows, blankets, and even behind the curtains. Worried, Lily felt tears in her eyes.
+
+""It's alright, sweetheart,"" Mom said softly, handing Daisy back to Lily. ""She was hiding in the laundry basket, having her own adventure.""
+
+Lily hugged Daisy tightly. ""I missed you!"" she whispered.
+
+As Lily tucked Daisy under the covers beside her, she realized something important. Even though Daisy was just a plush toy, the comfort and warmth she brought taught Lily about friendship and kindness.
+
+Snuggling close, Lily whispered, ""Goodnight, Daisy. Thank you for always being my friend.""
+
+That night, Lily fell asleep peacefully, knowing Daisy would always be there, ready for another day of smiles and adventures.",9.50,0.008570,184,23.88,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gpt-4.1,"Title: The Little Plush with the Blue Bow
+
+Once upon a time, there was a soft, white plush toy named Sunny. Sunny had bright yellow hair that looked like sunshine and wore a shiny blue bow that sparkled in the light. Sunny loved being held and cuddled, especially by her best friend, Mia.
+
+Every night, Mia would gently hold Sunny in her hand as she got ready for bed. No matter what happened during the day—whether Mia was happy, sad, or even a little scared—she always found comfort in Sunny’s soft fur and friendly smile.
+
+One evening, Mia felt worried about her first day at a new school. She hugged Sunny tightly and whispered, “Will you be with me tomorrow?” Sunny’s blue bow seemed to twinkle in the moonlight, reminding Mia that she was never alone.
+
+As Mia drifted off to sleep, she dreamed of Sunny joining her at school, offering hugs and smiles whenever she needed them. Sunny’s gentle presence reminded Mia that, no matter where she went, love and courage could always be found—right in her heart.
+
+And so, each night, Mia and Sunny shared sweet dreams, knowing that together, they could face anything tomorrow might bring.",4.32,0.004375,199,25.62,True,True,False,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gpt-4o,"Title: Fluffy's Special Journey
+
+Once upon a bedtime, in a cozy room filled with sleepy whispers, there was a fluffy white toy named Fluffy. Fluffy had soft yellow hair and a shiny blue bow that sparkled like the morning sky. Every night, Fluffy was held in the gentle hands of a little girl named Lily, who adored her more than anything.
+
+One starry night, as Lily cuddled Fluffy close, she whispered, ""I wish you could see the world, Fluffy."" To Lily's surprise, Fluffy's blue bow began to twinkle even brighter, and suddenly, they found themselves floating through Lily's dreamland.
+
+They visited fields of giggling daisies, skipped over shimmering streams, and even danced with the friendly moonbeams. Fluffy felt the joy of adventure and the warmth of friendship as Lily never let go of her hand.
+
+When the journey ended, and they snuggled back under the covers, Fluffy's heart was full. Lily whispered, ""Thank you for the adventure, Fluffy. You remind me that love and imagination can take us anywhere.""
+
+As they drifted into peaceful sleep, Fluffy knew she was loved, and so was Lily. In dreams and in life, they were always together, proving that love makes every adventure possible.",7.37,0.004675,200,25.88,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gpt-4o-mini,"Title: The Adventure of Fluffy and the Blue Bow
+
+Once upon a time, in a cozy little room, there lived a soft, white plush toy named Fluffy. Fluffy had bright yellow hair and a lovely blue bow. Every night, Fluffy waited patiently for his best friend, Sammy, to come home.
+
+One evening, Sammy held Fluffy tightly in his hand. ""Let’s go on an adventure!” he whispered. Off they went to the magical land of dreams, where fluffy clouds floated and stars twinkled like diamonds.
+
+Fluffy and Sammy danced with butterflies and played hide-and-seek with the moonbeams. They laughed and giggled, feeling happy and free. But soon, Sammy noticed how tired he was becoming. 
+
+“Fluffy, I think it’s time to go home,” he said softly. 
+
+Fluffy nodded, understanding that adventures are fun, but rest is important too. As they snuggled in bed, Sammy whispered, “Thank you for the best adventure, Fluffy.” 
+
+“Whenever you need me, I’ll be here,” Fluffy replied, his blue bow shining brightly. 
+
+With hearts full of joy, they drifted off to sleep, dreaming of new adventures to come. 
+
+And that is how they learned that rest is just as special as play.",7.36,0.000181,194,25.12,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,claude-4-opus,"Title: Luna's Magical Blue Bow
+
+Luna was a special white bunny with sunshine-yellow hair and a beautiful blue bow. Every night, she lived on Emma's pillow, keeping watch over her dreams.
+
+One evening, Emma couldn't sleep. She was worried about her first day at a new school tomorrow. Luna noticed Emma's tears and whispered softly, ""Don't worry, sweet friend. My blue bow is magical.""
+
+""Really?"" Emma sniffled, holding Luna close.
+
+""Yes,"" Luna said gently. ""Tomorrow, when you feel scared, just remember my bow. Blue is the color of calm oceans and peaceful skies. It will remind you to take deep breaths and be brave.""
+
+Emma hugged Luna tighter. ""Will you come with me?""
+
+""I'll be right here in your heart,"" Luna promised. ""And every time you're kind to someone new, my bow sparkles a little brighter.""
+
+Emma smiled, feeling sleepy at last. She tucked Luna under her arm and closed her eyes, dreaming of making new friends and blue bows that sparkled with kindness.
+
+The next morning, Emma woke up feeling brave and ready.",8.66,0.018930,174,22.62,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,claude-4-sonnet,"**Title: Sunny the Brave Little Friend**
+
+Once upon a time, there lived a special little doll named Sunny. She had soft white fur, golden yellow hair that sparkled like sunshine, and wore a beautiful blue bow that matched the sky.
+
+Sunny lived with a kind child named Emma, who carried her everywhere. But Sunny had a secret—she was afraid of the dark. Every night when the lights went out, Sunny would tremble in Emma's arms.
+
+One evening, Emma whispered, ""Sunny, I'm scared of the thunderstorm outside."" 
+
+Sunny realized her friend needed her to be brave. Taking a deep breath, she imagined her blue bow was a superhero cape and her yellow hair was made of real sunshine. Suddenly, Sunny didn't feel afraid anymore.
+
+""Don't worry,"" Sunny seemed to whisper back through Emma's imagination. ""I'll keep you safe all night long.""
+
+As Emma hugged Sunny tight, both friends felt warm and protected. The storm passed quietly, and they drifted off to peaceful dreams, knowing that true courage comes from caring for others.
+
+*Sweet dreams, little one.*
+
+**Word count: 167 words**",7.71,0.003876,179,23.25,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,claude-3.7-sonnet,"# Lily's Loyal Friend
+
+Little Lily clutched her favorite plush toy tightly as she walked to her first day of school. Snowflake was a soft white bunny with sunshine-yellow hair and a pretty blue bow.
+
+""I'm scared,"" whispered Lily to Snowflake. ""What if no one wants to be my friend?""
+
+Snowflake couldn't speak, but Lily imagined her saying, ""Just be yourself and share your kindness, like I share cuddles with you.""
+
+At school, Lily noticed a girl sitting alone. Remembering Snowflake's advice, Lily took a deep breath and walked over.
+
+""Hi, I'm Lily. Would you like to meet Snowflake?"" she asked, holding out her bunny.
+
+The girl smiled shyly. ""I'm Maya. Your bunny is beautiful.""
+
+Soon, they were laughing and playing together. When Maya looked sad about forgetting her snack, Lily shared hers, just as Snowflake had always shared comfort with her.
+
+That night, as Lily tucked Snowflake under her blanket, she whispered, ""You were right. Being kind helped me make a new friend today.""
+
+Snowflake's button eyes seemed to twinkle as Lily drifted off to sleep, dreaming of tomorrow's adventures with Maya.
+
+(Word count: 168)",7.15,0.004176,186,24.00,True,False,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,claude-3.5-sonnet,"Title: Bella's Brave Blue Bow
+
+There once was a soft, cuddly plush bunny named Bella who lived on a shelf in little Emma's bedroom. Bella had fluffy white fur, golden yellow hair that sparkled in the sunlight, and her most treasured possession - a beautiful blue bow that she wore every day.
+
+One windy afternoon, while playing in the garden with Emma, a strong gust blew Bella's precious bow right off her head and into a tall rosebush. Bella felt scared without her bow - it had always given her courage to try new things and make friends.
+
+But then she remembered something important: true bravery comes from inside, not from what you wear. Taking a deep breath, Bella asked the garden creatures for help. A friendly robin and a gentle butterfly worked together to carefully retrieve her bow from the thorny bush.
+
+From that day on, Bella wore her blue bow proudly, not because it made her brave, but because it reminded her that courage was already in her heart. And every night, as Emma hugged Bella close, the little bunny smiled, knowing that friendship and inner strength were the most precious gifts of all.
+
+[Word count: 152]",5.95,0.003936,199,25.75,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,claude-3.5-haiku,"Title: Whispers of Comfort
+
+In a cozy bedroom filled with moonlight, Sophie held her special friend Buddy, a soft white plush toy with sunny yellow hair and a bright blue bow. Buddy wasn't just any stuffed animal - he was her most trusted companion.
+
+One night, Sophie noticed Buddy looking a little worried. ""What's wrong?"" she whispered. Buddy explained that he was afraid of the shadows dancing on the wall. Sophie smiled gently and hugged him close. ""Sometimes things that seem scary are just our imagination playing tricks,"" she said softly.
+
+Together, they watched the shadows, and Sophie showed Buddy how to take deep breaths and remember that he was safe. She taught him that being brave doesn't mean never feeling scared - it means facing your fears with a friend by your side.
+
+As the moonlight painted gentle patterns across the room, Buddy's worries melted away. He snuggled closer to Sophie, feeling warm and protected. Her kindness had chased away his fears, teaching him that friendship can turn even the scariest moments into something wonderful.
+
+And so they drifted off to sleep, two friends united by love and understanding.",5.98,0.001022,190,24.50,True,True,True,True,True,False,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-2.5-pro-preview,"Error with gemini-2.5-pro-preview: 404 models/gemini-2.5-pro-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.22,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-2.5-flash-preview,"Error with gemini-2.5-flash-preview: 404 models/gemini-2.5-flash-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.85,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-2.0-flash,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-1.5-pro,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gpt-4.5-preview,"Title: Rosie and the Cozy Hoodie
+
+Rosie was not just any stuffed dog. She was soft, cuddly, and wore the coziest pink hoodie anyone had ever seen. Her fur was brown and fuzzy, and her hoodie made her feel brave and safe.
+
+Each evening, Rosie waited patiently on Emma's pillow, ready to hear stories and share adventures. Emma would snuggle Rosie close, whispering about her day, her dreams, and sometimes about things that made her nervous or shy.
+
+One evening, Emma felt worried about starting a new school.
+
+""Rosie,"" Emma whispered softly, hugging her friend tight, ""What if no one likes me?""
+
+Rosie listened quietly, her soft hoodie comforting Emma. Emma imagined Rosie saying, ""Just be yourself. You're kind and wonderful, and friends will see that!""
+
+Emma smiled, feeling warmth inside her heart. Rosie's cozy hoodie reminded her of hugs, happiness, and courage.
+
+As she drifted into sleep, Emma knew tomorrow would be full of new friends and happy moments. And Rosie, wrapped in her pink hoodie, would always be there, ready to listen and cuddle.
+
+Together, they dreamed of adventures ahead, feeling safe, loved, and brave.
+
+Because with a friend like Rosie, every day was cozy, safe, and filled with joy.",11.98,0.009230,202,26.12,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gpt-4.1,"Title: Bella and the Pink Hoodie
+
+Bella was a soft, brown fabric dog toy who lived on Emma’s cozy bed. She wore a pink hoodie with tiny pockets, which made her feel extra special. Every morning, Emma gave Bella a gentle hug and whispered, “You’re my favorite.” Bella loved these moments and always tried her best to be a good friend.
+
+One rainy afternoon, Emma felt sad because she couldn’t play outside. She hugged Bella tightly and wished she could feel better. Bella remembered all the times Emma smiled when she wore her pink hoodie. So, Bella snuggled close and imagined wrapping Emma in a big, warm hug, just like her hoodie did for her.
+
+Emma smiled, feeling comforted by her furry friend. “Thank you, Bella,” she whispered. “You always make me feel better.” Bella wagged her little fabric tail, knowing that even a small toy could help someone feel loved.
+
+As the rain tapped softly on the window, Emma and Bella cuddled under the covers. Bella learned that kindness and love were like her pink hoodie—warm, gentle, and always there to share. Soon, Emma drifted off to sleep, dreaming of hugs, pink hoodies, and the best friend anyone could ask for.",5.38,0.004465,202,26.00,True,True,False,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gpt-4o,"Title: Cozy the Kind Dog
+
+Once upon a time, in a cozy little toy shop, there lived a brown fabric dog toy named Cozy. Cozy wore a bright pink hoodie that matched her cheerful personality. She was always there to spread joy to everyone around her.
+
+One chilly evening, as the shop prepared to close, Cozy noticed a little teddy bear shivering on the shelf beside her. The bear's scarf had been misplaced, and he looked quite cold. Cozy, with her warm heart, knew just what to do. ""Would you like to share my hoodie?"" she offered kindly.
+
+The teddy bear's eyes sparkled with gratitude as Cozy wrapped one sleeve of her hoodie around him. Together, they snuggled up, feeling warm and loved. As the night grew darker, the toys whispered stories of friendship and kindness, making the shop feel magical.
+
+Soon, everyone drifted off to sleep, dreaming of happy memories and shared adventures. Cozy and the teddy bear felt a special bond, knowing that kindness always made everything better.
+
+And so, in the gentle glow of the moonlight, Cozy learned that sharing warmth and happiness could light up even the coldest nights. She drifted into a peaceful slumber, heart full of love.",6.62,0.004405,203,26.25,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gpt-4o-mini,"Title: Daisy's Cozy Adventure
+
+Once upon a time, in a cheerful little town, there lived a brown fabric dog toy named Daisy. Daisy loved her soft, pink hoodie. It was the comfiest outfit she could wear! Every day, Daisy would sit on the shelf, dreaming of adventures with the children who played with her.
+
+One sunny afternoon, little Mia found Daisy. ""Oh, how cute you are!"" she exclaimed, pulling Daisy off the shelf. They went to the park, where Mia swung Daisy high in the air. Daisy felt the wind tickle her fur, and she giggled with joy.
+
+As the sun began to set, Mia said, ""It's time to go home, Daisy."" Daisy felt a little sad, but Mia smiled and hugged her tightly. ""You're my favorite toy, and I love you!""
+
+That night, as Daisy rested on Mia’s pillow, she felt warm and happy. She realized that adventures were not just about exploring places, but also about the love shared with friends. And with that comforting thought, Daisy drifted off to sleep, dreaming of many more cozy adventures to come. 
+
+The end.",6.66,0.000159,183,23.75,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,claude-4-opus,"Title: Rosie's Cozy Pink Hoodie
+
+In a quiet bedroom lived Rosie, a soft brown puppy toy with the fluffiest ears. She wore her favorite pink hoodie everywhere, even to bed.
+
+One chilly night, Rosie heard tiny sniffles from under the bed. ""Who's there?"" she whispered.
+
+""It's me, Button the mouse,"" squeaked a small voice. ""I'm so c-c-cold!""
+
+Without thinking twice, Rosie wiggled out of her cozy pink hoodie. ""Here, wear this,"" she said kindly.
+
+Button's eyes sparkled with joy as he snuggled into the warm hoodie. It was so big on him that only his whiskers peeked out!
+
+""But won't you be cold?"" Button asked.
+
+Rosie smiled. ""My heart feels so warm from helping you that I don't feel cold at all.""
+
+From that night on, Rosie and Button shared the pink hoodie, taking turns wearing it. They discovered that sharing didn't make them have less – it gave them a best friend.
+
+As moonlight filled the room, the two friends cuddled close, dreaming sweet dreams together.
+
+*The End*",10.43,0.019365,169,22.00,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,claude-4-sonnet,"**Title: Cocoa's Cozy Adventure**
+
+Once upon a time, there lived a sweet brown dog toy named Cocoa who wore the softest pink hoodie. Every night, Cocoa sat quietly on little Emma's shelf, watching over her as she slept.
+
+One evening, Emma felt scared of the dark shadows dancing on her wall. She tossed and turned, unable to fall asleep. Cocoa's button eyes sparkled with an idea.
+
+""Don't worry, Emma,"" whispered Cocoa gently. ""I'm here to keep you safe.""
+
+Cocoa hopped down from the shelf and snuggled close to Emma's pillow. His pink hoodie felt warm and comforting against her cheek.
+
+""When you feel frightened,"" Cocoa said softly, ""remember that true bravery isn't about not being scared. It's about facing your fears with a friend by your side.""
+
+Emma smiled and hugged Cocoa tight. The shadows didn't seem scary anymore with her loyal friend nearby.
+
+From that night on, Cocoa slept right beside Emma, proving that the best friends are always there when you need them most. Soon, Emma drifted into the most peaceful dreams, feeling safe and loved.
+
+*[Word count: 178]*",7.79,0.003873,181,23.38,True,True,True,True,True,False,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,claude-3.7-sonnet,"# Title: Penny's Cozy Pink Hoodie
+
+In a toy basket beside Emma's bed lived a small brown fabric dog named Penny. Penny was special because she wore a bright pink hoodie that Emma's grandmother had made just for her.
+
+During the day, Penny watched Emma go to school, waiting patiently for her return. One stormy afternoon, a new toy arrived – a blue elephant named Ellie who shivered in the corner of the basket.
+
+""Are you cold?"" Penny asked kindly.
+
+Ellie nodded. ""I'm scared of the thunder too.""
+
+Without hesitation, Penny slipped off her precious pink hoodie. ""You can borrow this,"" she offered. ""It keeps me warm and brave during storms.""
+
+Ellie looked surprised. ""But it's your special hoodie!""
+
+""Friends help friends,"" Penny said with a smile. ""Being brave is easier when you're not alone.""
+
+That night, Emma found her toys snuggled together. She smiled, tucking them both under her blanket.
+
+""Look,"" Emma whispered to her mom, ""they're best friends now.""
+
+From that day on, Penny and Ellie shared the pink hoodie whenever one needed extra courage or warmth, teaching Emma that kindness makes everyone's heart cozy.
+
+(Word count: 172)",7.78,0.004158,190,24.50,True,True,True,True,True,True,False
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,claude-3.5-sonnet,"Title: Hoodie the Brave Little Puppy
+
+Hoodie wasn't like other stuffed puppies at the toy store. While they wore fancy collars and bow ties, she loved wearing her cozy pink hoodie everywhere she went. Some toys giggled and whispered about how different she looked, but Hoodie didn't mind.
+
+One rainy day, a little girl named Lucy came into the store, looking sad and scared about her first day of school tomorrow. As Lucy walked past the toy shelf, she noticed Hoodie and stopped. ""You wear a hoodie just like me!"" she said with a smile, touching her own pink sweater.
+
+Lucy's mom bought Hoodie that day, and they became the best of friends. Every morning, Lucy and Hoodie wore their matching pink hoodies to school. Having her brave puppy friend beside her made Lucy feel confident and strong.
+
+Soon, other kids started asking to play with Lucy and Hoodie at recess. Lucy realized that being different, just like her special puppy, was what made her wonderful.
+
+Now, every night, Hoodie snuggles close to Lucy in bed, keeping her safe and warm in their cozy pink hoodies, dreaming of their next adventure together.
+
+[Word count: 156]",6.50,0.004098,195,25.25,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,claude-3.5-haiku,"Title: Cozy's Warm Hug
+
+In a quiet bedroom filled with moonlight, a soft brown fabric dog named Cozy sat on the shelf, wearing his favorite pink hoodie. Though he was just a toy, Cozy had a big heart and loved watching over his human friend, Emma.
+
+Every night, Emma would cuddle Cozy and tell him about her day. Sometimes she felt shy or nervous, but Cozy always listened carefully. His warm pink hoodie reminded her that she was loved and protected.
+
+One evening, Emma whispered, ""I'm scared about starting a new class tomorrow."" Cozy's button eyes seemed to twinkle with understanding. He might be a stuffed toy, but he knew something important: being brave doesn't mean never feeling scared. Being brave means trying, even when you feel nervous.
+
+""You're stronger than you think,"" Cozy seemed to say without words. ""And I'll be right here, cheering for you.""
+
+Emma hugged Cozy tight, feeling his soft fabric and warm presence. She closed her eyes, knowing her special friend would watch over her all night long.
+
+And in her dreams, Emma smiled, feeling brave and loved.",6.49,0.001041,183,23.75,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gemini-2.5-pro-preview,"Error with gemini-2.5-pro-preview: 404 models/gemini-2.5-pro-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.20,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gemini-2.5-flash-preview,"Error with gemini-2.5-flash-preview: 404 models/gemini-2.5-flash-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.28,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gemini-2.0-flash,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gemini-1.5-pro,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gpt-4.5-preview,"Title: Mia's Magical Kitchen
+
+Mia loved her wooden toy kitchen. It had shiny knobs, a cozy little pot, and colorful toy food. Each evening, she put on her apron and imagined cooking wonderful meals for everyone she loved.
+
+One night, Mia whispered, ""Tonight, I'll make magic soup!"" She stirred pretend carrots, potatoes, and a pinch of joy into her pot. She turned the knobs gently, humming softly.
+
+Suddenly, her toy kitchen began to glow warmly. Mia blinked in surprise as a gentle sparkle danced around the pot.
+
+""Welcome, Mia,"" whispered a kind voice. Mia smiled, recognizing Grandma's loving voice. ""Cooking is magic when we add kindness and love,"" Grandma said softly.
+
+Mia's heart filled with happiness as she carefully served her special soup to her teddy bears and dolls. She imagined each friend feeling happy and warm, as if love itself was inside every spoonful.
+
+Snuggling into bed, Mia realized her toy kitchen taught her something magical indeed—when your heart is full of kindness, everything you share becomes special.
+
+Closing her eyes, Mia drifted gently into dreams filled with cooking adventures, cozy nights, and endless love.",14.30,0.008530,186,24.12,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gpt-4.1,"Title: The Magical Midnight Kitchen
+
+In Mia’s cozy bedroom stood her favorite wooden toy kitchen. It had shiny red knobs, a tiny silver pot, and shelves filled with colorful toy food. Every night, just before bed, Mia loved to pretend she was a chef, whipping up delicious meals for her stuffed animals.
+
+One quiet night, as the moon glowed softly outside, Mia whispered, “Goodnight, kitchen.” But as she snuggled into her bed, she heard the tiniest giggle. Peeking through sleepy eyes, Mia saw the little kitchen shimmer. The knobs began to spin, and the toy pot wiggled with excitement!
+
+“Let’s make a midnight soup!” whispered the carrot, jumping into the pot. The tomato and the broccoli hopped in, too. The wooden spoon danced with joy as the pot gently bubbled.
+
+Mia smiled as she watched her kitchen friends working together to make a magical soup. Even though they were all different, they shared laughter and kindness, making the soup extra special.
+
+Soon, everything became quiet and still. Mia’s eyes grew heavy, and she drifted into a peaceful sleep, dreaming of kitchens where friends always help each other.
+
+And from that night on, Mia knew: when we work together, we can make every moment magical.",5.28,0.004610,204,26.25,True,True,False,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gpt-4o,"Title: The Little Chef's Dream
+
+In the corner of Lucy's room stood a magical wooden toy kitchen, complete with colorful knobs, a shiny pot, and a basket full of toy food items. Every night, Lucy loved to imagine she was the greatest chef in the world.
+
+One evening, as the stars twinkled outside her window, Lucy decided to make a special dinner for her favorite teddy bear, Mr. Cuddles. She turned the bright red knobs, pretending the stove was warming up. Carefully, she placed toy carrots, a plastic chicken, and a tiny loaf of bread into the pot. Lucy stirred with a wooden spoon, humming softly.
+
+""Tonight, we dine like royalty,"" she whispered to Mr. Cuddles, who sat patiently at a tiny table.
+
+As Lucy served the pretend feast, she imagined the delicious aroma filling the room. Mr. Cuddles seemed to smile with delight. Lucy giggled and felt a warm glow of happiness inside.
+
+Before bedtime, Lucy tucked Mr. Cuddles into bed and whispered, ""Cooking with love makes everything taste better.""
+
+With a gentle hug, Lucy lay down, feeling proud of her pretend culinary masterpiece. As she drifted to sleep, she dreamed of more wonderful adventures in her little kitchen, where love was always the secret ingredient.",6.71,0.004655,207,26.75,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gpt-4o-mini,"Title: The Magical Toy Kitchen
+
+Once upon a time, in a cozy little room, there was a wooden toy kitchen. It had shiny knobs, a sparkling pot, and colorful toy food items that came alive when the sun set. Every night, Mia, a cheerful girl with a big imagination, would visit her magical kitchen.
+
+One evening, Mia decided to cook a special dinner for her stuffed animals. She stirred the pot, filled with pretend soup, and added toy carrots and broccoli. As she mixed, the food whispered secrets of friendship and kindness.
+
+“Let’s share our meal!” said Mia, serving each stuffed animal with care. They all sat around her tiny table, and laughter filled the air. Mia realized that sharing made everything taste better, even pretend food!
+
+As the stars twinkled outside, Mia felt warm and happy. She learned that the best recipe for joy is sharing with friends, no matter how small they are. 
+
+With a big yawn, Mia tucked her toys in and whispered, “Goodnight, little chefs. Sweet dreams!” And as she closed her eyes, the kitchen softly glowed, keeping the magic alive until morning.",4.17,0.000161,187,24.12,True,True,False,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",claude-4-opus,"Title: The Little Kitchen's Midnight Magic
+
+In Emma's bedroom sat a tiny wooden kitchen with shiny knobs and a red pot. Every night when Emma fell asleep, something magical happened.
+
+The toy vegetables would wiggle awake. ""Let's make soup!"" whispered Carrot to Potato. They hopped into the pot while Tomato turned the knobs.
+
+But tonight, little Pea was crying. ""I'm too small to help,"" he sniffled.
+
+""Everyone can help,"" said wise old Onion kindly. ""You're the perfect size to season our soup!""
+
+Pea rolled around the pot, spreading joy and flavor everywhere he went. The vegetables worked together, each adding their special touch. Carrot brought sweetness, Potato added warmth, and Tomato shared his bright color.
+
+When they finished, the kitchen smelled like happiness. The vegetables hugged Pea tight. ""Our soup wouldn't be perfect without you,"" they said.
+
+As the first morning light appeared, the toys grew still again. Emma woke up smiling, somehow knowing her little kitchen had been filled with friendship all night long.
+
+Sweet dreams were made in that magical kitchen, where every friend, big or small, belonged.",13.58,0.019515,180,23.38,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",claude-4-sonnet,"**Title: The Magic Kitchen's Midnight Feast**
+
+Every night when little Emma fell asleep, something wonderful happened in her playroom. Her wooden toy kitchen came alive with gentle magic.
+
+The little wooden pot would wiggle its handle excitedly, while the colorful toy vegetables rolled around like happy friends. The kitchen's knobs would turn themselves, making soft clicking sounds like a lullaby.
+
+One special night, the toy carrot felt sad because he was smaller than the other vegetables. ""I'm too tiny to help cook,"" he whispered.
+
+But wise old Pot had an idea. ""Dear Carrot, the most important ingredient in any recipe is kindness, not size. You make everything taste better just by being yourself.""
+
+The vegetables gathered around Carrot, showing him how special he was. Together, they pretended to make a magical soup of friendship, each ingredient adding something unique and wonderful.
+
+As morning sunlight peeked through the window, the toys settled back into their places, leaving behind the sweet scent of friendship and dreams.
+
+Emma always wondered why her toy kitchen smelled like love each morning.
+
+*Word count: 165*",8.81,0.003738,179,23.25,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",claude-3.7-sonnet,"# The Sharing Kitchen
+
+In a cozy bedroom sat a wooden toy kitchen with shiny red knobs, a silver pot, and colorful toy food items. Each night when the moon peeked through the window, something magical happened – the kitchen came to life!
+
+Penny Pot bubbled with excitement. ""I can make the most delicious pretend soup!""
+
+Kenny Knob turned himself proudly. ""Well, I control the heat for everything!""
+
+Freddy Fork huffed. ""None of you matter without me. I'm the most important!""
+
+They argued until little Timmy Tomato began to cry. ""Please stop fighting! I just want to be part of a happy meal.""
+
+The kitchen friends fell silent, feeling ashamed.
+
+""I'm sorry,"" whispered Penny Pot. ""We all have special jobs.""
+
+Kenny Knob nodded. ""Together we make wonderful meals.""
+
+Freddy Fork smiled. ""You're right. I shouldn't have been so boastful.""
+
+That night, they worked together creating a magnificent pretend feast. When morning came, their little owner found all the toys arranged in a perfect dinner setting.
+
+She smiled, not knowing the kitchen friends had learned that everyone has something special to contribute, and things work best when we all cooperate.
+
+(Word count: 174)",9.43,0.004203,192,24.62,True,False,True,True,True,True,False
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",claude-3.5-sonnet,"Title: The Little Kitchen That Could Share
+
+In a cozy playroom corner sat a wooden toy kitchen that loved nothing more than bringing joy to children. Its shiny knobs turned with gentle clicks, and its little pot waited patiently each day for make-believe soup and stews.
+
+One morning, a shy new toy arrived - a small stuffed bunny who didn't know anyone. The bunny watched from across the room as other toys gathered at the kitchen, playing and laughing together.
+
+The kitchen noticed the lonely bunny and whispered to its toy food friends, ""Let's invite Bunny to cook with us!"" The plastic carrots and tiny wooden cookies hopped with excitement at the idea.
+
+That afternoon, when Bunny hopped closer to look at the kitchen, the knobs turned by themselves with a friendly ""click-click!"" and the pot gave a welcoming rattle. The toy food pieces danced invitingly.
+
+Bunny's ears perked up with surprise and delight. Soon, the kitchen became Bunny's favorite spot to make pretend carrot cakes and vegetable soups for all the playroom toys.
+
+From that day on, the wooden kitchen became known as the happiest corner in the playroom, where every toy was welcome to cook, share, and belong.
+
+[Word count: 164]",7.00,0.004158,203,26.25,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",claude-3.5-haiku,"Title: The Magical Kitchen Friends
+
+In a cozy playroom, nestled in the corner, stood a beautiful wooden toy kitchen. Its shiny knobs gleamed in the soft evening light, and tiny wooden food items waited patiently for an adventure.
+
+One quiet night, when the house was still and silent, something magical happened. The little wooden pot began to whisper to the toy vegetables. ""We should work together and make something special,"" it said kindly.
+
+The carrot, tomato, and broccoli looked at each other and smiled. They remembered that teamwork makes everything better. Slowly, they helped each other climb onto the kitchen counter, giggling softly as they moved.
+
+Together, they pretended to cook a delicious soup, each ingredient adding its own special flavor. The wooden spoon stirred gently, and the pot sang a quiet melody about friendship and helping one another.
+
+As moonlight danced through the window, the toy kitchen friends realized that by working together, they could create something wonderful. They cuddled close, feeling happy and loved, ready to dream of their next adventure.
+
+And so, the little kitchen sparkled with the magic of friendship, waiting for morning's first light.",6.67,0.001029,189,24.50,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gemini-2.5-pro-preview,"Error with gemini-2.5-pro-preview: 404 models/gemini-2.5-pro-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.19,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gemini-2.5-flash-preview,"Error with gemini-2.5-flash-preview: 404 models/gemini-2.5-flash-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.86,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gemini-2.0-flash,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gemini-1.5-pro,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gpt-4.5-preview,"Title: Millie Mouse's Cozy Adventure
+
+Millie Mouse wore the prettiest pink dress and had the softest fabric ears. She lived on Emma's cozy bed, nestled among pillows and colorful patterned sheets. Every night, Millie waited patiently for Emma's bedtime hug.
+
+One evening, Emma whispered, ""Millie, do you ever wish for adventures?""
+
+Millie smiled softly. She loved adventures, but her favorite moments were right here with Emma. As the moonlight danced softly through the window, Millie imagined magical journeys. She sailed on pillow boats across quilted oceans, climbed fluffy mountain cushions, and explored caves beneath cozy blankets.
+
+But soon, Millie realized the most special adventure was being loved and safe at home. Emma hugged her tight, whispering, ""I love you, Millie.""
+
+Millie felt warm, knowing she was exactly where she belonged. Adventures were fun, but kindness, friendship, and love were the most wonderful treasures of all.
+
+As Emma drifted gently into dreams, Millie Mouse closed her eyes and nestled into the patterned bedding, feeling peaceful and happy.
+
+Tonight, Millie learned a comforting secret: the sweetest adventures happen in the hearts of those who love us best.",10.11,0.008700,185,24.00,True,True,True,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gpt-4.1,"Title: Millie Mouse’s Cozy Night
+
+Millie Mouse was a tiny fabric doll with soft gray ears and a pink dress that twirled when she spun. Every night, Millie rested on patterned bedding filled with stars, moons, and gentle swirls. She loved her cozy spot and felt safe and snug beneath the soft covers.
+
+One evening, as the moon peeked through the window, Millie heard a gentle whisper from the stars on her blanket. “Goodnight, Millie. Dream sweet dreams,” they seemed to say. Millie closed her eyes, feeling warm and loved.
+
+As she drifted off, she imagined dancing in a meadow with her friends—Benny Bunny and Lila Lamb. They giggled, played hide-and-seek, and shared stories beneath a big, friendly tree. Whenever Millie felt a little lonely, she remembered her friends and the comfort of her beautiful bedding.
+
+Soon, Millie realized that even when you’re alone, happy memories and kind thoughts can keep you company. She snuggled deeper into her bed, letting the gentle patterns and soft moonlight carry her into peaceful sleep.
+
+And so, Millie Mouse learned that love and friendship are always with you—right in your heart—no matter where you are.
+
+Goodnight, Millie. Goodnight, little dreamer.",14.09,0.004725,196,25.25,True,True,False,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gpt-4o,"Title: The Little Mouse's Dreamy Adventure
+
+Once upon a time, in a cozy bedroom filled with moonlight, lay a small fabric mouse doll named Millie. Millie wore a lovely pink dress that glimmered like the stars, and her favorite spot was on the soft, patterned bedding of her best friend, Lily.
+
+One night, as Lily drifted into sleep, Millie felt something magical in the air. Suddenly, the patterns on the bedding began to shimmer and swirl. Millie found herself in a colorful meadow, where flowers giggled as they swayed in the gentle breeze.
+
+""Hello, Millie!"" chirped a friendly butterfly. ""Would you like to join us for a dream adventure?""
+
+Millie twirled with delight. ""Oh, yes, please!"" she replied. Together, they flew over rainbow rivers and danced under twinkling stars. Millie felt happy and free, knowing that dreams could take her anywhere.
+
+As the first rays of morning peeked through the window, Millie gently returned to her spot on Lily's bed. She smiled, feeling grateful for the night's adventures and the promise of new dreams to come.
+
+That night, as Lily snuggled Millie close, Millie knew that with a little imagination, every bedtime could be a magical journey. And so, she drifted peacefully back into her sleep, ready for the next adventure.",7.24,0.004920,211,27.25,True,True,True,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gpt-4o-mini,"Title: Mabel's Magical Dream
+
+Once upon a time, in a cozy little room, there lived a small fabric mouse doll named Mabel. Mabel wore a lovely pink dress, and she lay on soft, patterned bedding, surrounded by fluffy pillows. Every night, when the lights dimmed and the stars twinkled through the window, Mabel closed her tiny button eyes and dreamed the sweetest dreams.
+
+One night, Mabel found herself in a magical garden filled with colorful flowers and sparkling butterflies. As she danced among the petals, she met a friendly ladybug named Lila. ""Welcome to Dreamland!"" Lila chirped. ""Here, you can be anything you wish!""
+
+Mabel thought for a moment. ""I wish to help others feel happy!"" she declared. With Lila by her side, they spread joy by planting smiles in every corner of Dreamland.
+
+When morning came, Mabel woke up on her cozy bedding, feeling warm and joyful. She realized that sharing happiness was the greatest dream of all. With a heart full of love, Mabel smiled, ready to spread kindness wherever she went. 
+
+And so, dear children, remember to share joy and love in your dreams! Sweet dreams!",5.13,0.000170,189,24.50,True,True,True,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,claude-4-opus,"Title: Rosie Mouse's Dream Dress
+
+Little Rosie Mouse loved her pink dress more than anything. Every night, she would smooth its soft fabric and whisper, ""Thank you for keeping me cozy.""
+
+One evening, Rosie heard tiny sobs from under the bed. There lived Penny Spider, shivering in the cold.
+
+""What's wrong?"" asked Rosie kindly.
+
+""I'm so c-c-cold,"" Penny stuttered. ""But everyone's afraid of me.""
+
+Without thinking twice, Rosie took off her beloved pink dress. ""Here, wrap yourself in this. Friends help each other stay warm.""
+
+Penny's eight eyes filled with happy tears. She carefully spun a beautiful web blanket for Rosie in return.
+
+From that night on, Rosie wore her pink dress during the day and Penny's special web blanket at bedtime. The two became the very best of friends.
+
+As Rosie settled into her patterned bedding, she smiled. She had learned that sharing something you love makes your heart even warmer than your favorite dress ever could.
+
+And they both slept soundly, dreaming of tomorrow's adventures together.",12.11,0.018165,168,21.88,True,True,True,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,claude-4-sonnet,"**Title: Rosie Mouse's Cozy Dream**
+
+Once upon a time, there lived a little fabric mouse named Rosie who wore the prettiest pink dress. Every night, she would snuggle into her soft, patterned blankets and think about her day.
+
+Rosie was very shy and often felt too scared to play with the other toy friends in the playroom. She would watch them laugh and play together, wishing she could join but feeling too nervous to ask.
+
+One evening, as Rosie lay on her cozy bedding, she made a brave decision. ""Tomorrow,"" she whispered to herself, ""I'll say hello to someone new.""
+
+The next morning, Rosie gathered all her courage and approached a lonely teddy bear sitting by the window. ""Would you like to be friends?"" she asked softly.
+
+The teddy bear's face lit up with joy. ""I've been hoping someone would ask!"" he replied.
+
+From that day on, Rosie learned that being brave enough to reach out to others brings wonderful friendships. As she drifted off to sleep each night, she smiled, knowing tomorrow would bring more adventures with her new friend.
+
+Sweet dreams, little one.
+
+**Word count: 183 words**",7.51,0.003993,189,24.50,True,True,True,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,claude-3.7-sonnet,"# Minnie's Nighttime Adventure
+
+Little Minnie the mouse doll lay on Emma's colorful bed, her pink dress neatly pressed. Every night, when Emma fell asleep, Minnie would come alive and explore the bedroom.
+
+Tonight, Minnie noticed a spider in the corner, trembling with fear.
+
+""What's wrong?"" Minnie asked gently.
+
+""Everyone's afraid of me,"" the spider whispered. ""I'm so lonely.""
+
+Minnie remembered how scary it felt being new and different. When Emma first brought her home, the other toys weren't sure about her either.
+
+""I'll be your friend,"" Minnie offered. ""Would you like to join our bedtime stories tomorrow?""
+
+The spider's eyes brightened. ""Really? You're not scared of me?""
+
+""Being different doesn't mean we can't be friends,"" Minnie smiled. ""Everyone deserves kindness.""
+
+Together, they watched the moonlight dance across the patterned bedding until it was almost morning.
+
+Minnie hurried back to her spot beside Emma just as the little girl began to stir.
+
+Emma hugged Minnie close. ""Good morning! You know what? I dreamed you made a new friend last night.""
+
+Minnie's stitched smile seemed just a bit wider that day.
+
+(Word count: 171)",7.22,0.004203,183,23.50,True,False,True,True,True,False,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,claude-3.5-sonnet,"Title: The Little Mouse Who Found Her Smile
+
+Lucy was a tiny fabric mouse who lived on Emma's bed among the soft, colorful pillows. While the other toys played and giggled during the day, Lucy often stayed quiet, worried that no one would want to be friends with a small, shy mouse.
+
+One night, when Emma was fast asleep, Lucy heard a gentle sob coming from under the bed. It was Bernard, the teddy bear, who had fallen and couldn't climb back up. Though nervous, Lucy knew she had to help. She gathered her courage and carefully climbed down the blanket to reach Bernard.
+
+""Don't worry,"" Lucy whispered, ""I'll show you the secret way up using the bedskirt as a ladder."" Together, they climbed back to safety, and Bernard gave Lucy the warmest hug she'd ever received.
+
+From that night on, Lucy realized that being brave didn't mean not feeling scared – it meant helping others even when you were afraid. She made many friends among Emma's toys, who loved her kind heart and gentle ways. Every evening, Lucy would fall asleep with a happy smile, surrounded by her toy family, knowing that even the smallest mouse can make the biggest difference.
+
+[Word count: 157]",6.46,0.004188,205,26.50,True,True,True,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,claude-3.5-haiku,"Title: Rosie's Cozy Night Adventure
+
+In a soft, warm bedroom, a little fabric mouse named Rosie sat quietly on a colorful quilt. She wore a pretty pink dress and had button eyes that sparkled with kindness. Though she was small, Rosie had a big heart and loved watching over her sleeping friend Emma.
+
+Every night, Rosie's job was to protect Emma from scary shadows and lonely feelings. She would sit perfectly still during the day, but when darkness fell, she became a brave guardian of sweet dreams.
+
+Tonight, a tiny moonbeam danced across the bedroom, and Rosie noticed a small tear on Emma's cheek. Gently, she inched closer and whispered, ""Don't be afraid. I'm right here with you.""
+
+Her soft voice seemed to comfort Emma, who slowly stopped whimpering and began to smile. Rosie knew that sometimes the bravest thing you can do is simply be present for someone you care about.
+
+As moonlight filled the room, Rosie watched over her friend, her little fabric heart full of love. She knew that friendship means being there, quiet and steady, ready to chase away any worries.",7.28,0.001013,185,23.88,True,True,True,True,True,False,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gemini-2.5-pro-preview,"Error with gemini-2.5-pro-preview: 404 models/gemini-2.5-pro-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.19,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gemini-2.5-flash-preview,"Error with gemini-2.5-flash-preview: 404 models/gemini-2.5-flash-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.18,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gemini-2.0-flash,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gemini-1.5-pro,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gpt-4.5-preview,"Title: The LEGO Village Friendship
+
+In a bright little village made entirely of LEGO bricks, colorful houses stood side by side on a soft green meadow. Tall trees stretched their leafy branches toward the sky, shading the cheerful animals who lived there.
+
+Every day, Benny the LEGO bunny hopped around the village, greeting friends along the way. Leo the lion, gentle and kind, loved helping his neighbors build new homes. Sally the squirrel collected LEGO fruits from the trees, sharing them with everyone.
+
+But one evening, a strong breeze came and knocked down Benny's house. Benny felt sad, unsure how to fix it on his own.
+
+""Don’t worry, Benny,"" Leo smiled gently. ""We can rebuild it together.""
+
+Sally hopped over, carrying colorful bricks. Soon, every animal in the village joined in, placing bricks carefully and cheerfully. Benny’s house was even brighter and stronger than before.
+
+That night, Benny slept peacefully, feeling grateful for his wonderful friends.
+
+As the stars twinkled overhead, Benny whispered softly, ""Together, we can build anything.""
+
+And in the quiet LEGO village, everyone slept soundly, knowing friendship made their home strong and safe.",10.79,0.008470,186,24.12,True,True,True,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gpt-4.1,"Title: The Little LEGO Meadow
+
+Once upon a time, in a cheerful LEGO meadow, there stood a bright yellow house with a red roof. Around the house, tall green trees swayed gently, and friendly LEGO animals played together on the soft, green baseplate.
+
+Benny the bunny hopped near the pond, while Sally the squirrel chased her bushy tail under the big oak tree. Max the dog watched them, wagging his little LEGO tail. Every morning, the animals greeted each other with happy “hellos” and shared their tasty snacks—carrots, nuts, and crunchy treats.
+
+One sunny afternoon, a strong breeze knocked over Sally’s favorite tree. She looked worried, but Benny and Max hurried over. “Let’s fix it together!” said Max. With teamwork, they carefully rebuilt the tree, making it even sturdier than before.
+
+As the sun set, golden light sparkled over the meadow. The animals gathered in front of their cozy LEGO house, feeling proud and happy. “Helping friends makes our world brighter,” Benny whispered.
+
+Soon, stars twinkled above, and a gentle peace settled over the meadow. The friends curled up together, safe and warm, dreaming of more adventures and kindness.
+
+And so, in the little LEGO meadow, everyone learned that together, they could build anything—even happiness.",5.29,0.004715,205,26.38,True,True,False,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gpt-4o,"Title: The LEGO Meadow Adventure
+
+In a vibrant LEGO meadow, animals and trees danced under a warm sun, and a colorful little house stood proudly on a green baseplate. Benny the Bunny, curious and brave, hopped around, exploring every corner of his delightful world.
+
+One sunny morning, Benny noticed Sammy the Squirrel looking worried beside a tall LEGO tree. ""What's wrong, Sammy?"" Benny asked, twitching his nose.
+
+""I've lost my acorn!"" Sammy sniffed. ""It's my favorite one!""
+
+Determined to help, Benny gathered their friends: Lily the Lamb and Ollie the Owl. ""Let's find Sammy's acorn together!"" Benny announced. The animals searched high and low, overturning tiny LEGO bushes and peeking behind brightly colored bricks.
+
+As the sun began to set, Ollie hooted softly, ""Teamwork makes everything possible."" Just then, Benny spotted a tiny acorn nestled under a LEGO flower. With a joyful hop, he nudged it towards Sammy.
+
+""Thank you, Benny! Thank you, everyone!"" Sammy squeaked, hugging his acorn tightly.
+
+The friends gathered by the house, watching the sky turn a gentle shade of pink. ""Together, we can solve any problem,"" Lily whispered, snuggling close.
+
+With hearts full of friendship, the animals drifted into sweet dreams, their LEGO meadow glowing softly under the moonlight.",5.44,0.004895,204,26.38,True,True,True,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gpt-4o-mini,"Title: The LEGO Forest Friends
+
+In a bright, colorful LEGO world, there lived a cheerful group of animals. There was Benny the brave bear, Lila the lovely rabbit, and Sammy the wise old owl. They all lived in a cozy little house made of bright blue bricks, surrounded by tall, green trees and a sparkling LEGO stream.
+
+One sunny day, Benny had a wonderful idea. “Let’s have a picnic!” he exclaimed. Lila clapped her paws with joy, and Sammy nodded wisely. They packed a basket full of yummy LEGO fruits and set off to find the perfect spot.
+
+As they arrived at a lovely clearing, they saw a little LEGO turtle all alone. “Would you like to join our picnic?” Lila asked kindly. The turtle smiled and said, “Oh, yes, please!”
+
+They shared their delicious treats, played games, and laughed together. When the sun began to set, Sammy said, “It feels good to share and make new friends.” 
+
+That night, as the stars twinkled above, the forest friends cuddled in their LEGO house, happy and full. They learned that sharing and kindness make every day brighter. 
+
+And with that thought, they drifted off to sleep.",4.91,0.000171,195,25.12,True,True,False,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",claude-4-opus,"Title: The LEGO Forest Friends
+
+In a magical LEGO forest, there lived a yellow duck named Sunny and a brown bear named Bruno. They shared a cozy brick house under the tall green trees.
+
+One evening, a lost baby rabbit hopped into their garden, crying softly. ""I can't find my way home,"" she sniffled.
+
+Sunny flapped her wings. ""Don't worry! We'll help you.""
+
+Bruno nodded kindly. ""You can stay with us tonight. Tomorrow, we'll search together.""
+
+The three friends shared warm carrot soup and told funny stories. The little rabbit's tears turned into giggles. When bedtime came, they made her a soft bed of LEGO flowers.
+
+The next morning, they found the rabbit's family just beyond the blue LEGO stream. Everyone was so happy!
+
+""Thank you for being so kind,"" said the rabbit, hugging her new friends.
+
+From that day on, the rabbit visited often. The LEGO forest became even more special because it was filled with friendship and love.
+
+Now close your eyes and dream of colorful LEGO adventures.
+
+*[Word count: 167]*",11.46,0.018810,173,22.50,True,True,True,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",claude-4-sonnet,"**Title: The Little LEGO Village Where Dreams Come True**
+
+In a magical LEGO village on a bright green baseplate, colorful brick animals lived happily together. There was Benny the blue elephant, Ruby the red rabbit, and Sunny the yellow giraffe. They all shared a cozy brick house surrounded by tall LEGO trees.
+
+One evening, little Ruby felt sad because she was the smallest animal in the village. ""I wish I could be tall like the trees,"" she sighed.
+
+Benny wrapped his trunk around her gently. ""Ruby, being small makes you special. You can hop into tiny places and help others!""
+
+Just then, Sunny's favorite brick fell down a narrow crack. Ruby's small size was perfect! She hopped right down and retrieved it.
+
+""Thank you, Ruby!"" Sunny smiled. ""You saved the day!""
+
+Ruby realized that being different wasn't something to be sad about—it was her superpower. As the LEGO stars twinkled above their village, all the friends snuggled together in their brick house.
+
+""We're all perfect just as we are,"" Ruby whispered sleepily.
+
+The colorful village glowed peacefully under the moonlight, where every dream could come true.
+
+**Word count: 174 words**",9.54,0.004077,190,24.62,True,True,True,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",claude-3.7-sonnet,"# The Little LEGO Village Where Everyone Belongs
+
+In a colorful LEGO village built on a bright green baseplate, there stood a cozy red-roofed house surrounded by tall trees made of stacked green bricks. Each morning, the animals of the village would gather near the little blue pond.
+
+One day, a small gray rabbit named Hopper couldn't find a place to play. The ducks splashed in the pond, the squirrels climbed the trees, and the birds perched on the rooftop.
+
+""I don't fit anywhere,"" Hopper sighed.
+
+Benny Bear noticed Hopper sitting alone. ""What's wrong?"" he asked kindly.
+
+""Everyone has their special place except me,"" Hopper explained.
+
+""Let's build you one!"" Benny suggested.
+
+Soon, all the animals were sharing their bricks. The ducks contributed blue pieces, the squirrels offered brown ones, and the birds brought yellow bits.
+
+Together, they built Hopper a beautiful garden with colorful flowers where everyone could gather.
+
+""Thank you,"" Hopper smiled. ""I didn't need my own separate place after all. I needed a place where we could all belong together.""
+
+That night, as the LEGO moon rose above their peaceful village, every animal slept soundly, knowing that the best places are those we build together.
+
+(Word count: 178)",8.58,0.004377,201,25.88,True,False,True,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",claude-3.5-sonnet,"Title: The Little LEGO House That Made Room
+
+In a colorful LEGO world, on a bright green baseplate, stood a cozy little house with a red roof and yellow walls. Around it, tall trees made of green and brown bricks swayed gently in the breeze.
+
+A friendly rabbit named Hopscotch lived in the house all by himself. He spent his days arranging flowers in his garden and humming happy tunes. One rainy evening, he heard a knock at his door. Outside stood a tired bear, a shy deer, and a wet fox, all looking for shelter from the storm.
+
+At first, Hopscotch worried his house was too small for so many friends. But then he remembered what his grandmother always said: ""A home filled with friends is the happiest home of all.""
+
+So Hopscotch invited everyone inside. Together, they added more LEGO bricks to make the house bigger. They built new rooms, a larger kitchen, and even a special play area. What started as a little house became a wonderful home filled with laughter and friendship.
+
+That night, as they all sat around drinking warm honey tea, Hopscotch realized that the best houses aren't measured by their size, but by the love they hold inside.
+
+[Word count: 164]",7.59,0.004197,208,26.75,True,True,True,True,True,True,False
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",claude-3.5-haiku,"Title: The LEGO Village's Magical Night
+
+In a cozy little LEGO world, where colorful bricks made everything bright and cheerful, there lived a friendly family of animal friends. A playful yellow dog, a curious brown rabbit, and a wise gray owl called this charming green landscape home.
+
+Their tiny brick house stood nestled among tiny LEGO trees, with flowers and small pathways winding around their neighborhood. Every evening, they would gather together and share stories about their day's adventures.
+
+One night, when the sky turned soft purple and stars began to twinkle, the rabbit noticed the dog looking sad. ""What's wrong?"" he asked gently. The dog explained he was feeling lonely and missed making new friends.
+
+The owl, hearing this, smiled warmly. ""Sometimes,"" she said, ""friendship comes when we least expect it. Just be kind, be yourself, and open your heart.""
+
+As moonlight sparkled across their little world, the animals hugged each other, feeling safe and loved. They knew that true friendship wasn't about being perfect, but about caring for one another.
+
+And so they drifted off to sleep, dreaming of wonderful adventures yet to come.",6.34,0.001027,186,24.12,True,True,True,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gemini-2.5-pro-preview,"Error with gemini-2.5-pro-preview: 404 models/gemini-2.5-pro-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.23,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gemini-2.5-flash-preview,"Error with gemini-2.5-flash-preview: 404 models/gemini-2.5-flash-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.15,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gemini-2.0-flash,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gemini-1.5-pro,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gpt-4.5-preview,"Title: A LEGO Adventure at Sunnyville
+
+In the colorful LEGO town of Sunnyville, best friends Mia, Tom, and Ben decided to have a cheerful summer day. They hopped into their shiny red LEGO car and drove gently down the road, passing houses made of bright bricks, gardens blooming with tiny flowers, and streets filled with smiling neighbors.
+
+Soon, they arrived at the sparkling blue pool. They splashed and laughed, playing games under the golden sun. Nearby, their friend Abby sat happily, building a tiny sandcastle out of LEGO bricks.
+
+After a while, the friends noticed little Max standing shyly by himself. Mia smiled warmly and said, ""Max, come join us! We’re all friends here."" Max's face brightened, and soon, he joined the fun, splashing and giggling with everyone.
+
+As the day turned softly into evening, the friends waved goodbye and promised to meet again tomorrow. Snuggling into bed later, Mia thought happily about the day. She realized the best adventures were always shared with friends.
+
+And as she drifted peacefully to sleep, she dreamed of another sunny LEGO adventure, where everyone was welcome, and friendship was the brightest brick of all.",11.02,0.008580,191,24.75,True,True,True,True,True,True,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gpt-4.1,"Title: The LEGO Friends’ Poolside Adventure
+
+Once upon a time, in a bright and colorful LEGO town, there was a cheerful group of friends: Mia, Lucas, Emma, and Ben. One sunny afternoon, they decided to have a special pool day in Mia’s backyard. They built a sparkling blue LEGO pool, filled it with water, and placed their favorite floaties nearby.
+
+Lucas arrived zooming in his red LEGO car, beeping hello as he parked. Emma brought a basket of tiny LEGO sandwiches, while Ben set up a bright yellow umbrella for shade. They all laughed and splashed, playing gentle games in the cool water.
+
+When a tiny LEGO duck floated away, Mia worried. But with everyone working together, they gently guided the duck back to safety. “Teamwork makes everything better!” Emma cheered.
+
+As the sun started to set, the friends wrapped themselves in soft towels and shared the last sandwiches. The sky turned pink and purple, and the evening air felt cozy and calm.
+
+Mia smiled and said, “The best days are spent with friends.” The others nodded, feeling warm and happy inside. They promised to always help each other and share sunny days together.
+
+Soon, the little LEGO friends fell asleep, dreaming of more adventures and the magic of friendship.",4.81,0.004590,210,27.00,True,True,False,True,True,True,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gpt-4o,"Title: The LEGO Pool Party Adventure
+
+In a colorful LEGO town, Lucy the Builder invited her friends to a pool party. They arrived in a bright red LEGO car, excited for a day of fun. Lucy had built a sparkling blue pool with her magical building blocks, and it was the perfect spot for a sunny afternoon.
+
+Her friends, Benny the Brave, Mia the Musician, and Sam the Scientist, were thrilled. They splashed and played, laughing as they floated on tiny LEGO rafts. Benny showed off his daring dives, while Mia sang cheerful tunes. Sam, ever curious, experimented with making the biggest splash.
+
+As the sun began to set, Lucy gathered everyone for a picnic by the pool. They shared sandwiches and lemonade, telling stories of their adventures. Lucy reminded her friends, ""Working together and sharing makes everything more fun!""
+
+As stars twinkled in the LEGO sky, the friends lay on their backs, gazing up in wonder. They felt grateful for the day and each other. With hearts full of warmth and laughter, they promised to always build memories together.
+
+That night, as the town drifted into peaceful dreams, Lucy's friends knew the magic of friendship was the best creation of all.",6.35,0.004380,202,26.12,True,True,True,True,True,True,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gpt-4o-mini,"Title: The LEGO Pool Party
+
+Once upon a time, in a colorful LEGO town, there was a cheerful little car named Benny. Benny loved to zoom around, but his favorite place was the sparkling LEGO pool. One sunny day, Benny decided to throw a pool party for all his friends.
+
+He invited Lucy the LEGO bunny, Max the LEGO dog, and even Timmy the tiny turtle. As the friends arrived, they were so excited! They splashed in the water, raced around the pool, and played games. Benny showed everyone how to make the biggest splash, and they all laughed together.
+
+But then, Lucy noticed Timmy was feeling a bit left out. ""Let’s invite him to join our games!"" she said. So they all gathered around Timmy and asked him to join in. With a big smile, Timmy splashed in the pool too!
+
+As the sun began to set, Benny and his friends sat by the pool, feeling happy. They learned that including everyone makes fun even better. And as the stars twinkled above, they knew they would always be the best of friends. 
+
+Goodnight, little ones. Remember to share your joy!",4.92,0.000163,191,24.62,True,True,True,True,True,True,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",claude-4-opus,"Title: The LEGO Friends' Perfect Pool Day
+
+In a colorful LEGO town, four best friends—Lily, Max, Sophie, and Ben—planned a special pool party. They worked together all morning, building a beautiful blue pool in Max's backyard.
+
+""Oh no!"" cried Lily. ""We forgot to invite Tommy!""
+
+Tommy was the new LEGO figure who had just moved to their street. He often played alone by his little red car.
+
+""Let's invite him right now,"" said Sophie kindly.
+
+The friends walked over to Tommy's house. His face lit up like sunshine when they asked him to join their pool party.
+
+Soon, all five friends were splashing and laughing together. Tommy shared his toy boats, making the pool even more fun. They played games, told silly jokes, and floated on their backs watching fluffy clouds drift by.
+
+As the sun began to set, Tommy smiled. ""Thank you for including me. You're the best friends ever!""
+
+That night, all the LEGO friends went to bed with happy hearts, dreaming of more adventures together. Being kind and including others had made their perfect day even better.",12.11,0.019050,180,23.38,True,True,True,True,True,True,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",claude-4-sonnet,"Title: The Little LEGO Friends' Pool Party
+
+Once upon a time, in a colorful LEGO town, three little friends named Sam, Maya, and Ben were planning a special pool party. Sam had a shiny red car, Maya had a beautiful blue swimming pool, and Ben had yummy snacks to share.
+
+But when party time came, Sam felt worried. ""What if my car isn't fancy enough?"" he wondered. Maya looked at her small pool and sighed, ""Maybe my pool is too little for a real party."" Ben frowned at his simple crackers, thinking they weren't special enough.
+
+Just then, their neighbor Lucy walked by feeling sad because she had nothing to bring. The three friends looked at each other and smiled. ""Come join us!"" they called out together.
+
+They realized that the best parties aren't about having the fanciest things – they're about sharing what you have with friends who care about you. They splashed in the pool, drove the car around, and shared every snack.
+
+As the sun set over their LEGO town, all four friends felt warm and happy, knowing that friendship was the most wonderful gift of all.
+
+Sweet dreams!
+
+[Word count: 180 words]",8.26,0.003990,196,25.38,True,True,True,True,True,True,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",claude-3.7-sonnet,"# The Tiny Town's Big Splash
+
+In a colorful LEGO town, a shiny red car pulled up beside the bright blue swimming pool. Out jumped Max, Emma, and their dog Spot, all excited for swimming day.
+
+""I'm scared of the water,"" whispered Max, staying by the car while other little figures splashed happily.
+
+Emma noticed her brother's worried face. ""It's okay to be afraid,"" she said, taking his hand. ""We can sit by the edge first and just dip our toes.""
+
+The pool owner, Mr. Blocks, brought over some floating toys. ""These helped me when I was learning,"" he smiled.
+
+Spot barked encouragingly as Max carefully sat at the pool's edge. The cool water felt nice on his feet.
+
+""Maybe I could try just a little more,"" Max said. With Emma holding one hand and Mr. Blocks holding the other, Max took one small step into the shallow end.
+
+""I'm doing it!"" he cheered.
+
+By sunset, Max was floating with a smile as big as the sun. That night, as the tiny LEGO lights twinkled across the town, Max dreamed of swimming adventures with his friends, knowing that being brave doesn't mean not feeling afraid—it means trying anyway.",7.65,0.004125,198,25.50,True,False,True,True,True,True,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",claude-3.5-sonnet,"Title: The LEGO Pool Party
+
+One sunny afternoon in Bricktown, a little LEGO girl named Lucy was feeling lonely in her backyard pool. She watched as other minifigures drove past in their colorful cars, wishing she had friends to splash with.
+
+Taking a deep breath, Lucy waved to Tommy, the shy minifigure next door who always played alone with his red car. ""Would you like to come swim?"" she called out with a smile.
+
+Tommy looked nervous at first, but Lucy's friendly invitation made him feel brave. He parked his car and walked over to the pool. ""I've never been to a pool party before,"" he admitted.
+
+""That's okay!"" Lucy said. ""We can learn to have fun together!""
+
+Soon, other minifigures from the neighborhood noticed the laughter coming from Lucy's yard. One by one, they joined in. Some brought pool toys, others brought snacks, and everyone shared big smiles.
+
+By sunset, Lucy's backyard was filled with new friends, splashing and playing together. Even the smallest minifigures were included in the fun.
+
+That night, Lucy went to bed happy, knowing that sometimes all it takes is one kind invitation to build wonderful friendships.
+
+[Word count: 156]",6.91,0.004185,195,25.12,True,True,True,True,True,True,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",claude-3.5-haiku,"Title: The LEGO Neighborhood Summer Party
+
+In a colorful LEGO neighborhood, there was a special summer day when everyone decided to have a pool party. Tommy, a small yellow-shirted figure, was nervous because he didn't know how to swim very well. His friend Emma, wearing a blue swimsuit, noticed his worried expression.
+
+""Don't worry,"" Emma said kindly. ""I'll help you learn.""
+
+With gentle patience, Emma showed Tommy how to float and kick in the shallow end of the pool. Their friend Jack brought over a bright red inflatable toy to help Tommy feel more confident. Slowly, Tommy began to smile and enjoy the water.
+
+Nearby, their parents watched from beside a shiny LEGO car, cheering and clapping as Tommy grew braver with each paddle. The sun sparkled on the water, and laughter filled the air.
+
+By the end of the day, Tommy was swimming with joy, his earlier fears completely forgotten. He realized that with good friends and a little courage, he could do anything.
+
+As the evening grew quiet, Tommy drifted off to sleep, dreaming of cool water and friendly faces, feeling safe and loved.",6.49,0.001020,186,24.12,True,True,True,True,True,True,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gemini-2.5-pro-preview,"Error with gemini-2.5-pro-preview: 404 models/gemini-2.5-pro-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.37,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gemini-2.5-flash-preview,"Error with gemini-2.5-flash-preview: 404 models/gemini-2.5-flash-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.14,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gemini-2.0-flash,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gemini-1.5-pro,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gpt-4.5-preview,"Title: The Snuggle Pile
+
+In a cozy bedroom, on a soft dark green blanket, lived a happy family of stuffed animals. Teddy Bear Tom, Bunny Bella, Puppy Pete, and Kitty Kate spent their days playing, laughing, and sharing hugs.
+
+But tonight, Teddy Bear Tom noticed something unusual. Little Puppy Pete looked worried.
+
+""What's wrong, Pete?"" Tom asked gently.
+
+""I can't fall asleep,"" Pete whispered softly. ""It's dark and I'm a bit scared.""
+
+Bella hopped closer. ""It's okay, Pete! We're all here together. There's nothing to fear.""
+
+Kitty Kate purred warmly. ""When we feel afraid, snuggling close helps us feel safe and loved.""
+
+Tom smiled kindly. ""Let's make a snuggle pile, so Pete won't feel alone.""
+
+Together, they cuddled into a soft, comforting pile on the warm green blanket. Pete felt calm and safe surrounded by his friends’ gentle warmth.
+
+As the moonlight softly filled the room, Pete whispered happily, ""Thank you, friends. I'm not scared anymore.""
+
+Teddy Bear Tom smiled sleepily. ""Remember, together we're brave and strong.""
+
+And in their cuddly pile, wrapped in friendship and love, the stuffed animal friends drifted peacefully to sleep, feeling safe, warm, and happy under the gentle glow of the night sky.",11.46,0.009390,198,25.62,True,True,True,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gpt-4.1,"Title: The Cozy Blanket Gathering
+
+On a quiet night, a pile of stuffed animals and plush toys snuggled together on a dark green blanket. Floppy the bunny, Squishy the bear, and Star the unicorn all loved bedtime. The blanket was soft and warm, their favorite place to rest after a day of play.
+
+As the moonlight peeked through the window, Floppy whispered, “I love how safe I feel when we’re together.” Squishy nodded, hugging his friends. “Me too! Each one of us is different, but we all belong right here.”
+
+Star stretched her sparkly wings. “Even when the room is dark, we have each other to keep us cozy and brave.”
+
+Outside, a gentle breeze rustled the leaves. Inside, the stuffed friends shared stories about their adventures—picnics in the park, tea parties with giggles, and magical journeys in cardboard boxes.
+
+Soon, their voices grew soft and sleepy. The blanket wrapped them up like a big, gentle hug. As Floppy yawned, she said, “When we stick together, every night feels peaceful.”
+
+The animals drifted off to dreamland, hearts full of friendship and warmth, knowing that together, they could make any night feel safe and full of love.",4.15,0.004575,196,25.25,True,True,False,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gpt-4o,"Title: The Snuggly Adventure
+
+Once upon a time, in a cozy little room, there was a pile of stuffed animals and plush toys resting on a dark green blanket. Each toy was special and had its own unique story to tell. There was Benny the brave bear, Lila the wise owl, and Sammy the cheerful squirrel.
+
+One quiet night, as the moonlight gently spilled into the room, Benny gathered his friends for a grand adventure. ""Let's explore the Blanket Forest!"" he whispered excitedly. The toys huddled together, imagining the blanket as a vast, magical forest.
+
+As they ""traveled"" through the Blanket Forest, Benny shared tales of courage, Lila spoke of wisdom, and Sammy brought laughter with his funny stories. They discovered that each toy's special qualities made their friendship stronger. When the stars began to twinkle, the toys returned to their cozy pile.
+
+Snuggling close, Benny said, ""We may be different, but together, we make the best team."" Lila nodded wisely, and Sammy giggled, ""And the most fun!""
+
+The room grew quiet, and soon the toys drifted off to sleep, dreaming of their next adventure. As their owner tucked in nearby, a feeling of warmth and friendship filled the room, ensuring sweet dreams for all.",9.73,0.004635,205,26.50,True,True,True,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gpt-4o-mini,"Title: The Cozy Cuddle Pile
+
+Once upon a time, in a little room painted soft blue, a pile of stuffed animals and plush toys rested on a dark green blanket. There was Benny the Bear, Rosie the Rabbit, and Timmy the Turtle. Every night, they gathered together to share stories under the twinkling stars that peeked through the window.
+
+One evening, Rosie noticed that Timmy looked sad. “What’s wrong, Timmy?” she asked gently. “I wish I could explore the world like you all do,” he sighed. Benny and Rosie exchanged glances and smiled. “You can, Timmy!” Benny said. “Let’s have an adventure right here!”
+
+So, the friends closed their eyes and imagined a magical journey through a rainbow forest, where they met playful butterflies and danced with the wind. They laughed and cheered, feeling brave and happy together.
+
+As the night grew quieter, Timmy realized that adventures are best shared with friends. They all snuggled closer, feeling warm and safe. “Thank you for the adventure,” he whispered, as they drifted into a peaceful sleep, knowing that love and friendship make every moment special. 
+
+And so, under the stars, they dreamed sweet dreams.",6.24,0.000172,192,24.75,True,True,False,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,claude-4-opus,"Title: The Midnight Cuddle Club
+
+On Emma's dark green blanket lived a special group of friends. There was Benny the brown bear, Rosie the pink rabbit, Oliver the orange owl, and many more stuffed animals who loved to snuggle together.
+
+Every night, after Emma fell asleep, something magical happened. The toys would whisper and giggle softly, sharing stories about their day. But tonight, little Patches the puppy was crying in the corner.
+
+""I'm too small,"" Patches whimpered. ""There's no room for me in the pile.""
+
+Benny stretched his fuzzy arms wide. ""There's always room for one more friend,"" he said warmly. The other toys scooted closer, making a perfect Patches-sized space right in the middle.
+
+""The best part about our cuddle club,"" explained Rosie, ""is that being together makes us all feel bigger and braver.""
+
+Soon, Patches was nestled among his friends, feeling cozy and loved. As the moonlight danced across the green blanket, all the toys drifted off to sleep, dreaming of tomorrow's adventures together.
+
+The end.",9.88,0.018525,168,21.88,True,True,True,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,claude-4-sonnet,"**Title: The Sleepy Snuggle Squad**
+
+Every night when Emma went to bed, something magical happened on her dark green blanket. As soon as the lights went out, her stuffed animals came to life!
+
+Teddy Bear stretched his fuzzy arms, while Bunny wiggled her soft ears. Elephant trumpeted quietly, and Puppy wagged his tail. They called themselves the Sleepy Snuggle Squad.
+
+""What's our mission tonight?"" whispered Teddy Bear.
+
+""Let's keep Emma safe from bad dreams,"" said Bunny kindly.
+
+The friends worked together, forming a protective circle around their sleeping girl. Elephant used his trunk to blow away worries. Puppy kept watch for monsters under the bed. Bunny shared warm hugs, while Teddy Bear told peaceful stories about sunshine and rainbows.
+
+When a scary shadow appeared on the wall, the Squad held paws and stood brave together. ""We're stronger when we help each other,"" they whispered.
+
+As morning sunlight crept through the window, the toys settled back into their pile, tired but happy. Emma woke up smiling, feeling loved and protected by her faithful friends.
+
+*[Word count: 173]*",8.64,0.003795,176,22.75,True,True,True,True,True,False,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,claude-3.7-sonnet,"# The Midnight Plush Party
+
+Every night when Lily fell asleep, something magical happened on her dark green blanket. Her stuffed animals—Benny Bear, Ellie Elephant, Patchy Pup, and Rosie Rabbit—came to life!
+
+Tonight, Benny Bear felt lonely. ""Nobody wants to play with me,"" he whispered sadly.
+
+""That's not true,"" squeaked Rosie Rabbit, hopping closer. ""We didn't know you wanted company.""
+
+Ellie Elephant reached out her soft trunk. ""Friends need to share their feelings.""
+
+""I was afraid you'd think I was silly,"" Benny admitted.
+
+Patchy Pup nuzzled against him. ""Real friends never think your feelings are silly.""
+
+Soon, they were all snuggled together, telling stories and giggling quietly so they wouldn't wake Lily.
+
+""This is much better than being alone,"" Benny smiled. ""Thank you for listening.""
+
+""That's what friends do,"" Ellie said wisely.
+
+When morning came, Lily found her stuffed animals in a cozy pile, not where she'd left them. She smiled, arranging them in a circle.
+
+""Everyone needs friends,"" she whispered, giving each one a good-morning hug.
+
+That night, the plush party continued, with no friend left behind.
+
+(Word count: 164)",6.92,0.004215,181,23.38,True,False,True,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,claude-3.5-sonnet,"Title: The Midnight Toy Party
+
+Every night after Lucy went to sleep, her stuffed animals would gather on her cozy green blanket for their special midnight meeting. There was Patches the elephant, Whiskers the rabbit, Captain Bear, and all their fluffy friends.
+
+One evening, they noticed a new toy sitting alone in the corner - a small giraffe named Spots who had arrived that morning as a birthday gift. Spots was too shy to join the group, worried that he was too different with his long neck and spotted pattern.
+
+""Come join us!"" called Patches softly, waving his trunk. ""We'd love to hear your stories.""
+
+""But I'm not like any of you,"" Spots whispered.
+
+Captain Bear smiled warmly. ""That's exactly why we need you! Every toy here is different - that's what makes our friendship special.""
+
+Encouraged by their kindness, Spots tiptoed over to the green blanket. The other toys made room, sharing stories and giggles until dawn. From that night on, Spots never felt lonely again.
+
+When Lucy woke up, she noticed all her toys seemed to be smiling a bit more brightly than usual, snuggled together on her favorite green blanket.
+
+[Word count: 159]",6.74,0.004185,196,25.38,True,True,True,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,claude-3.5-haiku,"Title: The Nighttime Gathering
+
+In a cozy bedroom, on a soft dark green blanket, a group of stuffed friends huddled close together. There was Whiskers the teddy bear, Patches the patchwork rabbit, and Starlight the sparkly unicorn. Every night, when their little girl was fast asleep, they would have a quiet conversation.
+
+Tonight, Patches seemed worried. ""I feel small and different from everyone else,"" he whispered. Whiskers wrapped his fuzzy arm around him. ""But that's what makes you special!"" he said kindly. Starlight nodded, her shimmering mane catching the moonlight. ""Our differences are what make our friendship beautiful.""
+
+They shared stories of the day's adventures, remembering how they comforted their young friend during scary moments, how they listened when she needed a friend, and how they always stayed together. Each toy knew their most important job was to make her feel safe and loved.
+
+As the moonlight danced across the blanket, the stuffed friends snuggled closer, protecting each other and keeping watch through the peaceful night. Their love was stronger than any darkness, and their friendship was a warm, magical blanket of comfort.",7.89,0.001056,183,23.62,True,True,True,True,True,False,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gemini-2.5-pro-preview,"Error with gemini-2.5-pro-preview: 404 models/gemini-2.5-pro-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.92,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gemini-2.5-flash-preview,"Error with gemini-2.5-flash-preview: 404 models/gemini-2.5-flash-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.15,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gemini-2.0-flash,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gemini-1.5-pro,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gpt-4.5-preview,"Title: Millie Mouse's Bubble Bath Adventure
+
+Millie Mouse lived quietly beneath the bathroom sink, in a cozy home hidden behind the fluffy rug. She loved the peaceful sounds of dripping water and bubbles popping softly each night.
+
+One evening, Millie peeked from her doorway and saw the bathtub filled with warm, bubbly water. Curious and excited, she scampered quietly across the rug and climbed up onto the tub's edge. Carefully, she dipped her tiny paw into a bubble. It felt gentle and warm, like a friendly hug!
+
+With a squeak of delight, Millie slipped into a tiny soap dish boat and floated gently through the bubbles. She imagined herself sailing on a cotton candy sea beneath a sky made of marshmallow clouds.
+
+As she drifted peacefully, Millie realized something special. Even tiny creatures like her could find big adventures right at home. Smiling sleepily, she paddled back to her cozy nest beneath the sink.
+
+Snuggled warmly in her soft bed, Millie listened to the gentle nighttime drip-drip of the faucet. She yawned happily, grateful for her small adventure and the simple joys surrounding her.
+
+""Goodnight, bathroom,"" she whispered softly, drifting into sweet, bubble-filled dreams.",12.16,0.008900,194,25.12,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gpt-4.1,"Title: Millie Mouse’s Bubble Bath Adventure
+
+Millie Mouse was a tiny, soft toy mouse who lived in a cozy dollhouse. Her favorite room was the bathroom, with its shiny tub, little sink, and a fluffy blue rug that felt just right under her paws.
+
+One evening, Millie noticed her fur was a bit dusty from a busy day of play. “A bubble bath will make me feel fresh and clean!” she squeaked. She hopped onto the rug and turned the tiny silver tap. Soon, warm water filled the tub, and Millie sprinkled in her favorite lavender bubbles. The bubbles grew bigger and fluffier, swirling around her like gentle clouds.
+
+As Millie soaked in the tub, she let out a happy sigh. She splashed a little, then washed behind her ears, humming a soft tune. After her bath, she dried off with a cozy towel and brushed her whiskers in front of the sparkly sink.
+
+Millie felt calm and snuggly. She realized that taking time to care for herself helped her feel peaceful and loved. With a big yawn, Millie curled up on the soft rug, dreaming of bubble castles and sweet lavender fields.
+
+And so, Millie drifted into a gentle sleep, knowing tomorrow would bring more tiny adventures.",6.16,0.004615,208,26.75,True,True,False,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gpt-4o,"Title: Tiny Tim's Bubble Bath Adventure
+
+In a cozy little bathroom, nestled on a soft rug, lived Tiny Tim, a cheerful miniature mouse toy. Every evening, when the moon peeked through the window, Tim loved to explore his favorite place—the bathroom, with its shiny tub and bright sink.
+
+One night, while the house was quiet, Tim decided it was time for a grand bubble bath adventure. He hopped into the little tub, which was just the right size for him. With a tug of the tiny faucet, warm water gushed out, and Tim giggled as bubbles began to appear.
+
+Tim floated on the bubbly water, pretending he was a sailor on a calm sea. He imagined visiting faraway lands, all while safe and cozy in his tub. As the bubbles slowly faded, Tim remembered how important it was to take time to relax, even for a tiny mouse.
+
+With a contented sigh, Tim climbed out of the tub, wrapped himself in a fluffy washcloth, and snuggled down on the rug. As he drifted off to sleep, he dreamed of more gentle adventures, feeling thankful for his peaceful bubble bath journey.
+
+And so, Tiny Tim learned that sometimes, the best adventures are the ones that help you rest and dream.",5.56,0.004525,209,27.00,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gpt-4o-mini,"Title: **Milo's Magical Bath Time**
+
+Once upon a time, in a cozy little bathroom, there lived a tiny mouse toy named Milo. Milo was no ordinary toy; he loved adventures! One evening, as the moonlight danced through the window, Milo decided it was time for a special bath.
+
+He hopped into the shiny tub filled with warm water. “Splish, splash!” giggled Milo, as he floated like a boat. He grabbed a fluffy washcloth and pretended it was a soft cloud. The gentle sound of water made him feel calm and happy.
+
+After his bath, Milo dried off on the fluffy rug, feeling fresh and cozy. As he looked around, he noticed how everything sparkled in the moonlight. “Every little thing can be magical,” he thought, smiling.
+
+Milo snuggled into his little corner, feeling peaceful. He learned that taking care of yourself is important, and a little self-love can make any day special. With dreams of adventures dancing in his head, Milo whispered, “Goodnight, little friends. Tomorrow is another day for magic!”
+
+And with that, the little mouse toy drifted off to sleep, surrounded by warmth and love.",3.31,0.000167,187,24.25,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",claude-4-opus,"Title: Squeaky's Bubble Bath Adventure
+
+In a cozy bathroom lived a tiny toy mouse named Squeaky. Every night, he watched the family brush their teeth and take warm baths, wishing he could join them.
+
+One evening, a rubber duck fell from the tub's edge. ""Help!"" she quacked softly.
+
+Though Squeaky was small, he bravely pushed a washcloth under the duck to cushion her fall. ""Thank you!"" she smiled. ""You're very kind.""
+
+""I may be little, but I can still help,"" Squeaky said proudly.
+
+The duck had an idea. ""Would you like to see the bathtub? I'll show you!""
+
+Together, they climbed up the soft bathroom rug and peeked over the tub's edge. The duck taught Squeaky how to blow bubbles with soap, and they played until bedtime.
+
+From that night on, Squeaky never felt too small again. He learned that being helpful and brave makes you bigger than you think.
+
+As moonlight filled the bathroom, the two friends curled up on the fluffy rug, dreaming of tomorrow's bubbly adventures.",10.98,0.019005,169,22.00,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",claude-4-sonnet,"**Title: Pip's Big Bath Adventure**
+
+Little Pip was the tiniest toy mouse in the whole house. Every night, while the family slept, he explored new rooms. Tonight, he discovered the bathroom for the very first time.
+
+""Wow!"" whispered Pip, gazing at the enormous white bathtub. The soft blue rug felt like clouds under his tiny paws. The sink towered above him like a mountain.
+
+Pip felt scared. Everything seemed so big, and he felt so small. But then he remembered what his grandmother always said: ""Being small doesn't mean you can't be brave.""
+
+Taking a deep breath, Pip climbed onto the rug's edge. He practiced his best mouse dance, spinning and twirling. His reflection in the shiny faucet made him giggle.
+
+""I may be little,"" Pip said proudly, ""but I can explore anywhere!""
+
+As moonlight streamed through the window, Pip curled up on the cozy rug. He had learned that courage comes in all sizes, even mouse-sized ones.
+
+With a happy yawn, brave little Pip drifted off to sleep, dreaming of tomorrow's adventures.
+
+**Word count: 167 words**",7.78,0.003891,177,23.00,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",claude-3.7-sonnet,"# Tiny Tim's Bathroom Adventure
+
+Tiny Tim was a mouse toy who lived in Emma's dollhouse. One night, after Emma went to sleep, Tim decided to explore the bathroom all by himself.
+
+""It's so big in here!"" Tim squeaked, gazing at the giant bathtub. The smooth sink gleamed in the moonlight, and a fluffy blue rug covered the floor.
+
+Suddenly, Tim heard a sniffle. Behind the bathtub sat Rubber Ducky, looking sad.
+
+""What's wrong?"" Tim asked gently.
+
+""I fell behind the tub yesterday,"" Ducky explained. ""Now Emma can't find me for bath time.""
+
+Though the bathtub seemed enormous to little Tim, he knew he had to help. ""Don't worry! I'll find a way to get you back where Emma can see you.""
+
+Tim pushed and pushed until his tiny paws ached, but finally moved Ducky to the edge of the tub.
+
+When morning came, Emma squealed with delight. ""Ducky! There you are!""
+
+That night, Emma placed Tim beside Ducky on the tub's edge. As moonlight filled the bathroom, Ducky whispered, ""Thank you for being brave.""
+
+Tim smiled. Sometimes even the smallest friends can help solve the biggest problems.
+
+(Word count: 168)",7.63,0.004266,191,24.62,True,False,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",claude-3.5-sonnet,"Title: Molly Mouse's Bathtime Adventure
+
+Molly was a tiny toy mouse who lived in the most wonderful place - a child's bathroom! Every night after everyone went to sleep, she would come alive and have the most delightful adventures.
+
+One evening, Molly noticed a new friend had arrived - a rubber duck who seemed very nervous about floating in the big bathtub. The duck, whose name was Waddles, was afraid of water, which was quite silly for a duck!
+
+""Don't worry,"" Molly said softly, her whiskers twitching with kindness. ""I'll help you get used to the water."" Each night, Molly would sit on the edge of the tub and encourage Waddles to try floating, just a little bit at a time.
+
+""You're doing great!"" she would squeak, as Waddles grew braver and braver. The fuzzy bathroom rug became their meeting spot where they would chat about their progress.
+
+After a week, Waddles was splashing and playing like a proper duck should. ""Thank you for being such a good friend,"" Waddles said to Molly. ""You helped me be brave!""
+
+From that day on, bathtime was the happiest time of day in their cozy bathroom home.
+
+[Word count: 156]",6.66,0.004266,197,25.50,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",claude-3.5-haiku,"Title: Whiskers' Bathroom Adventure
+
+In a cozy little bathroom with soft blue tiles, a tiny mouse named Whiskers lived beneath the sink. Every night, he would peek out and admire the warm, fluffy rug and the shiny porcelain tub.
+
+One evening, Whiskers felt lonely. He wished for a friend to share his quiet space. Just then, a small droplet of water rolled down the sink, making a gentle ""plink"" sound. To his surprise, the droplet spoke in a tiny voice, ""Hello there!""
+
+Whiskers was startled but curious. The water droplet explained that it had traveled from faraway clouds, across mountains and rivers, just to visit this bathroom. ""Sometimes,"" said the droplet, ""the most wonderful friendships can happen in the most unexpected places.""
+
+Whiskers smiled and realized that friendship could be found anywhere, even in the smallest moments. He and the droplet spent the night sharing stories about their adventures, laughing softly so they wouldn't wake the sleeping house.
+
+As moonlight filtered through the bathroom window, Whiskers felt warm, safe, and no longer alone. He knew that kindness and openness could turn any quiet moment into something magical.",6.52,0.001086,187,24.25,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gemini-2.5-pro-preview,"Error with gemini-2.5-pro-preview: 404 models/gemini-2.5-pro-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.20,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gemini-2.5-flash-preview,"Error with gemini-2.5-flash-preview: 404 models/gemini-2.5-flash-preview is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.",0.31,0.000000,31,4.00,False,False,False,False,False,True,False
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gemini-2.0-flash,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gemini-1.5-pro,Error: Gemini API error: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",gpt-4.5-preview,"Title: Mia's Magical Moonlight
+
+In a quiet village beneath the glowing stars, there lived a gentle creature named Mia. She had soft striped fur, adorable cat ears, and cheeks rosy-purple from laughter. Mia loved nighttime because that's when magic happened.
+
+Each evening, Mia tiptoed through the village, softly humming lullabies. Wherever she walked, worries drifted away, and dreams became sweeter.
+
+One night, Mia saw little Ben awake, sitting sadly by his window. ""What's wrong?"" she asked softly.
+
+""I'm afraid of the dark,"" Ben whispered shyly.
+
+""Oh, but the dark is gentle,"" Mia purred warmly. ""It's the moon's cozy blanket, wrapping the world for sleep.""
+
+She took Ben's hand, guiding him outside. Together, they saw twinkling stars and felt a calm breeze whispering goodnight. Mia showed him how peaceful darkness could be, filled with quiet magic and gentle friends.
+
+Ben smiled and hugged Mia tight. ""Now I see,"" he said softly, yawning. ""Nighttime isn't scary—it's magical.""
+
+From that night onward, Ben fell asleep easily, knowing Mia's magic filled the darkness with love.
+
+And each evening, Mia continued her peaceful stroll, spreading comfort and joy beneath the moon's gentle glow, helping all children drift into sweet dreams.",11.50,0.009300,195,25.12,True,True,True,True,True,False,True

@@ -32,7 +32,7 @@ httpx>=0.21.0              # HTTP client (replicate dependency)
 packaging                  # Packaging utilities (replicate dependency)
 
 # Analysis and visualization
-scipy==1.14.1              # Statistical analysis
+scipy==1.13.1              # Statistical analysis
 wordcloud==1.9.4           # For text visualization
 nltk==3.9.1                # Natural language processing
 textstat==0.7.4            # Text readability metrics
