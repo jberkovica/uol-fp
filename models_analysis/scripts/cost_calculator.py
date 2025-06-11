@@ -13,25 +13,36 @@ class CostCalculator:
     
     # Updated 2025 pricing per million tokens (USD)
     OPENAI_PRICING = {
-        'gpt-4o': {'input': 2.50, 'output': 10.00},
-        'gpt-4o-mini': {'input': 0.15, 'output': 0.60},
-        'gpt-4.1': {'input': 2.00, 'output': 8.00},
-        'gpt-4.1-2025-04-14': {'input': 2.00, 'output': 8.00},
-        'gpt-4.1-mini': {'input': 0.40, 'output': 1.60},
+        # Latest 2025 models (removed o3-mini due to high cost and API issues)
+        'gpt-4.5-preview': {'input': 10.00, 'output': 30.00},
+        'gpt-4.1': {'input': 5.00, 'output': 15.00},
+        'gpt-4.1-mini': {'input': 0.30, 'output': 1.20},
         'gpt-4.1-nano': {'input': 0.10, 'output': 0.40},
-        'gpt-4.5': {'input': 75.00, 'output': 150.00},
-        'gpt-4.5-preview': {'input': 75.00, 'output': 150.00},
+        
+        # Current GPT-4o series
+        'gpt-4o': {'input': 5.00, 'output': 15.00},
+        'gpt-4o-2024-11-20': {'input': 2.50, 'output': 10.00},
+        'gpt-4o-2024-08-06': {'input': 2.50, 'output': 10.00},
+        'gpt-4o-2024-05-13': {'input': 5.00, 'output': 15.00},
+        'gpt-4o-mini': {'input': 0.15, 'output': 0.60},
+        'gpt-4o-mini-2024-07-18': {'input': 0.15, 'output': 0.60},
+        
+        # Legacy models
         'gpt-4-turbo': {'input': 10.00, 'output': 30.00},
+        'gpt-4-turbo-2024-04-09': {'input': 10.00, 'output': 30.00},
         'gpt-4': {'input': 30.00, 'output': 60.00},
         'gpt-3.5-turbo': {'input': 0.50, 'output': 1.50},
-        'o1': {'input': 15.00, 'output': 60.00},
-        'o1-preview': {'input': 15.00, 'output': 60.00},
-        'o1-mini': {'input': 1.10, 'output': 4.40},
-        'o3': {'input': 10.00, 'output': 40.00},
-        'o3-mini': {'input': 1.10, 'output': 4.40}
+        'gpt-3.5-turbo-0125': {'input': 0.50, 'output': 1.50},
     }
 
     ANTHROPIC_PRICING = {
+        # Latest Claude 4 models (2025)
+        'claude-opus-4': {'input': 15.00, 'output': 75.00},
+        'claude-opus-4-20250514': {'input': 15.00, 'output': 75.00},
+        'claude-sonnet-4': {'input': 3.00, 'output': 15.00},
+        'claude-sonnet-4-20250514': {'input': 3.00, 'output': 15.00},
+        
+        # Claude 3.x series
         'claude-3-opus': {'input': 15.00, 'output': 75.00},
         'claude-3-opus-20240229': {'input': 15.00, 'output': 75.00},
         'claude-3.7-sonnet': {'input': 3.00, 'output': 15.00},
@@ -45,15 +56,28 @@ class CostCalculator:
     }
 
     GOOGLE_PRICING = {
-        'gemini-2.5-pro': {'input': 2.50, 'output': 15.00},  # >200k tokens
-        'gemini-2.5-pro-preview': {'input': 2.50, 'output': 15.00},
-        'gemini-2.0-flash': {'input': 0.10, 'output': 0.40},
-        'gemini-2.0-flash-lite': {'input': 0.075, 'output': 0.30},
-        'gemini-1.5-pro': {'input': 2.50, 'output': 10.00},  # >128k tokens
-        'gemini-1.5-flash': {'input': 0.15, 'output': 0.60},  # >128k tokens
-        'gemini-1.5-flash-8b': {'input': 0.075, 'output': 0.30},  # >128k tokens
-        'gemini-pro': {'input': 0.50, 'output': 1.50},  # Legacy
-        'gemini-flash': {'input': 0.075, 'output': 0.30}  # Legacy
+        # Latest Gemini 2.5 models (2025)
+        'gemini-2.5-pro-preview': {'input': 3.50, 'output': 14.00},
+        'gemini-2.5-flash-preview': {'input': 0.30, 'output': 1.20},
+        'gemini-2.5-pro-preview-06-05': {'input': 3.50, 'output': 14.00},
+        'gemini-2.5-flash-preview-05-20': {'input': 0.30, 'output': 1.20},
+        
+        # Gemini 2.0 models
+        'gemini-2.0-flash': {'input': 0.30, 'output': 1.20},
+        'gemini-2.0-flash-preview': {'input': 0.30, 'output': 1.20},
+        'gemini-2.0-pro': {'input': 3.50, 'output': 14.00},
+        
+        # Gemini 1.5 models
+        'gemini-1.5-pro': {'input': 3.50, 'output': 14.00},
+        'gemini-1.5-pro-001': {'input': 3.50, 'output': 14.00},
+        'gemini-1.5-flash': {'input': 0.30, 'output': 1.20},
+        'gemini-1.5-flash-001': {'input': 0.30, 'output': 1.20},
+        'gemini-1.5-flash-8b': {'input': 0.15, 'output': 0.60},
+        
+        # Legacy models
+        'gemini-1.0-pro': {'input': 0.50, 'output': 1.50},
+        'gemini-1.0-ultra': {'input': 1.00, 'output': 3.00},
+        'gemini-pro': {'input': 0.50, 'output': 1.50},  # Fallback for older code
     }
 
     # Replicate/Other models
