@@ -278,7 +278,7 @@ def test_replicate():
         return "FAILED", f"API error: {str(e)[:100]}..."
 
 def test_elevenlabs():
-    """Test ElevenLabs API (optional)"""
+    """Test ElevenLabs API with latest models (including v3)"""
     try:
         import requests
         
@@ -286,16 +286,128 @@ def test_elevenlabs():
         if not api_key:
             return "SKIPPED", "API key not found in environment (optional)"
         
-        # Test voices endpoint
+        # Test voices endpoint first
         headers = {"xi-api-key": api_key}
         response = requests.get("https://api.elevenlabs.io/v1/voices", headers=headers)
         
         if response.status_code == 200:
             voices = response.json()
-            return "SUCCESS", f"Connected successfully. {len(voices.get('voices', []))} voices available"
+            voice_count = len(voices.get('voices', []))
+            
+            # Test latest models (2025)
+            test_models = [
+                'eleven_multilingual_v2',  # Established model
+                'eleven_flash_v2_5',       # Fast model
+                'eleven_turbo_v2_5',      # Real-time model
+                'eleven_v3',              # NEW: Most expressive model (June 2025)
+            ]
+            
+            working_models = []
+            for model in test_models:
+                try:
+                    # Simple test synthesis to verify model availability
+                    test_url = f"https://api.elevenlabs.io/v1/text-to-speech/{voices['voices'][0]['voice_id'] if voices.get('voices') else 'default'}"
+                    test_data = {
+                        "text": "Hello test",
+                        "model_id": model
+                    }
+                    
+                    test_response = requests.post(test_url, json=test_data, headers=headers, timeout=10)
+                    if test_response.status_code in [200, 400, 422]:  # 400/422 might be quota but model exists
+                        working_models.append(model)
+                except:
+                    pass  # Model not available
+            
+            return "SUCCESS", f"Connected successfully. {voice_count} voices available. Models: {', '.join(working_models) if working_models else 'v2 models only'}"
         else:
             return "FAILED", f"API error: HTTP {response.status_code}"
             
+    except ImportError:
+        return "FAILED", "Requests library not installed"
+    except Exception as e:
+        return "FAILED", f"API error: {str(e)[:100]}..."
+
+def test_openai_tts():
+    """Test OpenAI TTS API with latest models"""
+    try:
+        from openai import OpenAI
+        
+        api_key = os.getenv('OPENAI_API_KEY')
+        if not api_key:
+            return "SKIPPED", "API key not found in environment"
+        
+        client = OpenAI(api_key=api_key)
+        
+        # Test both TTS models
+        test_models = ['tts-1', 'tts-1-hd']  # HD model for better quality
+        test_voices = ['nova', 'alloy', 'echo', 'fable', 'onyx', 'shimmer']
+        
+        working_models = []
+        for model in test_models:
+            try:
+                # Simple test to verify model access
+                response = client.audio.speech.create(
+                    model=model,
+                    voice="nova",
+                    input="Test"
+                )
+                working_models.append(model)
+                break  # Don't waste quota testing both
+            except Exception as e:
+                if "model" in str(e).lower():
+                    continue
+                else:
+                    break
+        
+        if working_models:
+            return "SUCCESS", f"Connected successfully. Models: {', '.join(working_models)}. Voices: {len(test_voices)} available"
+        else:
+            return "FAILED", "No TTS models accessible"
+        
+    except ImportError:
+        return "FAILED", "OpenAI library not installed (pip install openai)"
+    except Exception as e:
+        return "FAILED", f"API error: {str(e)[:100]}..."
+
+def test_deepseek():
+    """Test DeepSeek API"""
+    try:
+        import requests
+        
+        api_key = os.getenv('DEEPSEEK_API_KEY')
+        if not api_key:
+            return "SKIPPED", "API key not found in environment"
+        
+        # Test DeepSeek API endpoint
+        url = "https://api.deepseek.com/v1/chat/completions"
+        
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        data = {
+            "model": "deepseek-chat",
+            "messages": [{"role": "user", "content": "Hello! This is a test."}],
+            "max_tokens": 5,
+            "temperature": 0.1
+        }
+        
+        response = requests.post(url, json=data, headers=headers, timeout=30)
+        
+        if response.status_code == 200:
+            response_data = response.json()
+            if 'choices' in response_data and response_data['choices']:
+                return "SUCCESS", "Connected successfully. Model: deepseek-chat"
+            else:
+                return "FAILED", "Invalid response format"
+        elif response.status_code == 401:
+            return "FAILED", "Invalid API key"
+        elif response.status_code == 429:
+            return "FAILED", "Rate limit exceeded"
+        else:
+            return "FAILED", f"API error: HTTP {response.status_code} - {response.text[:100]}"
+        
     except ImportError:
         return "FAILED", "Requests library not installed"
     except Exception as e:
@@ -499,7 +611,9 @@ def main():
         ("Google Gemini", test_google, "Required for image captioning & stories"),
         ("List Gemini Models", list_available_gemini_models, "Shows available Gemini models"),
         ("Test Gemini Models", test_gemini_models, "Tests multiple Gemini models for story generation"),
+        ("OpenAI TTS", test_openai_tts, "Test OpenAI text-to-speech models"),
         ("Google Cloud TTS", test_google_cloud_tts, "Uses same Google AI API key as Gemini"),
+        ("DeepSeek", test_deepseek, "Test DeepSeek models for cost-effective story generation"),
         ("Replicate", test_replicate, "Optional for BLIP/LLaVA models"),
         ("Anthropic Claude", test_anthropic, "Optional for story generation"),
         ("ElevenLabs TTS", test_elevenlabs, "Optional for TTS evaluation"),

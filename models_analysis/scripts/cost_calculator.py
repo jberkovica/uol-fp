@@ -93,20 +93,32 @@ class CostCalculator:
         'ltx-video': 0.027                 # ~$0.027 per request
     }
 
-    # DeepSeek pricing (with off-peak discounts)
+    # DeepSeek pricing (with off-peak discounts) - Updated API model names
     DEEPSEEK_PRICING = {
-        'deepseek-r1': {'input': 0.55, 'output': 2.19, 'input_cached': 0.14},
-        'deepseek-v3': {'input': 0.27, 'output': 1.10, 'input_cached': 0.07},
-        'deepseek-chat': {'input': 0.27, 'output': 1.10, 'input_cached': 0.07}
+        'deepseek-reasoner': {'input': 0.55, 'output': 2.19, 'input_cached': 0.14},  # DeepSeek-R1-0528
+        'deepseek-chat': {'input': 0.27, 'output': 1.10, 'input_cached': 0.07}      # DeepSeek-V3-0324
     }
     
     # TTS pricing (per million characters - updated 2025)
     TTS_PRICING = {
-        'elevenlabs_multilingual': 0.30,  # ~$0.30 per 1M characters
-        'elevenlabs_flash': 0.10,         # ~$0.10 per 1M characters  
-        'openai_tts': 15.00,              # $15.00 per 1M characters
-        'google_cloud_tts': 4.00,         # $4.00 per 1M characters (standard voices)
-        'google_cloud_tts_neural': 16.00  # $16.00 per 1M characters (neural voices)
+        # ElevenLabs models (2025) - Based on Creator plan pricing
+        'elevenlabs_v3': 220.00,             # ~$220 per 1M characters (NEW: most expressive, 80% off until June)
+        'elevenlabs_multilingual': 220.00,   # ~$220 per 1M characters (Creator plan: $22/100k chars)
+        'elevenlabs_flash': 220.00,          # ~$220 per 1M characters (same pricing tier)
+        'elevenlabs_turbo': 220.00,          # ~$220 per 1M characters (same pricing tier)
+        
+        # OpenAI models (2025)
+        'openai_tts_hd': 30.00,              # $30.00 per 1M characters (HD quality)
+        'openai_tts': 15.00,                 # $15.00 per 1M characters (standard)
+        
+        # Google Cloud TTS models
+        'google_cloud_tts_neural2': 16.00,   # $16.00 per 1M characters (Neural2 voices)
+        'google_cloud_tts_wavenet': 16.00,   # $16.00 per 1M characters (WaveNet voices)  
+        'google_cloud_tts': 4.00,            # $4.00 per 1M characters (standard voices)
+        
+        # Market reference (2025)
+        'openai_s1': 15.00,                  # OpenAudio S1 - most affordable state-of-the-art
+        'azure_tts_hd': 30.00                # Azure HD voices (reference)
     }
     
     @classmethod

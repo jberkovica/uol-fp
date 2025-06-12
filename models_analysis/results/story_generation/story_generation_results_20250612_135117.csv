@@ -1,0 +1,141 @@
+image_file,image_type,image_caption,story_model,generated_story,execution_time,cost,word_count,quality_score,meets_length_req,has_title,contains_dialogue,positive_tone,story_structure,age_appropriate,bedtime_suitable
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gpt-4o,"Title: The Magical Red Jumpsuit
+
+Once upon a time, in a cozy little cottage, there lived a cheerful doll named Daisy. Daisy had curly blonde hair and wore a bright red jumpsuit. She sat on a soft couch in the living room, where she watched over her family with a gentle smile.
+
+Every evening, after dinner, the family gathered around Daisy to share stories. One night, curious little Mia asked, ""Daisy, why do you always look so happy?"" To everyone's surprise, Daisy spoke in a sweet, tiny voice. ""My happiness comes from the warmth and love that fills this home,"" she said.
+
+Mia's eyes widened with wonder. ""But how can we make sure our home always feels warm and loving?"" she asked. Daisy replied, ""By being kind, sharing smiles, and helping one another, you fill the house with happiness.""
+
+The family smiled at Daisy's simple yet powerful wisdom. From that day on, they made sure to practice kindness every day. They helped each other with chores, shared stories, and filled their home with laughter and love.
+
+As the stars twinkled in the night sky, Daisy sat quietly, feeling the warmth of the family's love, her heart as cozy as the little cottage.
+
+And they all lived happily ever after.",6.68,0.004760,209,27.00,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gpt-4o-mini,"Title: Bella’s Cozy Evening
+
+Once upon a time, in a cheerful little living room, there sat a lovely doll named Bella. Bella had curly blonde hair that bounced as she smiled, and she wore a bright red jumpsuit that sparkled under the soft light. 
+
+Every evening, Bella would sit on the cozy couch, waiting for her best friend, Lily. Lily loved to share stories and adventures with Bella. One starry night, as the moon peeked through the window, Lily snuggled next to Bella. 
+
+“Let’s go on a treasure hunt!” Lily whispered excitedly. Bella’s eyes sparkled with joy. Together, they imagined finding sparkling gems and colorful seashells. 
+
+As they played, Lily remembered something important. “Bella,” she said, “the best treasures are not just shiny things. They are the moments we share and the love we give.” Bella nodded, her heart filled with warmth.
+
+That night, as they drifted off to sleep, Bella and Lily dreamed of their next adventure. They knew that every day was a treasure, filled with laughter and friendship. 
+
+And so, under the gentle glow of the moon, they rested peacefully, surrounded by love.",6.75,0.000172,186,24.00,True,True,False,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.0-flash,"Title: Rosie's Cozy Couch
+
+Rosie the doll, with her bouncy blonde curls and bright red jumpsuit, loved her spot on the big, soft couch. After a long day of playing house with Lily, Rosie would settle in for a rest. Sometimes, Lily would read her stories about brave knights and sparkly unicorns. Other times, Rosie would simply watch the sunbeams dance across the living room floor.
+
+One evening, Lily was sad because her tower of blocks had tumbled down. Rosie, even though she was just a doll, felt Lily’s sadness. She nudged closer, her button eyes offering silent comfort. Lily picked Rosie up and hugged her tight. ""Thank you, Rosie,"" she whispered.
+
+Rosie couldn’t speak, but she knew that even small acts of kindness, like simply being there, could make a big difference. Lily, feeling a little better, snuggled beside Rosie on the couch. They watched a cartoon about friendly animals, and soon Lily was giggling again. The couch felt extra cozy, filled with love and the quiet joy of friendship. Rosie smiled her stitched smile, happy to be right where she belonged.",2.27,0.000327,183,23.75,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.0-flash-lite,"Title: Ruby's Cozy Corner
+
+Ruby the doll, with her bouncy blonde curls and bright red jumpsuit, loved her cozy corner on the big, comfy couch. Every evening, after playtime, she’d settle in, waiting for the little girl, Lily, to join her.
+
+One day, Lily was sad. She’d fallen and scraped her knee. Ruby watched as Lily’s tears fell. “It’s alright,” Ruby whispered, even though dolls don't actually talk. She knew that sometimes, things hurt, both inside and out.
+
+Lily snuggled close, burying her face in Ruby’s soft curls. Ruby, in turn, squeezed Lily’s hand with her tiny, plastic one. Lily slowly stopped crying. “Ruby, you always make me feel better,” she mumbled.
+
+That night, Lily and Ruby sat together, watching the fireflies dance outside the window. Ruby knew that even when things felt tough, there was always comfort to be found. Sometimes, all you needed was a friend, a comfy couch, and a little bit of love to feel better. Soon, Lily was fast asleep, and Ruby, still holding Lily’s hand, dreamt of sunny days and happy adventures.",2.11,0.000440,178,23.12,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-1.5-pro,"Title: Lily's Cozy Couch Adventure
+
+Lily, a doll with bouncy blonde curls and a bright red jumpsuit, loved her cozy spot on the big, comfy couch. Every evening, when the sun dipped low and painted the sky in soft hues of orange and pink, Lily would settle in for an adventure. Not a wild, running-and-jumping adventure, but a quiet, thoughtful one.
+
+Tonight, Lily imagined she was a brave astronaut, zooming through the starry sky. The soft couch cushions became her spaceship, and the fluffy throw pillow, her trusty helmet.  She hummed a little tune, pretending it was the rumble of her rocket engines.
+
+Suddenly, she noticed a small tear in the fabric of her jumpsuit.  ""Oh dear,"" she whispered.  At first, Lily felt a little sad.  Her favourite jumpsuit was damaged! But then, she remembered what her grandma always said: ""Even the smallest tear can be mended with a little love and care.""
+
+So, Lily carefully threaded a needle with bright red yarn and, with tiny stitches, mended the tear.  It wasn't perfect, but it was strong.  And somehow, the little mended spot made the jumpsuit even more special.  Smiling, Lily snuggled into her cozy spaceship, ready for a good night’s sleep, knowing that even small problems can be solved with a little bit of effort and a whole lot of heart.",5.99,0.004669,222,28.50,False,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-1.5-flash,"Title: Rosie's Red Jumpsuit
+
+Rosie the doll, with her bouncy blonde curls, sat on the comfy couch.  She wore a bright red jumpsuit, her favorite outfit.  Rosie loved her jumpsuit because it made her feel brave and ready for anything.  Today, she was waiting for Lily, her best friend, to come over for a playdate.
+
+Lily arrived, carrying her favorite teddy bear, Barnaby.  They played tea party, using Rosie's tiny teacups and a pretend cake.  They giggled and shared secrets, building a magnificent castle out of blocks.  Sometimes, Lily accidentally knocked over the blocks, making Rosie a little frustrated.  But Lily always apologized and helped rebuild, showing Rosie how to be patient and kind.
+
+As the sun began to set, casting a warm glow across the room, Lily hugged Rosie goodbye.  Rosie felt a warm feeling inside.  Even though things didn't always go perfectly, being a good friend meant helping each other and being kind, no matter what.  She snuggled into the couch, her red jumpsuit feeling extra cozy, ready for a peaceful night's sleep.",1.99,0.000329,175,22.75,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,deepseek-chat,"**Title: Rosie’s Cozy Day**  
+
+Rosie the doll sat on the big, soft couch, her curly blonde hair bouncing as she snuggled into the cushions. She wore her favorite red jumpsuit, the one that made her feel brave and bright. Outside, raindrops tapped gently on the window, but inside, the room was warm and safe.  
+
+Rosie looked around at her toy friends—Teddy, Bunny, and Mr. Blocks—all gathered close. ""What should we do today?"" she asked. Teddy suggested a tea party, Bunny wanted to tell stories, and Mr. Blocks hoped to build a tower. Rosie smiled. ""Let’s do all of them!""  
+
+They sipped pretend tea, shared tales of adventures, and built the tallest tower ever. When it wobbled, Rosie giggled. ""Oops! Let’s try again."" Together, they rebuilt it, even taller this time.  
+
+As the rain slowed, Rosie yawned. ""Today was perfect,"" she whispered, curling up between her friends. The room grew quiet, filled with the happy kind of tired that comes from a day well spent. Rosie closed her eyes, knowing tomorrow would bring more joy—just like today.",15.94,0.000312,176,22.88,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,deepseek-reasoner,"**Title: Rosie's Cozy Spot**
+
+Rosie the doll sat on the big, soft couch. Her bright yellow curls bounced softly, and her red jumpsuit was as cheerful as a summer berry. The living room was quiet. Sunlight streamed through the window, warming her little cloth feet.
+
+Sometimes, Rosie felt a tiny bit lonely when the house was still. She watched dust motes dance in the sunbeam and wondered when her friend, Lily, would be home. Rosie loved Lily best of all.
+
+Just then, the front door burst open! Lily skipped",24.31,0.000328,89,11.88,False,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gpt-4o,"Title: Benny's Cozy Corner
+
+In a cozy little room filled with soft colors and gentle light, there sat a fabric bunny named Benny. Benny wore a cheerful striped outfit, and his favorite spot was a coral chair by the window. Each morning, the sun would peek in, bathing Benny in a warm, golden glow.
+
+Benny loved to watch the world go by from his chair. He saw butterflies fluttering past and birds chirping their morning songs. But most of all, Benny cherished the moments when Lucy, his best friend, would sit beside him.
+
+Lucy loved to share her day with Benny. ""Today, I learned how to tie my shoes!"" she would exclaim, showing off her neatly tied laces. Benny listened closely, his little fabric ears perked up with interest.
+
+One day, Lucy’s face looked a little sad. ""I spilled paint on my picture,"" she sighed. Benny, though quiet, seemed to say, ""It's okay to make mistakes. They help us learn and grow.""
+
+Lucy smiled, feeling better. She hugged Benny tightly and promised to try again tomorrow. As the stars appeared in the night sky, Benny and Lucy cuddled up together, knowing that tomorrow would be another chance to learn and explore.
+
+And so, Benny and Lucy drifted off to sleep, wrapped in warmth and friendship.",5.96,0.004870,215,27.75,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gpt-4o-mini,"Title: Benny’s Cozy Adventure
+
+Once upon a time, in a sunny little room, there lived a fabric bunny named Benny. Benny wore a cheerful striped outfit and loved to sit on his coral chair, watching the world around him. Though Benny was just a toy, he had a big heart and a sprinkle of magic.
+
+One day, a little girl named Mia picked Benny up and hugged him tight. “Let’s go on an adventure!” she exclaimed. With a giggle, they imagined flying through the clouds and dancing with the stars. Benny whispered, “Every adventure starts with a spark of imagination!”
+
+As they journeyed through Mia’s dreams, they met friendly animals and explored enchanted forests. Together, they learned that kindness and laughter could light up even the darkest nights. 
+
+When morning came, Mia woke up with a smile, holding Benny close. “Thank you for our adventure,” she said. Benny knew that every day could be filled with magic if they believed.
+
+As the sun rose, Benny settled back on his coral chair, knowing that love and imagination would always bring them together. And so, in their cozy world, happiness bloomed.",4.41,0.000164,189,24.38,True,True,False,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.0-flash,"Title: Barnaby's Button
+
+Barnaby the bunny, dressed in his favourite stripy overalls, sat on his coral chair. He was feeling a bit glum. His favourite button, the shiny blue one on his overalls, had popped off!
+
+“Oh dear,” Barnaby sighed, his fluffy ears drooping. He looked everywhere, but the button was nowhere to be seen. He felt a tear prickle in his eye.
+
+Suddenly, Mama Bunny hopped in. ""What's wrong, my sweet?"" she asked gently.
+
+Barnaby explained about the missing button. Mama Bunny smiled. ""Sometimes,"" she said, ""things go missing. But it doesn't mean they're gone forever. And even without that button, you're still Barnaby, the bravest, kindest bunny I know.""
+
+She gave him a big hug. Barnaby snuggled close. Maybe Mama was right. He was still Barnaby.
+
+Then, he spotted something sparkling under the chair! It was his button! He cheered and Mama Bunny sewed it back on, even tighter than before. Barnaby hopped off the chair, ready for adventure. He knew, even if things go wrong, there's always someone to help and something to be happy about.",2.16,0.000348,179,23.12,True,True,True,True,True,True,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.0-flash-lite,"Title: Barnaby's Best Day
+
+Barnaby the bunny loved Tuesdays. Tuesdays were cuddle-on-the-coral-chair days! Barnaby, in his favorite striped overalls, would hop onto his special chair. It was soft and squishy, just perfect for snuggling.
+
+Today, Lily, his little human, was reading a book. Barnaby listened carefully, his button eyes wide. Sometimes, Lily would get frustrated when a word was tricky. But Barnaby knew a secret: taking a deep breath always helped.
+
+When Lily sighed and scrunched up her nose, Barnaby gave her a gentle nudge with his floppy ear. Lily giggled. ""You're right, Barnaby,"" she said. She took a deep breath, and then she read the tricky word again. This time, she got it!
+
+Lily gave Barnaby a big hug. ""Thank you, Barnaby,"" she whispered. ""You always know how to make me feel better."" Barnaby snuggled close, feeling warm and loved. He knew that even when things were hard, a little kindness and a deep breath could make everything alright. Soon, Lily’s eyelids grew heavy, and they drifted off to sleep, happy and content.",2.21,0.000450,174,22.62,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-1.5-pro,"Title: Barnaby's Coral Chair
+
+Barnaby Bunny loved his coral chair. It was small, just his size, and sat by the window where the sun made warm, stripey patterns on the floor.  Barnaby wore a stripy outfit too, blue and white like candy canes. He'd sit in his chair and watch the world go by.  He saw squirrels chasing each other up trees and robins collecting twigs for their nests. Sometimes, he’d even see children playing hopscotch on the sidewalk.
+
+One day, a little ladybug landed on Barnaby’s nose.  He giggled, which made the ladybug fly away.  Barnaby felt a little sad.  He wished the ladybug had stayed longer.  Then, he remembered the robin’s nest. The robin didn't chase the twigs away; she gathered them close to make something beautiful and safe.
+
+Barnaby realized that sometimes, things come and go. That’s okay.  He could still appreciate the ladybug’s visit, even if it was short.  He looked out the window again, feeling peaceful. The sun was setting, painting the sky in soft pinks and oranges.  Barnaby snuggled into his coral chair, happy and content.  It was a perfect ending to a lovely day.",5.58,0.004270,191,24.75,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-1.5-flash,"Title: Barnaby's Coral Chair
+
+Barnaby the bunny was a very special toy. He had soft, fluffy fur and wore a bright red and white striped outfit.  His favorite place to sit was on a coral-colored chair in Lily's room.  Lily loved Barnaby very much.
+
+One day, Lily was feeling sad because she had fallen over while learning to ride her bike.  She sat on the floor, tears welling up. Barnaby hopped off his coral chair and snuggled close.  He couldn't talk, but Lily knew he understood.
+
+""It's okay to fall down, Lily,"" Barnaby seemed to say with his big, floppy ears. ""It just means you're trying something new and brave.  You'll get better with practice.""
+
+Lily smiled, wiping her tears.  Barnaby was right!  She snuggled Barnaby close, feeling his soft fur.  She knew that even though she'd fallen, she would try again tomorrow.  Together, Lily and Barnaby sat on the coral chair, feeling happy and safe, ready for a good night's sleep.  The soft glow of the moon shone through the window, making Barnaby's stripes shimmer gently.",2.07,0.000341,177,22.88,True,True,True,True,False,True,True

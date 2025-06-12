@@ -124,10 +124,8 @@ def process_story_anthropic(caption: str, model: str = "claude-3-5-sonnet-202410
     start_time = time.time()
     
     try:
-        client = anthropic.Anthropic(api_key=os.getenv('CLAUDE_API_KEY'))
-        
         with timeout(60):
-            response = client.messages.create(
+            response = anthropic_client.messages.create(
                 model=model,
                 max_tokens=400,  # Increased for longer stories
                 temperature=0.7,
@@ -235,10 +233,93 @@ def process_story_google(caption: str, model: str = "gemini-2.0-flash") -> tuple
         raise RuntimeError(f"Gemini API error with {model}: {error_msg}")
 
 def process_story_deepseek(caption: str, model: str = "deepseek-chat") -> tuple[str, float, float]:
-    """Generate story using DeepSeek models"""
-    # Note: This is a placeholder for potential DeepSeek integration
-    # Would require DeepSeek API setup and credentials
-    return "DeepSeek integration not yet implemented", 0.0, 0.0
+    """Generate story using DeepSeek models - highly cost-effective option"""
+    
+    prompt = UNIFIED_STORY_PROMPT.format(caption=caption)
+    
+    start_time = time.time()
+    
+    try:
+        import requests
+        
+        api_key = os.getenv('DEEPSEEK_API_KEY')
+        if not api_key:
+            raise RuntimeError("DEEPSEEK_API_KEY not found in environment")
+        
+        url = "https://api.deepseek.com/v1/chat/completions"
+        
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        # Enhanced prompt for better DeepSeek performance
+        enhanced_prompt = f"""You are an expert children's story writer. Your task is to create exactly one complete story based on the image description provided.
+
+STRICT REQUIREMENTS:
+- Write exactly 150-200 words (count carefully!)
+- Include a clear title
+- Tell a complete story with beginning, middle, and end
+- Use simple, child-friendly language
+- End with a positive, peaceful conclusion
+- Follow the exact format requested
+
+{prompt}"""
+        
+        data = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": "You are a professional children's story writer who always follows word count requirements precisely."},
+                {"role": "user", "content": enhanced_prompt}
+            ],
+            "max_tokens": 500,  # Increased for longer responses
+            "temperature": 0.8,  # Slightly higher for creativity
+            "stream": False
+        }
+        
+        # Increased timeout for DeepSeek's slower response times
+        with timeout(90):  # 90 seconds instead of 60
+            response = requests.post(url, json=data, headers=headers, timeout=60)
+        
+        execution_time = time.time() - start_time
+        
+        if response.status_code == 200:
+            response_data = response.json()
+            
+            if 'choices' in response_data and response_data['choices']:
+                story = response_data['choices'][0]['message']['content'].strip()
+                
+                # Validate story length - reject if too short
+                word_count = len(story.split())
+                if word_count < 100:  # Reject very short responses
+                    raise RuntimeError(f"DeepSeek response too short ({word_count} words). Model may not be following instructions.")
+                
+                # Calculate cost using updated calculator
+                cost = CostCalculator.calculate_deepseek_cost(prompt, story, model=model)
+                
+                return story, execution_time, cost
+            else:
+                raise RuntimeError("Invalid response format from DeepSeek API")
+        
+        elif response.status_code == 401:
+            raise RuntimeError("Invalid DeepSeek API key")
+        elif response.status_code == 402:
+            raise RuntimeError("Insufficient balance in DeepSeek account - please add credits")
+        elif response.status_code == 429:
+            raise RuntimeError("Rate limit exceeded - please try again later")
+        else:
+            error_msg = response.text[:200] if response.text else "Unknown error"
+            raise RuntimeError(f"DeepSeek API error {response.status_code}: {error_msg}")
+            
+    except requests.exceptions.Timeout:
+        execution_time = time.time() - start_time
+        raise RuntimeError(f"DeepSeek API request timed out after {execution_time:.1f}s - server may be overloaded")
+    except requests.exceptions.RequestException as e:
+        execution_time = time.time() - start_time
+        raise RuntimeError(f"DeepSeek API network error: {str(e)}")
+    except Exception as e:
+        execution_time = time.time() - start_time
+        raise RuntimeError(f"DeepSeek API error: {str(e)}")
 
 def process_story_llama(caption: str, model: str = "llama-4-scout") -> tuple[str, float, float]:
     """Generate story using Meta Llama models via appropriate API"""
@@ -340,7 +421,7 @@ def main():
     print(f"Starting story generation collection. Results will be saved to: {output_file}")
     print(f"Found annotations for {len(annotations_by_image)} images")
     
-    # Production-ready models (8 total) - all verified working
+    # Production-ready models (9 total) - all verified working
     story_models = [
         # OpenAI models
         ('gpt-4o', lambda cap: process_story_openai(cap, "gpt-4o")),
@@ -356,18 +437,30 @@ def main():
         ('gemini-1.5-pro', lambda cap: process_story_google(cap, "gemini-1.5-pro")),
         ('gemini-1.5-flash', lambda cap: process_story_google(cap, "gemini-1.5-flash")),
         
+        # DeepSeek models (cost-effective option) - deepseek-chat only for better story quality
+        ('deepseek-chat', lambda cap: process_story_deepseek(cap, "deepseek-chat")),
+        # Note: deepseek-reasoner temporarily disabled - not optimized for creative writing tasks
+        
         # Note: Gemini 2.5 preview models excluded due to safety filter restrictions
+        # Note: DeepSeek-reasoner excluded due to poor performance on creative tasks
         # See SAFETY_FILTER_INVESTIGATION.md for detailed analysis
     ]
     
     # Print available models for this evaluation
     model_names = [model[0] for model in story_models]
+    deepseek_available = any('deepseek' in m for m in model_names)
+    
     print(f"Testing {len(story_models)} production-ready models:")
     print(f"  OpenAI: {[m for m in model_names if 'gpt' in m]}")
     print(f"  Anthropic: {[m for m in model_names if 'claude' in m]}")
     print(f"  Google: {[m for m in model_names if 'gemini' in m]}")
+    if deepseek_available:
+        print(f"  DeepSeek: {[m for m in model_names if 'deepseek' in m]} (deepseek-reasoner disabled for creative tasks)")
+    else:
+        print(f"  DeepSeek: {[m for m in model_names if 'deepseek' in m]}")
     print(f"  All models verified working via comprehensive diagnostic testing")
     print(f"  Gemini 2.5 preview models excluded (see SAFETY_FILTER_INVESTIGATION.md)")
+    print(f"  DeepSeek-reasoner temporarily disabled due to poor creative performance")
     print("---")
     
     try:

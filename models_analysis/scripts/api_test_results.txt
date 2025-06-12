@@ -43,15 +43,22 @@ Testing List Gemini Models...
 Testing Test Gemini Models...
 
    Testing 4 Gemini models...
-      SUCCESS gemini-2.0-flash - Words: 185, Title: Yes, Length: Yes
-      SUCCESS gemini-2.0-flash-lite - Words: 190, Title: Yes, Length: Yes
-      SUCCESS gemini-1.5-pro - Words: 209, Title: Yes, Length: Yes
-      SUCCESS gemini-1.5-flash - Words: 171, Title: Yes, Length: Yes
+      SUCCESS gemini-2.0-flash - Words: 168, Title: Yes, Length: Yes
+      SUCCESS gemini-2.0-flash-lite - Words: 188, Title: Yes, Length: Yes
+      SUCCESS gemini-1.5-pro - Words: 185, Title: Yes, Length: Yes
+      SUCCESS gemini-1.5-flash - Words: 181, Title: Yes, Length: Yes
 [OK] Test Gemini Models   | SUCCESS  | Working models (4/4): gemini-2.0-flash, gemini-2.0-flash-lite, gemini-1.5-pro, gemini-1.5-flash
+
+Testing OpenAI TTS...
+[OK] OpenAI TTS           | SUCCESS  | Connected successfully. Models: tts-1. Voices: 6 available
+   Cost: Cost: ~$0.001 per test
 
 Testing Google Cloud TTS...
 [OK] Google Cloud TTS     | SUCCESS  | Connected with Google AI API key. 1442 voices available
    Cost: Cost: ~$0.0001 per test
+
+Testing DeepSeek...
+[OK] DeepSeek             | SUCCESS  | Connected successfully. Model: deepseek-chat
 
 Testing Replicate...
 [OK] Replicate            | SUCCESS  | Connected successfully. Access to 25 models
@@ -62,7 +69,7 @@ Testing Anthropic Claude...
    Cost: Cost: ~$0.001 per test
 
 Testing ElevenLabs TTS...
-[OK] ElevenLabs TTS       | SUCCESS  | Connected successfully. 19 voices available
+[OK] ElevenLabs TTS       | SUCCESS  | Connected successfully. 19 voices available. Models: eleven_multilingual_v2, eleven_flash_v2_5, eleven_turbo_v2_5
    Cost: Cost: Free for voice list
 
 Testing Diagnose Gemini Issues...
@@ -85,10 +92,10 @@ Testing Diagnose Gemini Issues...
    Has parts: 1
    Part type: <class 'google.ai.generativelanguage_v1beta.types.content.Part'>
    Part attributes: ['__bool__', '__class__', '__contains__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'code_execution_result', 'executable_code', 'file_data', 'function_call', 'function_response', 'inline_data', 'text']
-   Part has text: 'Okay, here's your sentence: The quick brown fox ju...'
+   Part has text: 'Okay, here is a sentence: The fluffy cat napped pe...'
    Finish reason: 1
-   response.text works: 'Okay, here's your sentence: The quick brown fox ju...'
-   Parts access works: 'Okay, here's your sentence: The quick brown fox ju...'
+   response.text works: 'Okay, here is a sentence: The fluffy cat napped pe...'
+   Parts access works: 'Okay, here is a sentence: The fluffy cat napped pe...'
    gemini-2.0-flash - SUCCESS
 
    Testing: gemini-2.5-pro-preview-06-05
@@ -106,10 +113,10 @@ Testing Diagnose Gemini Issues...
    Has parts: 1
    Part type: <class 'google.ai.generativelanguage_v1beta.types.content.Part'>
    Part attributes: ['__bool__', '__class__', '__contains__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'code_execution_result', 'executable_code', 'file_data', 'function_call', 'function_response', 'inline_data', 'text']
-   Part has text: 'The world is full of endless possibilities and won...'
+   Part has text: 'The quick brown fox jumps over the lazy dog....'
    Finish reason: 1
-   response.text works: 'The world is full of endless possibilities and won...'
-   Parts access works: 'The world is full of endless possibilities and won...'
+   response.text works: 'The quick brown fox jumps over the lazy dog....'
+   Parts access works: 'The quick brown fox jumps over the lazy dog....'
    gemini-2.5-pro-preview-06-05 - SUCCESS
 
    Testing: gemini-2.5-flash-preview-05-20
@@ -148,10 +155,10 @@ Testing Diagnose Gemini Issues...
    Has parts: 1
    Part type: <class 'google.ai.generativelanguage_v1beta.types.content.Part'>
    Part attributes: ['__bool__', '__class__', '__contains__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'code_execution_result', 'executable_code', 'file_data', 'function_call', 'function_response', 'inline_data', 'text']
-   Part has text: 'Even the smallest star shines in the vast darkness...'
+   Part has text: 'The old bookstore smelled of leather, dust, and qu...'
    Finish reason: 1
-   response.text works: 'Even the smallest star shines in the vast darkness...'
-   Parts access works: 'Even the smallest star shines in the vast darkness...'
+   response.text works: 'The old bookstore smelled of leather, dust, and qu...'
+   Parts access works: 'The old bookstore smelled of leather, dust, and qu...'
    models/gemini-2.5-pro-preview-06-05 - SUCCESS
 
    Testing: models/gemini-2.5-flash-preview-05-20
@@ -169,10 +176,10 @@ Testing Diagnose Gemini Issues...
    Has parts: 1
    Part type: <class 'google.ai.generativelanguage_v1beta.types.content.Part'>
    Part attributes: ['__bool__', '__class__', '__contains__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'code_execution_result', 'executable_code', 'file_data', 'function_call', 'function_response', 'inline_data', 'text']
-   Part has text: 'The quick brown fox jumps over the lazy dog....'
+   Part has text: 'Here is one sentence....'
    Finish reason: 1
-   response.text works: 'The quick brown fox jumps over the lazy dog....'
-   Parts access works: 'The quick brown fox jumps over the lazy dog....'
+   response.text works: 'Here is one sentence....'
+   Parts access works: 'Here is one sentence....'
    models/gemini-2.5-flash-preview-05-20 - SUCCESS
 
    AVAILABLE MODELS CONTAINING '2.5':
@@ -211,7 +218,7 @@ Testing Diagnose Gemini Issues...
 ============================================================
 SUMMARY
 ============================================================
-Successful: 9
+Successful: 11
 Failed: 0
 Skipped: 0
 
