@@ -217,7 +217,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                   () {
                     Navigator.pop(context);
                     // Handle camera selection
-                    Navigator.pushNamed(context, '/processing-screen');
+                    Navigator.pushNamed(context, '/processing');
                   },
                 ),
                 _buildImageSourceButton(
@@ -227,7 +227,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                   () {
                     Navigator.pop(context);
                     // Handle gallery selection
-                    Navigator.pushNamed(context, '/processing-screen');
+                    Navigator.pushNamed(context, '/processing');
                   },
                 ),
               ],
