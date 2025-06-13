@@ -1,0 +1,7 @@
+provider,voice_id,model,is_child_friendly,execution_time,cost_usd,audio_file_path,file_size_bytes,duration_estimate_sec,quality_score,generation_error,story_hash,story_source_model,story_source_image,story_word_count,character_count,timestamp
+openai,alloy,tts-1,False,14.362,0.01995,../results/tts_analysis/audio_files/story_fca6a068_openai_alloy.wav,3919844,122.5,12.75,False,fca6a068,custom_test_story,robot_and_butterfly_workshop,210,1330,20250613_134056
+openai,echo,tts-1,False,8.499,0.01995,../results/tts_analysis/audio_files/story_fca6a068_openai_echo.wav,3932444,122.89,12.75,False,fca6a068,custom_test_story,robot_and_butterfly_workshop,210,1330,20250613_134056
+openai,fable,tts-1,True,16.958,0.01995,../results/tts_analysis/audio_files/story_fca6a068_openai_fable.wav,3964244,123.88,12.75,False,fca6a068,custom_test_story,robot_and_butterfly_workshop,210,1330,20250613_134056
+openai,onyx,tts-1,False,10.081,0.01995,../results/tts_analysis/audio_files/story_fca6a068_openai_onyx.wav,3923444,122.61,12.75,False,fca6a068,custom_test_story,robot_and_butterfly_workshop,210,1330,20250613_134056
+openai,nova,tts-1,True,10.541,0.01995,../results/tts_analysis/audio_files/story_fca6a068_openai_nova.wav,3952844,123.53,12.75,False,fca6a068,custom_test_story,robot_and_butterfly_workshop,210,1330,20250613_134056
+openai,shimmer,tts-1,True,16.141,0.01995,../results/tts_analysis/audio_files/story_fca6a068_openai_shimmer.wav,3958244,123.7,12.75,False,fca6a068,custom_test_story,robot_and_butterfly_workshop,210,1330,20250613_134056
