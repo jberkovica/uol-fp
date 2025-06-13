@@ -20,7 +20,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/
 lib64/
 parts/
 sdist/
@@ -45,9 +45,9 @@ tts_outputs/
 # data/
 
 # Results and generated files
-*_results.csv
-*_summary.csv
-*.log
+# *_results.csv
+# *_summary.csv
+# *.log
 
 # IDE specific files
 .idea/
@@ -71,3 +71,5 @@ tts_outputs/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# TODO: update for Flutter
