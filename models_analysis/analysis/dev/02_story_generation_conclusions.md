@@ -1,6 +1,6 @@
 # Story Generation Model Evaluation: Comprehensive Analysis Results
 
-**Project**: MIRA - Multi-modal Image Recognition and Analysis  
+**Project**: Mira Storyteller app  
 **Component**: Large Language Model Evaluation for Children's Educational Content  
 **Institution**: University of London Final Project  
 **Analysis Date**: December 2025  
@@ -257,7 +257,7 @@ For educational institutions and technology developers, this research provides a
 
 ---
 
-**Research Team**: MIRA Project Development Team  
+**Research Team**: Mira Storyteller App Development Team  
 **Institution**: University of London  
 **Contact**: Final Project Evaluation Committee  
 **Data Availability**: Complete evaluation dataset and analysis code available in project repository  

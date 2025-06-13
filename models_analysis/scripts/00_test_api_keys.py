@@ -288,37 +288,63 @@ def test_elevenlabs():
         
         # Test voices endpoint first
         headers = {"xi-api-key": api_key}
-        response = requests.get("https://api.elevenlabs.io/v1/voices", headers=headers)
+        response = requests.get("https://api.elevenlabs.io/v1/voices", headers=headers, timeout=10)
         
         if response.status_code == 200:
             voices = response.json()
             voice_count = len(voices.get('voices', []))
             
+            # Find child-friendly voices
+            child_friendly_voices = []
+            if voices.get('voices'):
+                for voice in voices['voices']:
+                    voice_name = voice.get('name', '').lower()
+                    if any(name in voice_name for name in ['bella', 'elli', 'domi', 'rachel']):
+                        child_friendly_voices.append(voice.get('name', 'Unknown'))
+            
             # Test latest models (2025)
             test_models = [
                 'eleven_multilingual_v2',  # Established model
                 'eleven_flash_v2_5',       # Fast model
-                'eleven_turbo_v2_5',      # Real-time model
-                'eleven_v3',              # NEW: Most expressive model (June 2025)
+                'eleven_turbo_v2_5',       # Real-time model
+                'eleven_v3',               # NEW: Most expressive model (June 2025)
             ]
             
             working_models = []
             for model in test_models:
                 try:
-                    # Simple test synthesis to verify model availability
-                    test_url = f"https://api.elevenlabs.io/v1/text-to-speech/{voices['voices'][0]['voice_id'] if voices.get('voices') else 'default'}"
-                    test_data = {
-                        "text": "Hello test",
-                        "model_id": model
-                    }
-                    
-                    test_response = requests.post(test_url, json=test_data, headers=headers, timeout=10)
-                    if test_response.status_code in [200, 400, 422]:  # 400/422 might be quota but model exists
-                        working_models.append(model)
+                    # Use first available voice for testing
+                    if voices.get('voices'):
+                        voice_id = voices['voices'][0]['voice_id']
+                        test_url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+                        test_data = {
+                            "text": "Hello test",
+                            "model_id": model,
+                            "voice_settings": {
+                                "stability": 0.5,
+                                "similarity_boost": 0.8
+                            }
+                        }
+                        
+                        test_response = requests.post(test_url, json=test_data, headers=headers, timeout=10)
+                        if test_response.status_code in [200, 400, 422]:  # 400/422 might be quota but model exists
+                            working_models.append(model)
                 except:
                     pass  # Model not available
             
-            return "SUCCESS", f"Connected successfully. {voice_count} voices available. Models: {', '.join(working_models) if working_models else 'v2 models only'}"
+            status_msg = f"Connected successfully. {voice_count} voices available"
+            if child_friendly_voices:
+                status_msg += f". Child-friendly voices: {', '.join(child_friendly_voices[:3])}"
+            if working_models:
+                status_msg += f". Models: {', '.join(working_models)}"
+            else:
+                status_msg += ". Models: v2 models only"
+            
+            return "SUCCESS", status_msg
+        elif response.status_code == 401:
+            return "FAILED", "Invalid API key"
+        elif response.status_code == 429:
+            return "FAILED", "Rate limit exceeded - try again later"
         else:
             return "FAILED", f"API error: HTTP {response.status_code}"
             
@@ -328,7 +354,7 @@ def test_elevenlabs():
         return "FAILED", f"API error: {str(e)[:100]}..."
 
 def test_openai_tts():
-    """Test OpenAI TTS API with latest models"""
+    """Test OpenAI TTS API with latest models and child-friendly voices"""
     try:
         from openai import OpenAI
         
@@ -338,29 +364,40 @@ def test_openai_tts():
         
         client = OpenAI(api_key=api_key)
         
-        # Test both TTS models
-        test_models = ['tts-1', 'tts-1-hd']  # HD model for better quality
-        test_voices = ['nova', 'alloy', 'echo', 'fable', 'onyx', 'shimmer']
+        # Test both TTS models with 2025 pricing
+        test_models = [
+            ('tts-1', '$15/M chars'),      # Standard quality
+            ('tts-1-hd', '$30/M chars')    # HD quality - better for production
+        ]
+        
+        # Child-friendly voices based on 2025 research
+        child_friendly_voices = ['fable', 'nova', 'shimmer']  # Softer, warmer voices
+        all_voices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer']
         
         working_models = []
-        for model in test_models:
+        for model, pricing in test_models:
             try:
-                # Simple test to verify model access
+                # Quick test with child-friendly voice
                 response = client.audio.speech.create(
                     model=model,
-                    voice="nova",
-                    input="Test"
+                    voice="fable",  # Best for children's stories
+                    input="Test message for children's story narration"
                 )
-                working_models.append(model)
-                break  # Don't waste quota testing both
+                
+                # Check if response is valid audio
+                audio_data = response.content
+                if len(audio_data) > 1000:  # Valid audio should be at least 1KB
+                    working_models.append(f"{model} ({pricing})")
+                    break  # Don't waste quota testing both
+                    
             except Exception as e:
-                if "model" in str(e).lower():
+                if "model" in str(e).lower() or "not found" in str(e).lower():
                     continue
                 else:
                     break
         
         if working_models:
-            return "SUCCESS", f"Connected successfully. Models: {', '.join(working_models)}. Voices: {len(test_voices)} available"
+            return "SUCCESS", f"Connected successfully. Models: {', '.join(working_models)}. Child-friendly voices: {', '.join(child_friendly_voices)}"
         else:
             return "FAILED", "No TTS models accessible"
         
@@ -370,13 +407,13 @@ def test_openai_tts():
         return "FAILED", f"API error: {str(e)[:100]}..."
 
 def test_deepseek():
-    """Test DeepSeek API"""
+    """Test DeepSeek API with latest models (2025)"""
     try:
         import requests
         
         api_key = os.getenv('DEEPSEEK_API_KEY')
         if not api_key:
-            return "SKIPPED", "API key not found in environment"
+            return "SKIPPED", "API key not found in environment (optional)"
         
         # Test DeepSeek API endpoint
         url = "https://api.deepseek.com/v1/chat/completions"
@@ -386,28 +423,59 @@ def test_deepseek():
             "Content-Type": "application/json"
         }
         
-        data = {
-            "model": "deepseek-chat",
-            "messages": [{"role": "user", "content": "Hello! This is a test."}],
-            "max_tokens": 5,
-            "temperature": 0.1
-        }
+        # Test both current DeepSeek models (2025)
+        test_models = [
+            ("deepseek-chat", "DeepSeek-V3-0324 - Chat model"),
+            ("deepseek-reasoner", "DeepSeek-R1-0528 - Reasoning model")
+        ]
         
-        response = requests.post(url, json=data, headers=headers, timeout=30)
+        working_models = []
         
-        if response.status_code == 200:
-            response_data = response.json()
-            if 'choices' in response_data and response_data['choices']:
-                return "SUCCESS", "Connected successfully. Model: deepseek-chat"
-            else:
-                return "FAILED", "Invalid response format"
-        elif response.status_code == 401:
-            return "FAILED", "Invalid API key"
-        elif response.status_code == 429:
-            return "FAILED", "Rate limit exceeded"
+        for model_name, description in test_models:
+            try:
+                data = {
+                    "model": model_name,
+                    "messages": [{"role": "user", "content": "Write one sentence about a friendly robot."}],
+                    "max_tokens": 20,
+                    "temperature": 0.1
+                }
+                
+                response = requests.post(url, json=data, headers=headers, timeout=30)
+                
+                if response.status_code == 200:
+                    response_data = response.json()
+                    if 'choices' in response_data and response_data['choices']:
+                        content = response_data['choices'][0].get('message', {}).get('content', '')
+                        if content.strip():
+                            working_models.append(f"{model_name} ({description.split(' - ')[1]})")
+                        
+            except Exception as model_error:
+                # Continue testing other models even if one fails
+                continue
+        
+        if working_models:
+            return "SUCCESS", f"Connected successfully. Working models: {', '.join(working_models)}"
         else:
-            return "FAILED", f"API error: HTTP {response.status_code} - {response.text[:100]}"
-        
+            # Try simple connectivity test if model tests fail
+            simple_data = {
+                "model": "deepseek-chat",
+                "messages": [{"role": "user", "content": "Hi"}],
+                "max_tokens": 5
+            }
+            
+            response = requests.post(url, json=simple_data, headers=headers, timeout=15)
+            
+            if response.status_code == 200:
+                return "SUCCESS", "Connected (basic test) - deepseek-chat available"
+            elif response.status_code == 401:
+                return "FAILED", "Invalid API key"
+            elif response.status_code == 429:
+                return "FAILED", "Rate limit exceeded - try again later"
+            elif response.status_code == 402:
+                return "FAILED", "Insufficient credits - add funds to DeepSeek account"
+            else:
+                return "FAILED", f"API error: HTTP {response.status_code} - {response.text[:100]}"
+            
     except ImportError:
         return "FAILED", "Requests library not installed"
     except Exception as e:
@@ -424,16 +492,35 @@ def test_google_cloud_tts():
         if not api_key:
             return "SKIPPED", "GOOGLE_API_KEY not found (will use same key as Gemini)"
         
-        # Test with Google AI API key (unified approach)
+        # Test with Google AI API key (unified approach for 2025)
         url = f"https://texttospeech.googleapis.com/v1/voices?key={api_key}"
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)
         
         if response.status_code == 200:
             voices = response.json()
-            voice_count = len(voices.get('voices', []))
-            return "SUCCESS", f"Connected with Google AI API key. {voice_count} voices available"
+            all_voices = voices.get('voices', [])
+            
+            # Filter for English Neural2 voices (best quality in 2025)
+            english_voices = [v for v in all_voices if v.get('languageCodes', []) and any(lang.startswith('en-') for lang in v.get('languageCodes', []))]
+            neural2_voices = [v for v in english_voices if 'Neural2' in v.get('name', '')]
+            
+            # Child-friendly voices from 2025 research
+            child_friendly = []
+            for voice in neural2_voices:
+                voice_name = voice.get('name', '')
+                if any(name in voice_name for name in ['Neural2-H', 'Neural2-F', 'Neural2-J']):
+                    child_friendly.append(voice_name)
+            
+            status_msg = f"Connected with Google AI API key. {len(all_voices)} total voices, {len(neural2_voices)} Neural2 voices"
+            if child_friendly:
+                status_msg += f". Child-friendly: {', '.join(child_friendly[:3])}"
+            
+            return "SUCCESS", status_msg
+            
         elif response.status_code == 403:
             return "FAILED", "API key lacks TTS permissions. Enable Cloud TTS API in Google Cloud Console"
+        elif response.status_code == 401:
+            return "FAILED", "Invalid API key"
         else:
             return "FAILED", f"API error: HTTP {response.status_code}"
         
@@ -441,6 +528,119 @@ def test_google_cloud_tts():
         return "FAILED", "Requests library not installed"
     except Exception as e:
         return "FAILED", f"API error: {str(e)[:100]}..."
+
+def test_azure_tts():
+    """Test Azure Cognitive Services Speech API"""
+    try:
+        import requests
+        
+        api_key = os.getenv('AZURE_SPEECH_KEY')
+        region = os.getenv('AZURE_SPEECH_REGION', 'eastus')
+        
+        if not api_key:
+            return "SKIPPED", "AZURE_SPEECH_KEY not found in environment (optional)"
+        
+        # Test voices endpoint
+        url = f"https://{region}.tts.speech.microsoft.com/cognitiveservices/voices/list"
+        headers = {
+            'Ocp-Apim-Subscription-Key': api_key
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
+        
+        if response.status_code == 200:
+            voices = response.json()
+            voice_count = len(voices)
+            
+            # Find child-friendly voices
+            child_voices = []
+            neural_voices = []
+            
+            for voice in voices:
+                voice_name = voice.get('ShortName', '')
+                locale = voice.get('Locale', '')
+                
+                # Focus on English voices
+                if locale.startswith('en-'):
+                    if 'Neural' in voice_name:
+                        neural_voices.append(voice_name)
+                    
+                    # Child-friendly voices from 2025 research
+                    if any(name in voice_name for name in ['Libby', 'Maisie', 'Aria', 'Jenny']):
+                        child_voices.append(voice_name)
+            
+            status_msg = f"Connected successfully. {voice_count} total voices, {len(neural_voices)} neural voices"
+            if child_voices:
+                status_msg += f". Child-friendly: {', '.join(child_voices[:3])}"
+            
+            return "SUCCESS", status_msg
+            
+        elif response.status_code == 401:
+            return "FAILED", "Invalid API key"
+        elif response.status_code == 403:
+            return "FAILED", "Access denied - check API key permissions"
+        else:
+            return "FAILED", f"API error: HTTP {response.status_code}"
+        
+    except ImportError:
+        return "FAILED", "Requests library not installed"
+    except Exception as e:
+        return "FAILED", f"API error: {str(e)[:100]}..."
+
+def test_amazon_polly():
+    """Test Amazon Polly Text-to-Speech"""
+    try:
+        import boto3
+        
+        aws_access_key = os.getenv('AWS_ACCESS_KEY_ID')
+        aws_secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+        
+        if not aws_access_key or not aws_secret_key:
+            return "SKIPPED", "AWS credentials not found in environment (optional)"
+        
+        # Initialize Polly client
+        polly = boto3.client(
+            'polly',
+            aws_access_key_id=aws_access_key,
+            aws_secret_access_key=aws_secret_key,
+            region_name='us-east-1'
+        )
+        
+        # Test by listing voices
+        response = polly.describe_voices()
+        
+        if 'Voices' in response:
+            all_voices = response['Voices']
+            
+            # Filter for English neural voices
+            english_voices = [v for v in all_voices if v.get('LanguageCode', '').startswith('en-')]
+            neural_voices = [v for v in english_voices if v.get('SupportedEngines', []) and 'neural' in v.get('SupportedEngines', [])]
+            
+            # Child-friendly voices based on 2025 research
+            child_friendly = []
+            for voice in neural_voices:
+                voice_name = voice.get('Id', '')
+                if voice_name in ['Salli', 'Justin', 'Amy', 'Joanna']:
+                    child_friendly.append(voice_name)
+            
+            status_msg = f"Connected successfully. {len(all_voices)} total voices, {len(neural_voices)} neural voices"
+            if child_friendly:
+                status_msg += f". Child-friendly: {', '.join(child_friendly)}"
+            
+            return "SUCCESS", status_msg
+        else:
+            return "FAILED", "Invalid response format"
+        
+    except ImportError:
+        return "FAILED", "Boto3 library not installed (pip install boto3)"
+    except Exception as e:
+        error_msg = str(e)
+        if "NoCredentialsError" in error_msg:
+            return "FAILED", "AWS credentials not configured properly"
+        elif "UnauthorizedOperation" in error_msg or "InvalidUserID" in error_msg:
+            return "FAILED", "Invalid AWS credentials"
+        else:
+            return "FAILED", f"AWS error: {error_msg[:100]}..."
 
 def check_environment_file():
     """Check if .env file exists"""
@@ -592,6 +792,82 @@ def diagnose_gemini_api_issues():
     except Exception as e:
         return "FAILED", f"Diagnostic error: {str(e)}"
 
+def test_mistral():
+    """Test Mistral API with latest models"""
+    try:
+        import requests
+        
+        api_key = os.getenv('MISTRAL_API_KEY')
+        if not api_key:
+            return "SKIPPED", "API key not found in environment (optional)"
+        
+        # Test Mistral API endpoint
+        url = "https://api.mistral.ai/v1/chat/completions"
+        
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        # Test both current Mistral models (2025)
+        test_models = [
+            ("mistral-large-latest", "Latest large model"),
+            ("mistral-small-latest", "Latest small model"),
+            ("pixtral-12b-2409", "Vision-language model")
+        ]
+        
+        working_models = []
+        
+        for model_name, description in test_models:
+            try:
+                data = {
+                    "model": model_name,
+                    "messages": [{"role": "user", "content": "Write one sentence about a friendly dragon for children."}],
+                    "max_tokens": 50,
+                    "temperature": 0.1
+                }
+                
+                response = requests.post(url, json=data, headers=headers, timeout=30)
+                
+                if response.status_code == 200:
+                    response_data = response.json()
+                    if 'choices' in response_data and response_data['choices']:
+                        content = response_data['choices'][0].get('message', {}).get('content', '')
+                        if content.strip():
+                            working_models.append(f"{model_name} ({description})")
+                        
+            except Exception as model_error:
+                # Continue testing other models even if one fails
+                continue
+        
+        if working_models:
+            return "SUCCESS", f"Connected successfully. Working models: {', '.join(working_models)}"
+        else:
+            # Try simple connectivity test if model tests fail
+            simple_data = {
+                "model": "mistral-small-latest",
+                "messages": [{"role": "user", "content": "Hi"}],
+                "max_tokens": 5
+            }
+            
+            response = requests.post(url, json=simple_data, headers=headers, timeout=15)
+            
+            if response.status_code == 200:
+                return "SUCCESS", "Connected (basic test) - mistral-small-latest available"
+            elif response.status_code == 401:
+                return "FAILED", "Invalid API key"
+            elif response.status_code == 429:
+                return "FAILED", "Rate limit exceeded - try again later"
+            elif response.status_code == 402:
+                return "FAILED", "Insufficient credits - add funds to Mistral account"
+            else:
+                return "FAILED", f"API error: HTTP {response.status_code} - {response.text[:100]}"
+        
+    except ImportError:
+        return "FAILED", "Requests library not installed"
+    except Exception as e:
+        return "FAILED", f"API error: {str(e)[:100]}..."
+
 def main():
     """Main test function"""
     print_header()
@@ -605,19 +881,31 @@ def main():
         print("   Copy environment_template.txt to .env and add your keys.")
         sys.exit(1)
     
-    # Test all APIs
+    # Test all APIs - organized by purpose
     tests = [
+        # Core Story Generation APIs
         ("OpenAI GPT", test_openai, "Required for story generation"),
         ("Google Gemini", test_google, "Required for image captioning & stories"),
         ("List Gemini Models", list_available_gemini_models, "Shows available Gemini models"),
         ("Test Gemini Models", test_gemini_models, "Tests multiple Gemini models for story generation"),
-        ("OpenAI TTS", test_openai_tts, "Test OpenAI text-to-speech models"),
+        
+        # TTS Providers for Audio Comparison (2025 Update)
+        ("OpenAI TTS", test_openai_tts, "Primary TTS provider - best quality/cost balance"),
         ("Google Cloud TTS", test_google_cloud_tts, "Uses same Google AI API key as Gemini"),
-        ("DeepSeek", test_deepseek, "Test DeepSeek models for cost-effective story generation"),
+        ("ElevenLabs TTS", test_elevenlabs, "Premium TTS with v3 model (most expressive)"),
+        
+        # Enterprise TTS Providers (Skipped - Account Validation Issues)
+        # ("Azure TTS", test_azure_tts, "Requires enterprise account validation"),
+        # ("Amazon Polly", test_amazon_polly, "AWS credential setup challenges"),
+        
+        # Optional/Alternative Providers
+        ("DeepSeek", test_deepseek, "Cost-effective story generation alternative"),
         ("Replicate", test_replicate, "Optional for BLIP/LLaVA models"),
-        ("Anthropic Claude", test_anthropic, "Optional for story generation"),
-        ("ElevenLabs TTS", test_elevenlabs, "Optional for TTS evaluation"),
+        ("Anthropic Claude", test_anthropic, "Optional high-quality story generation"),
+        
+        # Diagnostics
         ("Diagnose Gemini Issues", diagnose_gemini_api_issues, "Deep dive into Gemini API problems"),
+        ("Mistral", test_mistral, "Optional high-quality story generation"),
     ]
     
     results = {}
@@ -633,15 +921,30 @@ def main():
             cost_info = ""
             if status == "SUCCESS":
                 if "OpenAI" in service_name:
-                    cost_info = "Cost: ~$0.001 per test"
+                    if "TTS" in service_name:
+                        cost_info = "Cost: $15-30/M chars"
+                    else:
+                        cost_info = "Cost: ~$0.001 per test"
                 elif "Google" in service_name:
-                    cost_info = "Cost: ~$0.0001 per test"
+                    if "TTS" in service_name:
+                        cost_info = "Cost: $16/M chars"
+                    else:
+                        cost_info = "Cost: ~$0.0001 per test"
                 elif "Anthropic" in service_name:
                     cost_info = "Cost: ~$0.001 per test"
+                elif "DeepSeek" in service_name:
+                    cost_info = "Cost: $0.27/M input, $1.10/M output"
+                elif "Mistral" in service_name:
+                    cost_info = "Cost: $2/M input, $6/M output"
+                # Enterprise providers removed due to account validation issues
+                # elif "Azure TTS" in service_name:
+                #     cost_info = "Cost: $30/M chars"
+                # elif "Amazon Polly" in service_name:
+                #     cost_info = "Cost: $16/M chars"
+                elif "ElevenLabs" in service_name:
+                    cost_info = "Cost: $22-330/month subscription"
                 elif "Replicate" in service_name:
                     cost_info = "Cost: Free for API check"
-                elif "ElevenLabs" in service_name:
-                    cost_info = "Cost: Free for voice list"
             
             print_result(service_name, status, message, cost_info)
             
@@ -668,38 +971,75 @@ def main():
     required_apis = ["OpenAI GPT", "Google Gemini", "Test Gemini Models"]
     required_working = sum(1 for api in required_apis if results.get(api) == "SUCCESS")
     
+    # TTS APIs check (excluding enterprise providers with account validation issues)
+    tts_apis = ["OpenAI TTS", "Google Cloud TTS", "ElevenLabs TTS"]
+    tts_working = sum(1 for api in tts_apis if results.get(api) == "SUCCESS")
+    
+    # Note: Azure and AWS TTS excluded due to account validation challenges for individual researchers
+    
     print(f"\nRequired APIs working: {required_working}/{len(required_apis)}")
+    print(f"TTS APIs working: {tts_working}/{len(tts_apis)}")
     
     if required_working == len(required_apis):
-        print("All required APIs are working! You can run the data collection scripts.")
+        print("✅ All required APIs are working! You can run the data collection scripts.")
         print("   Gemini models have been verified and are ready for story generation.")
     elif required_working >= 2:
-        print("Most required APIs are working. Check any failed APIs before proceeding.")
+        print("⚠️  Most required APIs are working. Check any failed APIs before proceeding.")
         if results.get("Test Gemini Models") == "SUCCESS":
             print("   Gemini models are working - story generation should work properly.")
     else:
-        print("Critical APIs are not working. Please check your API keys.")
+        print("❌ Critical APIs are not working. Please check your API keys.")
         if results.get("Test Gemini Models") != "SUCCESS":
             print("   Gemini models failed - check model names in story generation script.")
     
+    # TTS readiness assessment (adjusted for individual researcher constraints)
+    if tts_working >= 2:
+        print(f"✅ TTS Collection Ready: {tts_working} providers available for comparative analysis")
+        working_tts = [api for api in tts_apis if results.get(api) == "SUCCESS"]
+        print(f"   Working providers: {', '.join(working_tts)}")
+        print("   📋 Note: Azure & AWS excluded due to account validation challenges")
+    elif tts_working == 1:
+        print("⚠️  TTS Limited: Only 1 provider working. Still viable for research with clear methodology notes.")
+        print("   📋 Note: Enterprise providers (Azure/AWS) excluded due to access constraints")
+    else:
+        print("❌ TTS Not Ready: No TTS providers configured. Set up available API keys for TTS analysis.")
+        print("   📋 Note: Focus on OpenAI & Google (accessible to individual researchers)")
+    
     print("\nNext steps:")
-    if results.get("Test Gemini Models") == "SUCCESS":
-        print("   1. Gemini models tested - update story generation script with working models")
+    if required_working == len(required_apis):
+        print("   1. ✅ Story Generation Ready")
         print("   2. Run: python 01_image_captioning_collect.py")
         print("   3. Run: python 02_story_generation_collect.py")
+        if tts_working >= 2:
+            print("   4. ✅ TTS Ready - Run: python 03_tts_collect.py")
+        else:
+            print("   4. ⚠️  Set up more TTS providers for better comparison")
     else:
-        print("   1. Fix Gemini model issues first")
-        print("   2. Check model names in 02_story_generation_collect.py")
+        print("   1. Fix core API issues first")
+        print("   2. Check model names in story generation script")
         print("   3. Re-run this test script")
         print("   4. Then run data collection scripts")
     
-    print("\nCost estimate for full test suite: <$0.01")
-    print("   (Actual data collection will cost $20-50 depending on usage)")
+    print(f"\nCost estimate for full test suite: <$0.01")
+    print("   Story generation collection: $20-50 depending on usage")
+    print("   TTS collection: $2-5 for comprehensive comparison")
     
-    # Show working Gemini models if any
+    # Show working providers summary
     if results.get("Test Gemini Models") == "SUCCESS":
-            print("\nTIP: Copy working model names from test output above")
-    print("   and update the story_models list in 02_story_generation_collect.py")
+        print("\n💡 TIP: Copy working model names from test output above")
+        print("   and update the story_models list in 02_story_generation_collect.py")
+    
+    if tts_working >= 2:
+        print("\n💡 TTS READY: Multiple providers configured for comparative analysis")
+        print("   Your 03_tts_collect.py script will work with all available providers")
+    elif tts_working == 1:
+        print("\n💡 TTS PARTIAL: Consider adding more providers for richer comparison")
+        print("   Recommended: OpenAI TTS (best balance) + Google TTS (reliable)")
+    
+    print(f"\n📊 RESEARCH IMPACT:")
+    print(f"   Story Models: {len([api for api in required_apis if results.get(api) == 'SUCCESS'])} working")
+    print(f"   TTS Providers: {tts_working} working")
+    print(f"   Total Cost: <$55 for complete comparative analysis")
 
 if __name__ == "__main__":
     try:

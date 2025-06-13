@@ -40,13 +40,18 @@ replicate_client = replicate.Client(api_token=os.getenv('REPLICATE_API_TOKEN'))
 openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
 
-# Model configurations (Latest 2025 models)
+# Configure Mistral client
+import requests
+mistral_api_key = os.getenv('MISTRAL_API_KEY')
+
+# Model configurations (Latest 2025 models - working versions only)
 MODELS = {
     'blip': 'salesforce/blip:2e1dddc8621f72155f24cf2e0adbde548458d3cab9f00c0139eea840d0ac4746',
     'blip-2': 'andreasjansson/blip-2:4b32258c42e9efd4288bb9910bc532a69727f9acd26aa08e175713a0a857a608',
     'llava-1.5-7b': 'yorickvp/llava-13b:b5f6212d032508382d61ff00469ddda3e32fd8a0e75dc39d8a4191bb742157fb',
-    'llava-1.5-13b': 'yorickvp/llava-v1.6-34b:41ecfbfb261e6c1adf3ad896c9066ca98346996d7c4045c5bc944a79d430f174',
-    'videollama3-7b': 'lucataco/videollama3-7b-chat:6e8b9fd55a8db4e9f6f1d3a1c5b7d9e2f4a6c8e0b2d4f6a8c0e2f4a6c8e0b2d4',
+    # Removed broken models:
+    # 'llava-1.5-13b': Version disabled by Replicate (consistently fails setup)
+    # 'videollama3-7b': Version no longer exists or access denied
 }
 
 # Note: Cost calculation is now handled dynamically by CostCalculator class
@@ -57,7 +62,7 @@ def process_image_replicate(image_path: Path, model_name: str) -> tuple[str, flo
     start_time = time.time()
     
     # Different input format for different models
-    if model_name in ['cogvlm', 'llava-1.5-7b', 'llava-1.5-13b', 'videollama3-7b']:
+    if model_name in ['cogvlm', 'llava-1.5-7b']:
         input_dict = {
             "image": open(image_path, "rb"),
             "prompt": "Describe this image concisely in 2-3 sentences. Focus on the main elements visible.",
@@ -199,6 +204,69 @@ def process_image_gpt4_vision(image_path: Path) -> tuple[str, float, float]:
     
     return description, execution_time, cost
 
+def process_image_mistral(image_path: Path, model_name: str) -> tuple[str, float, float]:
+    """Process image using Mistral's Pixtral vision models"""
+    start_time = time.time()
+    
+    if not mistral_api_key:
+        raise Exception("Mistral API key not found in environment variables")
+    
+    # Encode image to base64
+    with open(image_path, "rb") as image_file:
+        encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
+    
+    # Prepare request
+    url = "https://api.mistral.ai/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {mistral_api_key}",
+        "Content-Type": "application/json"
+    }
+    
+    # Create message with image and prompt
+    data = {
+        "model": model_name,
+        "messages": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Describe this image concisely in 2-3 sentences. Keep your response to approximately 50-75 words."
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": f"data:image/jpeg;base64,{encoded_image}"
+                    }
+                ]
+            }
+        ],
+        "max_tokens": 100,
+        "temperature": 0.1
+    }
+    
+    # Call Mistral API with timeout
+    try:
+        with timeout(60):  # 60 seconds timeout
+            response = requests.post(url, json=data, headers=headers)
+            
+            if response.status_code == 200:
+                response_data = response.json()
+                description = response_data['choices'][0]['message']['content']
+            else:
+                raise Exception(f"Mistral API error: HTTP {response.status_code} - {response.text}")
+    except TimeoutException:
+        description = f"Mistral {model_name} API call timed out after 60 seconds"
+    except Exception as e:
+        raise Exception(f"Error from Mistral API: {str(e)}")
+    
+    execution_time = time.time() - start_time
+    
+    # Use dynamic cost calculation for Mistral
+    prompt_text = "Describe this image concisely in 2-3 sentences. Keep your response to approximately 50-75 words."
+    cost = CostCalculator.calculate_mistral_cost(prompt_text, description, has_image=True)
+    
+    return description, execution_time, cost
+
 def main():
     # Setup paths
     data_dir = Path(__file__).parent.parent / 'data'
@@ -258,6 +326,32 @@ def main():
                 except Exception as e:
                     print(f'Error processing {image_path.name} with GPT-4o Vision: {str(e)}')
                     continue  # Continue with other models if one fails
+                
+                # Process with Mistral Pixtral models (2025)
+                mistral_models = [
+                    'pixtral-12b-2409',        # Pixtral 12B - First multimodal Mistral model
+                    'pixtral-large-latest',    # Pixtral Large - 124B parameters with 1B vision encoder  
+                    'mistral-medium-latest',   # Mistral Medium 2505 - NEW with vision capabilities
+                    'mistral-small-latest'     # Mistral Small 2503 - NEW with vision capabilities
+                ]
+                
+                for model_name in mistral_models:
+                    if mistral_api_key:  # Only try if API key is available
+                        try:
+                            description, exec_time, cost = process_image_mistral(image_path, model_name)
+                            writer.writerow({
+                                'file_name': image_path.name,
+                                'model_name': model_name,
+                                'description': description,
+                                'execution_time': f'{exec_time:.2f}',
+                                'cost': f'{cost:.4f}'
+                            })
+                            print(f'Successfully processed with {model_name}')
+                        except Exception as e:
+                            print(f'Error processing {image_path.name} with {model_name}: {str(e)}')
+                            continue  # Continue with other models if one fails
+                    else:
+                        print(f'Skipping {model_name} - Mistral API key not found')
                 
                 # Process with Replicate models
                 for model_name in MODELS.keys():

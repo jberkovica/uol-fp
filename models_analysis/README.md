@@ -1,4 +1,4 @@
-# MIRA - Multi-Modal AI Research Assistant 🤖
+# Mira Storyteller App 🤖
 
 Updated for 2025 with the latest state-of-the-art models and comprehensive evaluation framework.
 
@@ -53,27 +53,38 @@ REPLICATE_API_TOKEN=your_replicate_token_here
 
 ## Usage
 
-### Collect Image Captioning Data
+All scripts support real-time output monitoring while saving logs for later analysis using the `tee` command.
+
+### 1. Collect Image Captioning Data
 
 ```bash
 cd scripts
-python 01_image_captioning_collect.py
+python -u 01_image_captioning_collect.py | tee 01_image_captioning_collect.log
 ```
 
-### Collect Story Generation Data
+### 2. Collect Story Generation Data
 
 ```bash
 cd scripts
-python 02_story_generation_collect.py
+python -u 02_story_generation_collect.py | tee 02_story_generation_collect.log
 ```
 
-### Run Analysis
+### 3. Collect TTS Comparative Analysis
+
+```bash
+cd scripts
+python -u 03_tts_collect.py | tee 03_tts_collect.log
+```
+
+### 4. Run Analysis
 
 ```bash
 cd analysis/notebooks
 jupyter lab
 # Open and run the analysis notebooks
 ```
+
+**Note**: The `-u` flag ensures unbuffered output for real-time monitoring, while `tee` saves the output to log files for later review and debugging.
 
 ## 📁 Project Structure
 

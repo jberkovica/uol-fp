@@ -85,9 +85,10 @@ class CostCalculator:
         'blip': 0.0046,                    # ~$0.0046 per request
         'blip-2': 0.0060,                  # ~$0.0060 per request  
         'cogvlm': 0.0078,                  # ~$0.0078 per request
-        'videollama3-7b': 0.008,           # ~$0.008 per request
         'llava-1.5-7b': 0.005,             # ~$0.005 per request
-        'llava-1.5-13b': 0.012,            # ~$0.012 per request
+        # Removed broken models:
+        # 'llava-1.5-13b': 0.012,         # Version disabled by Replicate
+        # 'videollama3-7b': 0.008,        # Version no longer exists
         'llama-4-scout': 0.015,            # Token-based pricing
         'llama-4-maverick': 0.020,         # Token-based pricing  
         'ltx-video': 0.027                 # ~$0.027 per request
@@ -97,6 +98,20 @@ class CostCalculator:
     DEEPSEEK_PRICING = {
         'deepseek-reasoner': {'input': 0.55, 'output': 2.19, 'input_cached': 0.14},  # DeepSeek-R1-0528
         'deepseek-chat': {'input': 0.27, 'output': 1.10, 'input_cached': 0.07}      # DeepSeek-V3-0324
+    }
+    
+    # Mistral pricing (2025) - Per million tokens
+    MISTRAL_PRICING = {
+        # Vision-capable models
+        'pixtral-12b-2409': {'input': 2.00, 'output': 6.00},          # Pixtral 12B multimodal
+        'pixtral-large-latest': {'input': 2.00, 'output': 6.00},      # Pixtral Large 124B
+        'mistral-medium-latest': {'input': 2.00, 'output': 6.00},     # Mistral Medium 2505 with vision
+        'mistral-small-latest': {'input': 2.00, 'output': 6.00},      # Mistral Small 2503 with vision
+        
+        # Text-only models  
+        'mistral-large-latest': {'input': 2.00, 'output': 6.00},      # Mistral Large text-only
+        'mistral-tiny': {'input': 0.25, 'output': 0.25},              # Mistral Tiny (cost-effective)
+        'mistral-7b-instruct': {'input': 0.25, 'output': 0.25}        # Mistral 7B Instruct
     }
     
     # TTS pricing (per million characters - updated 2025)
@@ -206,6 +221,29 @@ class CostCalculator:
             (response_tokens / 1000000) * pricing['output']
         )
             
+        return cost
+    
+    @classmethod
+    def calculate_mistral_cost(cls, prompt_text: str, response_text: str, 
+                              has_image: bool = False, model: str = "pixtral-12b-2409") -> float:
+        """Calculate Mistral API cost"""
+        prompt_tokens = cls.count_tokens(prompt_text, 'claude')  # Use claude approximation
+        response_tokens = cls.count_tokens(response_text, 'claude')
+        
+        pricing = cls.MISTRAL_PRICING.get(model, cls.MISTRAL_PRICING['pixtral-12b-2409'])
+        
+        cost = (
+            (prompt_tokens / 1000000) * pricing['input'] +
+            (response_tokens / 1000000) * pricing['output']
+        )
+        
+        # Add image processing cost if applicable (vision models)
+        if has_image and model in ['pixtral-12b-2409', 'pixtral-large-latest', 
+                                  'mistral-medium-latest', 'mistral-small-latest']:
+            # Estimate image token cost (similar to OpenAI vision)
+            image_tokens = 256  # Approximate tokens per image
+            cost += (image_tokens / 1000000) * pricing['input']
+        
         return cost
     
     @classmethod

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-TTS Comparative Analysis Script for MIRA Project
-University of London Final Project
+TTS Comparative Analysis Script for Mira Storyteller App
+Evaluates text-to-speech quality across multiple providers for children's educational content
 
 This script implements a focused TTS evaluation methodology:
 - Selects one representative story from the story generation results
@@ -24,8 +24,8 @@ from typing import Dict, Tuple, Optional, List
 import pandas as pd
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables from parent directory
+load_dotenv('../.env')
 
 # Audio processing libraries (will be installed as needed)
 try:
@@ -46,62 +46,81 @@ class TTSComparativeAnalyzer:
     
     def __init__(self):
         self.setup_clients()
-        self.results_dir = Path("../results/tts_analysis")
+        self.results_dir = Path("../results/tts")
         self.results_dir.mkdir(parents=True, exist_ok=True)
         
-        # TTS Provider Configuration Matrix
+        # TTS Provider Configuration Matrix - Accessible Providers Only
+        # ElevenLabs first for testing, then Google, then OpenAI
         self.tts_providers = {
+            'elevenlabs': {
+                'voices': [
+                    # Child-friendly premium voices - perfect for educational content
+                    'EXAVITQu4vr4xnSDxMaL',  # Sarah - young female, soft and gentle
+                    'FGY2WhTYpPnrIDTdsKH5',  # Laura - young female, upbeat and energetic
+                    'cgSgspJ2msm6clMCkdW9',  # Jessica - young female, expressive and animated
+                    'bIHbv24MWmeRgasZH58o',  # Will - young male, friendly and enthusiastic
+                    'TX3LPaxmHKxFdv7VOQHJ',  # Liam - young male, articulate American
+                    
+                    # Character/Storyteller voices - unique intonations
+                    'N2lVS1w4EtoT3dr4eOWO',  # Callum - your favorite! Transatlantic storyteller
+                    'IKne3meq5aSn9XLyUdCD',  # Charlie - Australian male, natural and warm
+                    'XB0fDUnXU5powFXDhCwa',  # Charlotte - Swedish accent, unique character
+                    'cjVigY5qzO86Huf0OWal',  # Eric - warm, fatherly voice
+                    'XrExE9yKIg1WjnnlVkGX',  # Matilda - friendly American female
+                    
+                    # Premium adult voices for comparison
+                    'Xb7hH8MSUJpSbSDYk0k2',  # Alice - confident British female
+                    'iP95p4xoKVk53GoZ742B',  # Chris - casual American male
+                ],
+                'child_friendly': [
+                    'EXAVITQu4vr4xnSDxMaL',  # Sarah - soft and gentle
+                    'FGY2WhTYpPnrIDTdsKH5',  # Laura - upbeat and energetic
+                    'cgSgspJ2msm6clMCkdW9',  # Jessica - expressive
+                    'bIHbv24MWmeRgasZH58o',  # Will - friendly young male
+                    'TX3LPaxmHKxFdv7VOQHJ',  # Liam - articulate young male
+                    'N2lVS1w4EtoT3dr4eOWO',  # Callum - excellent storyteller
+                    'IKne3meq5aSn9XLyUdCD',  # Charlie - natural and warm
+                    'cjVigY5qzO86Huf0OWal',  # Eric - fatherly voice
+                    'XrExE9yKIg1WjnnlVkGX',  # Matilda - friendly American
+                ],
+                'model': 'eleven_flash_v2_5'
+            },
+            'google': {
+                'voices': [
+                    # US voices - kid-friendly selection
+                    'en-US-Neural2-H',  # Female child-like, perfect for kids
+                    'en-US-Neural2-F',  # Female warm and gentle
+                    'en-US-Neural2-J',  # Male warm and friendly
+                    'en-US-Neural2-G',  # Female energetic and upbeat
+                    'en-US-Neural2-I',  # Male young and friendly
+                    
+                    # British voices - storytelling magic
+                    'en-GB-Neural2-A',  # British female, elegant
+                    'en-GB-Neural2-B',  # British male, sophisticated
+                    'en-GB-Neural2-C',  # British female, warm
+                    'en-GB-Neural2-D',  # British male, friendly
+                    
+                    # Australian voices - unique intonations
+                    'en-AU-Neural2-A',  # Australian female, cheerful
+                    'en-AU-Neural2-B',  # Australian male, laid-back
+                    'en-AU-Neural2-C',  # Australian female, energetic
+                    'en-AU-Neural2-D',  # Australian male, warm
+                ],
+                'child_friendly': [
+                    'en-US-Neural2-H',  # Child-like female
+                    'en-US-Neural2-F',  # Warm female
+                    'en-US-Neural2-G',  # Energetic female  
+                    'en-US-Neural2-I',  # Young male
+                    'en-GB-Neural2-C',  # Warm British female
+                    'en-AU-Neural2-A',  # Cheerful Australian
+                    'en-AU-Neural2-C',  # Energetic Australian
+                ],
+                'model': 'Neural2'
+            },
             'openai': {
                 'voices': ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'],
                 'child_friendly': ['fable', 'nova', 'shimmer'],  # Softer voices
                 'model': 'tts-1'
-            },
-            'google': {
-                'voices': [
-                    'en-US-Neural2-H',  # Female child-like
-                    'en-US-Neural2-F',  # Female warm
-                    'en-US-Neural2-J',  # Male warm
-                    'en-GB-Neural2-A',  # British female
-                    'en-GB-Neural2-B'   # British male
-                ],
-                'child_friendly': ['en-US-Neural2-H', 'en-US-Neural2-F'],
-                'model': 'Neural2'
-            },
-            'elevenlabs': {
-                'voices': [
-                    'Rachel',    # Warm female
-                    'Domi',      # Friendly female  
-                    'Bella',     # Soft female
-                    'Antoni',    # Warm male
-                    'Elli',      # Young female
-                    'Josh'       # Friendly male
-                ],
-                'child_friendly': ['Bella', 'Elli', 'Domi'],
-                'model': 'eleven_monolingual_v1'
-            },
-            'amazon': {
-                'voices': [
-                    'Joanna',    # US English female
-                    'Salli',     # US English female warm
-                    'Kendra',    # US English female
-                    'Matthew',   # US English male
-                    'Justin',    # US English male young
-                    'Amy'        # British English female
-                ],
-                'child_friendly': ['Salli', 'Justin', 'Amy'],
-                'model': 'neural'
-            },
-            'azure': {
-                'voices': [
-                    'en-US-AriaNeural',     # Female friendly
-                    'en-US-JennyNeural',    # Female assistant
-                    'en-US-GuyNeural',      # Male friendly
-                    'en-GB-LibbyNeural',    # British female child
-                    'en-GB-MaisieNeural',   # British female young
-                    'en-US-DavisNeural'     # Male narrator
-                ],
-                'child_friendly': ['en-GB-LibbyNeural', 'en-GB-MaisieNeural', 'en-US-AriaNeural'],
-                'model': 'neural'
             }
         }
     
@@ -112,110 +131,91 @@ class TTSComparativeAnalyzer:
         # OpenAI TTS
         try:
             from openai import OpenAI
-            self.clients['openai'] = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+            openai_key = os.getenv('OPENAI_API_KEY')
+            if openai_key:
+                self.clients['openai'] = OpenAI(api_key=openai_key)
+                print("OpenAI TTS client initialized")
         except Exception as e:
             print(f"OpenAI TTS setup failed: {e}")
         
-        # Google Cloud TTS
+        # Google Cloud TTS - Use REST API with same API key as other Google services
         try:
-            # Set up Google Cloud credentials
-            google_creds = os.getenv('GOOGLE_APPLICATION_CREDENTIALS')
-            if google_creds:
-                self.clients['google'] = texttospeech.TextToSpeechClient()
+            import requests
+            
+            google_api_key = os.getenv('GOOGLE_API_KEY')
+            if google_api_key:
+                # Test connection by listing voices
+                url = f"https://texttospeech.googleapis.com/v1/voices?key={google_api_key}"
+                response = requests.get(url, timeout=10)
+                if response.status_code == 200:
+                    self.clients['google'] = {'api_key': google_api_key}
+                    print("Google TTS REST API initialized with API key")
+                else:
+                    print(f"Google TTS REST API test failed: HTTP {response.status_code}")
         except Exception as e:
             print(f"Google TTS setup failed: {e}")
         
-        # ElevenLabs
+        # ElevenLabs - Use REST API approach like in test
         try:
+            import requests
+            
             elevenlabs_key = os.getenv('ELEVENLABS_API_KEY')
             if elevenlabs_key:
-                set_api_key(elevenlabs_key)
-                self.clients['elevenlabs'] = True  # ElevenLabs uses global API key
+                print(f"DEBUG: ElevenLabs API key loaded: {elevenlabs_key[:10]}...{elevenlabs_key[-10:]}")
+                # Test connection by listing voices
+                headers = {"xi-api-key": elevenlabs_key}
+                response = requests.get("https://api.elevenlabs.io/v1/voices", headers=headers, timeout=10)
+                if response.status_code == 200:
+                    self.clients['elevenlabs'] = {'api_key': elevenlabs_key}
+                    print("ElevenLabs TTS REST API initialized")
+                else:
+                    print(f"ElevenLabs TTS REST API test failed: HTTP {response.status_code}: {response.text}")
+            else:
+                print("ELEVENLABS_API_KEY not found in environment")
         except Exception as e:
             print(f"ElevenLabs TTS setup failed: {e}")
-        
-        # Amazon Polly
-        try:
-            aws_access_key = os.getenv('AWS_ACCESS_KEY_ID')
-            aws_secret_key = os.getenv('AWS_SECRET_ACCESS_KEY')
-            if aws_access_key and aws_secret_key:
-                self.clients['amazon'] = boto3.client(
-                    'polly',
-                    aws_access_key_id=aws_access_key,
-                    aws_secret_access_key=aws_secret_key,
-                    region_name='us-east-1'
-                )
-        except Exception as e:
-            print(f"Amazon Polly setup failed: {e}")
-        
-        # Azure Cognitive Services
-        try:
-            azure_key = os.getenv('AZURE_SPEECH_KEY')
-            azure_region = os.getenv('AZURE_SPEECH_REGION', 'eastus')
-            if azure_key:
-                self.clients['azure'] = {
-                    'key': azure_key,
-                    'region': azure_region
-                }
-        except Exception as e:
-            print(f"Azure TTS setup failed: {e}")
     
     def select_representative_story(self) -> Tuple[str, Dict]:
         """
-        Select a high-quality representative story from generated results
+        Use a predefined representative story for TTS testing
         Returns: (story_text, metadata)
         """
-        # Look for latest story generation results
-        results_pattern = "../results/story_generation_results_*.csv"
-        import glob
         
-        result_files = glob.glob(results_pattern)
-        if not result_files:
-            raise FileNotFoundError("No story generation results found. Run 02_story_generation_collect.py first.")
+        # Predefined short test story for TTS comparative analysis (fits free tier quota)
+        test_story = """
+The Little Robot and the Butterfly
+
+In a cozy workshop, there lived a curious robot named Zippy. One morning, he met a colorful butterfly outside his window.
+
+"Hello there!" called Zippy cheerfully. "What makes your wings so beautiful?"
+
+The butterfly smiled. "Each color tells a story of flowers I've visited. Would you like to explore the garden with me?"
+
+Zippy's eyes lit up with excitement. Together, they discovered a magical garden where roses hummed soft lullabies and sunflowers danced with the clouds.
+
+"Curiosity opens doors to wonderful adventures," said the butterfly.
+
+Zippy learned that friendship comes in many forms, and asking questions leads to amazing discoveries.
+        """.strip()
         
-        # Load most recent results
-        latest_file = max(result_files, key=os.path.getctime)
-        df = pd.read_csv(latest_file)
-        
-        # Filter for high-quality stories (good length, structure, etc.)
-        quality_stories = df[
-            (df['word_count'] >= 150) & 
-            (df['word_count'] <= 200) &
-            (df['meets_length_req'] == True) &
-            (df['has_title'] == True) &
-            (df['positive_tone'] == True) &
-            (df['age_appropriate'] == True)
-        ]
-        
-        if quality_stories.empty:
-            print("No high-quality stories found, using best available...")
-            quality_stories = df.nlargest(5, 'word_count')
-        
-        # Select story from best-performing model (e.g., GPT-4o or Claude)
-        preferred_models = ['gpt-4o', 'claude-3.5-sonnet', 'gemini-2.0-flash']
-        
-        selected_story = None
-        for model in preferred_models:
-            model_stories = quality_stories[quality_stories['story_model'] == model]
-            if not model_stories.empty:
-                selected_story = model_stories.iloc[0]
-                break
-        
-        if selected_story is None:
-            selected_story = quality_stories.iloc[0]
-        
-        story_text = selected_story['generated_story']
+        # Create metadata for the test story
         metadata = {
-            'source_model': selected_story['story_model'],
-            'source_image': selected_story['image_file'],
-            'word_count': selected_story['word_count'],
-            'source_file': latest_file
+            'source_model': 'custom_test_story',
+            'source_image': 'robot_and_butterfly_workshop',
+            'word_count': len(test_story.split()),
+            'meets_requirements': True,
+            'age_appropriate': True,
+            'has_dialogue': True,
+            'positive_tone': True
         }
         
-        print(f"Selected story from {metadata['source_model']} ({metadata['word_count']} words)")
-        print(f"Source image: {metadata['source_image']}")
+        print(f"Using predefined test story:")
+        print(f"   Title: The Curious Little Robot")
+        print(f"   Word count: {metadata['word_count']} words")
+        print(f"   Character count: {len(test_story)} characters")
+        print(f"   Features: Child-friendly dialogue, positive themes, perfect for TTS testing")
         
-        return story_text, metadata
+        return test_story, metadata
     
     def generate_openai_tts(self, text: str, voice: str) -> Tuple[bytes, float, float]:
         """Generate TTS using OpenAI TTS API"""
@@ -243,59 +243,141 @@ class TTSComparativeAnalyzer:
             return b"", time.time() - start_time, 0.0
     
     def generate_google_tts(self, text: str, voice: str) -> Tuple[bytes, float, float]:
-        """Generate TTS using Google Cloud TTS"""
+        """Generate TTS using Google Cloud TTS REST API"""
         start_time = time.time()
         
         try:
-            # Configure the text input
-            synthesis_input = texttospeech.SynthesisInput(text=text)
+            import requests
             
-            # Configure voice selection
-            voice_config = texttospeech.VoiceSelectionParams(
-                language_code="en-US",
-                name=voice
-            )
+            api_key = self.clients['google']['api_key']
+            url = f"https://texttospeech.googleapis.com/v1/text:synthesize?key={api_key}"
             
-            # Configure audio output
-            audio_config = texttospeech.AudioConfig(
-                audio_encoding=texttospeech.AudioEncoding.LINEAR16
-            )
+            # Determine language code based on voice
+            if voice.startswith('en-GB'):
+                language_code = "en-GB"
+            elif voice.startswith('en-AU'):
+                language_code = "en-AU"
+            elif voice.startswith('en-CA'):
+                language_code = "en-CA"
+            else:
+                language_code = "en-US"
             
-            # Perform TTS request
-            response = self.clients['google'].synthesize_speech(
-                input=synthesis_input,
-                voice=voice_config,
-                audio_config=audio_config
-            )
+            # Configure request payload
+            payload = {
+                "input": {"text": text},
+                "voice": {
+                    "languageCode": language_code,
+                    "name": voice
+                },
+                "audioConfig": {
+                    "audioEncoding": "LINEAR16",
+                    "sampleRateHertz": 24000
+                }
+            }
             
-            execution_time = time.time() - start_time
+            # Make TTS request
+            response = requests.post(url, json=payload, timeout=30)
             
-            # Google TTS pricing: $16 per 1M characters for Neural2 voices
-            char_count = len(text)
-            cost = (char_count / 1_000_000) * 16.0
-            
-            return response.audio_content, execution_time, cost
+            if response.status_code == 200:
+                result = response.json()
+                import base64
+                audio_data = base64.b64decode(result['audioContent'])
+                
+                execution_time = time.time() - start_time
+                
+                # Google TTS pricing: $16 per 1M characters for Neural2 voices
+                char_count = len(text)
+                cost = (char_count / 1_000_000) * 16.0
+                
+                return audio_data, execution_time, cost
+            else:
+                raise Exception(f"HTTP {response.status_code}: {response.text}")
             
         except Exception as e:
             print(f"Google TTS error for voice {voice}: {e}")
             return b"", time.time() - start_time, 0.0
     
     def generate_elevenlabs_tts(self, text: str, voice: str) -> Tuple[bytes, float, float]:
-        """Generate TTS using ElevenLabs API"""
+        """Generate TTS using ElevenLabs REST API with v2.5 model"""
         start_time = time.time()
         
         try:
-            audio_data = generate(
-                text=text,
-                voice=voice,
-                model="eleven_monolingual_v1"
-            )
+            import requests
+            
+            api_key = self.clients['elevenlabs']['api_key']
+            
+            # First check if voice exists by listing available voices
+            headers = {"xi-api-key": api_key}
+            voices_response = requests.get("https://api.elevenlabs.io/v1/voices", headers=headers, timeout=10)
+            
+            if voices_response.status_code != 200:
+                raise Exception(f"Cannot list voices: HTTP {voices_response.status_code}")
+            
+            available_voices = voices_response.json()
+            voice_ids = [v['voice_id'] for v in available_voices.get('voices', [])]
+            
+            if voice not in voice_ids:
+                print(f"    Voice {voice} not found in available voices")
+                print(f"    Available voices: {voice_ids[:5]}...")  # Show first 5
+                raise Exception(f"Voice {voice} not accessible")
+            
+            # Test available models for comprehensive analysis
+            models_to_try = [
+                "eleven_flash_v2_5",        # Ultra-fast, 50% cost reduction
+                "eleven_multilingual_v2",   # Highest quality traditional model
+                "eleven_turbo_v2_5"         # Balanced speed/quality
+                # Note: eleven_v3 requires sales contact for early access
+            ]
+            
+            audio_data = None
+            last_error = None
+            
+            for model in models_to_try:
+                try:
+                    url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}"
+                    headers = {"xi-api-key": api_key, "Content-Type": "application/json"}
+                    
+                    payload = {
+                        "text": text,
+                        "model_id": model,
+                        "voice_settings": {
+                            "stability": 0.5,
+                            "similarity_boost": 0.8,
+                            "style": 0.0,
+                            "use_speaker_boost": True
+                        }
+                    }
+                    
+                    response = requests.post(url, json=payload, headers=headers, timeout=30)
+                    
+                    if response.status_code == 200:
+                        audio_data = response.content
+                        print(f"    Model {model} succeeded")
+                        break  # Success, exit loop
+                    else:
+                        error_msg = f"HTTP {response.status_code}"
+                        try:
+                            error_detail = response.json()
+                            error_msg += f": {error_detail}"
+                        except:
+                            error_msg += f": {response.text[:100]}"
+                        print(f"    Model {model} failed: {error_msg}")
+                        last_error = error_msg
+                        continue
+                        
+                except Exception as model_error:
+                    print(f"    Model {model} failed: {model_error}")
+                    last_error = str(model_error)
+                    continue
+            
+            if not audio_data:
+                raise Exception(f"All ElevenLabs models failed. Last error: {last_error}")
             
             execution_time = time.time() - start_time
             
-            # ElevenLabs pricing: approximately $0.30 per 1K characters
+            # ElevenLabs pricing: ~$22 per 1M characters (2025 pricing, updated)
             char_count = len(text)
-            cost = (char_count / 1000) * 0.30
+            cost = (char_count / 1_000_000) * 22.0
             
             return audio_data, execution_time, cost
             
@@ -303,77 +385,8 @@ class TTSComparativeAnalyzer:
             print(f"ElevenLabs TTS error for voice {voice}: {e}")
             return b"", time.time() - start_time, 0.0
     
-    def generate_amazon_tts(self, text: str, voice: str) -> Tuple[bytes, float, float]:
-        """Generate TTS using Amazon Polly"""
-        start_time = time.time()
-        
-        try:
-            response = self.clients['amazon'].synthesize_speech(
-                Text=text,
-                OutputFormat='pcm',
-                VoiceId=voice,
-                Engine='neural'
-            )
-            
-            audio_data = response['AudioStream'].read()
-            execution_time = time.time() - start_time
-            
-            # Amazon Polly pricing: $16 per 1M characters for neural voices
-            char_count = len(text)
-            cost = (char_count / 1_000_000) * 16.0
-            
-            return audio_data, execution_time, cost
-            
-        except Exception as e:
-            print(f"Amazon Polly TTS error for voice {voice}: {e}")
-            return b"", time.time() - start_time, 0.0
-    
-    def generate_azure_tts(self, text: str, voice: str) -> Tuple[bytes, float, float]:
-        """Generate TTS using Azure Cognitive Services"""
-        start_time = time.time()
-        
-        try:
-            import requests
-            
-            subscription_key = self.clients['azure']['key']
-            region = self.clients['azure']['region']
-            
-            # Get access token
-            token_url = f"https://{region}.api.cognitive.microsoft.com/sts/v1.0/issueToken"
-            headers = {'Ocp-Apim-Subscription-Key': subscription_key}
-            token_response = requests.post(token_url, headers=headers)
-            access_token = token_response.text
-            
-            # TTS request
-            tts_url = f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1"
-            
-            ssml = f"""
-            <speak version='1.0' xml:lang='en-US'>
-                <voice xml:lang='en-US' name='{voice}'>
-                    {text}
-                </voice>
-            </speak>
-            """
-            
-            headers = {
-                'Authorization': f'Bearer {access_token}',
-                'Content-Type': 'application/ssml+xml',
-                'X-Microsoft-OutputFormat': 'riff-24khz-16bit-mono-pcm'
-            }
-            
-            response = requests.post(tts_url, headers=headers, data=ssml)
-            
-            execution_time = time.time() - start_time
-            
-            # Azure TTS pricing: $15 per 1M characters for neural voices
-            char_count = len(text)
-            cost = (char_count / 1_000_000) * 15.0
-            
-            return response.content, execution_time, cost
-            
-        except Exception as e:
-            print(f"Azure TTS error for voice {voice}: {e}")
-            return b"", time.time() - start_time, 0.0
+    # Amazon Polly and Azure TTS methods removed due to accessibility constraints
+    # Focus on OpenAI TTS, Google Cloud TTS, and ElevenLabs for comparative analysis
     
     def assess_audio_quality(self, audio_data: bytes, provider: str, voice: str) -> Dict:
         """
@@ -443,7 +456,7 @@ class TTSComparativeAnalyzer:
         Returns: Path to results CSV file
         """
         print("=" * 80)
-        print("TTS COMPARATIVE ANALYSIS - MIRA PROJECT")
+        print("TTS COMPARATIVE ANALYSIS - MIRA STORYTELLER APP")
         print("University of London Final Project")
         print("=" * 80)
         
@@ -467,8 +480,10 @@ class TTSComparativeAnalyzer:
         print(f"\n2. Generating TTS across {len(self.clients)} providers...")
         print(f"Available providers: {list(self.clients.keys())}")
         
-        total_combinations = sum(len(voices['voices']) for voices in self.tts_providers.values() 
-                               if any(provider in self.clients for provider in [voices]))
+        # Count total voice combinations for active providers
+        total_combinations = sum(len(provider_config['voices']) 
+                               for provider_name, provider_config in self.tts_providers.items()
+                               if provider_name in self.clients)
         current_combination = 0
         
         # Process each provider and voice combination
@@ -490,11 +505,8 @@ class TTSComparativeAnalyzer:
                     audio_data, exec_time, cost = self.generate_google_tts(story_text, voice)
                 elif provider_name == 'elevenlabs':
                     audio_data, exec_time, cost = self.generate_elevenlabs_tts(story_text, voice)
-                elif provider_name == 'amazon':
-                    audio_data, exec_time, cost = self.generate_amazon_tts(story_text, voice)
-                elif provider_name == 'azure':
-                    audio_data, exec_time, cost = self.generate_azure_tts(story_text, voice)
                 else:
+                    print(f"    Unknown provider: {provider_name}")
                     continue
                 
                 # Assess quality

@@ -3,15 +3,17 @@
 Story Generation Models Evaluation Script
 Generates family-friendly stories from image captions using various LLM providers
 
-Evaluated Models (8 total):
+Evaluated Models (15 total):
 - OpenAI: GPT-4o, GPT-4o-mini
-- Anthropic: Claude 3.5 Sonnet, Claude 3.5 Haiku  
-- Google: Gemini 2.0 Flash, 2.0 Flash Lite, 1.5 Pro, 1.5 Flash
+- Anthropic: Claude 4 Opus, Claude 4 Sonnet, Claude 3.7 Sonnet, Claude 3.5 Sonnet, Claude 3.5 Haiku
+- Google: Gemini 2.0 Flash, 2.0 Flash Lite, 1.5 Pro, 1.5 Flash  
+- Mistral: Mistral Large Latest, Mistral Medium Latest, Mistral Small Latest
+- DeepSeek: DeepSeek Chat
 
 Note: Gemini 2.5 preview models excluded due to safety filter restrictions.
-See SAFETY_FILTER_INVESTIGATION.md for detailed analysis.
+See Technical_Challenges.md for detailed analysis.
 
-Includes comprehensive cost analysis and performance benchmarks.
+Includes comprehensive cost analysis and performance benchmarks across 2025 state-of-the-art models.
 """
 
 import os
@@ -217,7 +219,7 @@ def process_story_google(caption: str, model: str = "gemini-2.0-flash") -> tuple
         if hasattr(response, 'text'):
             story = response.text.strip()
             cost = CostCalculator.calculate_google_cost(prompt, story, model=model)
-            return story, execution_time, cost
+        return story, execution_time, cost
         
         # No usable content found
         return "No story generated - please try again.", execution_time, 0.0
@@ -321,6 +323,94 @@ STRICT REQUIREMENTS:
         execution_time = time.time() - start_time
         raise RuntimeError(f"DeepSeek API error: {str(e)}")
 
+def process_story_mistral(caption: str, model: str = "mistral-large-latest") -> tuple[str, float, float]:
+    """Generate story using Mistral's latest text models"""
+    
+    prompt = UNIFIED_STORY_PROMPT.format(caption=caption)
+    
+    start_time = time.time()
+    
+    try:
+        import requests
+        
+        api_key = os.getenv('MISTRAL_API_KEY')
+        if not api_key:
+            raise RuntimeError("MISTRAL_API_KEY not found in environment")
+        
+        url = "https://api.mistral.ai/v1/chat/completions"
+        
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        # Enhanced prompt for better Mistral performance
+        enhanced_prompt = f"""You are an expert children's story writer. Your task is to create exactly one complete story based on the image description provided.
+
+STRICT REQUIREMENTS:
+- Write exactly 150-200 words (count carefully!)
+- Include a clear title
+- Tell a complete story with beginning, middle, and end
+- Use simple, child-friendly language
+- End with a positive, peaceful conclusion
+- Follow the exact format requested
+
+{prompt}"""
+        
+        data = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": "You are a professional children's story writer who always follows word count requirements precisely."},
+                {"role": "user", "content": enhanced_prompt}
+            ],
+            "max_tokens": 400,
+            "temperature": 0.7,
+            "stream": False
+        }
+        
+        with timeout(60):
+            response = requests.post(url, json=data, headers=headers, timeout=45)
+        
+        execution_time = time.time() - start_time
+        
+        if response.status_code == 200:
+            response_data = response.json()
+            
+            if 'choices' in response_data and response_data['choices']:
+                story = response_data['choices'][0]['message']['content'].strip()
+                
+                # Validate story length - reject if too short
+                word_count = len(story.split())
+                if word_count < 100:
+                    raise RuntimeError(f"Mistral response too short ({word_count} words). Model may not be following instructions.")
+                
+                # Calculate cost using updated calculator
+                cost = CostCalculator.calculate_mistral_cost(prompt, story, model=model)
+                
+                return story, execution_time, cost
+            else:
+                raise RuntimeError("Invalid response format from Mistral API")
+        
+        elif response.status_code == 401:
+            raise RuntimeError("Invalid Mistral API key")
+        elif response.status_code == 402:
+            raise RuntimeError("Insufficient balance in Mistral account - please add credits")
+        elif response.status_code == 429:
+            raise RuntimeError("Rate limit exceeded - please try again later")
+        else:
+            error_msg = response.text[:200] if response.text else "Unknown error"
+            raise RuntimeError(f"Mistral API error {response.status_code}: {error_msg}")
+            
+    except requests.exceptions.Timeout:
+        execution_time = time.time() - start_time
+        raise RuntimeError(f"Mistral API request timed out after {execution_time:.1f}s")
+    except requests.exceptions.RequestException as e:
+        execution_time = time.time() - start_time
+        raise RuntimeError(f"Mistral API network error: {str(e)}")
+    except Exception as e:
+        execution_time = time.time() - start_time
+        raise RuntimeError(f"Mistral API error: {str(e)}")
+
 def process_story_llama(caption: str, model: str = "llama-4-scout") -> tuple[str, float, float]:
     """Generate story using Meta Llama models via appropriate API"""
     # Note: This is a placeholder for Llama 4 integration
@@ -421,13 +511,16 @@ def main():
     print(f"Starting story generation collection. Results will be saved to: {output_file}")
     print(f"Found annotations for {len(annotations_by_image)} images")
     
-    # Production-ready models (9 total) - all verified working
+    # Production-ready models (15 total) - Latest 2025 state-of-the-art models
     story_models = [
-        # OpenAI models
+        # OpenAI models (2025 latest)
         ('gpt-4o', lambda cap: process_story_openai(cap, "gpt-4o")),
         ('gpt-4o-mini', lambda cap: process_story_openai(cap, "gpt-4o-mini")),
         
-        # Anthropic models
+        # Anthropic models (latest 2025 Claude 4 series + best Claude 3.x)
+        ('claude-opus-4', lambda cap: process_story_anthropic(cap, "claude-opus-4-20250514")),
+        ('claude-sonnet-4', lambda cap: process_story_anthropic(cap, "claude-sonnet-4-20250514")),
+        ('claude-3.7-sonnet', lambda cap: process_story_anthropic(cap, "claude-3-7-sonnet-20250219")),
         ('claude-3.5-sonnet', lambda cap: process_story_anthropic(cap, "claude-3-5-sonnet-20241022")),
         ('claude-3.5-haiku', lambda cap: process_story_anthropic(cap, "claude-3-5-haiku-20241022")),
         
@@ -437,30 +530,32 @@ def main():
         ('gemini-1.5-pro', lambda cap: process_story_google(cap, "gemini-1.5-pro")),
         ('gemini-1.5-flash', lambda cap: process_story_google(cap, "gemini-1.5-flash")),
         
-        # DeepSeek models (cost-effective option) - deepseek-chat only for better story quality
+        # Mistral models (2025 latest text models)
+        ('mistral-large-latest', lambda cap: process_story_mistral(cap, "mistral-large-latest")),
+        ('mistral-medium-latest', lambda cap: process_story_mistral(cap, "mistral-medium-latest")),
+        ('mistral-small-latest', lambda cap: process_story_mistral(cap, "mistral-small-latest")),
+        
+        # DeepSeek models (cost-effective option)
         ('deepseek-chat', lambda cap: process_story_deepseek(cap, "deepseek-chat")),
-        # Note: deepseek-reasoner temporarily disabled - not optimized for creative writing tasks
         
         # Note: Gemini 2.5 preview models excluded due to safety filter restrictions
         # Note: DeepSeek-reasoner excluded due to poor performance on creative tasks
-        # See SAFETY_FILTER_INVESTIGATION.md for detailed analysis
+        # See Technical_Challenges.md for detailed analysis
     ]
     
     # Print available models for this evaluation
     model_names = [model[0] for model in story_models]
-    deepseek_available = any('deepseek' in m for m in model_names)
     
-    print(f"Testing {len(story_models)} production-ready models:")
+    print(f"Testing {len(story_models)} state-of-the-art models (2025 latest):")
     print(f"  OpenAI: {[m for m in model_names if 'gpt' in m]}")
     print(f"  Anthropic: {[m for m in model_names if 'claude' in m]}")
     print(f"  Google: {[m for m in model_names if 'gemini' in m]}")
-    if deepseek_available:
-        print(f"  DeepSeek: {[m for m in model_names if 'deepseek' in m]} (deepseek-reasoner disabled for creative tasks)")
-    else:
-        print(f"  DeepSeek: {[m for m in model_names if 'deepseek' in m]}")
-    print(f"  All models verified working via comprehensive diagnostic testing")
-    print(f"  Gemini 2.5 preview models excluded (see SAFETY_FILTER_INVESTIGATION.md)")
-    print(f"  DeepSeek-reasoner temporarily disabled due to poor creative performance")
+    print(f"  Mistral: {[m for m in model_names if 'mistral' in m]}")
+    print(f"  DeepSeek: {[m for m in model_names if 'deepseek' in m]}")
+    print(f"  Includes latest Claude 4 and Claude 3.7 models")
+    print(f"  Includes Mistral's latest large, medium, and small models")
+    print(f"  Gemini 2.5 preview models excluded (see Technical_Challenges.md)")
+    print(f"  DeepSeek-reasoner excluded due to poor creative performance")
     print("---")
     
     try:
