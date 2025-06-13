@@ -1,4 +1,4 @@
-# Mira Storyteller App 🤖
+# Mira Storyteller App
 
 Updated for 2025 with the latest state-of-the-art models and comprehensive evaluation framework.
 
