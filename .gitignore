@@ -35,10 +35,10 @@ wheels/
 */.ipynb_checkpoints/*
 
 # Generated output directories
-story_outputs/
-tts_outputs/
-*.mp3
-*.wav
+# story_outputs/
+# tts_outputs/
+# *.mp3
+# *.wav
 
 # Data directories (if they might contain sensitive/proprietary images)
 # Uncomment if you don't want to commit test images

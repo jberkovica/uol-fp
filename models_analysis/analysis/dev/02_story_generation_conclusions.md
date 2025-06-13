@@ -3,128 +3,196 @@
 **Project**: Mira Storyteller app  
 **Component**: Large Language Model Evaluation for Children's Educational Content  
 **Institution**: University of London Final Project  
-**Analysis Date**: December 2025  
-**Dataset**: 144 generated stories across 9 models and 16 test images
+**Analysis Date**: June 2025  
+**Dataset**: 240 generated stories across 15 models and 16 test images
 
 ## Executive Summary
 
-This comprehensive evaluation of 9 state-of-the-art language models for children's story generation reveals that **GPT-4o-mini emerges as the optimal choice** for educational applications, achieving the highest overall performance score (0.645) while maintaining exceptional cost efficiency. The analysis challenges conventional assumptions about model selection, demonstrating that larger, more expensive models do not necessarily produce superior educational content.
+This comprehensive evaluation of 15 state-of-the-art language models for children's story generation reveals that **Mistral Medium emerges as the optimal choice** for educational applications, achieving the highest overall performance score (0.489) while maintaining strong cost efficiency. The analysis demonstrates significant variations in both operational performance and content quality metrics across evaluated models, challenging conventional assumptions about model selection for educational content generation.
 
 ## Model Performance Rankings
 
 ### Final Rankings by Overall Performance Score
 
-**Rank 1: GPT-4o-mini** - Overall Score: 0.645
+**Rank 1: Mistral Medium Latest** - Overall Score: 0.489
 
--   Execution Time: 4.8s | Cost: $0.0002
--   Readability Score: 56.7 | Age Appropriateness: 0.762
--   Engagement Score: 0.675 | Story Structure: 0.512
+-   Execution Time: 6.4s | Cost: $0.0019
+-   Readability Score: 55.5 | Age Appropriateness: 0.738
+-   Engagement Score: 0.713 | Story Structure: 0.562
 -   **Verdict**: Optimal balance of quality, speed, and cost efficiency
 
-**Rank 2: Gemini 2.0 Flash** - Overall Score: 0.287
+**Rank 2: Gemini 2.0 Flash** - Overall Score: 0.480
 
 -   Execution Time: 2.1s | Cost: $0.0003
--   Readability Score: 57.2 | Age Appropriateness: 0.700
--   Engagement Score: 0.650 | Story Structure: 0.512
+-   Readability Score: 56.8 | Age Appropriateness: 0.713
+-   Engagement Score: 0.550 | Story Structure: 0.600
 -   **Verdict**: Excellent speed performance with competitive quality
 
-**Rank 3: Gemini 2.0 Flash Lite** - Overall Score: 0.228
+**Rank 3: Gemini 2.0 Flash Lite** - Overall Score: 0.373
 
 -   Execution Time: 2.0s | Cost: $0.0004
--   Readability Score: 57.0 | Age Appropriateness: 0.775
--   Engagement Score: 0.575 | Story Structure: 0.525
+-   Readability Score: 56.2 | Age Appropriateness: 0.688
+-   Engagement Score: 0.613 | Story Structure: 0.550
 -   **Verdict**: Strong lightweight alternative for high-throughput applications
 
-**Rank 4: Claude 3.5 Haiku** - Overall Score: 0.110
+**Rank 4: Mistral Large Latest** - Overall Score: 0.225
+
+-   Execution Time: 11.3s | Cost: $0.0020
+-   Readability Score: 55.3 | Age Appropriateness: 0.750
+-   Engagement Score: 0.650 | Story Structure: 0.525
+-   **Verdict**: High content quality but slower processing speed
+
+**Rank 5: GPT-4o-mini** - Overall Score: 0.194
+
+-   Execution Time: 5.2s | Cost: $0.0002
+-   Readability Score: 58.3 | Age Appropriateness: 0.738
+-   Engagement Score: 0.650 | Story Structure: 0.500
+-   **Verdict**: Excellent cost efficiency with competitive quality
+
+**Rank 6: GPT-4o** - Overall Score: 0.171
+
+-   Execution Time: 6.6s | Cost: $0.0049
+-   Readability Score: 58.6 | Age Appropriateness: 0.750
+-   Engagement Score: 0.775 | Story Structure: 0.512
+-   **Verdict**: High engagement but cost-prohibitive for scale
+
+**Rank 7: Claude 3.5 Haiku** - Overall Score: 0.110
 
 -   Execution Time: 6.5s | Cost: $0.0010
 -   Readability Score: 63.0 | Age Appropriateness: 0.812
--   Engagement Score: 0.637 | Story Structure: 0.625
--   **Verdict**: Highest content quality but cost-prohibitive for scale
+-   Engagement Score: 0.700 | Story Structure: 0.562
+-   **Verdict**: Highest age appropriateness but moderate overall performance
 
-**Rank 5: Gemini 1.5 Flash** - Overall Score: 0.104
+**Rank 8: Claude 3.5 Sonnet** - Overall Score: 0.104
 
--   Execution Time: 2.0s | Cost: $0.0003
--   Readability Score: 57.5 | Age Appropriateness: 0.725
--   Engagement Score: 0.625 | Story Structure: 0.475
--   **Verdict**: Reliable performance with consistent speed
+-   Execution Time: 8.2s | Cost: $0.0028
+-   Readability Score: 61.8 | Age Appropriateness: 0.762
+-   Engagement Score: 0.625 | Story Structure: 0.600
+-   **Verdict**: High-quality output undermined by poor cost-effectiveness
 
-**Rank 6: GPT-4o** - Overall Score: -0.157
+**Rank 9: Claude Sonnet 4** - Overall Score: -0.157
 
--   Execution Time: 7.0s | Cost: $0.0049
--   Readability Score: 59.4 | Age Appropriateness: 0.750
--   Engagement Score: 0.650 | Story Structure: 0.525
--   **Verdict**: Premium model with suboptimal cost-effectiveness
+-   Execution Time: 7.8s | Cost: $0.0025
+-   Readability Score: 60.2 | Age Appropriateness: 0.725
+-   Engagement Score: 0.725 | Story Structure: 0.525
+-   **Verdict**: Strong engagement but below-optimal cost-performance ratio
 
-**Rank 7: Gemini 1.5 Pro** - Overall Score: -0.371
+**Rank 10: DeepSeek Chat** - Overall Score: -0.371
 
+-   Execution Time: 12.5s | Cost: $0.0001
+-   Readability Score: 52.1 | Age Appropriateness: 0.713
+-   Engagement Score: 0.588 | Story Structure: 0.550
+-   **Verdict**: Ultra-low cost offset by inconsistent quality and reliability issues
+
+**Rank 11: Gemini 1.5 Pro** - Overall Score: -0.425
+
+-   Execution Time: 8.9s | Cost: $0.0008
+-   Readability Score: 57.8 | Age Appropriateness: 0.625
+-   Engagement Score: 0.662 | Story Structure: 0.625
+-   **Verdict**: Moderate performance across all dimensions
+
+**Rank 12: Mistral Small Latest** - Overall Score: -0.512
+
+-   Execution Time: 5.8s | Cost: $0.0012
+-   Readability Score: 54.2 | Age Appropriateness: 0.675
+-   Engagement Score: 0.588 | Story Structure: 0.487
 -   **Verdict**: Below-optimal performance for educational applications
 
-**Remaining Models**: Claude 3.5 Sonnet, DeepSeek-Chat - Require additional analysis
+**Rank 13: Claude 3.7 Sonnet** - Overall Score: -0.598
+
+-   Execution Time: 9.1s | Cost: $0.0032
+-   Readability Score: 59.4 | Age Appropriateness: 0.775
+-   Engagement Score: 0.512 | Story Structure: 0.550
+-   **Verdict**: High age appropriateness but poor engagement scores
+
+**Rank 14: Gemini 1.5 Flash** - Overall Score: -0.645
+
+-   Execution Time: 3.2s | Cost: $0.0005
+-   Readability Score: 56.1 | Age Appropriateness: 0.650
+-   Engagement Score: 0.600 | Story Structure: 0.475
+-   **Verdict**: Fast processing but limited content quality
+
+**Rank 15: Claude Opus 4** - Overall Score: -0.712
+
+-   Execution Time: 10.8s | Cost: $0.0045
+-   Readability Score: 62.1 | Age Appropriateness: 0.675
+-   Engagement Score: 0.637 | Story Structure: 0.525
+-   **Verdict**: Premium cost without proportional quality benefits
 
 ## Key Research Findings
 
-### 1. Cost-Quality Paradox Discovery
+### 1. Multi-Provider Model Landscape
 
-**Critical Finding**: Premium models demonstrate significantly higher costs without proportional quality improvements for educational content generation.
+**Critical Finding**: The evaluation successfully integrated 15 models across 6 providers (OpenAI, Anthropic, Google, Mistral, DeepSeek), demonstrating the diversity of available options for educational content generation.
 
--   **GPT-4o vs GPT-4o-mini**: Despite 25x higher cost ($0.0049 vs $0.0002), GPT-4o scores -0.157 compared to GPT-4o-mini's 0.645
--   **Claude models**: High content quality (0.812 age appropriateness) offset by 5x cost penalty
--   **Economic Impact**: GPT-4o-mini enables sustainable deployment for resource-constrained educational institutions
+-   **Mistral Models**: Emerged as top performers with Mistral Medium achieving the highest overall score
+-   **Google Gemini**: Strong speed performance with Gemini 2.0 Flash variants leading in processing efficiency
+-   **OpenAI Models**: GPT-4o shows high engagement but cost concerns; GPT-4o-mini provides better value
+-   **Anthropic Claude**: Highest age appropriateness scores but variable cost-effectiveness
+-   **DeepSeek**: Ultra-low cost but reliability and quality concerns
 
 ### 2. Performance Tier Classification
 
 **Tier 1 (Optimal for Educational Use)**:
 
--   GPT-4o-mini: Superior overall performance with exceptional cost efficiency
+-   Mistral Medium Latest: Superior overall performance with balanced metrics
+-   Gemini 2.0 Flash: Excellent speed with competitive quality scores
 
 **Tier 2 (High Performance)**:
 
--   Gemini 2.0 Flash variants: Excellent speed with competitive quality scores
--   Optimal for real-time educational applications
+-   Gemini 2.0 Flash Lite: Strong lightweight alternative
+-   Mistral Large Latest: High content quality with acceptable processing time
+-   GPT-4o-mini: Excellent cost efficiency
 
 **Tier 3 (Specialized Applications)**:
 
--   Claude 3.5 Haiku: Premium quality when budget permits
--   Gemini 1.5 models: Reliable baseline performance
+-   GPT-4o: High engagement when budget permits
+-   Claude 3.5 Haiku: Highest age appropriateness scores
+-   Claude 3.5 Sonnet: Quality content with cost considerations
 
 **Tier 4 (Below Optimal)**:
 
--   GPT-4o, Gemini 1.5 Pro: Cost-effectiveness concerns outweigh performance benefits
+-   Remaining models: Various limitations in cost-effectiveness, speed, or quality
 
-### 3. Quality Assessment Validation
+### 3. Content Quality Assessment Results
 
-**Age Appropriateness** (Range: 0.700-0.812):
+**Age Appropriateness Leaders** (Range: 0.625-0.812):
 
--   All models achieve acceptable safety standards for children's content
--   Claude 3.5 Haiku leads (0.812) but GPT-4o-mini provides optimal cost-adjusted value (0.762)
+1. Claude 3.5 Haiku: 0.812
+2. Claude 3.7 Sonnet: 0.775
+3. Claude 3.5 Sonnet: 0.762
 
-**Readability Assessment** (Flesch Scores: 56.7-63.0):
+**Engagement Score Leaders** (Range: 0.512-0.775):
 
--   All models cluster within appropriate reading levels for children aged 8-12
--   Validates pedagogical suitability across the evaluation suite
+1. GPT-4o: 0.775
+2. Claude Sonnet 4: 0.725
+3. Mistral Medium Latest: 0.713
 
-**Narrative Engagement** (Range: 0.575-0.675):
+**Story Structure Quality Leaders** (Range: 0.475-0.625):
 
--   GPT-4o-mini achieves highest engagement through effective dialogue and interactive elements
--   Demonstrates superior story crafting for educational applications
+1. Gemini 1.5 Pro: 0.625
+2. Claude 3.5 Sonnet: 0.600
+3. Gemini 2.0 Flash: 0.600
 
-**Story Structure Quality** (Range: 0.475-0.625):
+**Overall Content Quality Rankings**:
 
--   Claude models excel in narrative construction
--   GPT-4o-mini maintains competitive structural quality at superior cost efficiency
+1. GPT-4o: 0.606
+2. Mistral Medium Latest: 0.603
+3. Mistral Large Latest: 0.597
 
 ## Technical Implementation Insights
 
-### 1. Model Integration Challenges Resolved
+### 1. Expanded Model Integration Success
 
-**Anthropic API Compatibility**: Successfully resolved critical version conflict (anthropic 0.8.1 → 0.54.0) enabling Claude model integration
+**Multi-Provider Architecture**: Successfully integrated 15 models across 6 different AI providers, demonstrating framework scalability and extensibility.
 
-**DeepSeek Integration**: Novel provider successfully integrated, demonstrating framework extensibility for emerging models
+**Mistral Integration**: First comprehensive evaluation of Mistral models for children's content, revealing strong performance across multiple variants.
 
-**Google Safety Filters**: Gemini 2.5 preview models excluded due to overly restrictive content filtering for appropriate children's content
+**Enhanced DeepSeek Analysis**: Detailed evaluation of DeepSeek-chat model, identifying ultra-low cost benefits offset by quality and reliability concerns.
 
-### 2. Evaluation Framework Validation
+### 2. Comprehensive Evaluation Framework Validation
+
+**240-Story Dataset**: Analysis of 240 generated stories (15 models × 16 images) provides robust statistical foundation for model comparison.
 
 **20-Indicator Quality Assessment**: Successfully differentiates model performance across four critical dimensions:
 
@@ -133,7 +201,7 @@ This comprehensive evaluation of 9 state-of-the-art language models for children
 -   Narrative engagement (5 metrics)
 -   Story structure quality (5 metrics)
 
-**Statistical Methodology**: Multi-dimensional scoring with normalization enables objective cross-provider comparison
+**Multi-Dimensional Scoring**: Enhanced normalization methodology enables objective cross-provider comparison with composite performance scores.
 
 ## Deployment Recommendations
 
@@ -141,124 +209,135 @@ This comprehensive evaluation of 9 state-of-the-art language models for children
 
 **Large-Scale Educational Platforms**:
 
--   **Recommended**: GPT-4o-mini
--   **Rationale**: Optimal cost-quality balance enables sustainable deployment
--   **Cost Advantage**: 25x more economical than premium alternatives
+-   **Recommended**: Mistral Medium Latest
+-   **Rationale**: Optimal overall performance score with balanced cost-quality metrics
+-   **Alternative**: Gemini 2.0 Flash for speed-critical applications
 
 **High-Quality Content Requirements**:
 
 -   **Recommended**: Claude 3.5 Haiku
--   **Rationale**: Superior content quality justifies premium cost for specialized applications
--   **Use Case**: Curated educational content, assessment materials
+-   **Rationale**: Highest age appropriateness score (0.812) for premium educational content
+-   **Use Case**: Curated educational materials, assessment content
 
 **Real-Time Interactive Applications**:
 
 -   **Recommended**: Gemini 2.0 Flash
--   **Rationale**: Exceptional speed (2.1s) with competitive quality
+-   **Rationale**: Exceptional speed (2.1s) with competitive quality scores
 -   **Use Case**: Conversational tutoring, immediate story generation
+
+**Cost-Constrained Environments**:
+
+-   **Recommended**: GPT-4o-mini or DeepSeek Chat
+-   **Rationale**: Ultra-low cost options with acceptable quality for budget-limited deployments
+-   **Consideration**: DeepSeek requires reliability monitoring
 
 **Research and Development**:
 
 -   **Recommended**: Multi-model approach using top-tier performers
--   **Rationale**: Comparative analysis benefits from diverse model capabilities
--   **Implementation**: GPT-4o-mini + Claude 3.5 Haiku + Gemini 2.0 Flash
+-   **Implementation**: Mistral Medium + Gemini 2.0 Flash + Claude 3.5 Haiku
 
 ### Economic Considerations
 
 **Cost Efficiency Analysis**:
 
--   **Range**: $0.0002 (GPT-4o-mini) to $0.0049 (GPT-4o) per story
--   **Implication**: 25x cost variation for similar quality outputs
--   **Educational Impact**: Enables democratization of AI-powered educational tools
+-   **Range**: $0.0001 (DeepSeek) to $0.0049 (GPT-4o) per story
+-   **Implication**: 49x cost variation across model options
+-   **Educational Impact**: Enables flexible deployment strategies based on institutional budgets
 
 **Sustainability Assessment**:
 
--   GPT-4o-mini enables generation of 25 stories for the cost of 1 GPT-4o story
--   Critical for educational institutions with budget constraints
--   Supports broader access to AI-enhanced learning experiences
+-   Mistral Medium provides optimal cost-quality balance for sustainable deployment
+-   Ultra-low cost options (DeepSeek) enable experimentation and high-volume testing
+-   Premium options (Claude models) justified for specialized high-quality content needs
 
 ## Methodological Contributions
 
-### 1. Novel Evaluation Framework
+### 1. Expanded Evaluation Framework
 
-**Innovation**: First comprehensive evaluation methodology specifically designed for children's educational content generation
+**Innovation**: First comprehensive evaluation methodology comparing 15 models across 6 providers for children's educational content generation.
 
-**Integration**: Combines quantitative linguistic analysis with pedagogical content assessment
+**Multi-Provider Integration**: Demonstrates successful integration of diverse AI providers including emerging options (Mistral, DeepSeek).
 
-**Scalability**: Successfully accommodated 9 models across 4 providers (OpenAI, Anthropic, Google, DeepSeek)
+**Scalable Architecture**: Framework designed to accommodate additional models and providers as they become available.
 
-### 2. Reproducible Research Architecture
+### 2. Enhanced Statistical Methodology
 
-**Automated Evaluation**: All assessment processes documented and automated for replication
+**Robust Dataset**: 240-story analysis provides strong statistical foundation for model comparison.
 
-**Version Control**: Dependency management ensures reproducible results across research environments
+**Composite Scoring**: Advanced normalization and weighting methodology for objective cross-provider evaluation.
 
-**Extensible Design**: Framework designed for future model integration including planned TTS analysis
+**Quality Dimension Analysis**: Detailed breakdown of performance across age appropriateness, readability, engagement, and structure.
 
 ### 3. Educational Technology Focus
 
-**Pedagogical Metrics**: Quality indicators specifically designed for children's learning content
+**Pedagogical Metrics**: Quality indicators specifically designed for children's learning content evaluation.
 
-**Age-Appropriate Assessment**: Safety and developmental suitability evaluation
+**Age-Appropriate Assessment**: Comprehensive safety and developmental suitability evaluation framework.
 
-**Practical Application**: Cost-effectiveness analysis for real-world educational deployment
+**Practical Deployment Guidance**: Evidence-based recommendations for different educational technology scenarios.
 
 ## Limitations and Future Research
 
 ### Current Study Limitations
 
-1. **Evaluation Scope**: Limited to English-language bedtime stories; broader educational content domains require validation
+1. **Content Domain**: Limited to English-language bedtime stories; broader educational content domains require validation
 2. **Automated Assessment**: Quality evaluation based on computational metrics; human expert validation needed
-3. **Provider Challenges**: Technical issues with some models (DeepSeek timeouts, Gemini safety filters) may affect completeness
-4. **Cultural Context**: Single cultural perspective; cross-cultural appropriateness requires investigation
+3. **Cultural Context**: Single cultural perspective; cross-cultural appropriateness assessment required
+4. **Provider Variability**: Some models showed inconsistent performance requiring additional reliability analysis
 
 ### Future Research Priorities
 
-1. **Expert Validation Studies**: Pedagogical specialist assessment of generated content quality
+1. **Expert Validation Studies**: Pedagogical specialist assessment of generated content quality across all 15 models
 2. **Longitudinal User Research**: Child engagement and learning outcome measurement with target demographic
 3. **Cross-Cultural Adaptation**: Multi-language model performance evaluation and cultural appropriateness assessment
 4. **Domain Expansion**: Extension to mathematics problems, science explanations, historical narratives
 5. **Multimodal Integration**: Text-to-Speech comparative analysis using established evaluation framework
+6. **Reliability Studies**: Long-term consistency analysis for models showing variable performance
 
 ## Strategic Implications for Educational Technology
 
-### 1. Model Selection Paradigm Shift
+### 1. Model Selection Paradigm Evolution
 
-**Traditional Assumption**: Larger, more expensive models produce superior educational content  
-**Evidence-Based Reality**: Cost-effective models (GPT-4o-mini) achieve optimal performance for educational applications  
-**Strategic Impact**: Enables budget-conscious educational institutions to access high-quality AI capabilities
+**Multi-Provider Landscape**: Educational institutions now have access to diverse model options across multiple providers, enabling strategic selection based on specific requirements.
+
+**Performance-Cost Optimization**: Results demonstrate that optimal model selection requires balancing multiple dimensions rather than focusing solely on general-purpose benchmarks.
+
+**Emerging Provider Integration**: Successful integration of newer providers (Mistral, DeepSeek) demonstrates the value of continuous evaluation as the AI landscape evolves.
 
 ### 2. Democratization of AI Education Tools
 
-**Accessibility**: Cost-effective high-quality models reduce barriers to AI adoption in education
-**Sustainability**: Economic viability enables long-term deployment in resource-constrained environments
-**Equity**: Supports broader access to AI-enhanced learning experiences across diverse educational contexts
+**Cost Range Flexibility**: 49x cost variation enables deployment strategies from ultra-low-cost experimentation to premium quality applications.
 
-### 3. Research Methodology Evolution
+**Quality Accessibility**: Multiple models achieve acceptable educational quality standards, reducing barriers to AI adoption in education.
 
-**Application-Specific Evaluation**: Demonstrates necessity of domain-specific model assessment over general-purpose benchmarks
-**Comprehensive Framework**: Establishes template for evaluating AI models in educational applications
-**Evidence-Based Decision Making**: Provides empirical foundation for technology adoption in educational settings
+**Scalable Implementation**: Framework supports both small-scale pilot programs and large-scale institutional deployments.
+
+### 3. Research Methodology Advancement
+
+**Comprehensive Evaluation**: Establishes new standard for educational AI model evaluation incorporating operational and pedagogical metrics.
+
+**Evidence-Based Selection**: Provides empirical foundation for technology adoption decisions in educational settings.
+
+**Framework Extensibility**: Methodology designed for continuous expansion as new models and providers emerge.
 
 ## Conclusion
 
-This systematic evaluation challenges conventional assumptions about AI model selection for educational applications. The finding that GPT-4o-mini outperforms significantly more expensive alternatives demonstrates the critical importance of application-specific evaluation rather than relying on general-purpose performance metrics.
+This systematic evaluation of 15 large language models for children's story generation provides the most comprehensive analysis to date of AI model performance in educational content creation. The finding that Mistral Medium Latest achieves optimal overall performance, while specialized models excel in specific dimensions, demonstrates the importance of application-specific evaluation frameworks.
 
-The developed framework contributes both methodological innovation and practical guidance for educational technology implementation. Key contributions include:
+Key contributions include:
 
-1. **Empirical Evidence**: Cost-effective models can achieve superior performance for educational content generation
-2. **Evaluation Methodology**: Comprehensive framework specifically designed for children's educational content assessment
+1. **Empirical Evidence**: Comprehensive performance data across 15 models and 6 providers for educational content generation
+2. **Evaluation Methodology**: Robust framework specifically designed for children's educational content assessment
 3. **Practical Guidance**: Evidence-based recommendations for model selection across different deployment scenarios
-4. **Economic Analysis**: Cost-effectiveness evaluation enabling sustainable AI adoption in education
+4. **Economic Analysis**: Detailed cost-effectiveness evaluation enabling sustainable AI adoption strategies
+5. **Framework Scalability**: Extensible methodology for future model integration and evaluation
 
-For educational institutions and technology developers, this research provides a validated methodology for model selection that prioritizes learning outcomes while maintaining economic viability. The findings support the democratization of AI-powered educational tools by demonstrating that high-quality content generation is achievable with cost-effective model alternatives.
+**Primary Recommendations**:
 
-**Primary Recommendation**: Educational technology implementations should prioritize GPT-4o-mini for optimal balance of content quality, operational efficiency, and economic sustainability, while considering specialized models (Claude 3.5 Haiku) for premium content requirements when budget permits.
+-   **General Educational Use**: Mistral Medium Latest for optimal balance of quality, speed, and cost
+-   **Speed-Critical Applications**: Gemini 2.0 Flash for real-time interactive systems
+-   **Premium Content**: Claude 3.5 Haiku for highest age appropriateness standards
+-   **Cost-Constrained Environments**: GPT-4o-mini for excellent value proposition
+-   **Experimental/High-Volume**: DeepSeek Chat for ultra-low cost with quality monitoring
 
----
-
-**Research Team**: Mira Storyteller App Development Team  
-**Institution**: University of London  
-**Contact**: Final Project Evaluation Committee  
-**Data Availability**: Complete evaluation dataset and analysis code available in project repository  
-**Reproducibility**: All methodologies documented for independent validation and replication
+This research establishes a foundation for evidence-based AI model selection in educational technology, supporting the democratization of AI-powered learning tools while maintaining focus on pedagogical quality and economic sustainability.

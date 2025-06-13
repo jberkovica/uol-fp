@@ -86,7 +86,7 @@ jupyter lab
 
 **Note**: The `-u` flag ensures unbuffered output for real-time monitoring, while `tee` saves the output to log files for later review and debugging.
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 models_analysis/
@@ -100,7 +100,7 @@ models_analysis/
 └── analysis/         # Jupyter notebooks for analysis
 ```
 
-## 🛡️ Security Notes
+## Security Notes
 
 -   Never commit `.env` files to version control
 -   Monitor API usage and set billing limits
