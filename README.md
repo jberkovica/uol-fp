@@ -234,3 +234,18 @@ This project serves as a University of London final project with significant aca
 **Project Status**: Active development with substantial progress in both research and implementation phases. The comprehensive model evaluation provides a strong foundation for the production-ready application currently under development.
 
 This project demonstrates the successful intersection of academic research and practical application development, contributing both scholarly insights to AI model evaluation and a functional educational tool for children and families.
+
+## License
+
+This project is proprietary academic work developed as part of a University of London final project. All rights reserved.
+
+**Copyright**: © 2024-2025 Jekaterina Berkovich & University of London
+
+**Restrictions**:
+
+-   This code is not open source and may not be redistributed
+-   Commercial use is prohibited without explicit permission
+-   Academic use requires prior authorization from the author and University of London
+-   All AI model evaluation data and methodologies are proprietary research assets
+
+For licensing inquiries or permissions, please contact the author.
