@@ -45,18 +45,17 @@ Comprehensive evaluation of contemporary AI models across all three pipeline sta
 
 **Image Captioning Models Evaluated**:
 
--   GPT-4o Vision, Gemini 2.5/2.0 Flash, Claude 3.5 Sonnet Vision
--   LLaVA, BLIP variants, specialized vision models
+-   **Premium Vision**: GPT-4o Vision, Gemini 2.5/2.0 Flash, Claude 3.5 Sonnet Vision
+-   **Specialized Models**: LLaVA variants, BLIP-2, InstructBLIP (via Replicate)
 
 **Story Generation Models Evaluated**:
 
--   GPT-4o, Claude 3.5 Sonnet, Gemini Pro/Flash models
--   Llama variants, DeepSeek models, specialized creative models
+-   **Premium Models**: GPT-4o, Claude 3.5 Sonnet, Gemini Pro/Flash, Mistral Large, DeepSeek-V3
+-   **Open Source Models**: Llama 3.1/3.2 variants (via Replicate)
 
 **Text-to-Speech Models Evaluated**:
 
--   OpenAI TTS-1/HD, ElevenLabs v3, Google Cloud Neural2
--   Azure Neural HD, Amazon Polly Neural
+-   **Premium TTS**: OpenAI TTS-1/HD, ElevenLabs v3, Google Cloud Neural2
 
 **Key Research Findings**:
 

@@ -67,10 +67,10 @@ DEEPSEEK_API_KEY=your_deepseek_key_here
 -   **Anthropic**: Claude 3.5 Sonnet, Claude 3.5 Haiku
 -   **Google**: Gemini 2.5 Pro, Gemini 2.0 Flash, Gemini Pro
 -   **Mistral**: Mistral Large, Mistral Medium
-
-**Tier 2 - Alternative Models (via Replicate)**:
-
 -   **DeepSeek**: DeepSeek-V3, DeepSeek-Chat
+
+**Tier 2 - Open Source Models (via Replicate)**:
+
 -   **Meta**: Llama 3.1 (70B, 8B), Llama 3.2 variants
 -   **Fine-tuned Models**: Various creative writing specialized models
 
