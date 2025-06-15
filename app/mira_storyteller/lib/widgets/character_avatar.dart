@@ -8,7 +8,7 @@ enum CharacterType {
   cloud,
 }
 
-/// A widget for displaying character avatars in the app
+/// A widget for displaying character avatars in the app - FLAT DESIGN
 class CharacterAvatar extends StatelessWidget {
   final double radius;
   final CharacterType characterType;
@@ -27,13 +27,7 @@ class CharacterAvatar extends StatelessWidget {
       decoration: BoxDecoration(
         color: _getColor(),
         shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 26),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        // NO shadows - completely flat design
       ),
       child: Center(
         child: _buildCharacterFace(),
@@ -45,75 +39,69 @@ class CharacterAvatar extends StatelessWidget {
     switch (characterType) {
       case CharacterType.hero1:
       case CharacterType.hero2:
-        return AppColors.characterPurple;
+        return AppColors.primary; // Use the primary purple color
       case CharacterType.cloud:
-        return AppColors.characterCloud;
+        return AppColors.lightGrey; // Use light grey for cloud
     }
   }
 
   Widget _buildCharacterFace() {
     switch (characterType) {
       case CharacterType.hero1:
-        return _buildSmileWithClosedEyes();
+        return _buildFriendlyFace();
       case CharacterType.hero2:
-        return _buildSmileWithOpenEyes();
+        return _buildHappyFace();
       case CharacterType.cloud:
         return _buildCloudFace();
     }
   }
 
-  Widget _buildSmileWithClosedEyes() {
+  Widget _buildFriendlyFace() {
     final faceSize = radius * 2 * 0.6;
-    
+
     return SizedBox(
       width: faceSize,
       height: faceSize,
       child: Stack(
         children: [
-          // Eyes (closed)
+          // Left eye (friendly dot)
           Positioned(
             top: faceSize * 0.3,
-            left: faceSize * 0.2,
-            child: Container(
-              width: faceSize * 0.2,
-              height: faceSize * 0.05,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(faceSize * 0.025),
-              ),
-            ),
-          ),
-          
-          Positioned(
-            top: faceSize * 0.3,
-            right: faceSize * 0.2,
-            child: Container(
-              width: faceSize * 0.2,
-              height: faceSize * 0.05,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(faceSize * 0.025),
-              ),
-            ),
-          ),
-          
-          // Smile
-          Positioned(
-            bottom: faceSize * 0.25,
             left: faceSize * 0.25,
             child: Container(
-              width: faceSize * 0.5,
-              height: faceSize * 0.25,
+              width: faceSize * 0.12,
+              height: faceSize * 0.12,
+              decoration: const BoxDecoration(
+                color: AppColors.textLight,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+
+          // Right eye (friendly dot)
+          Positioned(
+            top: faceSize * 0.3,
+            right: faceSize * 0.25,
+            child: Container(
+              width: faceSize * 0.12,
+              height: faceSize * 0.12,
+              decoration: const BoxDecoration(
+                color: AppColors.textLight,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ),
+
+          // Simple smile (small oval)
+          Positioned(
+            bottom: faceSize * 0.3,
+            left: faceSize * 0.35,
+            right: faceSize * 0.35,
+            child: Container(
+              height: faceSize * 0.08,
               decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black,
-                    width: faceSize * 0.05,
-                  ),
-                ),
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(faceSize * 0.25),
-                ),
+                color: AppColors.textLight,
+                borderRadius: BorderRadius.circular(faceSize * 0.04),
               ),
             ),
           ),
@@ -122,56 +110,52 @@ class CharacterAvatar extends StatelessWidget {
     );
   }
 
-  Widget _buildSmileWithOpenEyes() {
+  Widget _buildHappyFace() {
     final faceSize = radius * 2 * 0.6;
-    
+
     return SizedBox(
       width: faceSize,
       height: faceSize,
       child: Stack(
         children: [
-          // Eyes (open)
+          // Left eye (slightly bigger dot)
           Positioned(
-            top: faceSize * 0.25,
-            left: faceSize * 0.2,
+            top: faceSize * 0.28,
+            left: faceSize * 0.25,
             child: Container(
               width: faceSize * 0.15,
               height: faceSize * 0.15,
               decoration: const BoxDecoration(
-                color: Colors.black,
+                color: AppColors.textLight,
                 shape: BoxShape.circle,
               ),
             ),
           ),
-          
+
+          // Right eye (slightly bigger dot)
           Positioned(
-            top: faceSize * 0.25,
-            right: faceSize * 0.2,
+            top: faceSize * 0.28,
+            right: faceSize * 0.25,
             child: Container(
               width: faceSize * 0.15,
               height: faceSize * 0.15,
               decoration: const BoxDecoration(
-                color: Colors.black,
+                color: AppColors.textLight,
                 shape: BoxShape.circle,
               ),
             ),
           ),
-          
-          // Mouth (small smile)
+
+          // Happy smile (wider oval)
           Positioned(
-            bottom: faceSize * 0.2,
-            left: faceSize * 0.3,
+            bottom: faceSize * 0.25,
+            left: faceSize * 0.25,
+            right: faceSize * 0.25,
             child: Container(
-              width: faceSize * 0.4,
-              height: faceSize * 0.15,
+              height: faceSize * 0.1,
               decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.black,
-                    width: faceSize * 0.05,
-                  ),
-                ),
-                borderRadius: BorderRadius.circular(faceSize * 0.1),
+                color: AppColors.textLight,
+                borderRadius: BorderRadius.circular(faceSize * 0.05),
               ),
             ),
           ),
@@ -181,6 +165,55 @@ class CharacterAvatar extends StatelessWidget {
   }
 
   Widget _buildCloudFace() {
-    return Container(); // Placeholder for cloud face - will be implemented later
+    final faceSize = radius * 2 * 0.6;
+
+    return SizedBox(
+      width: faceSize,
+      height: faceSize,
+      child: Stack(
+        children: [
+          // Sleepy eyes (small ovals)
+          Positioned(
+            top: faceSize * 0.35,
+            left: faceSize * 0.25,
+            child: Container(
+              width: faceSize * 0.15,
+              height: faceSize * 0.08,
+              decoration: BoxDecoration(
+                color: AppColors.textDark,
+                borderRadius: BorderRadius.circular(faceSize * 0.04),
+              ),
+            ),
+          ),
+
+          Positioned(
+            top: faceSize * 0.35,
+            right: faceSize * 0.25,
+            child: Container(
+              width: faceSize * 0.15,
+              height: faceSize * 0.08,
+              decoration: BoxDecoration(
+                color: AppColors.textDark,
+                borderRadius: BorderRadius.circular(faceSize * 0.04),
+              ),
+            ),
+          ),
+
+          // Peaceful smile
+          Positioned(
+            bottom: faceSize * 0.3,
+            left: faceSize * 0.4,
+            right: faceSize * 0.4,
+            child: Container(
+              height: faceSize * 0.06,
+              decoration: BoxDecoration(
+                color: AppColors.textDark,
+                borderRadius: BorderRadius.circular(faceSize * 0.03),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

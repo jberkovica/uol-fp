@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import '../../constants/app_colors.dart';
-import '../../widgets/character_avatar.dart';
+import '../../constants/app_assets.dart';
 
 class ProcessingScreen extends StatefulWidget {
   const ProcessingScreen({super.key});
@@ -19,18 +21,16 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
     'Almost ready...',
     'Your tale is ready!'
   ];
-  
+
   @override
   void initState() {
     super.initState();
-    // Simulate processing steps with a timer
     _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       setState(() {
         if (_currentStep < 3) {
           _currentStep++;
         } else {
           _timer.cancel();
-          // Navigate to story screen after a short delay
           Future.delayed(const Duration(seconds: 1), () {
             if (!mounted) return;
             Navigator.pushReplacementNamed(context, '/story-display');
@@ -39,7 +39,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
       });
     });
   }
-  
+
   @override
   void dispose() {
     _timer.cancel();
@@ -49,26 +49,21 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [AppColors.secondary, AppColors.secondary],
-          ),
-        ),
-        child: SafeArea(
+      backgroundColor: AppColors.backgroundYellow, // FLAT yellow background
+      body: SafeArea(
+        child: Center(
+          // Center everything
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              _buildAnimatedMascot(),
               const SizedBox(height: 40),
-              _buildAnimatedCharacters(),
-              const SizedBox(height: 60),
               _buildMessage(),
-              const SizedBox(height: 80),
-              _currentStep == 3 ? _buildReadyButton(context) : const SizedBox(height: 50),
+              const SizedBox(height: 60),
+              _currentStep == 3
+                  ? _buildReadyButton(context)
+                  : const SizedBox(height: 56),
             ],
           ),
         ),
@@ -76,64 +71,48 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
     );
   }
 
-  Widget _buildAnimatedCharacters() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        // Character
-        AnimatedOpacity(
-          opacity: 1.0,
-          duration: const Duration(milliseconds: 500),
-          child: const CharacterAvatar(
-            radius: 60,
-            characterType: CharacterType.hero2,
-          ),
+  Widget _buildAnimatedMascot() {
+    return Center(
+      // Ensure centering
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        child: SvgPicture.asset(
+          _currentStep >= 2 ? AppAssets.miraInClouds : AppAssets.miraWaiting,
+          key: ValueKey<int>(_currentStep),
+          width: 160, // Larger size
+          height: 160,
+          fit: BoxFit.contain,
         ),
-        
-        // Clouds - only visible in later steps
-        if (_currentStep >= 1)
-          Positioned(
-            bottom: -20,
-            child: AnimatedOpacity(
-              opacity: _currentStep >= 1 ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 500),
-              child: Container(
-                width: 80,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 230),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-            ),
-          ),
-      ],
+      ),
     );
   }
 
   Widget _buildMessage() {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 500),
-      transitionBuilder: (Widget child, Animation<double> animation) {
-        return FadeTransition(
-          opacity: animation,
-          child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0.0, 0.5),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(
+            opacity: animation,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.0, 0.5),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            ),
+          );
+        },
+        child: Text(
+          _messages[_currentStep],
+          key: ValueKey<int>(_currentStep),
+          textAlign: TextAlign.center,
+          style: GoogleFonts.manrope(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textDark,
           ),
-        );
-      },
-      child: Text(
-        _messages[_currentStep],
-        key: ValueKey<int>(_currentStep),
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
         ),
       ),
     );
@@ -145,15 +124,19 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
         Navigator.pushReplacementNamed(context, '/story-display');
       },
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+        backgroundColor: AppColors.white,
+        foregroundColor: AppColors.textDark,
+        padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 18),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(16),
         ),
+        elevation: 0, // NO shadow
+        shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
       ),
-      child: const Text(
+      child: Text(
         'Read',
-        style: TextStyle(
+        style: GoogleFonts.manrope(
           fontSize: 22,
           fontWeight: FontWeight.bold,
           color: AppColors.textDark,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
 
 class ParentLoginScreen extends StatefulWidget {
@@ -24,29 +25,20 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [AppColors.primary, AppColors.backgroundPurple],
-          ),
-        ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildHeader(),
-                  const SizedBox(height: 40),
-                  _buildLoginForm(),
-                  const SizedBox(height: 24),
-                  _buildBackButton(),
-                ],
-              ),
+      backgroundColor: AppColors.primary, // Flat purple background
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildHeader(),
+                const SizedBox(height: 40),
+                _buildLoginForm(),
+                const SizedBox(height: 24),
+                _buildBackButton(),
+              ],
             ),
           ),
         ),
@@ -58,26 +50,27 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           decoration: BoxDecoration(
             color: AppColors.secondary,
             borderRadius: BorderRadius.circular(30),
           ),
-          child: const Text(
+          child: Text(
             'Parent dashboard',
-            style: TextStyle(
+            style: GoogleFonts.manrope(
               fontSize: 24,
               fontWeight: FontWeight.bold,
               color: AppColors.textDark,
             ),
           ),
         ),
-        const SizedBox(height: 16),
-        const Text(
+        const SizedBox(height: 24),
+        Text(
           'Please sign in to access the parent area',
-          style: TextStyle(
+          style: GoogleFonts.manrope(
             fontSize: 16,
-            color: Colors.white,
+            color: AppColors.textLight,
+            fontWeight: FontWeight.w500,
           ),
           textAlign: TextAlign.center,
         ),
@@ -87,17 +80,10 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
 
   Widget _buildLoginForm() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 26),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(24),
       ),
       child: Form(
         key: _formKey,
@@ -106,36 +92,41 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
           children: [
             TextFormField(
               controller: _emailController,
+              style: GoogleFonts.manrope(),
               decoration: InputDecoration(
                 labelText: 'Email',
+                labelStyle: GoogleFonts.manrope(color: AppColors.textGrey),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                prefixIcon: const Icon(Icons.email),
+                prefixIcon:
+                    Icon(Icons.email_outlined, color: AppColors.textGrey),
+                filled: true,
+                fillColor: AppColors.surfaceLight,
               ),
               keyboardType: TextInputType.emailAddress,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your email';
                 }
-                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                  return 'Please enter a valid email';
-                }
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _passwordController,
+              style: GoogleFonts.manrope(),
               decoration: InputDecoration(
                 labelText: 'Password',
+                labelStyle: GoogleFonts.manrope(color: AppColors.textGrey),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                prefixIcon: const Icon(Icons.lock),
+                prefixIcon: Icon(Icons.lock_outline, color: AppColors.textGrey),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    _passwordVisible ? Icons.visibility_off : Icons.visibility,
+                    color: AppColors.textGrey,
                   ),
                   onPressed: () {
                     setState(() {
@@ -143,47 +134,47 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
                     });
                   },
                 ),
+                filled: true,
+                fillColor: AppColors.surfaceLight,
               ),
               obscureText: !_passwordVisible,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your password';
                 }
-                if (value.length < 6) {
-                  return 'Password must be at least 6 characters';
-                }
                 return null;
               },
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             ElevatedButton(
               onPressed: _handleLogin,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.secondary,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                foregroundColor: AppColors.textDark,
+                padding: const EdgeInsets.symmetric(vertical: 18),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(16),
                 ),
+                elevation: 0,
+                shadowColor: Colors.transparent,
+                surfaceTintColor: Colors.transparent,
               ),
-              child: const Text(
+              child: Text(
                 'Sign In',
-                style: TextStyle(
+                style: GoogleFonts.manrope(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             TextButton(
-              onPressed: () {
-                // Handle forgot password
-              },
-              child: const Text(
+              onPressed: () {},
+              child: Text(
                 'Forgot Password?',
-                style: TextStyle(
+                style: GoogleFonts.manrope(
                   color: AppColors.primary,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -198,12 +189,13 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
       onPressed: () {
         Navigator.pop(context);
       },
-      icon: const Icon(Icons.arrow_back, color: Colors.white),
-      label: const Text(
+      icon: const Icon(Icons.arrow_back, color: AppColors.textLight),
+      label: Text(
         'Back to Child Mode',
-        style: TextStyle(
-          color: Colors.white,
+        style: GoogleFonts.manrope(
+          color: AppColors.textLight,
           fontSize: 16,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -211,9 +203,6 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
 
   void _handleLogin() {
     if (_formKey.currentState?.validate() ?? false) {
-      // In a real app, perform authentication here
-      
-      // For demo purposes, we'll just navigate to the parent dashboard
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/parent-dashboard');
     }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
-import '../../widgets/character_avatar.dart';
+import '../../constants/app_theme.dart';
+import '../../constants/app_assets.dart';
 
 class ChildHomeScreen extends StatefulWidget {
   const ChildHomeScreen({super.key});
@@ -12,28 +15,20 @@ class ChildHomeScreen extends StatefulWidget {
 class _ChildHomeScreenState extends State<ChildHomeScreen> {
   // For demonstration purposes, this allows toggling between views
   final bool _hasStories = false;
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [AppColors.secondary, AppColors.secondary],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              _buildHeader('My tales'),
-              Expanded(
-                child: _buildContent(context),
-              ),
-              _buildFooter(context),
-            ],
-          ),
+      backgroundColor: AppColors.backgroundYellow, // FLAT yellow background
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildHeader('My tales'),
+            Expanded(
+              child: _buildContent(context),
+            ),
+            _buildFooter(context),
+          ],
         ),
       ),
     );
@@ -42,22 +37,17 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   Widget _buildHeader(String title) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textDark,
-            ),
-          ),
-        ],
+      child: Text(
+        title,
+        style: GoogleFonts.manrope(
+          fontSize: 32,
+          fontWeight: FontWeight.bold,
+          color: AppColors.textDark,
+        ),
       ),
     );
   }
-  
+
   Widget _buildContent(BuildContext context) {
     // This is no longer dead code as _hasStories can be toggled
     if (_hasStories) {
@@ -74,36 +64,42 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       {'title': 'The Magical Forest', 'image': null},
       {'title': 'Space Adventure', 'image': null},
     ];
-    
+
     return ListView.builder(
       padding: const EdgeInsets.all(20),
       itemCount: mockStories.length,
       itemBuilder: (context, index) {
-        return Card(
+        return Container(
           margin: const EdgeInsets.only(bottom: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
+          decoration: AppTheme.flatCardDecoration, // FLAT white card
           child: ListTile(
             contentPadding: const EdgeInsets.all(16),
             leading: Container(
               width: 60,
               height: 60,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(12)),
                 color: AppColors.lightGrey,
+                // NO shadows
               ),
               // This would be the story thumbnail
-              child: Icon(Icons.image, color: AppColors.grey),
+              child: const Icon(Icons.image, color: AppColors.grey),
             ),
             title: Text(
               'Story Title',
-              style: TextStyle(
+              style: GoogleFonts.manrope(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                color: AppColors.textDark,
               ),
             ),
-            subtitle: Text('Tap to listen'),
+            subtitle: Text(
+              'Tap to listen',
+              style: GoogleFonts.manrope(
+                fontSize: 14,
+                color: AppColors.textGrey,
+              ),
+            ),
             onTap: () {
               Navigator.pushNamed(context, '/story-playback');
             },
@@ -118,25 +114,32 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Character mascot
-          const CharacterAvatar(
-            radius: 60,
-            characterType: CharacterType.hero2,
+          // Centered mascot with proper size
+          SvgPicture.asset(
+            AppAssets.miraReady,
+            width: 140,
+            height: 140,
+            fit: BoxFit.contain,
           ),
           const SizedBox(height: 40),
-          // Upload button
+
+          // Upload button - FLAT design
           ElevatedButton(
             onPressed: () => _showImageSourceOptions(context),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+              backgroundColor: AppColors.white,
+              foregroundColor: AppColors.textDark,
+              padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 18),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(16),
               ),
+              elevation: 0, // NO shadow
+              shadowColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
             ),
-            child: const Text(
-              'Upload',
-              style: TextStyle(
+            child: Text(
+              'upload',
+              style: GoogleFonts.manrope(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textDark,
@@ -144,13 +147,14 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
             ),
           ),
           const SizedBox(height: 20),
+
           // Help text
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Text(
               'Upload a drawing or photo to create a story',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: GoogleFonts.manrope(
                 fontSize: 16,
                 color: AppColors.textDark,
               ),
@@ -160,114 +164,84 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       ),
     );
   }
-  
+
   Widget _buildFooter(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context); // Go back to profile select
-            },
-            icon: const Icon(Icons.home, size: 32),
-            color: AppColors.textDark,
-          ),
-          Container(width: 10), // Spacer
-          IconButton(
-            onPressed: () {
-              // Navigate to settings or additional features
-            },
-            icon: const Icon(Icons.settings, size: 28),
-            color: AppColors.textDark.withValues(alpha: 179),
-          ),
+          _buildFooterButton(Icons.home, () {
+            Navigator.pop(context);
+          }),
+          _buildFooterButton(Icons.explore, () {
+            // Navigate to explore
+          }),
+          _buildFooterButton(Icons.settings, () {
+            // Navigate to settings
+          }),
         ],
       ),
     );
   }
-  
-  void _showImageSourceOptions(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+
+  Widget _buildFooterButton(IconData icon, VoidCallback onPressed) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+        // NO shadows, completely flat
       ),
-      builder: (context) => Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Choose an option',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildImageSourceButton(
-                  context,
-                  Icons.camera_alt,
-                  'Camera',
-                  () {
-                    Navigator.pop(context);
-                    // Handle camera selection
-                    Navigator.pushNamed(context, '/processing');
-                  },
-                ),
-                _buildImageSourceButton(
-                  context,
-                  Icons.photo_library,
-                  'Gallery',
-                  () {
-                    Navigator.pop(context);
-                    // Handle gallery selection
-                    Navigator.pushNamed(context, '/processing');
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-          ],
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon, size: 28, color: AppColors.textLight),
+        style: IconButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          elevation: 0, // NO shadow
+          padding: const EdgeInsets.all(16),
         ),
       ),
     );
   }
-  
-  Widget _buildImageSourceButton(
-      BuildContext context, IconData icon, String label, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        children: [
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: AppColors.lightGrey,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Icon(
-              icon,
-              size: 40,
-              color: AppColors.primary,
-            ),
+
+  void _showImageSourceOptions(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.white,
+          elevation: 0, // NO shadow
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
+          title: Text(
+            'Choose Image Source',
+            style: GoogleFonts.manrope(fontWeight: FontWeight.bold),
           ),
-        ],
-      ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: Text('Camera', style: GoogleFonts.manrope()),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.pushNamed(context, '/processing');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: Text('Gallery', style: GoogleFonts.manrope()),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.pushNamed(context, '/processing');
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

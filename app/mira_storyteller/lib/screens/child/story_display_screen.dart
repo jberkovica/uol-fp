@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
+import '../../constants/app_theme.dart';
+import '../../models/story.dart';
+import '../../services/mock_story_service.dart';
 
 class StoryDisplayScreen extends StatefulWidget {
   const StoryDisplayScreen({super.key});
@@ -8,207 +12,235 @@ class StoryDisplayScreen extends StatefulWidget {
   State<StoryDisplayScreen> createState() => _StoryDisplayScreenState();
 }
 
-class _StoryDisplayScreenState extends State<StoryDisplayScreen> with SingleTickerProviderStateMixin {
+class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
+  final MockStoryService _storyService = MockStoryService();
+  Story? _currentStory;
   bool _isPlaying = false;
-  late AnimationController _animationController;
-  
-  // In a real app, this would come from the backend
-  final Map<String, dynamic> _mockStory = {
-    'title': 'Froggy Frog',
-    'image': null, // Would be a URL or asset path
-    'text': 'Froggy was a tiny green frog. He lived on a big lily pad in a quiet pond. One day, Froggy decided to explore beyond his lily pad. He hopped to a nearby rock, then to the shore. Along the way, Froggy met a friendly butterfly who showed him beautiful flowers at the pond\'s edge. Froggy had never seen such colorful plants before! When the sun began to set, Froggy hopped all the way back to his lily pad. He was happy to be home, but excited for more adventures tomorrow.',
-  };
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
-  }
-  
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
+    _loadStory();
   }
 
-  void _togglePlayPause() {
-    setState(() {
-      _isPlaying = !_isPlaying;
-      if (_isPlaying) {
-        _animationController.forward();
-        // In a real app, we would start audio playback here
-      } else {
-        _animationController.reverse();
-        // In a real app, we would pause audio playback here
-      }
-    });
+  void _loadStory() async {
+    final stories = await _storyService.getApprovedStories();
+    if (stories.isNotEmpty) {
+      setState(() {
+        _currentStory = stories.first;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_currentStory == null) {
+      return Scaffold(
+        backgroundColor: AppColors.backgroundPurple,
+        body: Center(
+          child: Text(
+            'No story available',
+            style: GoogleFonts.manrope(
+              color: AppColors.textLight,
+              fontSize: 18,
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.close, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          'Story preview',
-          style: TextStyle(color: AppColors.textDark),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.white, AppColors.primary],
-            stops: [0.5, 1.0],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              _buildStoryImage(),
-              _buildStoryContent(),
-              _buildControlButtons(),
-            ],
-          ),
+      backgroundColor: AppColors.backgroundPurple, // FLAT purple background
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildHeader(),
+            Expanded(
+              child: _buildStoryContent(),
+            ),
+            _buildControls(),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildStoryImage() {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 26),
-            spreadRadius: 1,
-            blurRadius: 10,
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.close, color: AppColors.textLight, size: 28),
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              elevation: 0, // NO shadow
+            ),
           ),
+          Expanded(
+            child: Text(
+              'Story preview',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.manrope(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textLight,
+              ),
+            ),
+          ),
+          const SizedBox(width: 48), // Balance for close button
         ],
-        border: Border.all(
-          color: Colors.amber,
-          width: 5,
-        ),
-      ),
-      child: Center(
-        // In a real app, this would be an Image widget with the actual image
-        child: Icon(
-          Icons.image,
-          size: 80,
-          color: Colors.grey.withValues(alpha: 128),
-        ),
       ),
     );
   }
 
   Widget _buildStoryContent() {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 20),
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 26),
-              spreadRadius: 1,
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                _mockStory['title'],
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                _mockStory['text'],
-                style: const TextStyle(
-                  fontSize: 18,
-                  height: 1.5,
-                  color: AppColors.textDark,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildControlButtons() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
         children: [
-          _buildActionButton(
-            onPressed: () {
-              // In a real app, restart story from beginning
-            },
-            backgroundColor: AppColors.primary.withValues(alpha: 230),
-            icon: Icons.replay,
+          // Image container - FLAT design, NO gradients
+          Container(
+            width: double.infinity,
+            height: 200,
+            margin: const EdgeInsets.only(bottom: 20),
+            decoration: const BoxDecoration(
+              color: AppColors.secondary, // FLAT yellow background
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+              // NO shadows, NO gradients, completely flat
+            ),
+            child: Center(
+              child: _currentStory!.imageUrl != null
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.network(
+                        _currentStory!.imageUrl!,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
+                      ),
+                    )
+                  : Icon(
+                      Icons.image,
+                      size: 80,
+                      color: AppColors.textDark.withOpacity(0.3),
+                    ),
+            ),
           ),
-          _buildActionButton(
-            onPressed: _togglePlayPause,
-            backgroundColor: AppColors.primary,
-            icon: _isPlaying ? Icons.pause : Icons.play_arrow,
-            iconSize: 40,
-          ),
-          _buildActionButton(
-            onPressed: () {
-              // In a real app, share story functionality
-            },
-            backgroundColor: AppColors.primary.withValues(alpha: 230),
-            icon: Icons.share,
+
+          // Story text container - FLAT design
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              decoration: AppTheme.flatCardDecoration, // FLAT white container
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _currentStory!.title,
+                    style: GoogleFonts.manrope(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textDark,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Text(
+                        _currentStory!.content,
+                        style: GoogleFonts.manrope(
+                          fontSize: 16,
+                          height: 1.6,
+                          color: AppColors.textDark,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildActionButton({
-    required VoidCallback onPressed,
-    required Color backgroundColor,
-    required IconData icon,
-    double iconSize = 30,
-  }) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        shape: const CircleBorder(),
-        padding: const EdgeInsets.all(16),
-        minimumSize: const Size(60, 60),
+  Widget _buildControls() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: const BoxDecoration(
+        color: AppColors.backgroundPurple, // FLAT purple background
+        // NO gradients, NO shadows
       ),
-      child: Icon(
-        icon,
-        color: Colors.white,
-        size: iconSize,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildControlButton(
+            icon: Icons.refresh,
+            onPressed: () {
+              // Regenerate story
+            },
+          ),
+          _buildPlayButton(),
+          _buildControlButton(
+            icon: Icons.share,
+            onPressed: () {
+              // Share story
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildControlButton(
+      {required IconData icon, required VoidCallback onPressed}) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+        shape: BoxShape.circle,
+        // NO shadows, completely flat
+      ),
+      child: IconButton(
+        onPressed: onPressed,
+        icon: Icon(icon, color: AppColors.primary, size: 28),
+        iconSize: 28,
+        style: IconButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          elevation: 0, // NO shadow
+          padding: const EdgeInsets.all(16),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlayButton() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.secondary, // FLAT yellow
+        shape: BoxShape.circle,
+        // NO shadows, completely flat
+      ),
+      child: IconButton(
+        onPressed: () {
+          setState(() {
+            _isPlaying = !_isPlaying;
+          });
+        },
+        icon: Icon(
+          _isPlaying ? Icons.pause : Icons.play_arrow,
+          color: AppColors.textDark,
+          size: 32,
+        ),
+        iconSize: 32,
+        style: IconButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          elevation: 0, // NO shadow
+          padding: const EdgeInsets.all(16),
+        ),
       ),
     );
   }
