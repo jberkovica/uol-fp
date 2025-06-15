@@ -27,7 +27,6 @@ uol-fp-mira/
 │   └── analysis/             # Research notebooks and comprehensive reports
 ├── app/                      # Full application implementation (IN PROGRESS)
 │   ├── mira_storyteller/     # Main Flutter mobile application
-│   ├── flutter_app/          # Additional Flutter development
 │   ├── backend/              # Python FastAPI backend service
 │   ├── README.md             # Application-specific documentation
 │   └── PROGRESS.md           # Detailed development log
