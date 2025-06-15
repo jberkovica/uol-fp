@@ -24,7 +24,7 @@ class MiraStorytellerApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mira Storyteller',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
+      theme: AppTheme.theme,
       initialRoute: '/splash',
       routes: {
         '/splash': (context) => const SplashScreen(),

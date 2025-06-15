@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
-import '../../constants/app_theme.dart';
 import '../../constants/app_assets.dart';
+import '../../constants/app_theme.dart';
 
 class ChildHomeScreen extends StatefulWidget {
   const ChildHomeScreen({super.key});
@@ -71,7 +71,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       itemBuilder: (context, index) {
         return Container(
           margin: const EdgeInsets.only(bottom: 16),
-          decoration: AppTheme.flatCardDecoration, // FLAT white card
+          decoration: AppTheme.flatWhiteCard, // FLAT white card
           child: ListTile(
             contentPadding: const EdgeInsets.all(16),
             leading: Container(

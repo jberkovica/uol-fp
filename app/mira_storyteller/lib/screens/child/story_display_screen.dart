@@ -134,7 +134,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.all(24),
-              decoration: AppTheme.flatCardDecoration, // FLAT white container
+              decoration: AppTheme.flatWhiteCard, // FLAT white container
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
