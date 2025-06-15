@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'firebase_options.dart';
 import 'constants/app_theme.dart';
 import 'screens/child/splash_screen.dart';
 import 'screens/child/profile_select_screen.dart';
@@ -10,7 +13,18 @@ import 'screens/parent/parent_dashboard_screen.dart';
 import 'screens/parent/story_preview_screen.dart';
 import 'services/mock_story_service.dart';
 
-void main() {
+void main() async {
+  // Ensure that Flutter binding is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.load(fileName: ".env");
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   // Initialize our mock story service with sample data
   MockStoryService().initialize();
   runApp(const MiraStorytellerApp());

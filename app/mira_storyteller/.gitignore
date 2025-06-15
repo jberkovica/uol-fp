@@ -43,3 +43,26 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase related
+.firebase/
+firebase-debug.log*
+firebase-debug.*.log*
+.runtimeconfig.json
+# Service account keys (adjust pattern as needed)
+**/serviceAccountKey.json
+**/service-account-*.json
+# Environment files
+.env
+.env.local
+.env.*.local
+# Firebase Hosting cache
+.firebase/
+firebase.json.backup
+# Firebase Functions dependencies
+**/functions/node_modules/
+**/functions/.env
+**/functions/.env.local
+# Firebase Firestore indexes backup
+firestore-debug.log
+ui-debug.log
