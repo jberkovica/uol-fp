@@ -46,6 +46,18 @@ dependencies:
     # Environment variables
     flutter_dotenv: ^5.1.0
 
+    # HTTP and image handling for AI services
+    http: ^1.2.2
+    image_picker: ^1.1.2
+    mime: ^1.0.6
+    path: ^1.9.0
+
+    # Audio playback for TTS
+    audioplayers: ^6.1.0
+
+    # JSON handling
+    json_annotation: ^4.9.0
+
 dev_dependencies:
     flutter_test:
         sdk: flutter

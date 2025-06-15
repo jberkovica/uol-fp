@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
+import '../../services/ai_story_service.dart';
+import '../../models/story.dart';
 
 class ChildHomeScreen extends StatefulWidget {
   const ChildHomeScreen({super.key});
@@ -15,21 +18,64 @@ class ChildHomeScreen extends StatefulWidget {
 class _ChildHomeScreenState extends State<ChildHomeScreen> {
   // For demonstration purposes, this allows toggling between views
   final bool _hasStories = false;
+  final AIStoryService _aiService = AIStoryService();
+  final ImagePicker _picker = ImagePicker();
+  bool _isProcessing = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundYellow, // FLAT yellow background
       body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader('My tales'),
-            Expanded(
-              child: _buildContent(context),
+        child: _isProcessing
+            ? _buildProcessingView()
+            : Column(
+                children: [
+                  _buildHeader('My tales'),
+                  Expanded(
+                    child: _buildContent(context),
+                  ),
+                  _buildFooter(context),
+                ],
+              ),
+      ),
+    );
+  }
+
+  Widget _buildProcessingView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            AppAssets.miraReady,
+            width: 120,
+            height: 120,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(height: 40),
+          const CircularProgressIndicator(
+            color: AppColors.primary,
+            strokeWidth: 3,
+          ),
+          const SizedBox(height: 24),
+          Text(
+            'Creating your magical story...',
+            style: GoogleFonts.manrope(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textDark,
             ),
-            _buildFooter(context),
-          ],
-        ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'This may take a few moments',
+            style: GoogleFonts.manrope(
+              fontSize: 14,
+              color: AppColors.textGrey,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -205,43 +251,196 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   }
 
   void _showImageSourceOptions(BuildContext context) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: AppColors.white,
-          elevation: 0, // NO shadow
-          surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+        return Container(
+          padding: const EdgeInsets.all(24),
+          decoration: const BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24),
+              topRight: Radius.circular(24),
+            ),
           ),
-          title: Text(
-            'Choose Image Source',
-            style: GoogleFonts.manrope(fontWeight: FontWeight.bold),
-          ),
-          content: Column(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: Text('Camera', style: GoogleFonts.manrope()),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.pushNamed(context, '/processing');
+              // Handle bar
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.only(bottom: 24),
+                decoration: BoxDecoration(
+                  color: AppColors.textLight,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+
+              // Title
+              Text(
+                'Select Image Source',
+                style: GoogleFonts.manrope(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textDark,
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Camera option
+              _buildSourceButton(
+                icon: Icons.camera_alt,
+                label: 'Take Photo',
+                onPressed: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.camera);
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: Text('Gallery', style: GoogleFonts.manrope()),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.pushNamed(context, '/processing');
+
+              const SizedBox(height: 16),
+
+              // Gallery option
+              _buildSourceButton(
+                icon: Icons.photo_library,
+                label: 'Choose from Gallery',
+                onPressed: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.gallery);
                 },
+              ),
+
+              const SizedBox(height: 16),
+
+              // Cancel button
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.lightGrey,
+                  foregroundColor: AppColors.textGrey,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 0,
+                ),
+                child: Text(
+                  'Cancel',
+                  style: GoogleFonts.manrope(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
               ),
             ],
           ),
         );
       },
     );
+  }
+
+  Widget _buildSourceButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onPressed,
+  }) {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.white,
+          minimumSize: const Size(double.infinity, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 24),
+            const SizedBox(width: 12),
+            Text(
+              label,
+              style: GoogleFonts.manrope(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final XFile? image = await _picker.pickImage(
+        source: source,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+
+      if (image != null) {
+        setState(() {
+          _isProcessing = true;
+        });
+
+        // Generate story using the AI service (pass XFile directly)
+        await _generateStory(image);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to pick image: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _generateStory(XFile imageFile) async {
+    try {
+      // Use the child's name (you can get this from user preferences or settings)
+      const String childName = "Little One"; // Replace with actual child name
+
+      // Generate story using AI service (web and mobile compatible)
+      final Story story =
+          await _aiService.generateStoryFromImageFile(imageFile, childName);
+
+      setState(() {
+        _isProcessing = false;
+      });
+
+      // Navigate to story display/playback screen
+      if (mounted) {
+        Navigator.pushNamed(
+          context,
+          '/story-display',
+          arguments: story,
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isProcessing = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to generate story: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    }
   }
 }

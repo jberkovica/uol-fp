@@ -11,7 +11,7 @@ import 'screens/child/story_display_screen.dart';
 import 'screens/parent/parent_login_screen.dart';
 import 'screens/parent/parent_dashboard_screen.dart';
 import 'screens/parent/story_preview_screen.dart';
-import 'services/mock_story_service.dart';
+import 'services/ai_story_service.dart';
 
 void main() async {
   // Ensure that Flutter binding is initialized
@@ -25,8 +25,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Initialize our mock story service with sample data
-  MockStoryService().initialize();
+  // Initialize our real AI story service
+  AIStoryService().initialize();
   runApp(const MiraStorytellerApp());
 }
 
