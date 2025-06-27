@@ -68,3 +68,11 @@ audio/
 # Temporary files
 temp/
 tmp/
+
+# Testing artifacts
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+.hypothesis/
