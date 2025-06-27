@@ -19,9 +19,13 @@ load_dotenv()
 from .services.image_analysis import ImageAnalysisService
 from .services.story_generator import StoryGeneratorService
 from .services.text_to_speech import TextToSpeechService
+from .services.story_service import StoryService
 
 # Import validation utilities
 from .utils.validation import validate_story_request
+
+# Import database
+from .database import init_database
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -55,8 +59,13 @@ tts_service = TextToSpeechService()
 AUDIO_DIR = Path("audio")
 AUDIO_DIR.mkdir(exist_ok=True)
 
-# In-memory storage for demo (replace with database in production)
-stories_db = {}
+# Initialize database
+try:
+    init_database()
+    logger.info("Database initialized successfully")
+except Exception as e:
+    logger.error(f"Failed to initialize database: {e}")
+    raise
 
 # Models
 class ImageUpload(BaseModel):
@@ -117,19 +126,15 @@ async def generate_story_from_image(
         # Validate the request
         validate_story_request(story_request)
         
-        # Create a unique ID for the story
-        story_id = str(uuid.uuid4())
+        # Create story record in database
+        story_id = StoryService.create_story(
+            child_name=story_request.child_name,
+            preferences=story_request.preferences,
+            status="processing"
+        )
         
-        # Initialize story record
-        stories_db[story_id] = {
-            "story_id": story_id,
-            "child_name": story_request.child_name,
-            "status": "processing",
-            "created_at": datetime.now().isoformat(),
-            "preferences": story_request.preferences,
-            "image_data": story_request.image_data,
-            "mime_type": story_request.mime_type
-        }
+        if not story_id:
+            raise HTTPException(status_code=500, detail="Failed to create story record")
         
         # Add story generation to background tasks
         background_tasks.add_task(
@@ -195,19 +200,14 @@ async def generate_story(
         # This is now a legacy approach - recommend using generate-story-from-image directly
         logger.warning("Using legacy story generation endpoint. Consider using /generate-story-from-image/ directly.")
         
-        # Create a unique ID for the story
-        story_id = str(uuid.uuid4())
-        
-        # Initialize story record
-        stories_db[story_id] = {
-            "story_id": story_id,
-            "image_id": image_id,
-            "child_name": child_name,
-            "status": "error",
-            "created_at": datetime.now().isoformat(),
-            "preferences": preferences,
-            "error": "Legacy endpoint - image file not found. Please use /generate-story-from-image/ with base64 data."
-        }
+        # Create story record in database with error status
+        story_id = StoryService.create_story(
+            child_name=child_name,
+            title="Legacy Error",
+            content="Legacy endpoint used",
+            preferences={"error": "Legacy endpoint - image file not found. Please use /generate-story-from-image/ with base64 data."},
+            status="error"
+        )
         
         logger.info(f"Story generation failed - legacy endpoint used: {story_id}")
         return StoryResponse(
@@ -225,13 +225,24 @@ async def review_story(review: StoryReview, background_tasks: BackgroundTasks):
     Handle parent review of the generated story
     """
     try:
-        if review.story_id not in stories_db:
+        # Check if story exists
+        story_data = StoryService.get_story(review.story_id)
+        if not story_data:
             raise HTTPException(status_code=404, detail="Story not found")
         
         # Update story status
         status = "approved" if review.approved else "rejected"
-        stories_db[review.story_id]["status"] = status
-        stories_db[review.story_id]["feedback"] = review.feedback
+        updates = {
+            "status": status,
+            "preferences": {
+                **story_data.get("preferences", {}),
+                "feedback": review.feedback
+            }
+        }
+        
+        success = StoryService.update_story(review.story_id, updates)
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to update story")
         
         # If approved, generate audio in background
         if review.approved:
@@ -250,6 +261,8 @@ async def review_story(review: StoryReview, background_tasks: BackgroundTasks):
             "status": status,
             "message": message
         }
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error reviewing story: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error reviewing story: {str(e)}")
@@ -260,21 +273,27 @@ async def get_story(story_id: str):
     Retrieve a story by ID
     """
     try:
-        if story_id not in stories_db:
+        story_data = StoryService.get_story(story_id)
+        if not story_data:
             raise HTTPException(status_code=404, detail="Story not found")
         
-        story_data = stories_db[story_id]
+        # Build audio URL if audio file exists
+        audio_url = None
+        if story_data.get("audio_filename"):
+            audio_url = f"/audio/{story_id}"
         
         return StoryDetail(
             story_id=story_data["story_id"],
             title=story_data.get("title", "Untitled Story"),
             content=story_data.get("content", "Story is being generated..."),
-            caption=story_data.get("caption"),
-            audio_url=story_data.get("audio_url"),
+            caption=story_data.get("image_caption"),
+            audio_url=audio_url,
             status=story_data["status"],
             created_at=story_data["created_at"],
             child_name=story_data["child_name"]
         )
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error retrieving story: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error retrieving story: {str(e)}")
@@ -283,19 +302,25 @@ async def get_story(story_id: str):
 async def get_pending_stories():
     """Get all pending stories for parent review"""
     try:
+        story_list = StoryService.list_stories(status="pending")
         pending_stories = []
-        for story_data in stories_db.values():
-            if story_data.get("status") == "pending":
-                pending_stories.append(StoryDetail(
-                    story_id=story_data["story_id"],
-                    title=story_data.get("title", "Untitled Story"),
-                    content=story_data.get("content", ""),
-                    caption=story_data.get("caption"),
-                    audio_url=story_data.get("audio_url"),
-                    status=story_data["status"],
-                    created_at=story_data["created_at"],
-                    child_name=story_data["child_name"]
-                ))
+        
+        for story_data in story_list:
+            # Build audio URL if audio file exists
+            audio_url = None
+            if story_data.get("audio_filename"):
+                audio_url = f"/audio/{story_data['story_id']}"
+            
+            pending_stories.append(StoryDetail(
+                story_id=story_data["story_id"],
+                title=story_data.get("title", "Untitled Story"),
+                content=story_data.get("content", ""),
+                caption=story_data.get("image_caption"),
+                audio_url=audio_url,
+                status=story_data["status"],
+                created_at=story_data["created_at"],
+                child_name=story_data["child_name"]
+            ))
         return pending_stories
     except Exception as e:
         logger.error(f"Error getting pending stories: {str(e)}")
@@ -305,19 +330,25 @@ async def get_pending_stories():
 async def get_approved_stories():
     """Get all approved stories for child app"""
     try:
+        story_list = StoryService.list_stories(status="approved")
         approved_stories = []
-        for story_data in stories_db.values():
-            if story_data.get("status") == "approved":
-                approved_stories.append(StoryDetail(
-                    story_id=story_data["story_id"],
-                    title=story_data.get("title", "Untitled Story"),
-                    content=story_data.get("content", ""),
-                    caption=story_data.get("caption"),
-                    audio_url=story_data.get("audio_url"),
-                    status=story_data["status"],
-                    created_at=story_data["created_at"],
-                    child_name=story_data["child_name"]
-                ))
+        
+        for story_data in story_list:
+            # Build audio URL if audio file exists
+            audio_url = None
+            if story_data.get("audio_filename"):
+                audio_url = f"/audio/{story_data['story_id']}"
+            
+            approved_stories.append(StoryDetail(
+                story_id=story_data["story_id"],
+                title=story_data.get("title", "Untitled Story"),
+                content=story_data.get("content", ""),
+                caption=story_data.get("image_caption"),
+                audio_url=audio_url,
+                status=story_data["status"],
+                created_at=story_data["created_at"],
+                child_name=story_data["child_name"]
+            ))
         return approved_stories
     except Exception as e:
         logger.error(f"Error getting approved stories: {str(e)}")
@@ -379,26 +410,33 @@ async def process_story_generation_from_base64(
             except Exception as audio_error:
                 logger.error(f"Audio generation failed for story {story_id}: {str(audio_error)}")
         
-        # Update story record - mark as approved with audio ready
-        stories_db[story_id].update({
-            "caption": caption,
+        # Update story record in database - mark as approved with audio ready
+        updates = {
+            "image_caption": caption,
             "title": story_result.get("title", "A Magical Story"),
             "content": story_result.get("content", ""),
             "status": "approved",  # Skip approval - directly approved
-            "audio_url": f"/audio/{story_id}" if audio_path else None,
-            "audio_path": audio_path,
-            "image_analysis": image_analysis,
-            "story_metadata": story_result
-        })
+            "audio_filename": f"{story_id}.mp3" if audio_path else None,
+            "ai_models_used": {
+                "image_analysis": image_analysis,
+                "story_metadata": story_result
+            }
+        }
+        
+        success = StoryService.update_story(story_id, updates)
+        if not success:
+            logger.error(f"Failed to update story {story_id} in database")
         
         logger.info(f"Story generation completed for {child_name}. Audio ready!")
         
     except Exception as e:
         logger.error(f"Error in background story processing: {str(e)}")
-        # Update story status to error
-        if story_id in stories_db:
-            stories_db[story_id]["status"] = "error"
-            stories_db[story_id]["error"] = str(e)
+        # Update story status to error in database
+        error_updates = {
+            "status": "error",
+            "ai_models_used": {"error": str(e)}
+        }
+        StoryService.update_story(story_id, error_updates)
 
 # Legacy background task for file-based story generation (deprecated)
 async def process_story_generation(
@@ -414,25 +452,29 @@ async def process_story_generation(
         logger.warning(f"Using legacy story generation process for ID: {story_id}")
         
         # Update story status to error since we no longer store files
-        if story_id in stories_db:
-            stories_db[story_id]["status"] = "error"
-            stories_db[story_id]["error"] = "Legacy file-based processing no longer supported. Use base64 image data."
+        error_updates = {
+            "status": "error",
+            "ai_models_used": {"error": "Legacy file-based processing no longer supported. Use base64 image data."}
+        }
+        StoryService.update_story(story_id, error_updates)
         
     except Exception as e:
         logger.error(f"Error in legacy story processing: {str(e)}")
         # Update story status to error
-        if story_id in stories_db:
-            stories_db[story_id]["status"] = "error"
-            stories_db[story_id]["error"] = str(e)
+        error_updates = {
+            "status": "error",
+            "ai_models_used": {"error": str(e)}
+        }
+        StoryService.update_story(story_id, error_updates)
 
 # Background task for audio generation
 async def generate_story_audio(story_id: str):
     """Generate audio for an approved story"""
     try:
-        if story_id not in stories_db:
+        story_data = StoryService.get_story(story_id)
+        if not story_data:
             raise Exception("Story not found")
         
-        story_data = stories_db[story_id]
         story_content = story_data.get("content", "")
         
         if not story_content:
@@ -448,16 +490,22 @@ async def generate_story_audio(story_id: str):
         )
         
         if audio_path:
-            stories_db[story_id]["audio_url"] = f"/audio/{story_id}"
-            stories_db[story_id]["audio_path"] = audio_path
-            logger.info(f"Audio generated successfully for story {story_id}")
+            audio_updates = {"audio_filename": f"{story_id}.mp3"}
+            success = StoryService.update_story(story_id, audio_updates)
+            if success:
+                logger.info(f"Audio generated successfully for story {story_id}")
+            else:
+                logger.error(f"Failed to update audio info for story {story_id}")
         else:
             raise Exception("Failed to generate audio")
             
     except Exception as e:
         logger.error(f"Error generating audio for story {story_id}: {str(e)}")
-        if story_id in stories_db:
-            stories_db[story_id]["audio_error"] = str(e)
+        # Store audio error in database
+        error_updates = {
+            "ai_models_used": {"audio_error": str(e)}
+        }
+        StoryService.update_story(story_id, error_updates)
 
 if __name__ == "__main__":
     import uvicorn

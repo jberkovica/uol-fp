@@ -13,6 +13,14 @@ email-validator==2.0.0
 # Image processing and validation
 pillow==10.0.0
 
+# Database (Supabase + SQLAlchemy)
+supabase==2.8.1
+gotrue==2.8.1
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+asyncpg==0.29.0
+alembic==1.13.1
+
 # AI Services (current)
 google-generativeai==0.3.0
 
