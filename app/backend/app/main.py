@@ -20,6 +20,9 @@ from .services.image_analysis import ImageAnalysisService
 from .services.story_generator import StoryGeneratorService
 from .services.text_to_speech import TextToSpeechService
 
+# Import validation utilities
+from .utils.validation import validate_story_request
+
 # Initialize FastAPI app
 app = FastAPI(
     title="Mira Storyteller API",
@@ -111,6 +114,9 @@ async def generate_story_from_image(
     No file storage required - processes image in memory
     """
     try:
+        # Validate the request
+        validate_story_request(story_request)
+        
         # Create a unique ID for the story
         story_id = str(uuid.uuid4())
         
