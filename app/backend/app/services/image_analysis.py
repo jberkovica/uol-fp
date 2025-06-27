@@ -12,6 +12,8 @@ import requests
 from typing import Dict, List, Any
 from PIL import Image
 import io
+from prompts.image_analysis import IMAGE_CAPTION_PROMPT, IMAGE_MODEL_CONFIG
+from config.models import ModelType, get_model_config, get_api_key
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -19,16 +21,21 @@ logger = logging.getLogger(__name__)
 class ImageAnalysisService:
     """Service for analyzing images using Gemini 2.0 Flash API"""
     
-    def __init__(self, api_key: str = None):
+    def __init__(self, api_key: str = None, use_alternative: bool = False, alternative_index: int = 0):
         """
         Initialize the image analysis service
         
         Args:
-            api_key: Google API key for Gemini models (from env var if None)
+            api_key: API key (from config if None)
+            use_alternative: Whether to use alternative model
+            alternative_index: Index of alternative model to use
         """
-        self.api_key = api_key or os.getenv("GOOGLE_API_KEY")
+        self.model_config = get_model_config(ModelType.IMAGE_ANALYSIS, use_alternative, alternative_index)
+        self.api_key = api_key or get_api_key(self.model_config)
+        
         if not self.api_key:
-            logger.warning("No API key provided for Gemini 2.0 Flash. Image analysis will not work.")
+            model_name = self.model_config.get('model_name', 'Unknown')
+            logger.warning(f"No API key provided for {model_name}. Image analysis will not work.")
     
     def analyze_image_from_base64(self, base64_data: str, mime_type: str = "image/jpeg") -> Dict[str, Any]:
         """
@@ -45,14 +52,15 @@ class ImageAnalysisService:
             if not self.api_key:
                 raise ValueError("No API key configured for Gemini 2.0 Flash")
             
-            # Prepare Gemini 2.0 Flash API request
-            url = f"https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key={self.api_key}"
+            # Prepare API request using configured model
+            base_url = self.model_config['api_endpoint']
+            url = f"{base_url}?key={self.api_key}"
             
             request_body = {
                 'contents': [{
                     'parts': [
                         {
-                            'text': 'Describe this image concisely in 2-3 sentences. Focus on the main elements visible. Keep your response to approximately 50-75 words.'
+                            'text': IMAGE_CAPTION_PROMPT
                         },
                         {
                             'inline_data': {
@@ -62,17 +70,14 @@ class ImageAnalysisService:
                         }
                     ]
                 }],
-                'generationConfig': {
-                    'maxOutputTokens': 100,
-                    'temperature': 0.3,
-                }
+                'generationConfig': self.model_config['parameters']
             }
             
             response = requests.post(
                 url,
                 headers={'Content-Type': 'application/json'},
                 json=request_body,
-                timeout=30
+                timeout=self.model_config.get('timeout', 30)
             )
             
             if response.status_code == 200:
@@ -87,16 +92,17 @@ class ImageAnalysisService:
                             analysis_result = {
                                 "caption": caption,
                                 "success": True,
-                                "model": "gemini-2.0-flash"
+                                "model": self.model_config['model_name'],
+                                "provider": self.model_config['provider'].value
                             }
                             
                             logger.info(f"Image analysis completed from base64 data")
                             return analysis_result
                 
-                raise Exception('No caption generated from Gemini response')
+                raise Exception(f'No caption generated from {self.model_config["model_name"]} response')
             else:
                 error_data = response.json() if response.headers.get('content-type', '').startswith('application/json') else response.text
-                raise Exception(f"Gemini API error: {response.status_code} - {error_data}")
+                raise Exception(f"{self.model_config['model_name']} API error: {response.status_code} - {error_data}")
                 
         except Exception as e:
             logger.error(f"Error analyzing image: {str(e)}")
@@ -104,7 +110,8 @@ class ImageAnalysisService:
                 "caption": "A colorful image with interesting elements",
                 "success": False,
                 "error": str(e),
-                "model": "gemini-2.0-flash"
+                "model": self.model_config.get('model_name', 'unknown'),
+                "provider": self.model_config.get('provider', 'unknown').value if hasattr(self.model_config.get('provider', 'unknown'), 'value') else 'unknown'
             }
 
     def analyze_image(self, image_path: str) -> Dict[str, Any]:
@@ -144,7 +151,8 @@ class ImageAnalysisService:
                 "caption": "A colorful image with interesting elements",
                 "success": False,
                 "error": str(e),
-                "model": "gemini-2.0-flash"
+                "model": self.model_config.get('model_name', 'unknown'),
+                "provider": self.model_config.get('provider', 'unknown').value if hasattr(self.model_config.get('provider', 'unknown'), 'value') else 'unknown'
             }
     
     def get_image_caption(self, image_path: str) -> str:

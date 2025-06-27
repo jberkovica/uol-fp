@@ -10,6 +10,8 @@ import os
 import requests
 from typing import Dict, Any, Optional
 import json
+from prompts.story_generation import STORY_GENERATION_PROMPT, STORY_SYSTEM_MESSAGE, STORY_MODEL_CONFIG
+from config.models import ModelType, get_model_config, get_api_key
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -17,16 +19,21 @@ logger = logging.getLogger(__name__)
 class StoryGeneratorService:
     """Service for generating stories using Mistral Medium Latest API"""
     
-    def __init__(self, api_key: str = None):
+    def __init__(self, api_key: str = None, use_alternative: bool = False, alternative_index: int = 0):
         """
         Initialize the story generator service
         
         Args:
-            api_key: Mistral API key (from env var if None)
+            api_key: API key (from config if None)
+            use_alternative: Whether to use alternative model
+            alternative_index: Index of alternative model to use
         """
-        self.api_key = api_key or os.getenv("MISTRAL_API_KEY")
+        self.model_config = get_model_config(ModelType.STORY_GENERATION, use_alternative, alternative_index)
+        self.api_key = api_key or get_api_key(self.model_config)
+        
         if not self.api_key:
-            logger.warning("No API key provided for Mistral Medium. Story generation will not work.")
+            model_name = self.model_config.get('model_name', 'Unknown')
+            logger.warning(f"No API key provided for {model_name}. Story generation will not work.")
     
     def generate_story(self, 
                       image_caption: str, 
@@ -56,42 +63,24 @@ class StoryGeneratorService:
                 }
             
             # Use the proven prompt from models_analysis that worked well for all 3 agents
-            prompt = f'''Create a family-friendly story inspired by this image description: "{image_caption}"
-
-Story Requirements:
-- Write exactly 150-200 words
-- Target audience: young readers and families
-- Theme: suitable for reading aloud at bedtime or story time
-- Tone: warm, gentle, and comforting
-- Include a positive message or gentle life lesson
-- Use simple, accessible language
-- End on a peaceful, happy note
-- Include an engaging title
-
-Response Format:
-Title: [Your Story Title]
-
-[Your complete 150-200 word story]
-
-Note: Adherence to the 150-200 word count is essential for evaluation purposes.'''
+            prompt = STORY_GENERATION_PROMPT.format(image_caption=image_caption)
             
-            # Prepare Mistral API request
-            url = "https://api.mistral.ai/v1/chat/completions"
+            # Prepare API request using configured model
+            url = self.model_config['api_endpoint']
             
             request_body = {
-                'model': 'mistral-medium-latest',
+                'model': self.model_config['model_name'],
                 'messages': [
                     {
                         'role': 'system',
-                        'content': 'You are a professional story writer. Follow all formatting and word count requirements precisely.'
+                        'content': STORY_SYSTEM_MESSAGE
                     },
                     {
                         'role': 'user',
                         'content': prompt
                     }
                 ],
-                'temperature': 0.7,
-                'max_tokens': 350,
+                **self.model_config['parameters'],
             }
             
             response = requests.post(
@@ -101,7 +90,7 @@ Note: Adherence to the 150-200 word count is essential for evaluation purposes.'
                     'Authorization': f'Bearer {self.api_key}',
                 },
                 json=request_body,
-                timeout=60
+                timeout=self.model_config.get('timeout', 60)
             )
             
             if response.status_code == 200:
@@ -135,17 +124,18 @@ Note: Adherence to the 150-200 word count is essential for evaluation purposes.'
                             "summary": f"A story inspired by the image content.",
                             "age_appropriate": True,
                             "keywords": ["adventure", "imagination", "friendship"],
-                            "model": "mistral-medium-latest",
+                            "model": self.model_config['model_name'],
+                            "provider": self.model_config['provider'].value,
                             "success": True
                         }
                         
-                        logger.info(f"Story generated for {child_name} using Mistral Medium")
+                        logger.info(f"Story generated for {child_name} using {self.model_config['model_name']}")
                         return result
                 
-                raise Exception('No story generated from Mistral response')
+                raise Exception(f'No story generated from {self.model_config["model_name"]} response')
             else:
                 error_data = response.json() if response.headers.get('content-type', '').startswith('application/json') else response.text
-                raise Exception(f"Mistral API error: {response.status_code} - {error_data}")
+                raise Exception(f"{self.model_config['model_name']} API error: {response.status_code} - {error_data}")
                 
         except Exception as e:
             logger.error(f"Error generating story: {str(e)}")
@@ -159,7 +149,8 @@ Note: Adherence to the 150-200 word count is essential for evaluation purposes.'
                 "summary": "A short story inspired by the image.",
                 "age_appropriate": True,
                 "keywords": ["adventure", "imagination", "discovery"],
-                "model": "mistral-medium-latest",
+                "model": self.model_config.get('model_name', 'unknown'),
+                "provider": self.model_config.get('provider', 'unknown').value if hasattr(self.model_config.get('provider', 'unknown'), 'value') else 'unknown',
                 "success": False,
                 "error": str(e)
             }

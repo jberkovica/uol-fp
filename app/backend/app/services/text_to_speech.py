@@ -9,6 +9,7 @@ import logging
 import os
 import requests
 from typing import Dict, Any, Optional
+from config.models import ModelType, get_model_config, get_api_key, get_voice_config
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -16,18 +17,24 @@ logger = logging.getLogger(__name__)
 class TextToSpeechService:
     """Service for converting text to speech using ElevenLabs API"""
     
-    def __init__(self, api_key: str = None):
+    def __init__(self, api_key: str = None, voice_name: str = "callum", use_alternative: bool = False, alternative_index: int = 0):
         """
         Initialize the text-to-speech service
         
         Args:
-            api_key: ElevenLabs API key (from env var if None)
+            api_key: API key (from config if None)
+            voice_name: Name of voice to use (default: callum)
+            use_alternative: Whether to use alternative TTS model
+            alternative_index: Index of alternative model to use
         """
-        self.api_key = api_key or os.getenv("ELEVENLABS_API_KEY")
-        self.callum_voice_id = "N2lVS1w4EtoT3dr4eOWO"  # Callum voice as specified
+        self.model_config = get_model_config(ModelType.TEXT_TO_SPEECH, use_alternative, alternative_index)
+        self.api_key = api_key or get_api_key(self.model_config)
+        self.voice_config = get_voice_config(voice_name)
+        self.voice_id = self.voice_config['voice_id']
         
         if not self.api_key:
-            logger.warning("No API key provided for ElevenLabs TTS. Text-to-speech will not work.")
+            model_name = self.model_config.get('model_name', 'Unknown')
+            logger.warning(f"No API key provided for {model_name}. Text-to-speech will not work.")
     
     def generate_audio(self, 
                       text: str, 
@@ -49,20 +56,16 @@ class TextToSpeechService:
                 raise ValueError("No API key configured for ElevenLabs TTS")
             
             # Use Callum voice by default
-            voice_id = voice_id or self.callum_voice_id
+            voice_id = voice_id or self.voice_id
             
-            # Prepare ElevenLabs API request
-            url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+            # Prepare TTS API request using configured model
+            base_url = self.model_config['api_endpoint']
+            url = f"{base_url}/{voice_id}"
             
             request_body = {
                 'text': text,
-                'model_id': 'eleven_flash_v2_5',
-                'voice_settings': {
-                    'stability': 0.75,
-                    'similarity_boost': 0.75,
-                    'style': 0.5,
-                    'use_speaker_boost': True
-                }
+                'model_id': self.model_config['model_name'],
+                **self.model_config['parameters']
             }
             
             headers = {
@@ -74,7 +77,7 @@ class TextToSpeechService:
                 url,
                 headers=headers,
                 json=request_body,
-                timeout=120
+                timeout=self.model_config.get('timeout', 120)
             )
             
             if response.status_code == 200:
@@ -86,7 +89,7 @@ class TextToSpeechService:
                 return output_path
             else:
                 error_message = response.text
-                raise Exception(f"ElevenLabs API error: {response.status_code} - {error_message}")
+                raise Exception(f"{self.model_config['model_name']} API error: {response.status_code} - {error_message}")
                 
         except Exception as e:
             logger.error(f"Error generating audio: {str(e)}")
@@ -111,8 +114,8 @@ class TextToSpeechService:
             # Define output path
             output_path = os.path.join(output_dir, f"{story_id}.mp3")
             
-            # Generate audio with Callum voice
-            result = self.generate_audio(story_content, output_path, self.callum_voice_id)
+            # Generate audio with configured voice
+            result = self.generate_audio(story_content, output_path, self.voice_id)
             
             if result:
                 logger.info(f"Story audio generated successfully for story {story_id}")
