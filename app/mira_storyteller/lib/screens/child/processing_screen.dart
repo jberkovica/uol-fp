@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
+import '../../constants/app_theme.dart';
 
 class ProcessingScreen extends StatefulWidget {
   const ProcessingScreen({super.key});
@@ -49,7 +50,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundYellow, // FLAT yellow background
+      backgroundColor: AppTheme.yellowScreenBackground, // Yellow background for processing screen
       body: SafeArea(
         child: Center(
           // Center everything

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
+import '../../constants/app_theme.dart';
 
 class ParentLoginScreen extends StatefulWidget {
   const ParentLoginScreen({super.key});
@@ -25,7 +26,7 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primary, // Flat purple background
+      backgroundColor: AppTheme.whiteScreenBackground, // White background for login screen
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(

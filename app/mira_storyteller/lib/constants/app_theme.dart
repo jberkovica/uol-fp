@@ -289,6 +289,19 @@ class AppTheme {
   static const Duration slowAnimation = Duration(milliseconds: 500);
 
   /// ═══════════════════════════════════════════════════════════════════════════
+  /// SCREEN BACKGROUND COLORS - Centralized Control
+  /// ═══════════════════════════════════════════════════════════════════════════
+
+  /// Yellow background for upload/waiting screens
+  static const Color yellowScreenBackground = AppColors.secondary;
+  
+  /// White background for most screens (profile select, story display, parent screens)
+  static const Color whiteScreenBackground = AppColors.white;
+  
+  /// Purple background for splash screen (with yellow accent elements)
+  static const Color purpleScreenBackground = AppColors.primary;
+
+  /// ═══════════════════════════════════════════════════════════════════════════
   /// CONTAINER DECORATIONS - GUARANTEED FLAT
   /// ═══════════════════════════════════════════════════════════════════════════
 

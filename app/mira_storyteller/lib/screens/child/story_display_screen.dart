@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../../constants/app_colors.dart';
+import '../../constants/app_theme.dart';
 import '../../models/story.dart';
 
 class StoryDisplayScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
     final Story story = ModalRoute.of(context)!.settings.arguments as Story;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundYellow,
+      backgroundColor: AppTheme.whiteScreenBackground, // White background for story display
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,

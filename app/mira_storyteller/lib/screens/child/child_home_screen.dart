@@ -25,7 +25,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundYellow, // FLAT yellow background
+      backgroundColor: AppTheme.yellowScreenBackground, // Yellow background for upload screen
       body: SafeArea(
         child: _isProcessing
             ? _buildProcessingView()
