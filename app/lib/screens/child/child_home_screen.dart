@@ -7,6 +7,7 @@ import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
 import '../../services/ai_story_service.dart';
 import '../../models/story.dart';
+import '../../models/kid.dart';
 
 class ChildHomeScreen extends StatefulWidget {
   const ChildHomeScreen({super.key});
@@ -16,14 +17,59 @@ class ChildHomeScreen extends StatefulWidget {
 }
 
 class _ChildHomeScreenState extends State<ChildHomeScreen> {
-  // For demonstration purposes, this allows toggling between views
-  final bool _hasStories = false;
   final AIStoryService _aiService = AIStoryService();
   final ImagePicker _picker = ImagePicker();
   bool _isProcessing = false;
+  Kid? _selectedKid;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Get the selected kid from route arguments
+    if (_selectedKid == null) {
+      final kid = ModalRoute.of(context)?.settings.arguments as Kid?;
+      if (kid != null) {
+        _selectedKid = kid;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    // If no kid is selected, show error
+    if (_selectedKid == null) {
+      return Scaffold(
+        backgroundColor: AppTheme.yellowScreenBackground,
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'No profile selected',
+                  style: GoogleFonts.manrope(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textDark,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/profile-select');
+                  },
+                  child: Text(
+                    'Select Profile',
+                    style: GoogleFonts.manrope(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: AppTheme.yellowScreenBackground, // Yellow background for upload screen
       body: SafeArea(
@@ -31,7 +77,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
             ? _buildProcessingView()
             : Column(
                 children: [
-                  _buildHeader('My tales'),
+                  _buildHeader('${_selectedKid!.name}\'s tales'),
                   Expanded(
                     child: _buildContent(context),
                   ),
@@ -95,12 +141,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   }
 
   Widget _buildContent(BuildContext context) {
-    // This is no longer dead code as _hasStories can be toggled
-    if (_hasStories) {
-      return _buildStoryList();
-    } else {
-      return _buildUploadPrompt(context);
-    }
+    // For now, always show upload prompt
+    // TODO: Load stories for the selected kid and show story list if they exist
+    return _buildUploadPrompt(context);
   }
 
   Widget _buildStoryList() {
@@ -408,12 +451,14 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
 
   Future<void> _generateStory(XFile imageFile) async {
     try {
-      // Use the child's name (you can get this from user preferences or settings)
-      const String childName = "Little One"; // Replace with actual child name
+      // Use the selected kid's ID for story generation
+      if (_selectedKid == null) {
+        throw Exception('No kid profile selected');
+      }
 
-      // Generate story using AI service (web and mobile compatible)
+      // Generate story using AI service with kid ID
       final Story story =
-          await _aiService.generateStoryFromImageFile(imageFile, childName);
+          await _aiService.generateStoryFromImageFile(imageFile, _selectedKid!.id);
 
       setState(() {
         _isProcessing = false;

@@ -75,7 +75,7 @@ class AIStoryService {
   /// Generate story directly from image file using efficient base64 processing
   /// No file upload required - processes image in memory
   Future<Story> generateStoryFromImageFile(
-      XFile imageFile, String childName) async {
+      XFile imageFile, String kidId) async {
     try {
       print('Starting efficient story generation from image...');
 
@@ -98,7 +98,7 @@ class AIStoryService {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
-          'child_name': childName,
+          'kid_id': kidId,
           'image_data': base64Image,
           'mime_type': mimeType,
           'preferences': null,
