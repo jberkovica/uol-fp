@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'firebase_options.dart';
+import 'config/supabase_config.dart';
 import 'constants/app_theme.dart';
 import 'screens/child/splash_screen.dart';
 import 'screens/child/profile_select_screen.dart';
@@ -18,12 +18,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Load environment variables from root .env file
-  await dotenv.load(fileName: "../.env");
+  await dotenv.load(fileName: ".env");
 
-  // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // Initialize Supabase
+  if (SupabaseConfig.isConfigured) {
+    await Supabase.initialize(
+      url: SupabaseConfig.url,
+      anonKey: SupabaseConfig.anonKey,
+    );
+  } else {
+    throw Exception('Supabase configuration missing. Please check your .env file.');
+  }
 
   // Initialize our real AI story service
   AIStoryService().initialize();

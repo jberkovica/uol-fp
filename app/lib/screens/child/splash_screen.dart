@@ -4,6 +4,44 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 
+// Custom clipper for angled ellipse curve
+class AngledEllipseClipper extends CustomClipper<Path> {
+  final double screenWidth;
+  final double screenHeight;
+
+  AngledEllipseClipper({required this.screenWidth, required this.screenHeight});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    
+    // Start from bottom left
+    path.moveTo(0, size.height);
+    
+    // Line to bottom right
+    path.lineTo(size.width, size.height);
+    
+    // Line up the right side to start of curve
+    path.lineTo(size.width, size.height * 0.4);
+    
+    // Create simple smooth curve to match design file
+    // Single clean elliptical curve from right to left
+    path.cubicTo(
+      size.width * 0.75, size.height * 0.1,  // First control point
+      size.width * 0.25, size.height * 0.1,  // Second control point
+      0, size.height * 0.4,                  // End point
+    );
+    
+    // Close the path
+    path.close();
+    
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
@@ -24,30 +62,39 @@ class SplashScreen extends StatelessWidget {
         color: AppColors.primary, // Purple background
         child: Stack(
           children: [
-            // Large partial yellow circle at bottom - matching your Figma design
+            // Yellow angled curved shape anchored to bottom
             Positioned(
-              bottom: -screenSize.height * 0.35,
-              left: -screenSize.width * 0.15,
-              child: Container(
-                width: screenSize.width * 1.3,
-                height: screenSize.width * 1.3,
-                decoration: const BoxDecoration(
-                  color: AppColors.secondary, // Yellow color
-                  shape: BoxShape.circle,
-                  // No shadows - flat design
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: ClipPath(
+                clipper: AngledEllipseClipper(
+                  screenWidth: screenSize.width,
+                  screenHeight: screenSize.height,
+                ),
+                child: Container(
+                  height: screenSize.height * 0.5, // 50% of screen height
+                  decoration: const BoxDecoration(
+                    color: AppColors.secondary, // Yellow color
+                  ),
                 ),
               ),
             ),
 
-            // MIRA SVG logo positioned in center
-            Center(
-              child: SvgPicture.asset(
-                'assets/images/mira-logo.svg',
-                width: 200,
-                height: 80,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.textLight, // White color for the logo
-                  BlendMode.srcIn,
+            // MIRA SVG logo positioned in upper area
+            Positioned(
+              top: screenSize.height * 0.25, // Position in upper area
+              left: 0,
+              right: 0,
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/images/mira-logo.svg',
+                  width: 150,
+                  height: 60,
+                  colorFilter: const ColorFilter.mode(
+                    AppColors.textLight, // White color for the logo
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),

@@ -833,4 +833,139 @@ The current minimal implementation can easily be extended with:
 
 ---
 
-_Last updated: 2025-06-27_
+## 2025-06-29
+
+## Project Architecture Reorganization & Authentication Migration
+
+#### Major Project Restructuring
+
+##### Directory Structure Flattening
+- **Reorganized project structure** from nested to flat architecture:
+  ```
+  Before:                     After:
+  app/                       backend/        (FastAPI backend)
+  ├── backend/           →   app/            (Flutter frontend)  
+  └── mira_storyteller/      .env            (consolidated config)
+  ```
+- **Moved models_analysis** to separate project (`../models_analysis`)
+- **Eliminated nested app/** directory for cleaner structure
+- **Preserved git history** using proper `git mv` operations (367 files reorganized)
+
+##### Environment Configuration Consolidation
+- **Single source of truth**: Consolidated all `.env` files into root directory
+- **Removed duplicate environment files** from backend and frontend subdirectories
+- **Updated all code paths** to load from root `.env` file:
+  - Backend Python: `load_dotenv('../.env')` and `load_dotenv('../../.env')`
+  - Flutter app: Symbolic link approach `app/.env -> ../.env`
+- **Maintained security**: No environment duplication, single configuration file
+
+##### Database Connection Resolution
+- **Fixed Supabase connection issues** caused by IPv4/IPv6 compatibility
+- **Diagnosed DNS resolution failure** for direct connection hostname
+- **Switched to Session pooler** from Direct connection as recommended by Supabase docs:
+  - Direct: `db.project.supabase.co` (IPv6 only, causing "Tenant not found" errors)
+  - Session: `aws-0-region.pooler.supabase.com` (IPv4/IPv6 compatible, works with SQLAlchemy)
+- **Session pooler benefits**: Persistent connections, prepared statements support, ideal for backend servers
+
+#### Frontend Authentication Migration
+
+##### Firebase to Supabase Migration
+- **Removed Firebase dependencies** from Flutter app:
+  - Eliminated: `firebase_core`, `firebase_auth`, `cloud_firestore`, `firebase_storage`
+  - Added: `supabase_flutter: ^2.8.0`
+- **Created Supabase configuration service** (`lib/config/supabase_config.dart`)
+- **Implemented comprehensive auth service** (`lib/services/auth_service.dart`) with:
+  - Email/password authentication
+  - Google OAuth integration
+  - Apple OAuth support
+  - Password reset functionality
+  - Authentication state management
+
+##### Authentication Service Features
+```dart
+// AuthService capabilities:
+- signInWithEmailAndPassword()  // Standard email auth
+- signUpWithEmailAndPassword()  // User registration  
+- signInWithGoogle()           // Google OAuth
+- signInWithApple()            // Apple OAuth
+- resetPassword()              // Password recovery
+- signOut()                    // Session termination
+- authStateChanges             // Real-time auth state
+```
+
+##### Configuration Management Best Practices
+- **Symbolic link approach**: `app/.env -> ../.env` maintains single source
+- **Flutter asset configuration**: Updated `pubspec.yaml` for proper `.env` loading
+- **Environment validation**: Added configuration checks in `SupabaseConfig.isConfigured`
+- **No duplication**: Avoided creating multiple `.env` files across directories
+
+#### Technical Infrastructure Improvements
+
+##### Project Organization Benefits
+- **Simplified development**: Flat structure easier to navigate
+- **Reduced complexity**: No nested directory confusion  
+- **Better IDE support**: Cleaner project structure in editors
+- **Clearer separation**: Backend vs frontend responsibilities obvious
+- **Easier deployment**: Independent app and backend builds
+
+##### Authentication Architecture Alignment
+- **Unified auth system**: Both backend and frontend use same Supabase instance
+- **Shared credentials**: Single environment configuration for all services
+- **Session management**: Consistent authentication state across applications
+- **Security consistency**: Same auth policies and validation rules
+
+##### Database Connection Stability
+- **Production-ready**: Session pooler designed for persistent applications
+- **Better performance**: Connection reuse and prepared statements
+- **Network compatibility**: Works with both IPv4 and IPv6 networks
+- **Error resolution**: Fixed "Tenant not found" and DNS resolution issues
+
+#### Quality Assurance Results
+
+##### Migration Validation
+- **Environment loading**: ✅ Single `.env` file working across all services
+- **Database connection**: ✅ Session pooler resolving connection issues
+- **Authentication flow**: ✅ Supabase auth replacing Firebase successfully
+- **Application startup**: ✅ No more Firebase API key errors
+- **Project structure**: ✅ Clean, maintainable directory organization
+
+##### Git Repository Health
+- **History preserved**: All 367 file moves tracked as renames
+- **Clean commit**: Comprehensive commit message documenting all changes
+- **Branch state**: Working tree clean after reorganization
+- **Dependency management**: Proper package updates and removals
+
+##### Development Experience Improvements
+- **Single environment**: No confusion about which `.env` file to edit
+- **Simplified paths**: No relative path complexity in imports
+- **Faster builds**: Removed unused Firebase dependencies
+- **Better errors**: Clear Supabase configuration validation
+
+#### Future Architecture Considerations
+
+##### Scalability Readiness
+- **Microservices ready**: Clear backend/frontend separation
+- **Environment management**: Single config scales to multiple environments
+- **Database optimization**: Session pooler ready for production traffic
+- **Authentication scaling**: Supabase handles user growth automatically
+
+##### Development Workflow
+- **Onboarding simplified**: Single `.env` setup for new developers
+- **Configuration management**: Clear environment variable documentation
+- **Testing isolation**: Clean separation enables better testing strategies
+- **Deployment flexibility**: Independent backend and frontend deployments
+
+**Key Files Modified:**
+- `pubspec.yaml` - Supabase dependencies, asset configuration
+- `lib/main.dart` - Supabase initialization replacing Firebase
+- `lib/config/supabase_config.dart` - New configuration service
+- `lib/services/auth_service.dart` - New authentication service
+- `backend/app/main.py` - Updated environment loading path
+- `backend/app/database/database.py` - Updated environment loading path
+
+**Commits:**
+- `f148d9b9` - feat: Major project restructuring (367 files changed)
+
+---
+
+_Last updated: 2025-06-29_
