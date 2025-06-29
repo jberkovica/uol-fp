@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
+import '../../services/auth_service.dart';
 
 // Custom clipper for angled ellipse curve
 class AngledEllipseClipper extends CustomClipper<Path> {
@@ -52,7 +53,13 @@ class SplashScreen extends StatelessWidget {
     // Auto navigate after delay
     Future.delayed(const Duration(seconds: 3), () {
       if (!context.mounted) return;
-      Navigator.pushReplacementNamed(context, '/profile-select');
+      
+      // Check if user is authenticated
+      if (AuthService.instance.isAuthenticated) {
+        Navigator.pushReplacementNamed(context, '/profile-select');
+      } else {
+        Navigator.pushReplacementNamed(context, '/login');
+      }
     });
 
     return Scaffold(

@@ -11,6 +11,8 @@ import 'screens/child/story_display_screen.dart';
 import 'screens/parent/parent_login_screen.dart';
 import 'screens/parent/parent_dashboard_screen.dart';
 import 'screens/parent/story_preview_screen.dart';
+import 'screens/auth/login_screen.dart';
+import 'screens/auth/signup_screen.dart';
 import 'services/ai_story_service.dart';
 
 void main() async {
@@ -47,6 +49,8 @@ class MiraStorytellerApp extends StatelessWidget {
       initialRoute: '/splash',
       routes: {
         '/splash': (context) => const SplashScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignupScreen(),
         '/profile-select': (context) => const ProfileSelectScreen(),
         '/child-home': (context) => const ChildHomeScreen(),
         '/processing': (context) => const ProcessingScreen(),
