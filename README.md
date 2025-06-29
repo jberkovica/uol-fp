@@ -16,6 +16,8 @@ Mira employs a three-stage AI pipeline integrated into a full-stack application:
 2. **Story Generation**: Transform image descriptions into creative, age-appropriate stories
 3. **Text-to-Speech**: Generate child-friendly narrated audio with synchronized playback
 
+<!-- TODO: update for new project structure and add git link to models analysis  -->
+
 ### Repository Structure
 
 ```

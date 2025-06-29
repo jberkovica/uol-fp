@@ -1,5 +1,0 @@
-file_name,model_name,description,execution_time,cost
-toy_01.jpeg,gemini-2.5-flash-preview,Error extracting text from response: The `response.text` quick accessor only works for simple (single-`Part`) text responses. This response is not simple text.Use the `result.parts` accessor or the full `result.candidates[index].content.parts` lookup instead.. Raw response: <google.generativeai.types.generation_types.GenerateContentResponse object at 0x16c2c8ed0>,11.92,0.0010
-toy_01.jpeg,gemini-2.5-pro-preview,Error extracting text from response: The `response.text` quick accessor only works for simple (single-`Part`) text responses. This response is not simple text.Use the `result.parts` accessor or the full `result.candidates[index].content.parts` lookup instead.. Raw response: <google.generativeai.types.generation_types.GenerateContentResponse object at 0x16fac8690>,7.29,0.0025
-toy_01.jpeg,blip,Caption: a doll laying on a couch with her hands in the air,10.33,0.0046
-toy_01.jpeg,blip-2,a doll sitting on a couch,5.49,0.0060

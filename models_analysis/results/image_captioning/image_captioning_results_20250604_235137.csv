@@ -1,7 +1,0 @@
-file_name,model_name,description,execution_time,cost
-toy_01.jpeg,gemini-2.5-pro-preview,Error from Gemini API: GenerativeModel.generate_content() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given,0.00,0.0025
-toy_01.jpeg,blip,Caption: a doll laying on a couch with her hands in the air,4.84,0.0046
-toy_01.jpeg,blip-2,a doll sitting on a couch,3.32,0.0060
-toy_01.jpeg,gpt-4o,"The image shows a doll sitting on a light gray surface. The doll has curly blonde hair and blue eyes, and it is dressed in a reddish-brown outfit. The background features a softly diffused light coming through a window, creating a calm ambiance.",6.14,0.0100
-drawing_04.jpeg,gemini-2.5-pro-preview,Error from Gemini API: GenerativeModel.generate_content() takes 2 positional arguments but 3 positional arguments (and 1 keyword-only argument) were given,0.00,0.0025
-drawing_04.jpeg,blip,Caption: a drawing of a purple and white monster on a piece of paper,1.92,0.0046
