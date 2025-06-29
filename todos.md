@@ -16,3 +16,16 @@ backend:
 [] image generation prompt
 [] improve story generation prompt
 [] use only open ai for all models
+[] log requests and responces
+[] save audio and images to db? s3?
+
+
+
+
+
+when logged in:
+- select user
+    - kid:
+        - 
+    - parent:
+        parent dashboard
