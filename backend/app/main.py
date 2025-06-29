@@ -21,6 +21,7 @@ from .services.story_generator import StoryGeneratorService
 from .services.text_to_speech import TextToSpeechService
 from .services.story_service import StoryService
 from .services.kid_service import KidService
+from .services.supabase_storage import storage_service
 
 # Import validation utilities
 from .utils.validation import validate_story_request
@@ -56,9 +57,6 @@ image_service = ImageAnalysisService()
 story_service = StoryGeneratorService()
 tts_service = TextToSpeechService()
 
-# Create directories for audio storage only (no image storage needed)
-AUDIO_DIR = Path("audio")
-AUDIO_DIR.mkdir(exist_ok=True)
 
 # Initialize database
 try:
@@ -299,10 +297,8 @@ async def get_story(story_id: str):
         if not story_data:
             raise HTTPException(status_code=404, detail="Story not found")
         
-        # Build audio URL if audio file exists
-        audio_url = None
-        if story_data.get("audio_filename"):
-            audio_url = f"/audio/{story_id}"
+        # Get stored public URL
+        audio_url = story_data.get("audio_filename")
         
         return StoryDetail(
             story_id=story_data["story_id"],
@@ -328,10 +324,8 @@ async def get_pending_stories():
         pending_stories = []
         
         for story_data in story_list:
-            # Build audio URL if audio file exists
-            audio_url = None
-            if story_data.get("audio_filename"):
-                audio_url = f"/audio/{story_data['story_id']}"
+            # Get stored public URL
+            audio_url = story_data.get("audio_filename")
             
             pending_stories.append(StoryDetail(
                 story_id=story_data["story_id"],
@@ -356,10 +350,8 @@ async def get_approved_stories():
         approved_stories = []
         
         for story_data in story_list:
-            # Build audio URL if audio file exists
-            audio_url = None
-            if story_data.get("audio_filename"):
-                audio_url = f"/audio/{story_data['story_id']}"
+            # Get stored public URL
+            audio_url = story_data.get("audio_filename")
             
             approved_stories.append(StoryDetail(
                 story_id=story_data["story_id"],
@@ -376,22 +368,6 @@ async def get_approved_stories():
         logger.error(f"Error getting approved stories: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error getting approved stories: {str(e)}")
 
-@app.get("/audio/{story_id}")
-async def get_story_audio(story_id: str):
-    """Serve audio file for a story"""
-    try:
-        audio_path = AUDIO_DIR / f"{story_id}.mp3"
-        if not audio_path.exists():
-            raise HTTPException(status_code=404, detail="Audio file not found")
-        
-        return FileResponse(
-            path=audio_path,
-            media_type="audio/mpeg",
-            filename=f"story_{story_id}.mp3"
-        )
-    except Exception as e:
-        logger.error(f"Error serving audio: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error serving audio: {str(e)}")
 
 # Kid Management Endpoints
 
@@ -562,10 +538,8 @@ async def get_kid_stories(kid_id: str, status: Optional[str] = None):
         kid_stories = []
         
         for story_data in story_list:
-            # Build audio URL if audio file exists
-            audio_url = None
-            if story_data.get("audio_filename"):
-                audio_url = f"/audio/{story_data['story_id']}"
+            # Get stored public URL
+            audio_url = story_data.get("audio_filename")
             
             kid_stories.append(StoryDetail(
                 story_id=story_data["story_id"],
@@ -613,15 +587,17 @@ async def process_story_generation_from_base64(
         logger.info(f"Generating audio immediately for story {story_id}")
         story_content = story_result.get("content", "")
         
-        audio_path = None
+        audio_url = None
         if story_content:
             try:
-                audio_path = tts_service.generate_story_audio(
+                audio_url = tts_service.generate_story_audio(
                     story_content, 
-                    story_id, 
-                    str(AUDIO_DIR)
+                    story_id
                 )
-                logger.info(f"Audio generated successfully for story {story_id}")
+                if audio_url:
+                    logger.info(f"Audio generated and uploaded successfully for story {story_id}")
+                else:
+                    logger.error(f"Audio generation failed for story {story_id}")
             except Exception as audio_error:
                 logger.error(f"Audio generation failed for story {story_id}: {str(audio_error)}")
         
@@ -631,7 +607,7 @@ async def process_story_generation_from_base64(
             "title": story_result.get("title", "A Magical Story"),
             "content": story_result.get("content", ""),
             "status": "approved",  # Skip approval - directly approved
-            "audio_filename": f"{story_id}.mp3" if audio_path else None,
+            "audio_filename": audio_url if audio_url else None,
             "ai_models_used": {
                 "image_analysis": image_analysis,
                 "story_metadata": story_result
@@ -698,14 +674,13 @@ async def generate_story_audio(story_id: str):
         logger.info(f"Generating audio for story {story_id} with ElevenLabs Callum voice")
         
         # Generate audio with Callum voice
-        audio_path = tts_service.generate_story_audio(
+        audio_url = tts_service.generate_story_audio(
             story_content, 
-            story_id, 
-            str(AUDIO_DIR)
+            story_id
         )
         
-        if audio_path:
-            audio_updates = {"audio_filename": f"{story_id}.mp3"}
+        if audio_url:
+            audio_updates = {"audio_filename": audio_url}
             success = StoryService.update_story(story_id, audio_updates)
             if success:
                 logger.info(f"Audio generated successfully for story {story_id}")

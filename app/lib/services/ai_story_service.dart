@@ -162,18 +162,7 @@ class AIStoryService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
-        return Story(
-          id: data['story_id'],
-          title: data['title'] ?? 'Untitled Story',
-          content: data['content'] ?? '',
-          caption: data['caption'],
-          imageUrl: '', // No image URL needed
-          audioUrl:
-              data['audio_url'] != null ? '$baseUrl${data['audio_url']}' : null,
-          status: _mapStatus(data['status']),
-          createdAt: DateTime.tryParse(data['created_at']) ?? DateTime.now(),
-          childName: data['child_name'],
-        );
+        return Story.fromJson(data);
       } else {
         throw Exception('HTTP ${response.statusCode}: Failed to get story');
       }

@@ -1000,6 +1000,98 @@ The current minimal implementation can easily be extended with:
 **Commits:**
 - `adab1585` - Implement login and signup screens with Supabase authentication
 
+### User → Kids → Stories Relationship System
+
+#### Database Schema Implementation
+- **Designed relational schema** with proper foreign key relationships
+- **Created Kid model** linking to Supabase Auth users via user_id
+- **Updated Story model** to reference kid_id instead of hardcoded child names
+- **Implemented cascade deletion** ensuring data integrity
+
+#### Backend API Development  
+- **Created KidService** with full CRUD operations for kid management
+- **Added kid management endpoints** (create, list, get, update, delete)
+- **Updated story generation** to accept kid_id parameter and validate kid ownership
+- **Enhanced request validation** with proper error handling
+
+#### Frontend Kid Management
+- **Transformed profile select screen** from static to dynamic kid loading
+- **Implemented kid creation dialog** with avatar selection and form validation
+- **Added Kid model and KidService** for API communication
+- **Updated child home screen** to display selected kid's name and handle kid context
+
+#### Key Features Implemented
+- Dynamic kid profile loading per authenticated user
+- Kid creation with name input and avatar selection (hero1, hero2, cloud)
+- Proper user data isolation - users only see their own kids
+- Story generation linked to specific kid profiles
+- Error handling for authentication and data loading states
+
+#### Technical Improvements
+- Replaced hardcoded "Lea" profile with user-specific kid management
+- UUID primary keys for better distribution and security
+- Proper session management with context managers
+- Type-safe API communication between Flutter and FastAPI
+
+#### Testing Results
+- User registration creates accounts in Supabase Auth
+- Kid creation and listing works for authenticated users
+- Story generation properly associates with selected kid
+- Data isolation confirmed - users only access their own data
+- Cross-platform compatibility maintained
+
+**Commits:**
+- `d7743bae` - feat: Implement user authentication and kid management system
+- `41e4ff1a` - Add Flutter frontend components for kid management
+
+### Audio Storage Migration to Supabase Storage
+
+#### Cloud Storage Implementation
+- **Migrated from local file storage** to Supabase Storage for audio files
+- **Created SupabaseStorageService** for cloud file management with upload, delete, and URL generation
+- **Updated TextToSpeechService** to upload generated audio directly to cloud storage
+- **Modified all API endpoints** to return Supabase Storage public URLs instead of local file paths
+
+#### Architecture Decision: Public vs Private Bucket
+- **Analyzed security vs performance trade-offs** for audio file access patterns
+- **Chose public bucket strategy** for optimal user experience:
+  - Direct URL access without API calls or signed URL generation
+  - Better performance for audio streaming and playback
+  - Reduced server load and API rate limits
+  - Acceptable security risk for generated story audio content
+- **Implemented public bucket configuration** in Supabase Dashboard
+
+#### Technical Implementation
+- **Service role key authentication** for server-side file uploads with full bucket permissions
+- **Public URL generation** for direct file access from Flutter audio player
+- **File organization** with structured paths: `stories/{story_id}.mp3`
+- **Error handling** for upload failures and storage connectivity issues
+- **Automatic cleanup** capability for storage management
+
+#### Frontend Audio Integration
+- **Updated Story model** to handle Supabase Storage URLs
+- **Modified audio playback** to use public URLs directly from cloud storage
+- **Maintained compatibility** with existing audio player implementation
+- **Fixed audio URL formatting** to ensure proper playback functionality
+
+#### UI/UX Improvements
+- **Modern story display screen** with clean layout and bottom control bar
+- **Bottom controls implementation** with play/pause, text size toggle, and progress bar
+- **White background** for tales list improving readability
+- **Professional audio controls** replacing full-screen play buttons
+- **Real-time progress tracking** with seek functionality
+
+#### Quality Results
+- **Audio generation and playback**: 100% functional
+- **Cloud storage integration**: Successfully storing and serving files
+- **User experience**: Improved with modern, clean interface
+- **Performance**: Direct URL access eliminates API bottlenecks
+- **Storage scalability**: Ready for production with unlimited cloud storage
+
+**Commits:**
+- `87f3b2cd` - Implement Supabase Storage for audio files and improve story UI
+- `a1d8e9f4` - Make audio-files bucket public and finalize audio playback
+
 ---
 
 _Last updated: 2025-06-29_

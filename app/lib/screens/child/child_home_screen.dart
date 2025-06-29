@@ -6,6 +6,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
 import '../../services/ai_story_service.dart';
+import '../../services/kid_service.dart';
 import '../../models/story.dart';
 import '../../models/kid.dart';
 
@@ -21,6 +22,8 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   final ImagePicker _picker = ImagePicker();
   bool _isProcessing = false;
   Kid? _selectedKid;
+  List<Story> _stories = [];
+  bool _isLoadingStories = false;
 
   @override
   void didChangeDependencies() {
@@ -30,6 +33,35 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       final kid = ModalRoute.of(context)?.settings.arguments as Kid?;
       if (kid != null) {
         _selectedKid = kid;
+        _loadStories();
+      }
+    }
+  }
+
+  Future<void> _loadStories() async {
+    if (_selectedKid == null) return;
+    
+    setState(() {
+      _isLoadingStories = true;
+    });
+
+    try {
+      final stories = await KidService.getStoriesForKid(_selectedKid!.id);
+      setState(() {
+        _stories = stories;
+        _isLoadingStories = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingStories = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to load stories: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
@@ -71,7 +103,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     }
 
     return Scaffold(
-      backgroundColor: AppTheme.yellowScreenBackground, // Yellow background for upload screen
+      backgroundColor: _stories.isNotEmpty ? AppTheme.whiteScreenBackground : AppTheme.yellowScreenBackground,
       body: SafeArea(
         child: _isProcessing
             ? _buildProcessingView()
@@ -141,60 +173,106 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   }
 
   Widget _buildContent(BuildContext context) {
-    // For now, always show upload prompt
-    // TODO: Load stories for the selected kid and show story list if they exist
-    return _buildUploadPrompt(context);
+    if (_isLoadingStories) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    
+    if (_stories.isNotEmpty) {
+      return _buildStoryList();
+    } else {
+      return _buildUploadPrompt(context);
+    }
   }
 
   Widget _buildStoryList() {
-    // Mock stories data for demonstration
-    // In a real app, this would come from a database or API
-    final mockStories = [
-      {'title': 'The Magical Forest', 'image': null},
-      {'title': 'Space Adventure', 'image': null},
-    ];
-
-    return ListView.builder(
-      padding: const EdgeInsets.all(20),
-      itemCount: mockStories.length,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: const EdgeInsets.only(bottom: 16),
-          decoration: AppTheme.flatWhiteCard, // FLAT white card
-          child: ListTile(
-            contentPadding: const EdgeInsets.all(16),
-            leading: Container(
-              width: 60,
-              height: 60,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(12)),
-                color: AppColors.lightGrey,
-                // NO shadows
+    return Column(
+      children: [
+        // Create New Tale button
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () => _showImageSourceOptions(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                elevation: 0,
               ),
-              // This would be the story thumbnail
-              child: const Icon(Icons.image, color: AppColors.grey),
-            ),
-            title: Text(
-              'Story Title',
-              style: GoogleFonts.manrope(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
+              icon: const Icon(Icons.add, size: 24),
+              label: Text(
+                'Create New Tale',
+                style: GoogleFonts.manrope(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            subtitle: Text(
-              'Tap to listen',
-              style: GoogleFonts.manrope(
-                fontSize: 14,
-                color: AppColors.textGrey,
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, '/story-playback');
+          ),
+        ),
+        
+        // Stories list
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: _stories.length,
+            itemBuilder: (context, index) {
+              final story = _stories[index];
+              return Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                decoration: AppTheme.flatWhiteCard,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(16),
+                  leading: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      color: AppColors.lightGrey,
+                    ),
+                    child: const Icon(Icons.book, color: AppColors.primary, size: 32),
+                  ),
+                  title: Text(
+                    story.title.isNotEmpty ? story.title : 'Untitled Story',
+                    style: GoogleFonts.manrope(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textDark,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    'Tap to read and listen',
+                    style: GoogleFonts.manrope(
+                      fontSize: 14,
+                      color: AppColors.textGrey,
+                    ),
+                  ),
+                  trailing: story.status == StoryStatus.pending 
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.arrow_forward_ios, color: AppColors.grey, size: 16),
+                  onTap: story.status == StoryStatus.approved ? () {
+                    Navigator.pushNamed(
+                      context,
+                      '/story-display',
+                      arguments: story,
+                    );
+                  } : null,
+                ),
+              );
             },
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 
@@ -463,6 +541,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       setState(() {
         _isProcessing = false;
       });
+
+      // Refresh stories list to show the new story
+      await _loadStories();
 
       // Navigate to story display/playback screen
       if (mounted) {

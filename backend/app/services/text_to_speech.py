@@ -8,8 +8,11 @@ ElevenLabs API with Callum voice (N2lVS1w4EtoT3dr4eOWO).
 import logging
 import os
 import requests
+import tempfile
+from pathlib import Path
 from typing import Dict, Any, Optional
 from config.models import ModelType, get_model_config, get_api_key, get_voice_config
+from .supabase_storage import storage_service
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -95,32 +98,42 @@ class TextToSpeechService:
             logger.error(f"Error generating audio: {str(e)}")
             return None
     
-    def generate_story_audio(self, story_content: str, story_id: str, output_dir: str) -> Optional[str]:
+    def generate_story_audio(self, story_content: str, story_id: str, output_dir: str = None) -> Optional[str]:
         """
-        Generate audio narration for a story using Callum voice
+        Generate audio narration for a story and upload to Supabase Storage
         
         Args:
             story_content: The text content of the story
             story_id: Unique identifier for the story
-            output_dir: Directory where audio files should be saved
+            output_dir: Directory where audio files should be saved (deprecated, kept for compatibility)
             
         Returns:
-            Path to the generated audio file, or None if unsuccessful
+            Public URL of the uploaded audio file, or None if unsuccessful
         """
         try:
-            # Ensure output directory exists
-            os.makedirs(output_dir, exist_ok=True)
-            
-            # Define output path
-            output_path = os.path.join(output_dir, f"{story_id}.mp3")
+            # Create temporary file for audio generation
+            with tempfile.NamedTemporaryFile(suffix='.mp3', delete=False) as temp_file:
+                temp_path = Path(temp_file.name)
             
             # Generate audio with configured voice
-            result = self.generate_audio(story_content, output_path, self.voice_id)
+            result = self.generate_audio(story_content, str(temp_path), self.voice_id)
             
             if result:
-                logger.info(f"Story audio generated successfully for story {story_id}")
-                return result
+                # Upload to Supabase Storage
+                public_url = storage_service.upload_audio_file(story_id, temp_path)
+                
+                # Clean up temporary file
+                temp_path.unlink(missing_ok=True)
+                
+                if public_url:
+                    logger.info(f"Story audio generated and uploaded successfully for story {story_id}")
+                    return public_url
+                else:
+                    logger.error(f"Failed to upload audio to Supabase for story {story_id}")
+                    return None
             else:
+                # Clean up temporary file
+                temp_path.unlink(missing_ok=True)
                 logger.error(f"Failed to generate audio for story {story_id}")
                 return None
                 

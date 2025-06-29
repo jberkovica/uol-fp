@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/kid.dart';
+import '../models/story.dart';
 
 /// Service for managing kid profiles through the backend API
 class KidService {
@@ -125,6 +126,26 @@ class KidService {
     } catch (e) {
       print('Error deleting kid: $e');
       throw Exception('Failed to delete kid: $e');
+    }
+  }
+
+  /// Get all stories for a specific kid
+  static Future<List<Story>> getStoriesForKid(String kidId) async {
+    try {
+      final uri = Uri.parse('$baseUrl/kids/$kidId/stories');
+      final response = await http.get(uri);
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        return data.map((item) => Story.fromJson(item)).toList();
+      } else if (response.statusCode == 404) {
+        throw Exception('Kid not found');
+      } else {
+        throw Exception('HTTP ${response.statusCode}: Failed to get stories');
+      }
+    } catch (e) {
+      print('Error getting stories for kid: $e');
+      throw Exception('Failed to get stories: $e');
     }
   }
 }

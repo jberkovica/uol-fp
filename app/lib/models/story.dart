@@ -22,6 +22,50 @@ class Story {
     this.status = StoryStatus.pending,
   });
 
+  /// Create Story from JSON response
+  factory Story.fromJson(Map<String, dynamic> json) {
+    return Story(
+      id: json['story_id'] as String,
+      title: json['title'] as String? ?? 'Untitled Story',
+      content: json['content'] as String? ?? '',
+      imageUrl: json['image_url'] as String?,
+      audioUrl: json['audio_url'] as String?,
+      caption: json['caption'] as String?,
+      createdAt: DateTime.tryParse(json['created_at'] as String? ?? '') ?? DateTime.now(),
+      childName: json['child_name'] as String? ?? '',
+      status: _parseStatus(json['status'] as String?),
+    );
+  }
+
+  /// Convert Story to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'story_id': id,
+      'title': title,
+      'content': content,
+      'image_url': imageUrl,
+      'audio_url': audioUrl,
+      'caption': caption,
+      'created_at': createdAt.toIso8601String(),
+      'child_name': childName,
+      'status': status.toString().split('.').last,
+    };
+  }
+
+  static StoryStatus _parseStatus(String? status) {
+    switch (status) {
+      case 'completed':
+      case 'approved':
+        return StoryStatus.approved;
+      case 'rejected':
+        return StoryStatus.rejected;
+      case 'processing':
+      case 'pending':
+      default:
+        return StoryStatus.pending;
+    }
+  }
+
   Story copyWith({
     String? id,
     String? title,
