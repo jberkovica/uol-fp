@@ -153,10 +153,16 @@ def validate_story_request(story_request) -> None:
     Raises:
         HTTPException: If validation fails
     """
-    # Validate child name
-    name_valid, name_error = validate_child_name(story_request.child_name)
-    if not name_valid:
-        raise HTTPException(status_code=400, detail=f"Invalid child name: {name_error}")
+    # Validate kid_id
+    if not hasattr(story_request, 'kid_id') or not story_request.kid_id:
+        raise HTTPException(status_code=400, detail="Kid ID is required")
+    
+    # Validate kid_id format (should be a valid UUID)
+    try:
+        import uuid
+        uuid.UUID(story_request.kid_id)
+    except (ValueError, AttributeError):
+        raise HTTPException(status_code=400, detail="Invalid kid ID format")
     
     # Validate image
     image_valid, image_error = validate_base64_image(story_request.image_data, story_request.mime_type)
@@ -174,7 +180,7 @@ def validate_story_request(story_request) -> None:
             if key not in allowed_keys:
                 raise HTTPException(status_code=400, detail=f"Invalid preference key: {key}")
     
-    logger.info(f"Story request validation passed for child: {story_request.child_name}")
+    logger.info(f"Story request validation passed for kid: {story_request.kid_id}")
 
 def sanitize_filename(filename: str) -> str:
     """

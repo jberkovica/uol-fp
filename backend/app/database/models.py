@@ -1,6 +1,6 @@
 """
-Minimal SQLAlchemy models for Mira Storyteller database
-Start simple, add features incrementally
+SQLAlchemy models for Mira Storyteller database with user authentication
+Implements proper user -> kids -> stories relationships
 """
 
 from sqlalchemy import Column, String, Text, DateTime, Boolean, ForeignKey, JSON
@@ -13,16 +13,48 @@ import uuid
 Base = declarative_base()
 
 
+class Kid(Base):
+    """
+    Kids table - child profiles linked to authenticated users
+    Each user can have multiple kids
+    """
+    __tablename__ = "kids"
+    
+    # Primary key
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    
+    # Link to Supabase Auth user
+    user_id = Column(UUID(as_uuid=True), nullable=False)  # References auth.users(id)
+    
+    # Kid profile information
+    name = Column(String(100), nullable=False)
+    avatar_type = Column(String(50), default='hero1')  # CharacterType enum value
+    
+    # Timestamps
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    
+    # Relationship to stories
+    stories = relationship("Story", back_populates="kid", cascade="all, delete-orphan")
+
+
 class Story(Base):
     """
-    Core stories table - replaces the in-memory stories_db = {}
-    Start with just what we currently store in memory
+    Stories table - now properly linked to kids and users
+    Replaces the in-memory stories_db = {} with proper relationships
     """
     __tablename__ = "stories"
     
-    # Core fields (matching current in-memory structure)
+    # Primary key
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    child_name = Column(String(100), nullable=False)  # Simple for now, no user system yet
+    
+    # Foreign key to kids table
+    kid_id = Column(UUID(as_uuid=True), ForeignKey('kids.id'), nullable=False)
+    
+    # Keep child_name for backward compatibility and easy display
+    child_name = Column(String(100), nullable=False)
+    
+    # Story content
     title = Column(String(200), nullable=False)
     content = Column(Text, nullable=False)
     language = Column(String(5), default='en')  # en, ru, lv, es
@@ -39,6 +71,9 @@ class Story(Base):
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+    
+    # Relationship to kid
+    kid = relationship("Kid", back_populates="stories")
 
 
 # Future tables - commented out for incremental implementation

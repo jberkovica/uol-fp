@@ -18,6 +18,7 @@ class StoryService:
     
     @staticmethod
     def create_story(
+        kid_id: str,
         child_name: str,
         title: str = "",
         content: str = "",
@@ -27,10 +28,11 @@ class StoryService:
         status: str = "processing"
     ) -> Optional[str]:
         """
-        Create a new story record
+        Create a new story record linked to a kid
         
         Args:
-            child_name: Name of the child
+            kid_id: ID of the kid this story belongs to
+            child_name: Name of the child (for display)
             title: Story title
             content: Story content
             language: Story language (en, ru, lv, es)
@@ -45,6 +47,7 @@ class StoryService:
             db = get_database()
             
             story = Story(
+                kid_id=kid_id,
                 child_name=child_name,
                 title=title or "Untitled Story",
                 content=content or "",
@@ -174,6 +177,144 @@ class StoryService:
                 close_database_session(db)
             return False
     
+    @staticmethod
+    def list_stories_for_kid(
+        kid_id: str,
+        limit: int = 50,
+        offset: int = 0,
+        status: str = None,
+        language: str = None
+    ) -> List[Dict[str, Any]]:
+        """
+        List stories for a specific kid
+        
+        Args:
+            kid_id: Kid ID to filter by
+            limit: Maximum number of stories to return
+            offset: Number of stories to skip
+            status: Filter by status
+            language: Filter by language
+            
+        Returns:
+            List of story dicts for the kid
+        """
+        try:
+            db = get_database()
+            
+            query = db.query(Story).filter(Story.kid_id == kid_id)
+            
+            # Apply filters
+            if status:
+                query = query.filter(Story.status == status)
+            if language:
+                query = query.filter(Story.language == language)
+            
+            # Order by creation date (newest first)
+            query = query.order_by(Story.created_at.desc())
+            
+            # Apply pagination
+            stories = query.offset(offset).limit(limit).all()
+            
+            # Convert to dict format
+            story_list = []
+            for story in stories:
+                story_dict = {
+                    "story_id": str(story.id),
+                    "kid_id": str(story.kid_id),
+                    "child_name": story.child_name,
+                    "title": story.title,
+                    "content": story.content,
+                    "language": story.language,
+                    "status": story.status,
+                    "created_at": story.created_at.isoformat(),
+                    "audio_filename": story.audio_filename
+                }
+                story_list.append(story_dict)
+            
+            close_database_session(db)
+            return story_list
+            
+        except SQLAlchemyError as e:
+            logger.error(f"Database error listing stories for kid {kid_id}: {e}")
+            if db:
+                close_database_session(db)
+            return []
+        except Exception as e:
+            logger.error(f"Error listing stories for kid {kid_id}: {e}")
+            if db:
+                close_database_session(db)
+            return []
+
+    @staticmethod
+    def list_stories_for_user(
+        user_id: str,
+        limit: int = 50,
+        offset: int = 0,
+        status: str = None,
+        language: str = None
+    ) -> List[Dict[str, Any]]:
+        """
+        List all stories for a user across all their kids
+        
+        Args:
+            user_id: User ID to filter by
+            limit: Maximum number of stories to return
+            offset: Number of stories to skip
+            status: Filter by status
+            language: Filter by language
+            
+        Returns:
+            List of story dicts for the user
+        """
+        try:
+            from ..database.models import Kid
+            db = get_database()
+            
+            # Join stories with kids to filter by user_id
+            query = db.query(Story).join(Kid).filter(Kid.user_id == user_id)
+            
+            # Apply filters
+            if status:
+                query = query.filter(Story.status == status)
+            if language:
+                query = query.filter(Story.language == language)
+            
+            # Order by creation date (newest first)
+            query = query.order_by(Story.created_at.desc())
+            
+            # Apply pagination
+            stories = query.offset(offset).limit(limit).all()
+            
+            # Convert to dict format
+            story_list = []
+            for story in stories:
+                story_dict = {
+                    "story_id": str(story.id),
+                    "kid_id": str(story.kid_id),
+                    "child_name": story.child_name,
+                    "title": story.title,
+                    "content": story.content,
+                    "language": story.language,
+                    "status": story.status,
+                    "created_at": story.created_at.isoformat(),
+                    "audio_filename": story.audio_filename
+                }
+                story_list.append(story_dict)
+            
+            close_database_session(db)
+            return story_list
+            
+        except SQLAlchemyError as e:
+            logger.error(f"Database error listing stories for user {user_id}: {e}")
+            if db:
+                close_database_session(db)
+            return []
+        except Exception as e:
+            logger.error(f"Error listing stories for user {user_id}: {e}")
+            if db:
+                close_database_session(db)
+            return []
+
     @staticmethod
     def list_stories(
         limit: int = 50,

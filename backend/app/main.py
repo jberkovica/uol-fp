@@ -20,6 +20,7 @@ from .services.image_analysis import ImageAnalysisService
 from .services.story_generator import StoryGeneratorService
 from .services.text_to_speech import TextToSpeechService
 from .services.story_service import StoryService
+from .services.kid_service import KidService
 
 # Import validation utilities
 from .utils.validation import validate_story_request
@@ -73,10 +74,25 @@ class ImageUpload(BaseModel):
     mime_type: str = "image/jpeg"
 
 class StoryRequest(BaseModel):
-    child_name: str
+    kid_id: str
     image_data: str  # base64 encoded image
     mime_type: str = "image/jpeg"
     preferences: Optional[dict] = None
+
+class KidCreateRequest(BaseModel):
+    user_id: str  # Supabase Auth user ID
+    name: str
+    avatar_type: str = 'hero1'
+
+class KidResponse(BaseModel):
+    kid_id: str
+    name: str
+    avatar_type: str
+    created_at: str
+
+class KidUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    avatar_type: Optional[str] = None
 
 class StoryResponse(BaseModel):
     story_id: str
@@ -126,9 +142,15 @@ async def generate_story_from_image(
         # Validate the request
         validate_story_request(story_request)
         
+        # Get kid information first
+        kid_data = KidService.get_kid(story_request.kid_id)
+        if not kid_data:
+            raise HTTPException(status_code=404, detail="Kid not found")
+        
         # Create story record in database
         story_id = StoryService.create_story(
-            child_name=story_request.child_name,
+            kid_id=story_request.kid_id,
+            child_name=kid_data['name'],
             preferences=story_request.preferences,
             status="processing"
         )
@@ -142,7 +164,7 @@ async def generate_story_from_image(
             story_id,
             story_request.image_data,
             story_request.mime_type,
-            story_request.child_name,
+            kid_data['name'],
             story_request.preferences
         )
         
@@ -370,6 +392,199 @@ async def get_story_audio(story_id: str):
     except Exception as e:
         logger.error(f"Error serving audio: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error serving audio: {str(e)}")
+
+# Kid Management Endpoints
+
+@app.post("/kids/", response_model=KidResponse)
+async def create_kid(kid_request: KidCreateRequest):
+    """Create a new kid profile for a user"""
+    try:
+        # Validate input
+        if not kid_request.name.strip():
+            raise HTTPException(status_code=400, detail="Kid name cannot be empty")
+        
+        if len(kid_request.name) > 100:
+            raise HTTPException(status_code=400, detail="Kid name too long (max 100 characters)")
+        
+        # Create kid
+        kid_id = KidService.create_kid(
+            user_id=kid_request.user_id,
+            name=kid_request.name.strip(),
+            avatar_type=kid_request.avatar_type
+        )
+        
+        if not kid_id:
+            raise HTTPException(status_code=500, detail="Failed to create kid profile")
+        
+        # Get created kid data
+        kid_data = KidService.get_kid(kid_id)
+        if not kid_data:
+            raise HTTPException(status_code=500, detail="Failed to retrieve created kid profile")
+        
+        logger.info(f"Created kid profile: {kid_id} for user {kid_request.user_id}")
+        
+        return KidResponse(
+            kid_id=kid_data['kid_id'],
+            name=kid_data['name'],
+            avatar_type=kid_data['avatar_type'],
+            created_at=kid_data['created_at']
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating kid: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error creating kid: {str(e)}")
+
+@app.get("/users/{user_id}/kids", response_model=List[KidResponse])
+async def get_user_kids(user_id: str):
+    """Get all kids for a specific user"""
+    try:
+        kids_data = KidService.list_kids_for_user(user_id)
+        
+        return [
+            KidResponse(
+                kid_id=kid['kid_id'],
+                name=kid['name'],
+                avatar_type=kid['avatar_type'],
+                created_at=kid['created_at']
+            )
+            for kid in kids_data
+        ]
+        
+    except Exception as e:
+        logger.error(f"Error getting kids for user {user_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error getting kids: {str(e)}")
+
+@app.get("/kids/{kid_id}", response_model=KidResponse)
+async def get_kid(kid_id: str):
+    """Get a specific kid by ID"""
+    try:
+        kid_data = KidService.get_kid(kid_id)
+        
+        if not kid_data:
+            raise HTTPException(status_code=404, detail="Kid not found")
+        
+        return KidResponse(
+            kid_id=kid_data['kid_id'],
+            name=kid_data['name'],
+            avatar_type=kid_data['avatar_type'],
+            created_at=kid_data['created_at']
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting kid {kid_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error getting kid: {str(e)}")
+
+@app.put("/kids/{kid_id}", response_model=KidResponse)
+async def update_kid(kid_id: str, kid_update: KidUpdateRequest):
+    """Update a kid's information"""
+    try:
+        # Check if kid exists
+        kid_data = KidService.get_kid(kid_id)
+        if not kid_data:
+            raise HTTPException(status_code=404, detail="Kid not found")
+        
+        # Prepare updates
+        updates = {}
+        if kid_update.name is not None:
+            if not kid_update.name.strip():
+                raise HTTPException(status_code=400, detail="Kid name cannot be empty")
+            if len(kid_update.name) > 100:
+                raise HTTPException(status_code=400, detail="Kid name too long (max 100 characters)")
+            updates['name'] = kid_update.name.strip()
+        
+        if kid_update.avatar_type is not None:
+            updates['avatar_type'] = kid_update.avatar_type
+        
+        # Update kid
+        success = KidService.update_kid(kid_id, updates)
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to update kid")
+        
+        # Get updated kid data
+        updated_kid_data = KidService.get_kid(kid_id)
+        if not updated_kid_data:
+            raise HTTPException(status_code=500, detail="Failed to retrieve updated kid")
+        
+        logger.info(f"Updated kid {kid_id}")
+        
+        return KidResponse(
+            kid_id=updated_kid_data['kid_id'],
+            name=updated_kid_data['name'],
+            avatar_type=updated_kid_data['avatar_type'],
+            created_at=updated_kid_data['created_at']
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating kid {kid_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error updating kid: {str(e)}")
+
+@app.delete("/kids/{kid_id}")
+async def delete_kid(kid_id: str):
+    """Delete a kid and all associated stories"""
+    try:
+        # Check if kid exists
+        kid_data = KidService.get_kid(kid_id)
+        if not kid_data:
+            raise HTTPException(status_code=404, detail="Kid not found")
+        
+        # Delete kid (cascade will delete stories)
+        success = KidService.delete_kid(kid_id)
+        if not success:
+            raise HTTPException(status_code=500, detail="Failed to delete kid")
+        
+        logger.info(f"Deleted kid {kid_id}")
+        
+        return {"message": "Kid deleted successfully", "kid_id": kid_id}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting kid {kid_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error deleting kid: {str(e)}")
+
+@app.get("/kids/{kid_id}/stories", response_model=List[StoryDetail])
+async def get_kid_stories(kid_id: str, status: Optional[str] = None):
+    """Get all stories for a specific kid"""
+    try:
+        # Verify kid exists
+        kid_data = KidService.get_kid(kid_id)
+        if not kid_data:
+            raise HTTPException(status_code=404, detail="Kid not found")
+        
+        # Get stories for the kid
+        story_list = StoryService.list_stories_for_kid(kid_id, status=status)
+        kid_stories = []
+        
+        for story_data in story_list:
+            # Build audio URL if audio file exists
+            audio_url = None
+            if story_data.get("audio_filename"):
+                audio_url = f"/audio/{story_data['story_id']}"
+            
+            kid_stories.append(StoryDetail(
+                story_id=story_data["story_id"],
+                title=story_data.get("title", "Untitled Story"),
+                content=story_data.get("content", ""),
+                caption=story_data.get("image_caption"),
+                audio_url=audio_url,
+                status=story_data["status"],
+                created_at=story_data["created_at"],
+                child_name=story_data["child_name"]
+            ))
+        
+        return kid_stories
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting stories for kid {kid_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error getting kid stories: {str(e)}")
 
 # Background task for story generation using real AI services with base64 images
 async def process_story_generation_from_base64(
