@@ -7,7 +7,7 @@ app:
 [] play, speed, font size in reading screen
 [] screens: splash -> login -> users -> parent/kid 
 [] parent dashboard (can edit kids, can verify stories)
-[] lucide icons
+[x] lucide icons
 [] verify we use Manrope font everywhere
 [] blurry images 
 [] menu

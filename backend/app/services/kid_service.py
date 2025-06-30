@@ -19,7 +19,7 @@ class KidService:
     """Service for managing kid profiles"""
 
     @staticmethod
-    def create_kid(user_id: str, name: str, avatar_type: str = 'hero1') -> Optional[str]:
+    def create_kid(user_id: str, name: str, avatar_type: str = 'profile1') -> Optional[str]:
         """
         Create a new kid profile for a user
         

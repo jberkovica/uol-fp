@@ -29,7 +29,7 @@ class KidService {
   static Future<Kid> createKid({
     required String userId,
     required String name,
-    String avatarType = 'hero1',
+    String avatarType = 'profile1',
   }) async {
     try {
       final uri = Uri.parse('$baseUrl/kids/');

@@ -80,7 +80,7 @@ class StoryRequest(BaseModel):
 class KidCreateRequest(BaseModel):
     user_id: str  # Supabase Auth user ID
     name: str
-    avatar_type: str = 'hero1'
+    avatar_type: str = 'profile1'
 
 class KidResponse(BaseModel):
     kid_id: str

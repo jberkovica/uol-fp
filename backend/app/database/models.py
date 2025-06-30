@@ -28,7 +28,7 @@ class Kid(Base):
     
     # Kid profile information
     name = Column(String(100), nullable=False)
-    avatar_type = Column(String(50), default='hero1')  # CharacterType enum value
+    avatar_type = Column(String(50), default='profile1')  # ProfileType enum value
     
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())

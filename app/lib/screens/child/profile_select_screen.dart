@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
-import '../../widgets/character_avatar.dart';
+import '../../widgets/profile_avatar.dart';
 import '../../services/auth_service.dart';
 import '../../services/kid_service.dart';
 import '../../models/kid.dart';
@@ -51,7 +51,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
 
   Future<void> _showCreateKidDialog() async {
     final nameController = TextEditingController();
-    String selectedAvatarType = 'hero1';
+    String selectedAvatarType = 'profile1';
 
     final result = await showDialog<Kid>(
       context: context,
@@ -88,9 +88,10 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                   ),
                   const SizedBox(height: 12),
                   Wrap(
-                    spacing: 12,
-                    children: CharacterType.values.map((type) {
-                      final typeString = type.toString().split('.').last;
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: ProfileType.values.map((type) {
+                      final typeString = ProfileAvatar.typeToString(type);
                       return GestureDetector(
                         onTap: () {
                           setDialogState(() {
@@ -104,9 +105,9 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                                 ? Border.all(color: AppColors.primary, width: 3)
                                 : null,
                           ),
-                          child: CharacterAvatar(
-                            radius: 25,
-                            characterType: type,
+                          child: ProfileAvatar(
+                            radius: 28, // Smaller for mobile dialog
+                            profileType: type,
                           ),
                         ),
                       );
@@ -171,17 +172,8 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
     }
   }
 
-  CharacterType _getCharacterType(String avatarType) {
-    switch (avatarType) {
-      case 'hero1':
-        return CharacterType.hero1;
-      case 'hero2':
-        return CharacterType.hero2;
-      case 'cloud':
-        return CharacterType.cloud;
-      default:
-        return CharacterType.hero1;
-    }
+  ProfileType _getProfileType(String avatarType) {
+    return ProfileAvatar.fromString(avatarType);
   }
 
   @override
@@ -228,29 +220,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                             ],
                           ),
                         )
-                      : GridView.count(
-                          crossAxisCount: 2,
-                          padding: const EdgeInsets.symmetric(horizontal: 30),
-                          mainAxisSpacing: 20,
-                          crossAxisSpacing: 20,
-                          children: [
-                            // Existing kids
-                            ..._kids.map((kid) => _buildProfileCard(
-                                  kid.name,
-                                  avatarType: _getCharacterType(kid.avatarType),
-                                  onTap: () {
-                                    // Pass the selected kid to child home screen
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/child-home',
-                                      arguments: kid,
-                                    );
-                                  },
-                                )),
-                            // Add new profile card
-                            _buildAddProfileCard(context),
-                          ],
-                        ),
+                      : _buildModernProfileLayout(),
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
@@ -290,36 +260,68 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
   Widget _buildProfileCard(
     String name, {
     required VoidCallback onTap,
-    CharacterType avatarType = CharacterType.hero1,
+    ProfileType profileType = ProfileType.profile1,
   }) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         child: Container(
           decoration: const BoxDecoration(
             color: AppColors.white,
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CharacterAvatar(
-                radius: 40,
-                characterType: avatarType,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                name,
-                style: GoogleFonts.manrope(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // Calculate avatar size based on screen width
+              double avatarRadius;
+              double fontSize;
+              double padding;
+              
+              if (constraints.maxWidth < 600) {
+                // Mobile: Large avatars but fit in card
+                avatarRadius = 50.0;
+                fontSize = 18.0;
+                padding = 20.0;
+              } else if (constraints.maxWidth < 900) {
+                // Tablet: Medium avatars
+                avatarRadius = 45.0;
+                fontSize = 16.0;
+                padding = 18.0;
+              } else {
+                // Desktop: Smaller avatars for grid
+                avatarRadius = 40.0;
+                fontSize = 14.0;
+                padding = 16.0;
+              }
+              
+              // Always use vertical centered layout (YouTube/Netflix style)
+              return Padding(
+                padding: EdgeInsets.all(padding),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ProfileAvatar(
+                      radius: avatarRadius,
+                      profileType: profileType,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      name,
+                      style: GoogleFonts.manrope(
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textDark,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                    ),
+                  ],
                 ),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
@@ -338,27 +340,241 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
             borderRadius: BorderRadius.all(Radius.circular(16)),
             // NO shadows, NO elevation, completely flat
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.add_circle_outline,
-                size: 60,
-                color: AppColors.grey,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Add New',
-                style: GoogleFonts.manrope(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.grey,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // Calculate icon size and text to match profile cards
+              double iconSize;
+              double fontSize;
+              double padding;
+              
+              if (constraints.maxWidth < 600) {
+                // Mobile: Large icons to match avatars
+                iconSize = 100.0; // Match avatar diameter (50 * 2)
+                fontSize = 18.0;
+                padding = 20.0;
+              } else if (constraints.maxWidth < 900) {
+                // Tablet: Medium icons
+                iconSize = 90.0; // Match avatar diameter (45 * 2)
+                fontSize = 16.0;
+                padding = 18.0;
+              } else {
+                // Desktop: Smaller icons
+                iconSize = 80.0; // Match avatar diameter (40 * 2)
+                fontSize = 14.0;
+                padding = 16.0;
+              }
+              
+              // Always use vertical centered layout to match profile cards
+              return Padding(
+                padding: EdgeInsets.all(padding),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: iconSize,
+                      height: iconSize,
+                      decoration: const BoxDecoration(
+                        color: AppColors.lightGrey,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.add,
+                        size: iconSize * 0.4, // 40% of container size
+                        color: AppColors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Add New',
+                      style: GoogleFonts.manrope(
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildModernProfileLayout() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = constraints.maxWidth;
+        
+        if (screenWidth < 768) {
+          // Mobile/Small tablet: Single column
+          return _buildSingleColumnLayout();
+        } else {
+          // Large tablet/Desktop: Two columns
+          return _buildTwoColumnLayout();
+        }
+      },
+    );
+  }
+
+  Widget _buildSingleColumnLayout() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: [
+          ..._kids.map((kid) => Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: _buildSimpleProfileCard(
+              name: kid.name,
+              profileType: _getProfileType(kid.avatarType),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  '/child-home',
+                  arguments: kid,
+                );
+              },
+            ),
+          )),
+          _buildSimpleAddCard(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTwoColumnLayout() {
+    final allItems = <Widget>[
+      ..._kids.map((kid) => _buildSimpleProfileCard(
+        name: kid.name,
+        profileType: _getProfileType(kid.avatarType),
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            '/child-home',
+            arguments: kid,
+          );
+        },
+      )),
+      _buildSimpleAddCard(),
+    ];
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
+      child: Wrap(
+        spacing: 16, // Horizontal spacing between columns
+        runSpacing: 16, // Vertical spacing between rows
+        children: allItems,
+      ),
+    );
+  }
+
+  Widget _buildSimpleProfileCard({
+    required String name,
+    required ProfileType profileType,
+    required VoidCallback onTap,
+  }) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = MediaQuery.sizeOf(context).width;
+        final cardWidth = screenWidth < 768 
+            ? double.infinity // Mobile: full width
+            : (screenWidth - 64) / 2; // Tablet: half width minus padding
+        
+        return SizedBox(
+          width: cardWidth,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    ProfileAvatar(
+                      radius: 100, // Fixed size for all screens
+                      profileType: profileType,
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      name,
+                      style: GoogleFonts.manrope(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textDark,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSimpleAddCard() {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final screenWidth = MediaQuery.sizeOf(context).width;
+        final cardWidth = screenWidth < 768 
+            ? double.infinity // Mobile: full width
+            : (screenWidth - 64) / 2; // Tablet: half width minus padding
+        
+        return SizedBox(
+          width: cardWidth,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: _showCreateKidDialog,
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(16)),
+                ),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
+                    Container(
+                      width: 150, // Fixed size to match inner character size
+                      height: 150, // Fixed size to match inner character size
+                      decoration: const BoxDecoration(
+                        color: AppColors.lightGrey,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.add,
+                        size: 60, // Proportional to container size
+                        color: AppColors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Add New',
+                      style: GoogleFonts.manrope(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.grey,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
