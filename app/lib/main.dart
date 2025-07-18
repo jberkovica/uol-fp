@@ -16,6 +16,7 @@ import 'screens/parent/story_preview_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
 import 'services/ai_story_service.dart';
+import 'services/app_state_service.dart';
 
 void main() async {
   // Ensure that Flutter binding is initialized
@@ -36,6 +37,10 @@ void main() async {
 
   // Initialize our real AI story service
   AIStoryService().initialize();
+  
+  // Initialize app state service for local storage
+  await AppStateService.init();
+  
   runApp(const MiraStorytellerApp());
 }
 

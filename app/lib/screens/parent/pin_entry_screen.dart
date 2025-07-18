@@ -40,7 +40,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
 
   void _validatePin() {
     if (_enteredPin == _correctPin) {
-      Navigator.pushReplacementNamed(context, '/parent-dashboard-main');
+      Navigator.pushNamed(context, '/parent-dashboard-main');
     } else {
       setState(() {
         _isError = true;

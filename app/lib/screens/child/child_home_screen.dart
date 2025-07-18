@@ -6,12 +6,17 @@ import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
 import '../../services/ai_story_service.dart';
 import '../../services/kid_service.dart';
+import '../../services/app_state_service.dart';
 import '../../models/story.dart';
 import '../../models/kid.dart';
 import '../../widgets/bottom_nav.dart';
+import '../../utils/page_transitions.dart';
+import '../child/profile_screen.dart';
 
 class ChildHomeScreen extends StatefulWidget {
-  const ChildHomeScreen({super.key});
+  final Kid? kid;
+  
+  const ChildHomeScreen({super.key, this.kid});
 
   @override
   State<ChildHomeScreen> createState() => _ChildHomeScreenState();
@@ -27,13 +32,33 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   int _currentNavIndex = 1; // Home tab is default (middle)
 
   @override
+  void initState() {
+    super.initState();
+    // Use kid passed from constructor first
+    if (widget.kid != null) {
+      _selectedKid = widget.kid;
+      // Save to local storage for persistence
+      AppStateService.saveSelectedKid(widget.kid!);
+      _loadStories();
+    } else {
+      // Try to load from local storage
+      _selectedKid = AppStateService.getSelectedKid();
+      if (_selectedKid != null) {
+        _loadStories();
+      }
+    }
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Get the selected kid from route arguments
+    // Get the selected kid from route arguments if not already set
     if (_selectedKid == null) {
       final kid = ModalRoute.of(context)?.settings.arguments as Kid?;
       if (kid != null) {
         _selectedKid = kid;
+        // Save to local storage for persistence
+        AppStateService.saveSelectedKid(kid);
         _loadStories();
       }
     }
@@ -68,21 +93,33 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   }
 
   void _onNavTap(int index) {
-    setState(() {
-      _currentNavIndex = index;
-    });
-    
+    // Don't update state immediately - wait for actual navigation
     switch (index) {
       case 0:
-        // Profile - navigate to kids profile
-        Navigator.pushNamed(context, '/profile', arguments: _selectedKid);
+        // Profile - navigate to kids profile with slide left animation
+        Navigator.of(context).push(
+          SlideFromRightRoute(page: ProfileScreen(kid: _selectedKid)),
+        ).then((_) {
+          // Reset navigation index when returning from profile
+          setState(() {
+            _currentNavIndex = 1;
+          });
+        });
         break;
       case 1:
         // Home - already on home screen
+        setState(() {
+          _currentNavIndex = 1;
+        });
         break;
       case 2:
         // Settings - navigate to parent dashboard (with PIN protection)
-        Navigator.pushNamed(context, '/parent-dashboard');
+        Navigator.pushNamed(context, '/parent-dashboard').then((_) {
+          // Reset navigation index when returning from settings
+          setState(() {
+            _currentNavIndex = 1;
+          });
+        });
         break;
     }
   }
@@ -92,7 +129,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     // If no kid is selected, show error
     if (_selectedKid == null) {
       return Scaffold(
-        backgroundColor: AppTheme.yellowScreenBackground,
+        backgroundColor: AppTheme.whiteScreenBackground,
         body: SafeArea(
           child: Center(
             child: Column(
@@ -120,7 +157,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     }
 
     return Scaffold(
-      backgroundColor: _stories.isNotEmpty ? AppTheme.whiteScreenBackground : AppTheme.yellowScreenBackground,
+      backgroundColor: AppTheme.whiteScreenBackground,
       body: SafeArea(
         child: _isProcessing
             ? _buildProcessingView()

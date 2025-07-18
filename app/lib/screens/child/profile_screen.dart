@@ -4,11 +4,16 @@ import '../../constants/app_theme.dart';
 import '../../models/kid.dart';
 import '../../models/story.dart';
 import '../../services/kid_service.dart';
+import '../../services/app_state_service.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
+import '../../utils/page_transitions.dart';
+import '../child/child_home_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final Kid? kid;
+  
+  const ProfileScreen({super.key, this.kid});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -20,12 +25,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<Story> _stories = [];
 
   @override
+  void initState() {
+    super.initState();
+    // Use kid passed from constructor or try to get from route arguments or local storage
+    if (widget.kid != null) {
+      _kid = widget.kid;
+      // Save to local storage for persistence
+      AppStateService.saveSelectedKid(widget.kid!);
+      _loadStories();
+    } else {
+      // Try route arguments or local storage
+      _initializeKid();
+    }
+  }
+  
+  void _initializeKid() {
+    // Try to load from local storage first
+    _kid = AppStateService.getSelectedKid();
+    if (_kid != null) {
+      _loadStories();
+    }
+  }
+  
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Only check route arguments if kid is not already set
     if (_kid == null) {
       final kid = ModalRoute.of(context)?.settings.arguments as Kid?;
       if (kid != null) {
         _kid = kid;
+        // Save to local storage for persistence
+        AppStateService.saveSelectedKid(kid);
         _loadStories();
       }
     }
@@ -45,19 +76,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _onNavTap(int index) {
-    setState(() {
-      _currentNavIndex = index;
-    });
-    
     switch (index) {
       case 0:
         // Already on profile
+        setState(() {
+          _currentNavIndex = 0;
+        });
         break;
       case 1:
-        Navigator.pop(context); // Go back to home
+        // Home - go back to previous screen (maintains state)
+        Navigator.of(context).pop();
         break;
       case 2:
-        Navigator.pushNamed(context, '/parent-dashboard');
+        // Settings - navigate to parent dashboard
+        Navigator.pushNamed(context, '/parent-dashboard').then((_) {
+          // Reset navigation index when returning from settings
+          setState(() {
+            _currentNavIndex = 0;
+          });
+        });
         break;
     }
   }

@@ -5,6 +5,7 @@ import '../../constants/app_theme.dart';
 import '../../widgets/profile_avatar.dart';
 import '../../services/auth_service.dart';
 import '../../services/kid_service.dart';
+import '../../services/app_state_service.dart';
 import '../../models/kid.dart';
 
 class ProfileSelectScreen extends StatefulWidget {
@@ -431,6 +432,8 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
               name: kid.name,
               profileType: _getProfileType(kid.avatarType),
               onTap: () {
+                // Save selected kid to local storage
+                AppStateService.saveSelectedKid(kid);
                 Navigator.pushNamed(
                   context,
                   '/child-home',
@@ -451,6 +454,8 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
         name: kid.name,
         profileType: _getProfileType(kid.avatarType),
         onTap: () {
+          // Save selected kid to local storage
+          AppStateService.saveSelectedKid(kid);
           Navigator.pushNamed(
             context,
             '/child-home',

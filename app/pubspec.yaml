@@ -54,6 +54,9 @@ dependencies:
 
     # JSON handling
     json_annotation: ^4.9.0
+    
+    # Local storage for app state
+    shared_preferences: ^2.2.2
 
 dev_dependencies:
     flutter_test:

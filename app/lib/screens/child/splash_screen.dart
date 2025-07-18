@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../services/auth_service.dart';
+import '../../services/app_state_service.dart';
 
 // Custom clipper for angled ellipse curve
 class AngledEllipseClipper extends CustomClipper<Path> {
@@ -56,7 +57,15 @@ class SplashScreen extends StatelessWidget {
       
       // Check if user is authenticated
       if (AuthService.instance.isAuthenticated) {
-        Navigator.pushReplacementNamed(context, '/profile-select');
+        // Check if there's a saved kid selection
+        final savedKid = AppStateService.getSelectedKid();
+        if (savedKid != null) {
+          // Navigate directly to child home with saved kid
+          Navigator.pushReplacementNamed(context, '/child-home', arguments: savedKid);
+        } else {
+          // No saved kid, go to profile selection
+          Navigator.pushReplacementNamed(context, '/profile-select');
+        }
       } else {
         Navigator.pushReplacementNamed(context, '/login');
       }

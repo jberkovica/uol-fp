@@ -5,6 +5,7 @@ import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
 import '../../models/kid.dart';
 import '../../widgets/bottom_nav.dart';
+import '../../services/app_state_service.dart';
 
 class ParentDashboardMain extends StatefulWidget {
   const ParentDashboardMain({super.key});
@@ -44,21 +45,31 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
   }
 
   void _onNavTap(int index) {
-    setState(() {
-      _currentNavIndex = index;
-    });
-    
     switch (index) {
       case 0:
-        Navigator.pushReplacementNamed(context, '/child-home');
+        // Profile - navigate back to child profile
+        _navigateBackToChildArea('/profile');
         break;
       case 1:
-        Navigator.pushReplacementNamed(context, '/child-home');
+        // Home - navigate back to child home
+        _navigateBackToChildArea('/child-home');
         break;
       case 2:
         // Already on parent dashboard
+        setState(() {
+          _currentNavIndex = 2;
+        });
         break;
     }
+  }
+  
+  void _navigateBackToChildArea(String route) {
+    // Pop back through the navigation stack to return to the child area
+    // This will pop until we reach a non-parent screen
+    Navigator.of(context).popUntil((route) => 
+      route.settings.name != '/parent-dashboard-main' && 
+      route.settings.name != '/parent-dashboard'
+    );
   }
 
   @override
