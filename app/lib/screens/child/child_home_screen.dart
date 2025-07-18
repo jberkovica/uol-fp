@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
@@ -9,6 +8,7 @@ import '../../services/ai_story_service.dart';
 import '../../services/kid_service.dart';
 import '../../models/story.dart';
 import '../../models/kid.dart';
+import '../../widgets/bottom_nav.dart';
 
 class ChildHomeScreen extends StatefulWidget {
   const ChildHomeScreen({super.key});
@@ -24,6 +24,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   Kid? _selectedKid;
   List<Story> _stories = [];
   bool _isLoadingStories = false;
+  int _currentNavIndex = 1; // Home tab is default (middle)
 
   @override
   void didChangeDependencies() {
@@ -66,6 +67,26 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     }
   }
 
+  void _onNavTap(int index) {
+    setState(() {
+      _currentNavIndex = index;
+    });
+    
+    switch (index) {
+      case 0:
+        // Profile - navigate to kids profile
+        Navigator.pushNamed(context, '/profile', arguments: _selectedKid);
+        break;
+      case 1:
+        // Home - already on home screen
+        break;
+      case 2:
+        // Settings - navigate to parent dashboard (with PIN protection)
+        Navigator.pushNamed(context, '/parent-dashboard');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // If no kid is selected, show error
@@ -79,11 +100,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
               children: [
                 Text(
                   'No profile selected',
-                  style: GoogleFonts.manrope(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textDark,
-                  ),
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
@@ -92,7 +109,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                   },
                   child: Text(
                     'Select Profile',
-                    style: GoogleFonts.manrope(),
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
               ],
@@ -113,9 +130,12 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                   Expanded(
                     child: _buildContent(context),
                   ),
-                  _buildFooter(context),
                 ],
               ),
+      ),
+      bottomNavigationBar: BottomNav(
+        currentIndex: _currentNavIndex,
+        onTap: _onNavTap,
       ),
     );
   }
@@ -139,16 +159,14 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
           const SizedBox(height: 24),
           Text(
             'Creating your magical story...',
-            style: GoogleFonts.manrope(
-              fontSize: 18,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w600,
-              color: AppColors.textDark,
             ),
           ),
           const SizedBox(height: 12),
           Text(
             'This may take a few moments',
-            style: GoogleFonts.manrope(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontSize: 14,
               color: AppColors.textGrey,
             ),
@@ -160,13 +178,12 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
 
   Widget _buildHeader(String title) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
       child: Text(
-        title,
-        style: GoogleFonts.manrope(
-          fontSize: 32,
+        'My tales',
+        style: Theme.of(context).textTheme.displayLarge?.copyWith(
+          fontSize: 28,
           fontWeight: FontWeight.bold,
-          color: AppColors.textDark,
         ),
       ),
     );
@@ -177,199 +194,188 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       return const Center(child: CircularProgressIndicator());
     }
     
-    if (_stories.isNotEmpty) {
-      return _buildStoryList();
-    } else {
-      return _buildUploadPrompt(context);
-    }
-  }
-
-  Widget _buildStoryList() {
-    return Column(
-      children: [
-        // Create New Tale button
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: SizedBox(
-            width: double.infinity,
-            child: ElevatedButton.icon(
-              onPressed: () => _showImageSourceOptions(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                elevation: 0,
-              ),
-              icon: const Icon(Icons.add, size: 24),
-              label: Text(
-                'Create New Tale',
-                style: GoogleFonts.manrope(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ),
-        
-        // Stories list
-        Expanded(
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            itemCount: _stories.length,
-            itemBuilder: (context, index) {
-              final story = _stories[index];
-              return Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                decoration: AppTheme.flatWhiteCard,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.all(16),
-                  leading: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                      color: AppColors.lightGrey,
-                    ),
-                    child: const Icon(Icons.book, color: AppColors.primary, size: 32),
-                  ),
-                  title: Text(
-                    story.title.isNotEmpty ? story.title : 'Untitled Story',
-                    style: GoogleFonts.manrope(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textDark,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: Text(
-                    'Tap to read and listen',
-                    style: GoogleFonts.manrope(
-                      fontSize: 14,
-                      color: AppColors.textGrey,
-                    ),
-                  ),
-                  trailing: story.status == StoryStatus.pending 
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.arrow_forward_ios, color: AppColors.grey, size: 16),
-                  onTap: story.status == StoryStatus.approved ? () {
-                    Navigator.pushNamed(
-                      context,
-                      '/story-display',
-                      arguments: story,
-                    );
-                  } : null,
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: _buildStoryGrid(),
     );
   }
 
-  Widget _buildUploadPrompt(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Centered mascot with proper size
-          SvgPicture.asset(
-            AppAssets.miraReady,
-            width: 140,
-            height: 140,
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(height: 40),
-
-          // Upload button - FLAT design
-          ElevatedButton(
-            onPressed: () => _showImageSourceOptions(context),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.white,
-              foregroundColor: AppColors.textDark,
-              padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 18),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 0, // NO shadow
-              shadowColor: Colors.transparent,
-              surfaceTintColor: Colors.transparent,
-            ),
-            child: Text(
-              'upload',
-              style: GoogleFonts.manrope(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textDark,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-
-          // Help text
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Text(
-              'Upload a drawing or photo to create a story',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.manrope(
-                fontSize: 16,
-                color: AppColors.textDark,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFooter(BuildContext context) {
+  Widget _buildStoryGrid() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
         children: [
-          _buildFooterButton(Icons.home, () {
-            Navigator.pop(context);
-          }),
-          _buildFooterButton(Icons.explore, () {
-            // Navigate to explore
-          }),
-          _buildFooterButton(Icons.settings, () {
-            // Navigate to settings
-          }),
+          // First row with create button and first story
+          SizedBox(
+            height: 180,
+            child: Row(
+              children: [
+                // Create button
+                Expanded(child: _buildCreateCard()),
+                const SizedBox(width: 16),
+                // First story or empty space
+                Expanded(
+                  child: _stories.isNotEmpty 
+                    ? _buildStoryCard(_stories[0]) 
+                    : const SizedBox(),
+                ),
+              ],
+            ),
+          ),
+          
+          // Remaining stories in grid
+          if (_stories.length > 1) ...[
+            const SizedBox(height: 16),
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.9, // Slightly taller to accommodate image + title
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+              ),
+              itemCount: _stories.length - 1,
+              itemBuilder: (context, index) {
+                return _buildStoryCard(_stories[index + 1]);
+              },
+            ),
+          ],
+          
+          const SizedBox(height: 40),
         ],
       ),
     );
   }
 
-  Widget _buildFooterButton(IconData icon, VoidCallback onPressed) {
+  Widget _buildCreateCard() {
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-        // NO shadows, completely flat
+      decoration: BoxDecoration(
+        color: AppColors.lightGrey,
+        borderRadius: BorderRadius.circular(16),
       ),
-      child: IconButton(
-        onPressed: onPressed,
-        icon: Icon(icon, size: 28, color: AppColors.textLight),
-        style: IconButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          elevation: 0, // NO shadow
-          padding: const EdgeInsets.all(16),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => _showImageSourceOptions(context),
+          borderRadius: BorderRadius.circular(16),
+          child: SizedBox(
+            height: 180,
+            child: const Center(
+              child: Icon(
+                Icons.add,
+                size: 40,
+                color: AppColors.textDark,
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
+
+  Widget _buildStoryCard(Story story) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: story.status == StoryStatus.approved ? () {
+            Navigator.pushNamed(
+              context,
+              '/story-display',
+              arguments: story,
+            );
+          } : null,
+          borderRadius: BorderRadius.circular(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Story cover image - Fixed height
+              Container(
+                width: double.infinity,
+                height: 120, // Fixed height that fits in 180px container
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
+                ),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
+                  ),
+                  child: story.status == StoryStatus.pending
+                      ? Container(
+                          color: AppColors.secondary.withValues(alpha: 0.3),
+                          child: const Center(
+                            child: SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Image.asset(
+                          'assets/images/story-placeholder-blurred.png',
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            // Fallback if image doesn't load
+                            return Container(
+                              color: AppColors.lightGrey,
+                              child: const Center(
+                                child: Icon(
+                                  Icons.image,
+                                  color: AppColors.grey,
+                                  size: 32,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ),
+              
+              // Story title
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                  child: Center(
+                    child: Text(
+                      story.title.isNotEmpty ? story.title : 'New Story',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
 
   void _showImageSourceOptions(BuildContext context) {
     showModalBottomSheet(
@@ -402,11 +408,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
               // Title
               Text(
                 'Select Image Source',
-                style: GoogleFonts.manrope(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
-                ),
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
 
               const SizedBox(height: 24),
@@ -449,10 +451,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                 ),
                 child: Text(
                   'Cancel',
-                  style: GoogleFonts.manrope(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.labelLarge,
                 ),
               ),
             ],
@@ -487,10 +486,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
             const SizedBox(width: 12),
             Text(
               label,
-              style: GoogleFonts.manrope(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.labelLarge,
             ),
           ],
         ),

@@ -6,10 +6,12 @@ import 'constants/app_theme.dart';
 import 'screens/child/splash_screen.dart';
 import 'screens/child/profile_select_screen.dart';
 import 'screens/child/child_home_screen.dart';
+import 'screens/child/profile_screen.dart';
 import 'screens/child/processing_screen.dart';
 import 'screens/child/story_display_screen.dart';
 import 'screens/parent/parent_login_screen.dart';
-import 'screens/parent/parent_dashboard_screen.dart';
+import 'screens/parent/pin_entry_screen.dart';
+import 'screens/parent/parent_dashboard_main.dart';
 import 'screens/parent/story_preview_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
@@ -53,10 +55,12 @@ class MiraStorytellerApp extends StatelessWidget {
         '/signup': (context) => const SignupScreen(),
         '/profile-select': (context) => const ProfileSelectScreen(),
         '/child-home': (context) => const ChildHomeScreen(),
+        '/profile': (context) => const ProfileScreen(),
         '/processing': (context) => const ProcessingScreen(),
         '/story-display': (context) => const StoryDisplayScreen(),
         '/parent-login': (context) => const ParentLoginScreen(),
-        '/parent-dashboard': (context) => const ParentDashboardScreen(),
+        '/parent-dashboard': (context) => const PinEntryScreen(),
+        '/parent-dashboard-main': (context) => const ParentDashboardMain(),
         '/story-preview': (context) => const StoryPreviewScreen(),
       },
     );
