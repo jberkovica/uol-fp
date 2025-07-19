@@ -142,15 +142,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Back button row
           Row(
             children: [
+              const Spacer(),
               IconButton(
                 onPressed: () => Navigator.pop(context),
                 icon: const Icon(
-                  Icons.arrow_back_ios,
+                  Icons.arrow_forward_ios,
                   color: Colors.black,
                   size: 28,
                 ),
               ),
-              const Spacer(),
             ],
           ),
           

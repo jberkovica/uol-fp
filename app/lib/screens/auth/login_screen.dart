@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../services/auth_service.dart';
+import '../../utils/page_transitions.dart';
+import 'signup_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -85,12 +87,15 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: AppColors.primary,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            height: screenSize.height - MediaQuery.of(context).padding.top,
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              children: [
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              width: screenSize.width > 600 ? 400 : double.infinity,
+              constraints: const BoxConstraints(maxWidth: 400),
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                 // Logo section
                 const SizedBox(height: 40),
                 SvgPicture.asset(
@@ -102,15 +107,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     BlendMode.srcIn,
                   ),
                 ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Welcome back!',
-                  style: TextStyle(
-                    color: AppColors.textLight,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
                 const SizedBox(height: 48),
 
                 // Login Form
@@ -119,13 +115,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
                   ),
                   child: Form(
                     key: _formKey,
@@ -287,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
 
-                const Spacer(),
+                const SizedBox(height: 40),
 
                 // Sign up link
                 Row(
@@ -302,7 +291,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/signup');
+                        Navigator.pushReplacement(
+                          context,
+                          NoAnimationRoute(page: const SignupScreen()),
+                        );
                       },
                       child: const Text(
                         'Sign Up',
@@ -318,6 +310,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 24),
               ],
             ),
+          ),
           ),
         ),
       ),

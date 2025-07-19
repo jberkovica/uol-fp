@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../services/auth_service.dart';
+import '../../utils/page_transitions.dart';
+import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -55,7 +57,10 @@ class _SignupScreenState extends State<SignupScreen> {
           );
           
           // Navigate to login screen
-          Navigator.pushReplacementNamed(context, '/login');
+          Navigator.pushReplacement(
+          context,
+          NoAnimationRoute(page: const LoginScreen()),
+        );
         }
       } else {
         _showError('Sign up failed. Please try again.');
@@ -102,11 +107,14 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       backgroundColor: AppColors.primary,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            height: screenSize.height - MediaQuery.of(context).padding.top,
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              width: screenSize.width > 600 ? 400 : double.infinity,
+              constraints: const BoxConstraints(maxWidth: 400),
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Logo section
                 const SizedBox(height: 40),
@@ -119,16 +127,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     BlendMode.srcIn,
                   ),
                 ),
-                const SizedBox(height: 8),
-                const Text(
-                  'Create Account',
-                  style: TextStyle(
-                    color: AppColors.textLight,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 48),
 
                 // Signup Form
                 Container(
@@ -356,7 +355,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
 
-                const Spacer(),
+                const SizedBox(height: 40),
 
                 // Sign in link
                 Row(
@@ -371,7 +370,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/login');
+                        Navigator.pushReplacement(
+          context,
+          NoAnimationRoute(page: const LoginScreen()),
+        );
                       },
                       child: const Text(
                         'Sign In',
@@ -388,6 +390,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ],
             ),
           ),
+        ),
         ),
       ),
     );

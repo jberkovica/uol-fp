@@ -75,10 +75,10 @@ class SplashScreen extends StatelessWidget {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        color: AppColors.primary, // Purple background
+        color: AppColors.secondary, // Yellow background
         child: Stack(
           children: [
-            // Yellow angled curved shape anchored to bottom
+            // Orange angled curved shape anchored to bottom
             Positioned(
               bottom: 0,
               left: 0,
@@ -91,7 +91,7 @@ class SplashScreen extends StatelessWidget {
                 child: Container(
                   height: screenSize.height * 0.5, // 50% of screen height
                   decoration: const BoxDecoration(
-                    color: AppColors.secondary, // Yellow color
+                    color: AppColors.orange, // Orange color
                   ),
                 ),
               ),
@@ -108,7 +108,7 @@ class SplashScreen extends StatelessWidget {
                   width: 150,
                   height: 60,
                   colorFilter: const ColorFilter.mode(
-                    AppColors.textLight, // White color for the logo
+                    AppColors.primary, // Violet color for the logo
                     BlendMode.srcIn,
                   ),
                 ),

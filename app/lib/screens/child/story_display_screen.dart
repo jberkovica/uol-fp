@@ -60,6 +60,79 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
     super.dispose();
   }
 
+  Widget _buildStoryContentWithImage(Story story) {
+    // Split story content by paragraphs (double newlines or periods followed by space)
+    final paragraphs = story.content.split(RegExp(r'\n\s*\n|\. (?=[A-Z])')).where((p) => p.trim().isNotEmpty).toList();
+    
+    List<Widget> contentWidgets = [];
+    
+    for (int i = 0; i < paragraphs.length; i++) {
+      String paragraph = paragraphs[i].trim();
+      
+      // Ensure paragraph ends with proper punctuation if it doesn't already
+      if (!paragraph.endsWith('.') && !paragraph.endsWith('!') && !paragraph.endsWith('?') && i < paragraphs.length - 1) {
+        paragraph += '.';
+      }
+      
+      // Add paragraph text
+      contentWidgets.add(
+        Text(
+          paragraph,
+          style: GoogleFonts.manrope(
+            fontSize: _fontSize,
+            height: 1.8,
+            color: AppColors.textDark,
+          ),
+        ),
+      );
+      
+      // Add spacing after paragraph
+      if (i < paragraphs.length - 1) {
+        contentWidgets.add(const SizedBox(height: 20));
+      }
+      
+      // Add image after second paragraph if there are more paragraphs
+      if (i == 1 && paragraphs.length > 2) {
+        contentWidgets.add(
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 20),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.asset(
+                'assets/images/stories/default-cover.png',
+                height: 250,
+                width: double.infinity,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    height: 200,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: AppColors.lightGrey,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Center(
+                      child: Icon(
+                        Icons.image,
+                        color: AppColors.grey,
+                        size: 48,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        );
+      }
+    }
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: contentWidgets,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final Story story = ModalRoute.of(context)!.settings.arguments as Story;
@@ -112,14 +185,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: SingleChildScrollView(
-                  child: Text(
-                    story.content,
-                    style: GoogleFonts.manrope(
-                      fontSize: _fontSize,
-                      height: 1.8,
-                      color: AppColors.textDark,
-                    ),
-                  ),
+                  child: _buildStoryContentWithImage(story),
                 ),
               ),
             ),
