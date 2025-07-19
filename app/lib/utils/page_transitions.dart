@@ -9,11 +9,10 @@ class SlideFromRightRoute<T> extends PageRouteBuilder<T> {
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            // TESTING: If current animation is backwards, let's reverse it
-            // RIGHT TO LEFT should be: start from RIGHT (1.0) → end at CENTER (0.0)
-            // But if you're seeing LEFT TO RIGHT, then we need to flip
+            // RIGHT TO LEFT slide: start from RIGHT (1.0) → end at CENTER (0.0)
+            // When returning, this automatically reverses to LEFT TO RIGHT
             
-            const begin = Offset(-1.0, 0.0);  // Start from LEFT (off-screen left)
+            const begin = Offset(1.0, 0.0);   // Start from RIGHT (off-screen right)
             const end = Offset.zero;          // End at center (on-screen)
             const curve = Curves.easeInOut;
 
@@ -29,18 +28,19 @@ class SlideFromRightRoute<T> extends PageRouteBuilder<T> {
         );
 }
 
-class SlideRightRoute<T> extends PageRouteBuilder<T> {
+class SlideFromLeftRoute<T> extends PageRouteBuilder<T> {
   final Widget page;
   
-  SlideRightRoute({required this.page})
+  SlideFromLeftRoute({required this.page})
       : super(
           pageBuilder: (context, animation, secondaryAnimation) => page,
           transitionDuration: const Duration(milliseconds: 300),
           reverseTransitionDuration: const Duration(milliseconds: 300),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            // Slide from left to right (for backward navigation)
-            const begin = Offset(-1.0, 0.0);
-            const end = Offset.zero;
+            // LEFT TO RIGHT slide: start from LEFT (-1.0) → end at CENTER (0.0)
+            // When returning, this automatically reverses to RIGHT TO LEFT
+            const begin = Offset(-1.0, 0.0);  // Start from LEFT (off-screen left)
+            const end = Offset.zero;          // End at center (on-screen)
             const curve = Curves.easeInOut;
 
             var tween = Tween(begin: begin, end: end).chain(
@@ -103,6 +103,22 @@ class SlideDownRoute<T> extends PageRouteBuilder<T> {
               position: animation.drive(tween),
               child: child,
             );
+          },
+        );
+}
+
+class SlideCurrentOutRoute<T> extends PageRouteBuilder<T> {
+  final Widget page;
+  
+  SlideCurrentOutRoute({required this.page})
+      : super(
+          pageBuilder: (context, animation, secondaryAnimation) => page,
+          transitionDuration: const Duration(milliseconds: 300),
+          reverseTransitionDuration: const Duration(milliseconds: 300),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            // Simple approach: new screen just appears (no animation)
+            // The magic happens with the secondaryAnimation on the old screen
+            return child;
           },
         );
 }

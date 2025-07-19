@@ -9,6 +9,7 @@ import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
 import '../../utils/page_transitions.dart';
 import '../child/child_home_screen.dart';
+import '../parent/pin_entry_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final Kid? kid;
@@ -88,8 +89,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Navigator.of(context).pop();
         break;
       case 2:
-        // Settings - navigate to parent dashboard
-        Navigator.pushNamed(context, '/parent-dashboard').then((_) {
+        // Settings - navigate to parent dashboard with slide RIGHT (from right to left)
+        Navigator.of(context).push(
+          SlideFromRightRoute(page: const PinEntryScreen()),
+        ).then((_) {
           // Reset navigation index when returning from settings
           setState(() {
             _currentNavIndex = 0;

@@ -20,7 +20,8 @@ backend:
 [] save audio and images to db? s3?
 
 
-
+[] multi language support
+[] input as audio or text (whisper for audio)
 
 
 when logged in:

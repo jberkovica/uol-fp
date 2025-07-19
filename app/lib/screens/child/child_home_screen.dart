@@ -12,6 +12,7 @@ import '../../models/kid.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
+import '../parent/pin_entry_screen.dart';
 
 class ChildHomeScreen extends StatefulWidget {
   final Kid? kid;
@@ -96,9 +97,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     // Don't update state immediately - wait for actual navigation
     switch (index) {
       case 0:
-        // Profile - navigate to kids profile with slide left animation
+        // Profile - navigate to kids profile with slide LEFT (from left to right)
         Navigator.of(context).push(
-          SlideFromRightRoute(page: ProfileScreen(kid: _selectedKid)),
+          SlideFromLeftRoute(page: ProfileScreen(kid: _selectedKid)),
         ).then((_) {
           // Reset navigation index when returning from profile
           setState(() {
@@ -113,8 +114,10 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
         });
         break;
       case 2:
-        // Settings - navigate to parent dashboard (with PIN protection)
-        Navigator.pushNamed(context, '/parent-dashboard').then((_) {
+        // Settings - navigate to parent dashboard with slide RIGHT (from right to left)
+        Navigator.of(context).push(
+          SlideFromRightRoute(page: const PinEntryScreen()),
+        ).then((_) {
           // Reset navigation index when returning from settings
           setState(() {
             _currentNavIndex = 1;

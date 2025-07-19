@@ -90,6 +90,12 @@ class AppTheme {
         color: AppColors.textDark,
         height: 1.3,
       ),
+      headlineSmall: GoogleFonts.manrope(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: AppColors.textDark,
+        height: 1.3,
+      ),
 
       // BODY TEXT - For paragraphs
       bodyLarge: GoogleFonts.manrope(
@@ -104,12 +110,28 @@ class AppTheme {
         color: AppColors.textDark,
         height: 1.5,
       ),
+      bodySmall: GoogleFonts.manrope(
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+        color: AppColors.textGrey,
+        height: 1.4,
+      ),
 
       // LABELS - For buttons and small text
       labelLarge: GoogleFonts.manrope(
         fontSize: 16,
         fontWeight: FontWeight.w600,
         color: AppColors.textDark,
+      ),
+      labelMedium: GoogleFonts.manrope(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+        color: AppColors.textDark,
+      ),
+      labelSmall: GoogleFonts.manrope(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: AppColors.textGrey,
       ),
     );
   }

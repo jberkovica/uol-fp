@@ -40,7 +40,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
 
   void _validatePin() {
     if (_enteredPin == _correctPin) {
-      Navigator.pushNamed(context, '/parent-dashboard-main');
+      Navigator.pushReplacementNamed(context, '/parent-dashboard-main');
     } else {
       setState(() {
         _isError = true;
@@ -64,7 +64,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.whiteScreenBackground,
+      backgroundColor: AppColors.primary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -77,7 +77,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
                     onPressed: () => Navigator.pop(context),
                     icon: const Icon(
                       Icons.arrow_back_ios,
-                      color: AppColors.textDark,
+                      color: AppColors.white,
                       size: 24,
                     ),
                   ),
@@ -88,33 +88,29 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Character illustration
-                    SvgPicture.asset(
-                      AppAssets.miraReady,
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.contain,
-                    ),
-                    const SizedBox(height: 40),
-
                     // Title
                     Text(
-                      'Parent Dashboard',
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
+                      'Parent Access',
+                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        fontSize: 32,
+                        letterSpacing: -0.5,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 16),
 
                     // Subtitle
                     Text(
-                      'Enter your PIN to access parent controls',
+                      'Enter your 4-digit PIN',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: AppColors.textGrey,
+                        color: Colors.white.withValues(alpha: 0.9),
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 48),
 
                     // PIN dots
                     _buildPinDots(),
@@ -138,17 +134,14 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
       children: List.generate(4, (index) {
         bool isFilled = index < _enteredPin.length;
         return Container(
-          margin: const EdgeInsets.symmetric(horizontal: 12),
-          width: 20,
-          height: 20,
+          margin: const EdgeInsets.symmetric(horizontal: 10),
+          width: 12,
+          height: 12,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _isError 
-                ? Colors.red.withValues(alpha: 0.3)
-                : (isFilled ? AppColors.primary : AppColors.lightGrey),
-            border: _isError 
-                ? Border.all(color: Colors.red, width: 2)
-                : null,
+                ? Colors.red
+                : (isFilled ? Colors.white : Colors.white.withValues(alpha: 0.3)),
           ),
         );
       }),
@@ -167,7 +160,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
             _buildNumberButton('3'),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         
         // Row 2: 4, 5, 6
         Row(
@@ -178,7 +171,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
             _buildNumberButton('6'),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         
         // Row 3: 7, 8, 9
         Row(
@@ -189,7 +182,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
             _buildNumberButton('9'),
           ],
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         
         // Row 4: empty, 0, delete
         Row(
@@ -209,7 +202,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
       width: 80,
       height: 80,
       decoration: BoxDecoration(
-        color: AppColors.lightGrey,
+        color: Colors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(40),
       ),
       child: Material(
@@ -221,7 +214,10 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
             child: Text(
               number,
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+                fontSize: 28,
+                height: 1.0,
               ),
             ),
           ),
@@ -235,7 +231,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
       width: 80,
       height: 80,
       decoration: BoxDecoration(
-        color: AppColors.lightGrey,
+        color: Colors.white.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(40),
       ),
       child: Material(
@@ -246,8 +242,8 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
           child: const Center(
             child: Icon(
               Icons.backspace_outlined,
-              color: AppColors.textDark,
-              size: 24,
+              color: Colors.white,
+              size: 26,
             ),
           ),
         ),
