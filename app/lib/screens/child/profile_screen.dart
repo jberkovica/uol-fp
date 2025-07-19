@@ -113,11 +113,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.primary,
+      backgroundColor: AppTheme.yellowScreenBackground,
       body: SafeArea(
         child: Column(
           children: [
-            _buildHeader(),
+            _buildGradientHeader(),
             Expanded(
               child: _buildContent(),
             ),
@@ -127,6 +127,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
       bottomNavigationBar: BottomNav(
         currentIndex: _currentNavIndex,
         onTap: _onNavTap,
+      ),
+    );
+  }
+
+  Widget _buildGradientHeader() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
+      child: Column(
+        children: [
+          // Back button row
+          Row(
+            children: [
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                  size: 28,
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+          
+          const SizedBox(height: 20),
+          
+          // Kid's name as title
+          Text(
+            _kid!.name,
+            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          
+          const SizedBox(height: 30),
+          
+          // Avatar (no yellow circle)
+          ProfileAvatar(
+            radius: 75,
+            profileType: _getProfileTypeFromString(_kid!.avatarType),
+          ),
+        ],
       ),
     );
   }
@@ -162,19 +205,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildContent() {
     return Container(
       decoration: const BoxDecoration(
-        color: AppTheme.whiteScreenBackground,
+        color: Colors.white,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
         ),
       ),
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            _buildProfileCard(),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
+            _buildProfileInfo(),
+            const SizedBox(height: 16),
             _buildStatsGrid(),
             const SizedBox(height: 24),
             _buildOptionsSection(),
@@ -183,6 +226,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildProfileInfo() {
+    return const SizedBox.shrink(); // Remove profile info section
   }
 
   Widget _buildProfileCard() {
@@ -247,16 +294,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Expanded(
           child: _buildStatCard(
-            icon: Icons.book,
+            icon: Icons.book_outlined,
             value: '$completedStories',
             label: 'Stories Created',
             color: AppColors.primary,
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 24),
         Expanded(
           child: _buildStatCard(
-            icon: Icons.auto_stories,
+            icon: Icons.edit_outlined,
             value: '$totalWords',
             label: 'Words Written',
             color: AppColors.secondary,
@@ -277,18 +324,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       decoration: AppTheme.flatWhiteCard,
       child: Column(
         children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 24,
-            ),
+          Icon(
+            icon,
+            color: color,
+            size: 32,
           ),
           const SizedBox(height: 12),
           Text(
@@ -371,18 +410,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     required VoidCallback onTap,
   }) {
     return ListTile(
-      leading: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: AppColors.primary.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Icon(
-          icon,
-          color: AppColors.primary,
-          size: 20,
-        ),
+      leading: Icon(
+        icon,
+        color: AppColors.primary,
+        size: 24,
       ),
       title: Text(
         title,

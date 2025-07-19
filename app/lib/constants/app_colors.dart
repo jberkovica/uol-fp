@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   // PRIMARY BRAND COLORS - EXACT MATCH to your Figma
   static const Color primary = Color(0xFF9F60FF); // Your purple: #9F60FF
-  static const Color secondary = Color(0xFFFFD560); // Your yellow: #FFD560
+  static const Color secondary = Color(0xFFFFDC7B); // Your yellow: #FFDC7B
 
   // SOFT VARIANTS for better hierarchy
   static const Color purpleLight = Color(0xFFB584FF); // Lighter purple
@@ -17,7 +17,7 @@ class AppColors {
 
   // BACKGROUND COLORS - solid, no gradients
   static const Color backgroundYellow =
-      Color(0xFFFFD560); // Main yellow background
+      Color(0xFFFFDC7B); // Main yellow background
   static const Color backgroundPurple = Color(0xFF9F60FF); // Purple sections
   static const Color backgroundWhite = Colors.white; // White cards/containers
 
@@ -29,7 +29,7 @@ class AppColors {
 
   // INTERACTIVE COLORS - flat only
   static const Color buttonPrimary = Color(0xFF9F60FF); // Purple buttons
-  static const Color buttonSecondary = Color(0xFFFFD560); // Yellow buttons
+  static const Color buttonSecondary = Color(0xFFFFDC7B); // Yellow buttons
   static const Color buttonWhite = Colors.white; // White buttons
 
   // AVATAR/CHARACTER COLORS - for widget compatibility
