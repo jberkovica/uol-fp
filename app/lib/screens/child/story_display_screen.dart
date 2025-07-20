@@ -13,10 +13,18 @@ class StoryDisplayScreen extends StatefulWidget {
 }
 
 class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  final AudioPlayer _audioPlayer = AudioPlayer(); // Story narration
+  final AudioPlayer _backgroundPlayer = AudioPlayer(); // Background music
   bool _isPlaying = false;
   bool _isLoading = false;
+  bool _backgroundMusicEnabled = true;
+  bool _isBackgroundPlaying = false;
   double _fontSize = 16.0;
+  double _backgroundVolume = 0.2; // Initial volume for background music intro
+  double _backgroundVolumeMid = 0.1; // Medium volume as narration approaches
+  double _backgroundVolumeNarration = 0.01; // Very low volume during narration
+  bool _hasStartedNarration = false; // Track if narration has already started
+  int _fadeDurationSeconds = 10; // Duration for smooth volume fade
   Duration _currentPosition = Duration.zero;
   Duration _totalDuration = Duration.zero;
 
@@ -24,13 +32,17 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
   void initState() {
     super.initState();
     _setupAudioListeners();
+    _setupBackgroundMusic();
   }
 
   void _setupAudioListeners() {
     _audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
       if (mounted) {
         setState(() {
-          _isPlaying = state == PlayerState.playing;
+          // Don't override _isPlaying if we manually set it during staging
+          if (state == PlayerState.stopped || state == PlayerState.paused) {
+            _isPlaying = false;
+          }
           _isLoading = state == PlayerState.playing && _currentPosition == Duration.zero;
         });
       }
@@ -54,9 +66,29 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
     });
   }
 
+  void _setupBackgroundMusic() async {
+    try {
+      // Configure background music for looping
+      await _backgroundPlayer.setReleaseMode(ReleaseMode.loop);
+      await _backgroundPlayer.setVolume(_backgroundVolume);
+      
+      // Set up background music state listener
+      _backgroundPlayer.onPlayerStateChanged.listen((PlayerState state) {
+        if (mounted) {
+          setState(() {
+            _isBackgroundPlaying = state == PlayerState.playing;
+          });
+        }
+      });
+    } catch (e) {
+      print('Error setting up background music: $e');
+    }
+  }
+
   @override
   void dispose() {
     _audioPlayer.dispose();
+    _backgroundPlayer.dispose();
     super.dispose();
   }
 
@@ -222,6 +254,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
           _buildProgressBar(),
           const SizedBox(height: 16),
         ],
+        
         
         // Main controls row
         Row(
@@ -424,6 +457,15 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
               },
             ),
             ListTile(
+              leading: Icon(_backgroundMusicEnabled ? Icons.music_note : Icons.music_off),
+              title: const Text('Background Music'),
+              subtitle: Text(_backgroundMusicEnabled ? 'Enabled' : 'Disabled'),
+              onTap: () {
+                Navigator.pop(context);
+                _toggleBackgroundMusic();
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.add),
               title: const Text('Create Another Story'),
               onTap: () {
@@ -447,11 +489,34 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
   Future<void> _toggleAudio(String audioUrl) async {
     try {
       if (_isPlaying) {
+        // Pause both story and background music
         await _audioPlayer.pause();
+        if (_backgroundMusicEnabled && _isBackgroundPlaying) {
+          await _backgroundPlayer.pause();
+        }
       } else {
-        await _audioPlayer.play(UrlSource(audioUrl));
+        if (!_hasStartedNarration) {
+          // First time playing - do full staging
+          await _startAudioWithStaging(audioUrl);
+        } else {
+          // Resume from pause - just continue playback
+          setState(() {
+            _isPlaying = true;
+          });
+          
+          await _audioPlayer.resume();
+          if (_backgroundMusicEnabled && !_isBackgroundPlaying) {
+            await _backgroundPlayer.setVolume(_backgroundVolumeNarration);
+            await _backgroundPlayer.resume();
+          }
+        }
       }
     } catch (e) {
+      // Reset UI state on error
+      setState(() {
+        _isPlaying = false;
+      });
+      
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -460,6 +525,93 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
           ),
         );
       }
+    }
+  }
+
+  Future<void> _startAudioWithStaging(String audioUrl) async {
+    // Immediately update UI to show playing state and get audio duration
+    setState(() {
+      _isPlaying = true;
+    });
+    
+    // Prepare the audio source to get duration but don't play yet
+    await _audioPlayer.setSource(UrlSource(audioUrl));
+    
+    // Start background music first (behind the scenes)
+    if (_backgroundMusicEnabled && !_isBackgroundPlaying) {
+      await _startBackgroundMusicIntro();
+    }
+    
+    // Wait 3 seconds at 0.2 volume
+    await Future.delayed(const Duration(seconds: 3));
+    
+    // Gradually lower to 0.2 over 2 seconds (from 3rd to 5th second)
+    if (_backgroundMusicEnabled && _isBackgroundPlaying) {
+      print('Gradually lowering background music volume from $_backgroundVolume to $_backgroundVolumeMid');
+      await _backgroundPlayer.setVolume(_backgroundVolumeMid);
+    }
+    
+    // Start story narration at 3rd second
+    await _audioPlayer.resume();
+    _hasStartedNarration = true;
+    
+    // Gradually fade to very low volume over time
+    _fadeBackgroundMusic();
+  }
+
+  void _fadeBackgroundMusic() {
+    // Create a smooth fade from 0.1 to 0.01 over configurable duration
+    _smoothVolumeFade();
+  }
+
+  void _smoothVolumeFade() async {
+    double currentVolume = _backgroundVolumeMid; // Start at 0.1
+    double targetVolume = _backgroundVolumeNarration; // End at 0.01
+    double stepSize = (currentVolume - targetVolume) / _fadeDurationSeconds;
+    
+    for (int i = 0; i < _fadeDurationSeconds; i++) {
+      await Future.delayed(const Duration(seconds: 1));
+      
+      if (_backgroundMusicEnabled && _isBackgroundPlaying) {
+        currentVolume -= stepSize;
+        print('Smooth fade step ${i + 1}/$_fadeDurationSeconds: volume ${currentVolume.toStringAsFixed(3)}');
+        await _backgroundPlayer.setVolume(currentVolume);
+      } else {
+        break; // Stop fading if background music is disabled or stopped
+      }
+    }
+  }
+
+  Future<void> _startBackgroundMusic() async {
+    try {
+      await _backgroundPlayer.setVolume(_backgroundVolumeNarration);
+      await _backgroundPlayer.play(AssetSource('audio/Enchanted Forest Loop.mp3'));
+    } catch (e) {
+      print('Error playing background music: $e');
+    }
+  }
+
+  Future<void> _startBackgroundMusicIntro() async {
+    try {
+      print('Starting background music at volume $_backgroundVolume');
+      await _backgroundPlayer.setVolume(_backgroundVolume);
+      await _backgroundPlayer.play(AssetSource('audio/Enchanted Forest Loop.mp3'));
+    } catch (e) {
+      print('Error playing background music intro: $e');
+    }
+  }
+
+  Future<void> _toggleBackgroundMusic() async {
+    setState(() {
+      _backgroundMusicEnabled = !_backgroundMusicEnabled;
+    });
+
+    if (_backgroundMusicEnabled && _isPlaying) {
+      // Start background music if story is playing
+      await _startBackgroundMusic();
+    } else if (!_backgroundMusicEnabled && _isBackgroundPlaying) {
+      // Stop background music
+      await _backgroundPlayer.stop();
     }
   }
 }

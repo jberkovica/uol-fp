@@ -84,6 +84,7 @@ flutter:
         - assets/images/
         - assets/images/user-profile/
         - assets/images/stories/
+        - assets/audio/
         - .env
 
     # An image asset can refer to one or more resolution-specific "variants", see

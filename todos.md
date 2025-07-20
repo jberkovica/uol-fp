@@ -30,3 +30,13 @@ when logged in:
         - 
     - parent:
         parent dashboard
+
+
+[] bug in settings -> profile (two times profile)
+[] press in profile pic in home - redirect to swtich profiles
+[] pass - fixed as sign in screen
+[] icons shouls be toggle for create
+[] picture under 2n paragraph not sentence
+[] add background music
+[] ui on small screen
+[] bug on story reload
