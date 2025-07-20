@@ -287,21 +287,26 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Column(
-                children: [
-                  ProfileAvatar(
-                    radius: 24,
-                    profileType: ProfileAvatar.fromString(_selectedKid!.avatarType),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _selectedKid!.name,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textDark,
-                      fontWeight: FontWeight.w500,
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/profile-select');
+                },
+                child: Column(
+                  children: [
+                    ProfileAvatar(
+                      radius: 24,
+                      profileType: ProfileAvatar.fromString(_selectedKid!.avatarType),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 4),
+                    Text(
+                      _selectedKid!.name,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textDark,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

@@ -63,15 +63,17 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: AppColors.primary,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              // Header
-              Row(
+        child: Column(
+          children: [
+            // Top back button - positioned at top corner
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              child: Row(
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
@@ -83,46 +85,56 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
                   ),
                 ],
               ),
-              
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Title
-                    Text(
-                      'Parent Access',
-                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        fontSize: 32,
-                        letterSpacing: -0.5,
-                      ),
+            ),
+            
+            // Main content - centered and responsive
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Container(
+                    width: screenSize.width > 600 ? 400 : double.infinity,
+                    constraints: const BoxConstraints(maxWidth: 400),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Title
+                        Text(
+                          'Parent Access',
+                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            fontSize: 32,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+
+                        // Subtitle
+                        Text(
+                          'Enter your 4-digit PIN',
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: Colors.white.withValues(alpha: 0.9),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 48),
+
+                        // PIN dots
+                        _buildPinDots(),
+                        const SizedBox(height: 40),
+
+                        // Number pad
+                        _buildNumberPad(),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-
-                    // Subtitle
-                    Text(
-                      'Enter your 4-digit PIN',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Colors.white.withValues(alpha: 0.9),
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 48),
-
-                    // PIN dots
-                    _buildPinDots(),
-                    const SizedBox(height: 40),
-
-                    // Number pad
-                    _buildNumberPad(),
-                  ],
+                  ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
