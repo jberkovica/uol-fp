@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../models/story.dart';
+import '../../widgets/responsive_wrapper.dart';
 
 class StoryDisplayScreen extends StatefulWidget {
   const StoryDisplayScreen({super.key});
@@ -175,9 +176,15 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
         child: Column(
           children: [
             // Clean top app bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Row(
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+                constraints: const BoxConstraints(maxWidth: 1200),
+                padding: EdgeInsets.symmetric(
+                  horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
+                  vertical: 16,
+                ),
+                child: Row(
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
@@ -204,28 +211,41 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
                     ),
                   ),
                 ],
+                ),
               ),
             ),
 
             // Story content area
             Expanded(
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                padding: const EdgeInsets.all(24),
+              child: Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  margin: EdgeInsets.symmetric(
+                    horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
+                  ),
+                  padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
                 decoration: BoxDecoration(
                   color: AppColors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: SingleChildScrollView(
-                  child: _buildStoryContentWithImage(story),
+                  child: SingleChildScrollView(
+                    child: _buildStoryContentWithImage(story),
+                  ),
                 ),
               ),
             ),
 
             // Bottom controls bar
-            Container(
-              margin: const EdgeInsets.all(20),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+                constraints: const BoxConstraints(maxWidth: 1200),
+                margin: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
+                padding: EdgeInsets.symmetric(
+                  horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
+                  vertical: 16,
+                ),
               decoration: BoxDecoration(
                 color: AppColors.white,
                 borderRadius: BorderRadius.circular(20),
@@ -237,7 +257,8 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
                   ),
                 ],
               ),
-              child: _buildBottomControls(story),
+                child: _buildBottomControls(story),
+              ),
             ),
           ],
         ),

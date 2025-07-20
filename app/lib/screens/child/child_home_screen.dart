@@ -11,6 +11,7 @@ import '../../models/story.dart';
 import '../../models/kid.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
+import '../../widgets/responsive_wrapper.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
 import '../parent/pin_entry_screen.dart';
@@ -167,6 +168,8 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    
     // If no kid is selected, show error
     if (_selectedKid == null) {
       return Scaffold(
@@ -271,11 +274,17 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   }
 
   Widget _buildYellowSection() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    final screenSize = MediaQuery.of(context).size;
+    final horizontalPadding = ResponsiveBreakpoints.getResponsivePadding(context);
+    
+    return Center(
+      child: Container(
+        width: screenSize.width > 1200 ? 1200 : double.infinity,
+        constraints: const BoxConstraints(maxWidth: 1200),
+        padding: EdgeInsets.fromLTRB(horizontalPadding, 20, horizontalPadding, 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           // Header with title and profile avatar
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -359,6 +368,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
             ],
           ),
         ],
+        ),
       ),
     );
   }
@@ -387,12 +397,26 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   }
 
   Widget _buildWhiteSection() {
+    final screenSize = MediaQuery.of(context).size;
+    
     if (_isLoadingStories) {
       return const Center(child: CircularProgressIndicator());
     }
     
+    return Center(
+      child: Container(
+        width: screenSize.width > 1200 ? 1200 : double.infinity,
+        constraints: const BoxConstraints(maxWidth: 1200),
+        child: _buildWhiteSectionContent(),
+      ),
+    );
+  }
+
+  Widget _buildWhiteSectionContent() {
+    final horizontalPadding = ResponsiveBreakpoints.getResponsivePadding(context);
+    
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
+      padding: EdgeInsets.fromLTRB(horizontalPadding, 60, horizontalPadding, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -446,8 +470,14 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
               scrollDirection: Axis.horizontal,
               itemCount: stories.length,
               itemBuilder: (context, index) {
+                final cardSpacing = ResponsiveBreakpoints.getResponsivePadding(
+                  context,
+                  mobile: 16.0,
+                  tablet: 20.0,
+                  desktop: 24.0,
+                );
                 return Padding(
-                  padding: EdgeInsets.only(right: index < stories.length - 1 ? 16 : 0),
+                  padding: EdgeInsets.only(right: index < stories.length - 1 ? cardSpacing : 0),
                   child: _buildStoryCard(stories[index]),
                 );
               },

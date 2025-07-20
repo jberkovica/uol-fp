@@ -5,6 +5,7 @@ import '../../models/kid.dart';
 import '../../models/story.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
+import '../../widgets/responsive_wrapper.dart';
 import '../../services/app_state_service.dart';
 import '../../services/kid_service.dart';
 import '../../services/auth_service.dart';
@@ -161,10 +162,14 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
 
   Widget _buildHeader() {
     final totalStories = _kidStories.values.fold<int>(0, (sum, stories) => sum + stories.length);
+    final horizontalPadding = ResponsiveBreakpoints.getResponsivePadding(context);
     
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-      child: Column(
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+        constraints: const BoxConstraints(maxWidth: 1200),
+        padding: EdgeInsets.fromLTRB(horizontalPadding, 20, horizontalPadding, 40),
+        child: Column(
         children: [
           // Top row with back button and menu
           Row(
@@ -211,7 +216,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                   label: 'Kids Profiles',
                 ),
               ),
-              const SizedBox(width: 24),
+              SizedBox(width: ResponsiveBreakpoints.getResponsivePadding(
+                context,
+                mobile: 16.0,
+                tablet: 20.0,
+                desktop: 24.0,
+              )),
               Expanded(
                 child: _buildHeaderStatCard(
                   value: '$totalStories',
@@ -221,6 +231,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
             ],
           ),
         ],
+        ),
       ),
     );
   }
@@ -236,20 +247,26 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
       ),
       child: _isLoading 
           ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _loadKids,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 16),
-                    _buildKidsSection(),
-                    const SizedBox(height: 32),
-                    _buildControlsSection(),
-                    const SizedBox(height: 40),
-                  ],
+          : Center(
+              child: Container(
+                width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: RefreshIndicator(
+                  onRefresh: _loadKids,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 16),
+                        _buildKidsSection(),
+                        const SizedBox(height: 32),
+                        _buildControlsSection(),
+                        const SizedBox(height: 40),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -516,7 +533,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        padding: const EdgeInsets.all(24),
+        padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
         decoration: const BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.only(

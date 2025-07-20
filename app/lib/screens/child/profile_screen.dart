@@ -7,6 +7,7 @@ import '../../services/kid_service.dart';
 import '../../services/app_state_service.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
+import '../../widgets/responsive_wrapper.dart';
 import '../../utils/page_transitions.dart';
 import '../child/child_home_screen.dart';
 import '../parent/pin_entry_screen.dart';
@@ -85,8 +86,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
         break;
       case 1:
-        // Home - go back to previous screen (maintains state)
-        Navigator.of(context).pop();
+        // Home - navigate to child home screen (replaces current screen)
+        Navigator.of(context).pushReplacementNamed('/child-home');
         break;
       case 2:
         // Settings - navigate to parent dashboard with slide RIGHT (from right to left)
@@ -135,9 +136,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildGradientHeader() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-      child: Column(
+    final horizontalPadding = ResponsiveBreakpoints.getResponsivePadding(context);
+    
+    return Center(
+      child: Container(
+        width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+        constraints: const BoxConstraints(maxWidth: 1200),
+        padding: EdgeInsets.fromLTRB(horizontalPadding, 20, horizontalPadding, 40),
+        child: Column(
         children: [
           // Back button row
           Row(
@@ -173,6 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             profileType: _getProfileTypeFromString(_kid!.avatarType),
           ),
         ],
+        ),
       ),
     );
   }
@@ -214,9 +221,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           topRight: Radius.circular(30),
         ),
       ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
+      child: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
+            child: Column(
           children: [
             const SizedBox(height: 12),
             _buildProfileInfo(),
@@ -226,6 +237,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             _buildOptionsSection(),
             const SizedBox(height: 40),
           ],
+            ),
+          ),
         ),
       ),
     );
@@ -303,7 +316,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: AppColors.primary,
           ),
         ),
-        const SizedBox(width: 24),
+        SizedBox(width: ResponsiveBreakpoints.getResponsivePadding(
+          context,
+          mobile: 16.0,
+          tablet: 20.0,
+          desktop: 24.0,
+        )),
         Expanded(
           child: _buildStatCard(
             icon: Icons.edit_outlined,
