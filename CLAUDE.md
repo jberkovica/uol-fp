@@ -1,5 +1,47 @@
 # CLAUDE Context & Planning
 
+## Important Rules for Claude
+1. **Git Commits**: Never mention "Claude Code" or similar signatures in git commit messages - keep them professional and clean
+2. **Transparency**: Always be transparent when uncertain - explicitly state "I'm not sure about..." rather than guessing
+3. **Best Practices**: Always search for current documentation and best practices using WebSearch before implementing solutions
+4. **No Hallucinations**: If unsure about syntax, APIs, or implementation details, search for official docs first
+
+## Design Style Guidelines
+
+### Flat Design - No Backgrounds or Shadows
+- Never add background containers, cards, or boxes around UI elements
+- No shadows, elevation, or visual depth effects
+- No background colors behind icons, buttons (unless it's the button itself)
+- Elements should sit directly on the main background color
+- Keep design completely flat and minimal
+- Examples:
+  - ❌ Icons with background circles or containers
+  - ❌ Profile cards with white/colored backgrounds
+  - ❌ Buttons with shadow effects
+  - ✅ Icons directly on background
+  - ✅ Text and images directly on colored backgrounds
+  - ✅ Flat buttons with solid colors only
+
+### Centralized Theme System (CRITICAL)
+- **Never use hardcoded styles** - always use the centralized theme system
+- All text styles must come from `Theme.of(context).textTheme.*`
+- All colors must come from `AppColors.*` constants
+- All spacing should be consistent (8px grid: 8, 16, 24, 32px)
+- If a style doesn't exist in the theme, ADD it to `app_theme.dart` first
+- Examples:
+  - ❌ `fontWeight: FontWeight.bold` in widget
+  - ❌ `color: Colors.red` in widget
+  - ❌ `fontSize: 18` in widget
+  - ✅ `Theme.of(context).textTheme.headlineMedium`
+  - ✅ `color: AppColors.textDark`
+  - ✅ Define new styles in app_theme.dart when needed
+
+### Icon Consistency
+- Use **Lucide Icons only** for all interface icons: `LucideIcons.*`
+- Never mix icon families (no Material Icons, no custom icons unless specified)
+- Consistent icon sizes: 16px, 20px, 24px, 32px
+- Icons should be semantic and clear in purpose
+
 ## Project Overview
 **Mira Storyteller** - AI-powered children's storytelling app that generates personalized stories from children's drawings using multimodal AI.
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../widgets/profile_avatar.dart';
@@ -179,18 +180,37 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.whiteScreenBackground,
+      backgroundColor: AppColors.secondary, // Changed to yellow background
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 40),
-            Text(
-              'Select profile',
-              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                color: AppColors.textDark,
+            // Header with title and settings button
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Select profile',
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      color: AppColors.textDark,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/parent-dashboard');
+                    },
+                    child: const Icon(
+                      LucideIcons.settings,
+                      color: AppColors.textDark,
+                      size: 24,
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 80),
+            const SizedBox(height: 32), // Reduced from 80 to 32
             Expanded(
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
@@ -218,33 +238,6 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                           ),
                         )
                       : _buildModernProfileLayout(),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/parent-login');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: AppColors.textLight,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  elevation: 0, // NO shadow
-                  shadowColor: Colors.transparent,
-                  surfaceTintColor: Colors.transparent,
-                ),
-                icon: const Icon(Icons.settings, color: AppColors.textLight),
-                label: Text(
-                  'Settings',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: AppColors.textLight,
-                  ),
-                ),
-              ),
             ),
           ],
         ),
@@ -323,81 +316,6 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
     );
   }
 
-  Widget _buildAddProfileCard(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: _showCreateKidDialog,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-            // NO shadows, NO elevation, completely flat
-          ),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              // Calculate icon size and text to match profile cards
-              double iconSize;
-              double fontSize;
-              double padding;
-              
-              if (constraints.maxWidth < 600) {
-                // Mobile: Large icons to match avatars
-                iconSize = 100.0; // Match avatar diameter (50 * 2)
-                fontSize = 18.0;
-                padding = 20.0;
-              } else if (constraints.maxWidth < 900) {
-                // Tablet: Medium icons
-                iconSize = 90.0; // Match avatar diameter (45 * 2)
-                fontSize = 16.0;
-                padding = 18.0;
-              } else {
-                // Desktop: Smaller icons
-                iconSize = 80.0; // Match avatar diameter (40 * 2)
-                fontSize = 14.0;
-                padding = 16.0;
-              }
-              
-              // Always use vertical centered layout to match profile cards
-              return Padding(
-                padding: EdgeInsets.all(padding),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: iconSize,
-                      height: iconSize,
-                      decoration: const BoxDecoration(
-                        color: AppColors.lightGrey,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.add,
-                        size: iconSize * 0.4, // 40% of container size
-                        color: AppColors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Add New',
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.grey,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildModernProfileLayout() {
     return LayoutBuilder(
@@ -436,7 +354,10 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
               },
             ),
           )),
-          _buildSimpleAddCard(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: _buildAddProfileCard(),
+          ),
         ],
       ),
     );
@@ -457,7 +378,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
           );
         },
       )),
-      _buildSimpleAddCard(),
+      _buildAddProfileCard(),
     ];
 
     return SingleChildScrollView(
@@ -484,34 +405,26 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
         
         return SizedBox(
           width: cardWidth,
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: onTap,
-              borderRadius: BorderRadius.circular(16),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    ProfileAvatar(
-                      radius: 100, // Fixed size for all screens
-                      profileType: profileType,
+          child: GestureDetector(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  ProfileAvatar(
+                    radius: 60, // Increased from 50 to 60
+                    profileType: profileType,
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    name,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.normal, // Changed from bold to normal
+                      color: AppColors.textDark,
                     ),
-                    const SizedBox(height: 12),
-                    Text(
-                      name,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textDark,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
           ),
@@ -520,7 +433,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
     );
   }
 
-  Widget _buildSimpleAddCard() {
+  Widget _buildAddProfileCard() {
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = MediaQuery.sizeOf(context).width;
@@ -530,43 +443,35 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
         
         return SizedBox(
           width: cardWidth,
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: _showCreateKidDialog,
-              borderRadius: BorderRadius.circular(16),
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Container(
-                      width: 150, // Fixed size to match inner character size
-                      height: 150, // Fixed size to match inner character size
-                      decoration: const BoxDecoration(
-                        color: AppColors.lightGrey,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        size: 60, // Proportional to container size
-                        color: AppColors.grey,
-                      ),
+          child: GestureDetector(
+            onTap: _showCreateKidDialog,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: AppColors.orange.withValues(alpha: 0.3), // Light orange like in your design
+                      shape: BoxShape.circle,
                     ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Add New',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.grey,
-                      ),
-                      textAlign: TextAlign.center,
+                    child: const Icon(
+                      LucideIcons.plus,
+                      size: 32,
+                      color: AppColors.textDark,
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Add profile',
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.normal,
+                      color: AppColors.textDark,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
             ),
           ),

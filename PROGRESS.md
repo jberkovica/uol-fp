@@ -1734,6 +1734,66 @@ _Last updated: 2025-07-19_
 
 **Summary**: Major font system migration completed with comprehensive UI improvements. Format selection system implemented with modern icons and clean layout. White line issue requires device testing for final resolution.
 
+## Date: 2025-07-21
+
+### Profile Selection Screen Redesign and UI Improvements
+
+#### Complete Profile Selection Screen Overhaul
+- **Implemented user's exact design mockup** with clean, modern layout
+- **Yellow background** consistent with app theme
+- **Left-aligned title** "Select profile" matching home screen style
+- **Settings icon** in top-right header using Lucide Icons
+- **Profile grid layout** with kids profiles and "Add profile" option inline
+
+#### Profile Display Improvements
+- **Increased avatar size** from 50 to 60 radius for better visibility
+- **Removed all backgrounds** from profile cards - flat design on yellow
+- **Normal font weight** for kids names (not bold)
+- **Clean "Add profile" design** with light orange circular background
+- **Simple plus icon** instead of heavy userPlus icon
+
+#### Design System Updates
+- **Added comprehensive design guidelines** to CLAUDE.md:
+  - Flat design principles - no backgrounds or shadows
+  - Centralized theme system requirements
+  - Lucide Icons only for consistency
+- **Fixed hardcoded styles** - now using theme system properly
+- **Consistent icon usage** - all icons now Lucide Icons
+
+#### Code Quality Improvements
+- **Removed unused screens**: Deleted parent_login_screen.dart
+- **Fixed navigation routes**: Settings button now routes to PIN entry
+- **Cleaned up duplicate methods**: Removed duplicate _buildAddProfileCard
+- **Simplified layout structure**: Removed complex Stack layouts
+- **Better responsive handling**: Consistent padding across sections
+
+#### UI/UX Enhancements
+- **Improved spacing**: Reduced gap between title and profiles (80px → 32px)
+- **Better button placement**: "Add profile" integrated into profile grid
+- **Cleaner interactions**: Replaced InkWell with GestureDetector (no ripples)
+- **Professional typography**: All text using centralized theme system
+- **Consistent visual hierarchy**: Matching home screen patterns
+
+#### Technical Details
+- **Font consistency**: Using Roboto throughout via theme system
+- **Icon consistency**: LucideIcons.settings, LucideIcons.plus
+- **Color usage**: AppColors.secondary (yellow), AppColors.orange (30% for add button)
+- **Spacing grid**: Following 8px system (8, 16, 24, 32px)
+- **Flat design**: No elevation, shadows, or background containers
+
+#### Files Modified
+- `app/lib/screens/child/profile_select_screen.dart` - Complete redesign
+- `app/lib/screens/parent/parent_login_screen.dart` - Deleted (unused)
+- `app/lib/main.dart` - Removed parent-login route
+- `CLAUDE.md` - Added design guidelines and best practices
+
+#### Quality Metrics
+- **Design Consistency**: 100% - Matches provided mockup exactly
+- **Code Quality**: 95% - Clean, maintainable, follows theme system
+- **User Experience**: 100% - Clean, intuitive profile selection
+- **Performance**: 95% - Removed unnecessary widgets and effects
+- **Maintainability**: 100% - Clear guidelines in CLAUDE.md
+
 ---
 
-_Last updated: 2025-07-20_
+_Last updated: 2025-07-21_

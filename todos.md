@@ -15,6 +15,9 @@ app:
 [] check if all icons are lucide 
 [] check for unused screens
 [] fix all flutter analyse errors?
+[] screens to fill data about kids 
+[] screen to verify story
+[] notificstion about new story
 
 backend:
 [] image generation prompt
@@ -39,7 +42,7 @@ when logged in:
 [x] bug in settings -> profile (two times profile)
 [x] press in profile pic in home - redirect to swtich profiles
 [x] pass - fixed as sign in screen
-[] icons shouls be toggle for create
+[x] icons shouls be toggle for create
 [] picture under 2n paragraph not sentence
 [x] add background music
 [] ui on small screen
