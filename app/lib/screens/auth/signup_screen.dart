@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
-import '../../constants/app_assets.dart';
 import '../../services/auth_service.dart';
 import '../../utils/page_transitions.dart';
 import 'login_screen.dart';

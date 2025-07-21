@@ -11,7 +11,6 @@ import '../../services/kid_service.dart';
 import '../../services/auth_service.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
-import '../child/child_home_screen.dart';
 
 class ParentDashboardMain extends StatefulWidget {
   const ParentDashboardMain({super.key});

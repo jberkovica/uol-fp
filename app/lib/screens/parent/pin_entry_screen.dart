@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
-import '../../constants/app_assets.dart';
-import '../../constants/app_theme.dart';
 
 class PinEntryScreen extends StatefulWidget {
   const PinEntryScreen({super.key});

@@ -9,7 +9,6 @@ import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
 import '../../widgets/responsive_wrapper.dart';
 import '../../utils/page_transitions.dart';
-import '../child/child_home_screen.dart';
 import '../parent/pin_entry_screen.dart';
 
 class ProfileScreen extends StatefulWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
@@ -12,40 +13,11 @@ import '../../models/kid.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
 import '../../widgets/responsive_wrapper.dart';
+import '../../models/input_format.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
 import '../parent/pin_entry_screen.dart';
 
-// Custom clipper for white bottom section with only top-left corner rounded
-class RoundedTopLeftClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-    
-    // Start from bottom left
-    path.moveTo(0, size.height);
-    
-    // Line up to rounded corner start
-    path.lineTo(0, 24); // 24px from top for rounded corner
-    
-    // Create rounded top-left corner
-    path.quadraticBezierTo(0, 0, 24, 0);
-    
-    // Line to top right
-    path.lineTo(size.width, 0);
-    
-    // Line to bottom right
-    path.lineTo(size.width, size.height);
-    
-    // Close the path back to bottom left
-    path.close();
-    
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
 
 class ChildHomeScreen extends StatefulWidget {
   final Kid? kid;
@@ -55,6 +27,7 @@ class ChildHomeScreen extends StatefulWidget {
   @override
   State<ChildHomeScreen> createState() => _ChildHomeScreenState();
 }
+
 
 class _ChildHomeScreenState extends State<ChildHomeScreen> {
   final AIStoryService _aiService = AIStoryService();
@@ -66,6 +39,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   List<Story> _latestStories = [];
   bool _isLoadingStories = false;
   int _currentNavIndex = 1; // Home tab is default (middle)
+  InputFormat _selectedFormat = InputFormat.image; // Default to image
 
   @override
   void initState() {
@@ -168,8 +142,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    
     // If no kid is selected, show error
     if (_selectedKid == null) {
       return Scaffold(
@@ -201,32 +173,41 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.secondary, // Yellow background
-      body: SafeArea(
-        child: _isProcessing
-            ? _buildProcessingView()
-            : Stack(
+      backgroundColor: AppColors.secondary,
+      body: _isProcessing
+          ? SafeArea(child: _buildProcessingView())
+          : ResponsiveWrapper(
+              child: Column(
                 children: [
-                  // Yellow background section
-                  _buildYellowSection(),
+                  // Yellow section with SafeArea
+                  Container(
+                    width: double.infinity,
+                    color: AppColors.secondary,
+                    child: SafeArea(
+                      bottom: false,
+                      child: _buildYellowSection(),
+                    ),
+                  ),
                   
-                  // White curved bottom section
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: ClipPath(
-                      clipper: RoundedTopLeftClipper(),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.65,
+                  // White section with rounded top corner
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
                         color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                        ),
+                      ),
+                      child: SafeArea(
+                        top: false,
                         child: _buildWhiteSection(),
                       ),
                     ),
                   ),
                 ],
               ),
-      ),
+            ),
       bottomNavigationBar: BottomNav(
         currentIndex: _currentNavIndex,
         onTap: _onNavTap,
@@ -274,17 +255,13 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   }
 
   Widget _buildYellowSection() {
-    final screenSize = MediaQuery.of(context).size;
-    final horizontalPadding = ResponsiveBreakpoints.getResponsivePadding(context);
-    
-    return Center(
-      child: Container(
-        width: screenSize.width > 1200 ? 1200 : double.infinity,
-        constraints: const BoxConstraints(maxWidth: 1200),
-        padding: EdgeInsets.fromLTRB(horizontalPadding, 20, horizontalPadding, 0),
+    return Padding(
+      padding: ResponsiveBreakpoints.getResponsiveHorizontalPadding(context),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 24),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           // Header with title and profile avatar
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -320,24 +297,24 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
             ],
           ),
           
-          const SizedBox(height: 40),
+          const SizedBox(height: 24),
           
           // Action buttons row
           Row(
             children: [
-              // Create button
+              // Create button (fixed size)
               Container(
                 decoration: BoxDecoration(
-                  color: AppColors.orange,
+                  color: AppColors.primary,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () => _showImageSourceOptions(context),
+                    onTap: _openUploadScreen,
                     borderRadius: BorderRadius.circular(20),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                       child: Text(
                         'Create',
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
@@ -350,21 +327,21 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                 ),
               ),
               
-              const Spacer(),
+              const SizedBox(width: 20),
               
-              // Action icons
-              _buildActionIcon(Icons.image, () => _pickImage(ImageSource.gallery)),
-              const SizedBox(width: 16),
-              _buildActionIcon(Icons.mic, () {
-                // TODO: Voice recording functionality
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Voice recording coming soon!')),
-                );
-              }),
-              const SizedBox(width: 16),
-              _buildActionIcon(Icons.menu, () {
-                // TODO: More options menu
-              }),
+              // Format toggle icons (flexible to take remaining space)
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    _buildToggleIcon(LucideIcons.image, InputFormat.image),
+                    const SizedBox(width: 2),
+                    _buildToggleIcon(LucideIcons.mic, InputFormat.audio),
+                    const SizedBox(width: 2),
+                    _buildToggleIcon(LucideIcons.penTool, InputFormat.text),
+                  ],
+                ),
+              ),
             ],
           ),
         ],
@@ -373,50 +350,50 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     );
   }
 
-  Widget _buildActionIcon(IconData icon, VoidCallback onTap) {
-    return Container(
-      width: 44,
-      height: 44,
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
-          child: Icon(
-            icon,
-            color: AppColors.textDark,
-            size: 24,
-          ),
+  Widget _buildToggleIcon(IconData icon, InputFormat format) {
+    final isSelected = _selectedFormat == format;
+    
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedFormat = format;
+        });
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: Icon(
+          icon,
+          color: isSelected ? AppColors.primary : Colors.white.withValues(alpha: 0.6),
+          size: 24,
         ),
       ),
     );
   }
+  
+  void _openUploadScreen() {
+    Navigator.pushNamed(
+      context,
+      '/upload',
+      arguments: {
+        'format': _selectedFormat,
+        'kid': _selectedKid,
+      },
+    );
+  }
 
   Widget _buildWhiteSection() {
-    final screenSize = MediaQuery.of(context).size;
-    
     if (_isLoadingStories) {
       return const Center(child: CircularProgressIndicator());
     }
     
-    return Center(
-      child: Container(
-        width: screenSize.width > 1200 ? 1200 : double.infinity,
-        constraints: const BoxConstraints(maxWidth: 1200),
-        child: _buildWhiteSectionContent(),
-      ),
-    );
+    return _buildWhiteSectionContent();
   }
 
   Widget _buildWhiteSectionContent() {
-    final horizontalPadding = ResponsiveBreakpoints.getResponsivePadding(context);
-    
-    return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(horizontalPadding, 60, horizontalPadding, 20),
+    return Padding(
+      padding: ResponsiveBreakpoints.getResponsiveHorizontalPadding(context),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(0, 40, 0, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -435,6 +412,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
           
           const SizedBox(height: 100), // Extra space for bottom nav
         ],
+        ),
       ),
     );
   }

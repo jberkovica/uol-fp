@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
-import '../../constants/app_theme.dart';
 import '../../models/story.dart';
 import '../../services/mock_story_service.dart';
 
@@ -128,22 +127,19 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> with Sing
                 ),
               ),
               const SizedBox(width: 16),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Parent',
-                    style: TextStyle(
-                      fontSize: 16,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                       color: AppColors.textDark,
                     ),
                   ),
                   Text(
                     'Dashboard',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       color: AppColors.textDark,
                     ),
                   ),
@@ -201,10 +197,9 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> with Sing
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'No stories pending review',
-              style: TextStyle(
-                fontSize: 18,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.grey,
               ),
             ),
@@ -281,24 +276,21 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> with Sing
                     children: [
                       Text(
                         story.title,
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'From: ${story.childName}',
-                        style: TextStyle(
-                          fontSize: 16,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.backgroundYellow.withValues(alpha: 204),
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'Created: ${story.createdAt.toReadableString()}',
-                        style: TextStyle(
-                          fontSize: 14,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textDark.withValues(alpha: 128),
                         ),
                       ),
@@ -313,9 +305,7 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> with Sing
               story.content,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontSize: 14,
-              ),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 16),
             Row(
@@ -367,10 +357,9 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> with Sing
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'No approved stories yet',
-              style: TextStyle(
-                fontSize: 18,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.grey,
               ),
             ),
@@ -433,24 +422,21 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> with Sing
                 children: [
                   Text(
                     story.title,
-                    style: const TextStyle(
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'By ${story.childName}',
-                    style: TextStyle(
-                      fontSize: 14,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.primary.withValues(alpha: 200),
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     story.createdAt.toReadableString(),
-                    style: TextStyle(
-                      fontSize: 12,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: Colors.black.withValues(alpha: 150),
                     ),
                   ),

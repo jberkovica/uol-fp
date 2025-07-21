@@ -10,7 +10,7 @@ import 'app_colors.dart';
 ///
 /// DESIGN PRINCIPLES:
 /// 1. FLAT DESIGN ONLY - NO shadows, gradients, elevation
-/// 2. MANROPE FONT throughout
+/// 2. ROBOTO FONT throughout
 /// 3. EXACT BRAND COLORS: Purple #9F60FF, Yellow #FFD560
 /// 4. 8px grid spacing system
 /// 5. CHILD-FRIENDLY, clean interface
@@ -30,7 +30,7 @@ class AppTheme {
     return ThemeData(
       primaryColor: AppColors.primary,
       scaffoldBackgroundColor: AppColors.white,
-      fontFamily: GoogleFonts.manrope().fontFamily,
+      fontFamily: GoogleFonts.roboto().fontFamily,
 
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primary,
@@ -58,19 +58,19 @@ class AppTheme {
   }
 
   /// ═══════════════════════════════════════════════════════════════════════════
-  /// TYPOGRAPHY SYSTEM - All Manrope
+  /// TYPOGRAPHY SYSTEM - All Roboto
   /// ═══════════════════════════════════════════════════════════════════════════
 
   static TextTheme get _textTheme {
     return TextTheme(
       // DISPLAY TEXT - For main titles
-      displayLarge: GoogleFonts.manrope(
+      displayLarge: GoogleFonts.roboto(
         fontSize: 32,
         fontWeight: FontWeight.bold,
         color: AppColors.textDark,
         height: 1.2,
       ),
-      displayMedium: GoogleFonts.manrope(
+      displayMedium: GoogleFonts.roboto(
         fontSize: 28,
         fontWeight: FontWeight.w600,
         color: AppColors.textDark,
@@ -78,19 +78,19 @@ class AppTheme {
       ),
 
       // HEADLINES - For section headers
-      headlineLarge: GoogleFonts.manrope(
+      headlineLarge: GoogleFonts.roboto(
         fontSize: 24,
         fontWeight: FontWeight.w600,
         color: AppColors.textDark,
         height: 1.3,
       ),
-      headlineMedium: GoogleFonts.manrope(
+      headlineMedium: GoogleFonts.roboto(
         fontSize: 20,
         fontWeight: FontWeight.w600,
         color: AppColors.textDark,
         height: 1.3,
       ),
-      headlineSmall: GoogleFonts.manrope(
+      headlineSmall: GoogleFonts.roboto(
         fontSize: 18,
         fontWeight: FontWeight.w600,
         color: AppColors.textDark,
@@ -98,19 +98,19 @@ class AppTheme {
       ),
 
       // BODY TEXT - For paragraphs
-      bodyLarge: GoogleFonts.manrope(
+      bodyLarge: GoogleFonts.roboto(
         fontSize: 18,
         fontWeight: FontWeight.normal,
         color: AppColors.textDark,
         height: 1.5,
       ),
-      bodyMedium: GoogleFonts.manrope(
+      bodyMedium: GoogleFonts.roboto(
         fontSize: 16,
         fontWeight: FontWeight.normal,
         color: AppColors.textDark,
         height: 1.5,
       ),
-      bodySmall: GoogleFonts.manrope(
+      bodySmall: GoogleFonts.roboto(
         fontSize: 14,
         fontWeight: FontWeight.normal,
         color: AppColors.textGrey,
@@ -118,17 +118,17 @@ class AppTheme {
       ),
 
       // LABELS - For buttons and small text
-      labelLarge: GoogleFonts.manrope(
+      labelLarge: GoogleFonts.roboto(
         fontSize: 16,
         fontWeight: FontWeight.w600,
         color: AppColors.textDark,
       ),
-      labelMedium: GoogleFonts.manrope(
+      labelMedium: GoogleFonts.roboto(
         fontSize: 14,
         fontWeight: FontWeight.w500,
         color: AppColors.textDark,
       ),
-      labelSmall: GoogleFonts.manrope(
+      labelSmall: GoogleFonts.roboto(
         fontSize: 12,
         fontWeight: FontWeight.w500,
         color: AppColors.textGrey,
@@ -151,7 +151,7 @@ class AppTheme {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         textStyle:
-            GoogleFonts.manrope(fontSize: 18, fontWeight: FontWeight.w600),
+            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600),
         minimumSize: const Size(140, 56),
       ),
     );
@@ -167,7 +167,7 @@ class AppTheme {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         textStyle:
-            GoogleFonts.manrope(fontSize: 18, fontWeight: FontWeight.w600),
+            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600),
       );
 
   static ButtonStyle get secondaryButton => ElevatedButton.styleFrom(
@@ -179,7 +179,7 @@ class AppTheme {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         textStyle:
-            GoogleFonts.manrope(fontSize: 18, fontWeight: FontWeight.w600),
+            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600),
       );
 
   static ButtonStyle get whiteButton => ElevatedButton.styleFrom(
@@ -191,7 +191,7 @@ class AppTheme {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         textStyle:
-            GoogleFonts.manrope(fontSize: 18, fontWeight: FontWeight.w600),
+            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600),
       );
 
   /// ═══════════════════════════════════════════════════════════════════════════
@@ -205,7 +205,7 @@ class AppTheme {
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       centerTitle: true,
-      titleTextStyle: GoogleFonts.manrope(
+      titleTextStyle: GoogleFonts.roboto(
         fontSize: 22,
         fontWeight: FontWeight.bold,
         color: AppColors.textLight,
@@ -228,7 +228,7 @@ class AppTheme {
 
   static InputDecorationTheme get _inputDecorationTheme {
     return InputDecorationTheme(
-      labelStyle: GoogleFonts.manrope(
+      labelStyle: GoogleFonts.roboto(
         color: AppColors.textGrey,
         fontSize: 14,
         fontWeight: FontWeight.w500,

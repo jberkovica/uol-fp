@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../widgets/profile_avatar.dart';
@@ -68,7 +67,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
               ),
               title: Text(
                 'Add New Profile',
-                style: GoogleFonts.manrope(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -79,13 +78,13 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       hintText: "Enter child's name",
                       border: OutlineInputBorder(),
                     ),
-                    style: GoogleFonts.manrope(),
+                    style: Theme.of(context).textTheme.headlineLarge,
                     autofocus: true,
                   ),
                   const SizedBox(height: 20),
                   Text(
                     'Choose Avatar:',
-                    style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(height: 12),
                   Wrap(
@@ -121,7 +120,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text(
                     'Cancel',
-                    style: GoogleFonts.manrope(),
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
                 ElevatedButton(
@@ -156,7 +155,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                   ),
                   child: Text(
                     'Add',
-                    style: GoogleFonts.manrope(fontWeight: FontWeight.w600),
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
@@ -187,9 +186,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
             const SizedBox(height: 40),
             Text(
               'Select profile',
-              style: GoogleFonts.manrope(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
                 color: AppColors.textDark,
               ),
             ),
@@ -204,9 +201,8 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                             children: [
                               Text(
                                 _errorMessage!,
-                                style: GoogleFonts.manrope(
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   color: Colors.red,
-                                  fontSize: 16,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -215,7 +211,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                                 onPressed: _loadKids,
                                 child: Text(
                                   'Retry',
-                                  style: GoogleFonts.manrope(),
+                                  style: Theme.of(context).textTheme.headlineLarge,
                                 ),
                               ),
                             ],
@@ -244,10 +240,8 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                 icon: const Icon(Icons.settings, color: AppColors.textLight),
                 label: Text(
                   'Settings',
-                  style: GoogleFonts.manrope(
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: AppColors.textLight,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
@@ -310,7 +304,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                     const SizedBox(height: 16),
                     Text(
                       name,
-                      style: GoogleFonts.manrope(
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         fontSize: fontSize,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textDark,
@@ -387,7 +381,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                     const SizedBox(height: 16),
                     Text(
                       'Add New',
-                      style: GoogleFonts.manrope(
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         fontSize: fontSize,
                         fontWeight: FontWeight.bold,
                         color: AppColors.grey,
@@ -510,8 +504,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                     const SizedBox(height: 12),
                     Text(
                       name,
-                      style: GoogleFonts.manrope(
-                        fontSize: 18,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColors.textDark,
                       ),
@@ -566,8 +559,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                     const SizedBox(height: 12),
                     Text(
                       'Add New',
-                      style: GoogleFonts.manrope(
-                        fontSize: 18,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: AppColors.grey,
                       ),

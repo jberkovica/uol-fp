@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 
@@ -58,9 +57,7 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
           ),
           child: Text(
             'Parent dashboard',
-            style: GoogleFonts.manrope(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
               color: AppColors.textDark,
             ),
           ),
@@ -68,8 +65,7 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
         const SizedBox(height: 24),
         Text(
           'Please sign in to access the parent area',
-          style: GoogleFonts.manrope(
-            fontSize: 16,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: AppColors.textLight,
             fontWeight: FontWeight.w500,
           ),
@@ -93,11 +89,9 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
           children: [
             TextFormField(
               controller: _emailController,
-              style: GoogleFonts.manrope(),
-              decoration: InputDecoration(
+                            decoration: InputDecoration(
                 labelText: 'Email',
-                labelStyle: GoogleFonts.manrope(color: AppColors.textGrey),
-                border: OutlineInputBorder(
+                                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
                 prefixIcon:
@@ -116,11 +110,9 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
             const SizedBox(height: 20),
             TextFormField(
               controller: _passwordController,
-              style: GoogleFonts.manrope(),
-              decoration: InputDecoration(
+                            decoration: InputDecoration(
                 labelText: 'Password',
-                labelStyle: GoogleFonts.manrope(color: AppColors.textGrey),
-                border: OutlineInputBorder(
+                                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
                 prefixIcon: Icon(Icons.lock_outline, color: AppColors.textGrey),
@@ -162,10 +154,7 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
               ),
               child: Text(
                 'Sign In',
-                style: GoogleFonts.manrope(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.labelLarge,
               ),
             ),
             const SizedBox(height: 20),
@@ -173,7 +162,7 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
               onPressed: () {},
               child: Text(
                 'Forgot Password?',
-                style: GoogleFonts.manrope(
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.w600,
                 ),
@@ -193,10 +182,8 @@ class _ParentLoginScreenState extends State<ParentLoginScreen> {
       icon: const Icon(Icons.arrow_back, color: AppColors.textLight),
       label: Text(
         'Back to Child Mode',
-        style: GoogleFonts.manrope(
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(
           color: AppColors.textLight,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
         ),
       ),
     );

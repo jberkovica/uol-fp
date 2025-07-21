@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
@@ -111,7 +110,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
       contentWidgets.add(
         Text(
           paragraph,
-          style: GoogleFonts.manrope(
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontSize: _fontSize,
             height: 1.8,
             color: AppColors.textDark,
@@ -176,88 +175,95 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
         child: Column(
           children: [
             // Clean top app bar
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
-                constraints: const BoxConstraints(maxWidth: 1200),
-                padding: EdgeInsets.symmetric(
-                  horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
-                  vertical: 16,
-                ),
-                child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back, color: AppColors.textDark),
-                    style: IconButton.styleFrom(
-                      backgroundColor: AppColors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 0,
-                    ),
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
+                    vertical: 16,
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Text(
-                      story.title.isNotEmpty ? story.title : 'Your Story',
-                      style: GoogleFonts.manrope(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textDark,
+                  child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back, color: AppColors.textDark),
+                      style: IconButton.styleFrom(
+                        backgroundColor: AppColors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 0,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        story.title.isNotEmpty ? story.title : 'Your Story',
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          color: AppColors.textDark,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                   ),
-                ],
                 ),
               ),
             ),
 
             // Story content area
             Expanded(
-              child: Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
-                  constraints: const BoxConstraints(maxWidth: 1200),
-                  margin: EdgeInsets.symmetric(
-                    horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
+              child: Container(
+                width: double.infinity,
+                child: Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+                    constraints: const BoxConstraints(maxWidth: 1200),
+                    margin: EdgeInsets.symmetric(
+                      horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
+                    ),
+                    padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                  child: SingleChildScrollView(
-                    child: _buildStoryContentWithImage(story),
+                    child: SingleChildScrollView(
+                      child: _buildStoryContentWithImage(story),
+                    ),
                   ),
                 ),
               ),
             ),
 
             // Bottom controls bar
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
-                constraints: const BoxConstraints(maxWidth: 1200),
-                margin: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
-                padding: EdgeInsets.symmetric(
-                  horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
-                  vertical: 16,
-                ),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primary.withOpacity(0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, 4),
+            Container(
+              width: double.infinity,
+              child: Center(
+                child: Container(
+                  width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+                  constraints: const BoxConstraints(maxWidth: 1200),
+                  margin: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
+                    vertical: 16,
                   ),
-                ],
-              ),
-                child: _buildBottomControls(story),
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withOpacity(0.1),
+                      blurRadius: 20,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                  child: _buildBottomControls(story),
+                ),
               ),
             ),
           ],
@@ -311,14 +317,14 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
           children: [
             Text(
               _formatDuration(_currentPosition),
-              style: GoogleFonts.manrope(
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontSize: 12,
                 color: AppColors.textGrey,
               ),
             ),
             Text(
               _formatDuration(_totalDuration),
-              style: GoogleFonts.manrope(
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontSize: 12,
                 color: AppColors.textGrey,
               ),
@@ -360,8 +366,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
         child: Center(
           child: Text(
             'No audio available',
-            style: GoogleFonts.manrope(
-              fontSize: 14,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: AppColors.textGrey,
             ),
           ),
@@ -462,10 +467,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
           children: [
             Text(
               'Story Options',
-              style: GoogleFonts.manrope(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 24),
             ListTile(

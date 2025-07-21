@@ -7,6 +7,7 @@ import 'screens/child/splash_screen.dart';
 import 'screens/child/profile_select_screen.dart';
 import 'screens/child/child_home_screen.dart';
 import 'screens/child/profile_screen.dart';
+import 'screens/child/upload_screen.dart';
 import 'screens/child/processing_screen.dart';
 import 'screens/child/story_display_screen.dart';
 import 'screens/parent/parent_login_screen.dart';
@@ -61,6 +62,7 @@ class MiraStorytellerApp extends StatelessWidget {
         '/profile-select': (context) => const ProfileSelectScreen(),
         '/child-home': (context) => const ChildHomeScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/upload': (context) => const UploadScreen(),
         '/processing': (context) => const ProcessingScreen(),
         '/story-display': (context) => const StoryDisplayScreen(),
         '/parent-login': (context) => const ParentLoginScreen(),

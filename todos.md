@@ -11,6 +11,10 @@ app:
 [] verify we use Manrope font everywhere
 [x] blurry images 
 [x] menu
+[] google auth
+[] check if all icons are lucide 
+[] check for unused screens
+[] fix all flutter analyse errors?
 
 backend:
 [] image generation prompt

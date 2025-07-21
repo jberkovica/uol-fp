@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
-import '../../constants/app_assets.dart';
 import '../../services/auth_service.dart';
 import '../../utils/page_transitions.dart';
 import 'signup_screen.dart';
@@ -205,12 +204,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         AppColors.textLight),
                                   ),
                                 )
-                              : const Text(
+                              : Text(
                                   'Sign In',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                  style: Theme.of(context).textTheme.labelLarge,
                                 ),
                         ),
                         const SizedBox(height: 16),
@@ -223,9 +219,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               padding: const EdgeInsets.symmetric(horizontal: 16),
                               child: Text(
                                 'or',
-                                style: TextStyle(
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
                                   color: Colors.grey[600],
-                                  fontSize: 14,
                                 ),
                               ),
                             ),
@@ -282,11 +277,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       "Don't have an account? ",
-                      style: TextStyle(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textLight,
-                        fontSize: 16,
                       ),
                     ),
                     TextButton(
@@ -296,12 +290,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           NoAnimationRoute(page: const SignupScreen()),
                         );
                       },
-                      child: const Text(
+                      child: Text(
                         'Sign Up',
-                        style: TextStyle(
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: AppColors.secondary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),

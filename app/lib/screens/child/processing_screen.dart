@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'dart:async';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
@@ -109,9 +108,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
           _messages[_currentStep],
           key: ValueKey<int>(_currentStep),
           textAlign: TextAlign.center,
-          style: GoogleFonts.manrope(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(
             color: AppColors.textDark,
           ),
         ),
@@ -137,9 +134,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> {
       ),
       child: Text(
         'Read',
-        style: GoogleFonts.manrope(
-          fontSize: 22,
-          fontWeight: FontWeight.bold,
+        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
           color: AppColors.textDark,
         ),
       ),

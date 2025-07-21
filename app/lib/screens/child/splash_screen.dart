@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_colors.dart';
-import '../../constants/app_assets.dart';
 import '../../services/auth_service.dart';
 import '../../services/app_state_service.dart';
 
@@ -78,7 +76,7 @@ class SplashScreen extends StatelessWidget {
         color: AppColors.secondary, // Yellow background
         child: Stack(
           children: [
-            // Orange angled curved shape anchored to bottom
+            // Violet angled curved shape anchored to bottom
             Positioned(
               bottom: 0,
               left: 0,
@@ -91,7 +89,7 @@ class SplashScreen extends StatelessWidget {
                 child: Container(
                   height: screenSize.height * 0.5, // 50% of screen height
                   decoration: const BoxDecoration(
-                    color: AppColors.orange, // Orange color
+                    color: AppColors.primary, // Violet color
                   ),
                 ),
               ),
