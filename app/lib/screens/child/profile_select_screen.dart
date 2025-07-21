@@ -3,6 +3,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../widgets/profile_avatar.dart';
+import '../../widgets/responsive_wrapper.dart';
 import '../../services/auth_service.dart';
 import '../../services/kid_service.dart';
 import '../../services/app_state_service.dart';
@@ -186,7 +187,12 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
           children: [
             // Header with title and settings button
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              padding: EdgeInsets.fromLTRB(
+                ResponsiveBreakpoints.getResponsivePadding(context),
+                20,
+                ResponsiveBreakpoints.getResponsivePadding(context),
+                0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -210,7 +216,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 32), // Reduced from 80 to 32
+            SizedBox(height: MediaQuery.of(context).size.width < 768 ? 32 : 16), // Less space on tablets
             Expanded(
               child: _isLoading
                   ? const Center(child: CircularProgressIndicator())
@@ -335,7 +341,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
 
   Widget _buildSingleColumnLayout() {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
+      padding: ResponsiveBreakpoints.getResponsiveAllPadding(context),
       child: Column(
         children: [
           ..._kids.map((kid) => Padding(
@@ -381,12 +387,19 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
       _buildAddProfileCard(),
     ];
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(24),
-      child: Wrap(
-        spacing: 16, // Horizontal spacing between columns
-        runSpacing: 16, // Vertical spacing between rows
-        children: allItems,
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600), // Limit max width to group profiles
+        child: GridView.count(
+          padding: const EdgeInsets.all(24),
+          crossAxisCount: 2,
+          mainAxisSpacing: 8, // Further reduced vertical spacing
+          crossAxisSpacing: 16, // Keep horizontal spacing
+          childAspectRatio: 1.2,
+          shrinkWrap: true,
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: allItems,
+        ),
       ),
     );
   }
@@ -396,87 +409,65 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
     required ProfileType profileType,
     required VoidCallback onTap,
   }) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final screenWidth = MediaQuery.sizeOf(context).width;
-        final cardWidth = screenWidth < 768 
-            ? double.infinity // Mobile: full width
-            : (screenWidth - 64) / 2; // Tablet: half width minus padding
-        
-        return SizedBox(
-          width: cardWidth,
-          child: GestureDetector(
-            onTap: onTap,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  ProfileAvatar(
-                    radius: 60, // Increased from 50 to 60
-                    profileType: profileType,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    name,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.normal, // Changed from bold to normal
-                      color: AppColors.textDark,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ProfileAvatar(
+              radius: 60, // Increased from 50 to 60
+              profileType: profileType,
             ),
-          ),
-        );
-      },
+            const SizedBox(height: 12),
+            Text(
+              name,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.normal, // Changed from bold to normal
+                color: AppColors.textDark,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildAddProfileCard() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final screenWidth = MediaQuery.sizeOf(context).width;
-        final cardWidth = screenWidth < 768 
-            ? double.infinity // Mobile: full width
-            : (screenWidth - 64) / 2; // Tablet: half width minus padding
-        
-        return SizedBox(
-          width: cardWidth,
-          child: GestureDetector(
-            onTap: _showCreateKidDialog,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: AppColors.orange.withValues(alpha: 0.3), // Light orange like in your design
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      LucideIcons.plus,
-                      size: 32,
-                      color: AppColors.textDark,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'Add profile',
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.normal,
-                      color: AppColors.textDark,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+    return GestureDetector(
+      onTap: _showCreateKidDialog,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                color: AppColors.orange.withValues(alpha: 0.3), // Light orange like in your design
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                LucideIcons.plus,
+                size: 32,
+                color: AppColors.textDark,
               ),
             ),
-          ),
-        );
-      },
+            const SizedBox(height: 12),
+            Text(
+              'Add profile',
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.normal,
+                color: AppColors.textDark,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

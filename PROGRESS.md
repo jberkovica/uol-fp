@@ -2,6 +2,17 @@
 
 This document tracks the detailed step-by-step development process of the Mira Storyteller application, including tasks completed, challenges faced, and solutions implemented.
 
+## Date: 2025-07-21
+
+### UI Improvements - Profile Selection Screen
+
+#### 1. Improved responsive grid layout for profile selection
+- Fixed single column display issue on large screens by switching from Wrap to GridView.count
+- Added center-constrained layout (max 600px width) to group profiles visually
+- Reduced vertical spacing between rows by adjusting aspect ratio (0.8 → 1.2) and internal padding (20px → 8px)
+- Made header spacing responsive: 32px on mobile, 16px on tablets for better proportions
+- Enhanced responsive padding throughout the screen using ResponsiveBreakpoints
+
 ## Date: 2025-06-12
 
 ### Project Initialization
