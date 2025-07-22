@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
+import '../widgets/responsive_wrapper.dart';
+
+/// Configuration class for responsive padding values
+class ResponsivePaddingConfig {
+  final double mobile;
+  final double tablet;
+  final double desktop;
+  
+  const ResponsivePaddingConfig({
+    required this.mobile,
+    required this.tablet, 
+    required this.desktop,
+  });
+}
 
 /// ═══════════════════════════════════════════════════════════════════════════
 /// MIRA STORYTELLER COMPREHENSIVE DESIGN SYSTEM
@@ -263,14 +277,27 @@ class AppTheme {
   static const double spacingXXL = 40.0; // 5 units
   static const double spacingHuge = 48.0; // 6 units
 
+  /// ═══════════════════════════════════════════════════════════════════════════
+  /// RESPONSIVE SPACING CONFIGURATION - Single source of truth
+  /// ═══════════════════════════════════════════════════════════════════════════
+  
+  /// Global responsive padding configuration
+  static const ResponsivePaddingConfig globalPadding = ResponsivePaddingConfig(
+    mobile: 20.0,
+    tablet: 60.0,
+    desktop: 200.0, // Much more padding for web-like centered content
+  );
+
   /// LAYOUT CONSTANTS
-  static const EdgeInsets screenPadding = EdgeInsets.all(24.0);
-  static const EdgeInsets screenPaddingHorizontal =
-      EdgeInsets.symmetric(horizontal: 24.0);
   static const EdgeInsets cardPadding = EdgeInsets.all(20.0);
   static const EdgeInsets cardPaddingLarge = EdgeInsets.all(32.0);
   static const EdgeInsets buttonPadding =
       EdgeInsets.symmetric(horizontal: 32, vertical: 16);
+
+  /// SCREEN HEADER CONSTANTS - Consistent across all screens
+  static const double screenHeaderTopPadding = 32.0;
+  static const double screenHeaderBottomPadding = 16.0;
+  static const double screenHeaderAfterTitleSpacing = 24.0;
 
   /// ═══════════════════════════════════════════════════════════════════════════
   /// BORDER RADIUS SYSTEM
@@ -354,6 +381,79 @@ class AppTheme {
       borderRadius: BorderRadius.circular(radius ?? radiusM),
       border: border,
       // NO shadows - completely flat
+    );
+  }
+
+  /// ═══════════════════════════════════════════════════════════════════════════
+  /// CENTRALIZED SPACING HELPERS
+  /// ═══════════════════════════════════════════════════════════════════════════
+
+  /// Get the global responsive padding value for current screen size
+  static double getGlobalPadding(BuildContext context) {
+    return ResponsiveBreakpoints.getResponsivePadding(context,
+      mobile: globalPadding.mobile,
+      tablet: globalPadding.tablet,
+      desktop: globalPadding.desktop,
+    );
+  }
+
+  /// Get global responsive horizontal padding as EdgeInsets
+  static EdgeInsets getGlobalHorizontalPadding(BuildContext context) {
+    return ResponsiveBreakpoints.getResponsiveHorizontalPadding(context,
+      mobile: globalPadding.mobile,
+      tablet: globalPadding.tablet,
+      desktop: globalPadding.desktop,
+    );
+  }
+
+  /// Get global responsive padding for all sides as EdgeInsets
+  static EdgeInsets getGlobalAllPadding(BuildContext context) {
+    return ResponsiveBreakpoints.getResponsiveAllPadding(context,
+      mobile: globalPadding.mobile,
+      tablet: globalPadding.tablet,
+      desktop: globalPadding.desktop,
+    );
+  }
+
+  /// ═══════════════════════════════════════════════════════════════════════════
+  /// STANDARDIZED SCREEN COMPONENTS
+  /// ═══════════════════════════════════════════════════════════════════════════
+
+  /// Create consistent screen header - SAME across ALL screens
+  static Widget screenHeader({
+    required BuildContext context,
+    required String title,
+    Widget? action,
+    Color backgroundColor = AppColors.secondary,
+  }) {
+    return Container(
+      width: double.infinity,
+      color: backgroundColor,
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            getGlobalPadding(context),
+            screenHeaderTopPadding,
+            getGlobalPadding(context),
+            screenHeaderBottomPadding,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start, // Force consistent alignment
+            children: [
+              Text(
+                title,
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  color: AppColors.textDark,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              if (action != null) action,
+            ],
+          ),
+        ),
+      ),
     );
   }
 

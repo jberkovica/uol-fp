@@ -18,6 +18,7 @@ app:
 [] screens to fill data about kids 
 [] screen to verify story
 [] notificstion about new story
+[] change all icons to fontawesome or 
 
 backend:
 [] image generation prompt

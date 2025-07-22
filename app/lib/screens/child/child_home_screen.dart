@@ -176,37 +176,64 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       backgroundColor: AppColors.secondary,
       body: _isProcessing
           ? SafeArea(child: _buildProcessingView())
-          : ResponsiveWrapper(
-              child: Column(
-                children: [
-                  // Yellow section with SafeArea
-                  Container(
-                    width: double.infinity,
-                    color: AppColors.secondary,
-                    child: SafeArea(
-                      bottom: false,
-                      child: _buildYellowSection(),
-                    ),
-                  ),
-                  
-                  // White section with rounded top corner
-                  Expanded(
-                    child: Container(
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(24),
+          : Column(
+              children: [
+                // Consistent header using AppTheme
+                AppTheme.screenHeader(
+                  context: context,
+                  title: 'My tales',
+                  action: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/profile-select');
+                    },
+                    child: Column(
+                      children: [
+                        ProfileAvatar(
+                          radius: 25,
+                          profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
                         ),
-                      ),
-                      child: SafeArea(
-                        top: false,
-                        child: _buildWhiteSection(),
-                      ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _selectedKid?.name ?? 'Kid',
+                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+                // Yellow section content (Create button)
+                Container(
+                  width: double.infinity,
+                  color: AppColors.secondary,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      ResponsiveBreakpoints.getResponsivePadding(context),
+                      AppTheme.screenHeaderAfterTitleSpacing,
+                      ResponsiveBreakpoints.getResponsivePadding(context),
+                      20,
+                    ),
+                    child: _buildCreateSection(),
+                  ),
+                ),
+                // White section
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24),
+                      ),
+                    ),
+                    child: SafeArea(
+                      top: false,
+                      child: _buildWhiteSection(),
+                    ),
+                  ),
+                ),
+              ],
             ),
       bottomNavigationBar: BottomNav(
         currentIndex: _currentNavIndex,
@@ -254,99 +281,50 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     );
   }
 
-  Widget _buildYellowSection() {
-    return Padding(
-      padding: ResponsiveBreakpoints.getResponsiveHorizontalPadding(context),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 20, 0, 24),
-        child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Header with title and profile avatar
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'My tales',
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  color: AppColors.textDark,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/profile-select');
-                },
-                child: Column(
-                  children: [
-                    ProfileAvatar(
-                      radius: 24,
-                      profileType: ProfileAvatar.fromString(_selectedKid!.avatarType),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      _selectedKid!.name,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.textDark,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+  Widget _buildCreateSection() {
+    return Row(
+      children: [
+        // Create button (fixed size)
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(20),
           ),
-          
-          const SizedBox(height: 24),
-          
-          // Action buttons row
-          Row(
-            children: [
-              // Create button (fixed size)
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: _openUploadScreen,
-                    borderRadius: BorderRadius.circular(20),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                      child: Text(
-                        'Create',
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: _openUploadScreen,
+              borderRadius: BorderRadius.circular(20),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                child: Text(
+                  'Create',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-              
-              const SizedBox(width: 20),
-              
-              // Format toggle icons (flexible to take remaining space)
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    _buildToggleIcon(LucideIcons.image, InputFormat.image),
-                    const SizedBox(width: 2),
-                    _buildToggleIcon(LucideIcons.mic, InputFormat.audio),
-                    const SizedBox(width: 2),
-                    _buildToggleIcon(LucideIcons.penTool, InputFormat.text),
-                  ],
-                ),
-              ),
+            ),
+          ),
+        ),
+        
+        const SizedBox(width: 20),
+        
+        // Format toggle icons (flexible to take remaining space)
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _buildToggleIcon(LucideIcons.image, InputFormat.image),
+              const SizedBox(width: 2),
+              _buildToggleIcon(LucideIcons.mic, InputFormat.audio),
+              const SizedBox(width: 2),
+              _buildToggleIcon(LucideIcons.penTool, InputFormat.text),
             ],
           ),
-        ],
         ),
-      ),
+      ],
     );
   }
 

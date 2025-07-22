@@ -85,17 +85,60 @@ class _ParentDashboardScreenState extends State<ParentDashboardScreen> with Sing
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      backgroundColor: AppColors.secondary,
+      body: SafeArea(
+        child: Column(
+          children: [
+            _buildDashboardHeader(),
+            _buildTabs(),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildPendingReviewsTab(),
+                  _buildApprovedStoriesTab(),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDashboardHeader() {
+    return Container(
+      width: double.infinity,
+      color: AppColors.secondary,
+      child: Stack(
         children: [
-          _buildHeader(),
-          _buildTabs(),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                _buildPendingReviewsTab(),
-                _buildApprovedStoriesTab(),
-              ],
+          // Back button in corner - no padding
+          Positioned(
+            top: 20,
+            right: 20,
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.close,
+                color: AppColors.textDark,
+                size: 24,
+              ),
+            ),
+          ),
+          // Title with global padding
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              AppTheme.getGlobalPadding(context),
+              AppTheme.screenHeaderTopPadding,
+              AppTheme.getGlobalPadding(context),
+              AppTheme.screenHeaderBottomPadding,
+            ),
+            child: Text(
+              'Parent Dashboard',
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                color: AppColors.textDark,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],

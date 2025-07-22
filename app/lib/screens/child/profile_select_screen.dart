@@ -181,72 +181,54 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.secondary, // Changed to yellow background
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Header with title and settings button
-            Padding(
-              padding: EdgeInsets.fromLTRB(
-                ResponsiveBreakpoints.getResponsivePadding(context),
-                20,
-                ResponsiveBreakpoints.getResponsivePadding(context),
-                0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Select profile',
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      color: AppColors.textDark,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/parent-dashboard');
-                    },
-                    child: const Icon(
-                      LucideIcons.settings,
-                      color: AppColors.textDark,
-                      size: 24,
-                    ),
-                  ),
-                ],
+      backgroundColor: AppColors.secondary,
+      body: Column(
+        children: [
+          // Consistent header using AppTheme
+          AppTheme.screenHeader(
+            context: context,
+            title: 'Select profile',
+            action: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/parent-dashboard');
+              },
+              child: const Icon(
+                LucideIcons.settings,
+                color: AppColors.textDark,
+                size: 24,
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.width < 768 ? 32 : 16), // Less space on tablets
-            Expanded(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _errorMessage != null
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                _errorMessage!,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Colors.red,
-                                ),
-                                textAlign: TextAlign.center,
+          ),
+          // Content
+          Expanded(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _errorMessage != null
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              _errorMessage!,
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Colors.red,
                               ),
-                              const SizedBox(height: 16),
-                              ElevatedButton(
-                                onPressed: _loadKids,
-                                child: Text(
-                                  'Retry',
-                                  style: Theme.of(context).textTheme.headlineLarge,
-                                ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: _loadKids,
+                              child: Text(
+                                'Retry',
+                                style: Theme.of(context).textTheme.headlineLarge,
                               ),
-                            ],
-                          ),
-                        )
-                      : _buildModernProfileLayout(),
-            ),
-          ],
-        ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : _buildModernProfileLayout(),
+          ),
+        ],
       ),
     );
   }

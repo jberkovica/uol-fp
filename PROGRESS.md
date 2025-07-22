@@ -2,17 +2,6 @@
 
 This document tracks the detailed step-by-step development process of the Mira Storyteller application, including tasks completed, challenges faced, and solutions implemented.
 
-## Date: 2025-07-21
-
-### UI Improvements - Profile Selection Screen
-
-#### 1. Improved responsive grid layout for profile selection
-- Fixed single column display issue on large screens by switching from Wrap to GridView.count
-- Added center-constrained layout (max 600px width) to group profiles visually
-- Reduced vertical spacing between rows by adjusting aspect ratio (0.8 → 1.2) and internal padding (20px → 8px)
-- Made header spacing responsive: 32px on mobile, 16px on tablets for better proportions
-- Enhanced responsive padding throughout the screen using ResponsiveBreakpoints
-
 ## Date: 2025-06-12
 
 ### Project Initialization
@@ -1807,4 +1796,29 @@ _Last updated: 2025-07-19_
 
 ---
 
-_Last updated: 2025-07-21_
+## Date: 2025-07-22
+
+### Unified Design System & Responsive Layout
+
+#### 1. Implemented configurable global padding system
+- Created `ResponsivePaddingConfig` class for centralized padding configuration
+- Set responsive padding: mobile 20px, tablet 60px, desktop 200px
+- Added helper methods: `getGlobalPadding()`, `getGlobalHorizontalPadding()`, `getGlobalAllPadding()`
+- Single source of truth in `AppTheme.globalPadding` - change padding across entire app from one location
+
+#### 2. Standardized screen headers across all screens
+- Created `AppTheme.screenHeader()` for consistent title positioning and styling
+- Fixed title alignment issues with `crossAxisAlignment: CrossAxisAlignment.start`
+- Unified header spacing: 32px top padding, 16px bottom padding
+- Applied to: Profile Select, Child Home, Kids Profile, Parent Dashboard
+
+#### 3. Fixed Kids Profile and Parent Dashboard screens
+- Restored profile avatar + name display in Kids Profile
+- Moved stats from yellow section to white section without card backgrounds (flat design)
+- Positioned back buttons in corners without responsive padding for accessibility
+- Fixed excessive white space on large screens by using fixed vertical padding (40px)
+- Constrained content to 600px max width for better web-like layout
+
+---
+
+_Last updated: 2025-07-22_

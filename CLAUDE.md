@@ -1,7 +1,12 @@
 # CLAUDE Context & Planning
 
-## Important Rules for Claude
-1. **Git Commits**: Never mention "Claude Code" or similar signatures in git commit messages - keep them professional and clean
+## CRITICAL RULES FOR CLAUDE - MUST FOLLOW
+
+### Git Commit Messages
+- **NEVER mention Claude, Claude Code, or any AI signature in commit messages**  
+- **NO Co-Authored-By: Claude lines**
+- Keep commit messages clean and professional
+- Focus on what was changed and why, not who/what made the change
 2. **Transparency**: Always be transparent when uncertain - explicitly state "I'm not sure about..." rather than guessing
 3. **Best Practices**: Always search for current documentation and best practices using WebSearch before implementing solutions
 4. **No Hallucinations**: If unsure about syntax, APIs, or implementation details, search for official docs first

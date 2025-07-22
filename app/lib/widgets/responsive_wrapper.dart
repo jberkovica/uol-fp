@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/app_colors.dart';
 
 /// Responsive wrapper that constrains content width on larger screens
 /// while maintaining full-width backgrounds
@@ -101,6 +102,8 @@ class ResponsiveGrid extends StatelessWidget {
   }
 }
 
+// Note: StandardScreenLayout removed - use AppTheme.screenHeader instead for consistency
+
 /// Responsive breakpoint utilities
 class ResponsiveBreakpoints {
   static const double mobile = 600;
@@ -136,20 +139,25 @@ class ResponsiveBreakpoints {
   
   /// Get responsive padding based on screen size
   static double getResponsivePadding(BuildContext context, {
-    double mobile = 20.0,
-    double tablet = 40.0,
-    double desktop = 60.0,
+    double? mobile,
+    double? tablet,
+    double? desktop,
   }) {
-    if (isMobile(context)) return mobile;
-    if (isTablet(context)) return tablet;
-    return desktop;
+    // Use provided values or defaults
+    final mobilePadding = mobile ?? 20.0;
+    final tabletPadding = tablet ?? 40.0;  
+    final desktopPadding = desktop ?? 100.0;
+    
+    if (isMobile(context)) return mobilePadding;
+    if (isTablet(context)) return tabletPadding;
+    return desktopPadding;
   }
   
   /// Get responsive horizontal padding as EdgeInsets
   static EdgeInsets getResponsiveHorizontalPadding(BuildContext context, {
-    double mobile = 20.0,
-    double tablet = 40.0,
-    double desktop = 60.0,
+    double? mobile,
+    double? tablet,
+    double? desktop,
   }) {
     final padding = getResponsivePadding(context, 
       mobile: mobile, 
@@ -161,9 +169,9 @@ class ResponsiveBreakpoints {
   
   /// Get responsive padding for all sides
   static EdgeInsets getResponsiveAllPadding(BuildContext context, {
-    double mobile = 20.0,
-    double tablet = 40.0,
-    double desktop = 60.0,
+    double? mobile,
+    double? tablet,
+    double? desktop,
   }) {
     final padding = getResponsivePadding(context, 
       mobile: mobile, 

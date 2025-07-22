@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../models/kid.dart';
@@ -120,7 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            _buildGradientHeader(),
+            _buildProfileHeader(),
             Expanded(
               child: _buildContent(),
             ),
@@ -134,51 +135,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildGradientHeader() {
-    final horizontalPadding = ResponsiveBreakpoints.getResponsivePadding(context);
-    
-    return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
-        constraints: const BoxConstraints(maxWidth: 1200),
-        padding: EdgeInsets.fromLTRB(horizontalPadding, 20, horizontalPadding, 40),
-        child: Column(
+  Widget _buildProfileHeader() {
+    return Container(
+      width: double.infinity,
+      color: AppTheme.yellowScreenBackground,
+      child: Stack(
         children: [
-          // Back button row
-          Row(
-            children: [
-              const Spacer(),
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.black,
-                  size: 28,
-                ),
+          // Back button in corner - no padding
+          Positioned(
+            top: 20,
+            right: 20,
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.black,
+                size: 28,
               ),
-            ],
-          ),
-          
-          const SizedBox(height: 20),
-          
-          // Kid's name as title
-          Text(
-            _kid!.name,
-            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
             ),
           ),
-          
-          const SizedBox(height: 30),
-          
-          // Avatar (no yellow circle)
-          ProfileAvatar(
-            radius: 75,
-            profileType: _getProfileTypeFromString(_kid!.avatarType),
+          // Profile content with global padding
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              AppTheme.getGlobalPadding(context),
+              AppTheme.screenHeaderTopPadding,
+              AppTheme.getGlobalPadding(context),
+              40,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Profile avatar
+                Center(
+                  child: ProfileAvatar(
+                    radius: 60,
+                    profileType: _getProfileTypeFromString(_kid!.avatarType),
+                  ),
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Kid's name
+                Center(
+                  child: Text(
+                    _kid!.name,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
-        ),
       ),
     );
   }
@@ -220,22 +230,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
           topRight: Radius.circular(30),
         ),
       ),
-      child: Center(
+      child: SingleChildScrollView(
         child: Container(
-          width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
-          constraints: const BoxConstraints(maxWidth: 1200),
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
-            child: Column(
-          children: [
-            const SizedBox(height: 12),
-            _buildProfileInfo(),
-            const SizedBox(height: 16),
-            _buildStatsGrid(),
-            const SizedBox(height: 24),
-            _buildOptionsSection(),
-            const SizedBox(height: 40),
-          ],
+          width: double.infinity,
+          padding: EdgeInsets.fromLTRB(
+            AppTheme.getGlobalPadding(context), // Left padding
+            40, // Fixed top padding
+            AppTheme.getGlobalPadding(context), // Right padding
+            40, // Fixed bottom padding
+          ),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: Column(
+                children: [
+                  _buildSimpleStats(),
+                  const SizedBox(height: 60), // More space after stats
+                  _buildOptionsSection(),
+                  const SizedBox(height: 40),
+                ],
+              ),
             ),
           ),
         ),
@@ -327,6 +341,61 @@ class _ProfileScreenState extends State<ProfileScreen> {
             value: '$totalWords',
             label: 'Words Written',
             color: AppColors.secondary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSimpleStats() {
+    final totalWords = _stories.fold<int>(0, (sum, story) => sum + story.content.split(' ').length);
+    
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildSimpleStat(
+          icon: LucideIcons.bookOpen,
+          value: '${_stories.length}',
+          label: 'Stories Created',
+          color: AppColors.primary,
+        ),
+        _buildSimpleStat(
+          icon: LucideIcons.penTool,
+          value: '$totalWords',
+          label: 'Words Written',
+          color: AppColors.orange,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSimpleStat({
+    required IconData icon,
+    required String value,
+    required String label,
+    required Color color,
+  }) {
+    return Column(
+      children: [
+        Icon(
+          icon,
+          color: color,
+          size: 32,
+        ),
+        const SizedBox(height: 12),
+        Text(
+          value,
+          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontSize: 12,
+            color: AppColors.textGrey,
           ),
         ),
       ],
