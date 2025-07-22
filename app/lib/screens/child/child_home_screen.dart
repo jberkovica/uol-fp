@@ -401,7 +401,10 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
         'format': _selectedFormat,
         'kid': _selectedKid,
       },
-    );
+    ).then((_) {
+      // Refresh stories when returning from upload screen
+      _loadStories();
+    });
   }
 
   Widget _buildWhiteSection() {
