@@ -149,7 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () => Navigator.pop(context),
               icon: const Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.black,
+                color: AppColors.textDark,
                 size: 28,
               ),
             ),
@@ -181,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _kid!.name,
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
                       fontWeight: FontWeight.normal,
-                      color: Colors.black,
+                      color: AppColors.textDark,
                     ),
                   ),
                 ),

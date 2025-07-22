@@ -19,7 +19,7 @@ class BottomNav extends StatelessWidget {
         color: Colors.white,
         border: Border(
           top: BorderSide(
-            color: Color(0xFFF0F0F0),
+            color: AppColors.lightGrey,
             width: 1,
           ),
         ),
@@ -88,7 +88,7 @@ class BottomNav extends StatelessWidget {
               child: Icon(
                 isActive ? activeIcon : icon,
                 key: ValueKey(isActive),
-                color: isActive ? AppColors.primary : Colors.grey[600],
+                color: isActive ? AppColors.primary : AppColors.textGrey,
                 size: 24,
               ),
             ),
@@ -96,7 +96,7 @@ class BottomNav extends StatelessWidget {
             Text(
               label,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: isActive ? AppColors.primary : Colors.grey[600],
+                color: isActive ? AppColors.primary : AppColors.textGrey,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
                 fontSize: 12,
               ),

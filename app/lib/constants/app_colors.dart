@@ -24,9 +24,9 @@ class AppColors {
   static const Color backgroundWhite = Colors.white; // White cards/containers
 
   // TEXT COLORS - improved contrast
-  static const Color textDark = Color(0xFF2D2D2D); // Softer dark text
+  static const Color textDark = Color(0xFF3A3A3A); // Balanced softer dark text
   static const Color textLight = Colors.white; // White text on dark backgrounds
-  static const Color textGrey = Color(0xFF8E8E8E); // Subtle grey text
+  static const Color textGrey = Color(0xFF666666); // Darker subtle grey text
   static const Color textViolet = Color(0xFFA56AFF); // Violet text accents
 
   // INTERACTIVE COLORS - flat only

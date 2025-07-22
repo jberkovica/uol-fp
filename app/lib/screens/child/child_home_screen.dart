@@ -14,6 +14,7 @@ import '../../models/kid.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
 import '../../widgets/responsive_wrapper.dart';
+import '../../widgets/app_button.dart';
 import '../../models/input_format.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
@@ -30,7 +31,7 @@ class ChildHomeScreen extends StatefulWidget {
 }
 
 
-class _ChildHomeScreenState extends State<ChildHomeScreen> {
+class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderStateMixin {
   final AIStoryService _aiService = AIStoryService();
   final ImagePicker _picker = ImagePicker();
   bool _isProcessing = false;
@@ -41,10 +42,28 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   bool _isLoadingStories = false;
   int _currentNavIndex = 1; // Home tab is default (middle)
   InputFormat _selectedFormat = InputFormat.image; // Default to image
+  late AnimationController _animationController;
+  late Animation<double> _slideAnimation;
+  bool _isAnimating = false;
 
   @override
   void initState() {
     super.initState();
+    
+    // Initialize animation controller
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    );
+    
+    _slideAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    ));
+    
     // Use kid passed from constructor first
     if (widget.kid != null) {
       _selectedKid = widget.kid;
@@ -58,6 +77,12 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
         _loadStories();
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -177,60 +202,96 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       backgroundColor: AppColors.secondary,
       body: _isProcessing
           ? SafeArea(child: _buildProcessingView())
-          : Column(
-              children: [
-                // Consistent header using AppTheme
-                AppTheme.screenHeader(
-                  context: context,
-                  title: 'My tales',
-                  action: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/profile-select');
-                    },
+          : CustomScrollView(
+              slivers: [
+                // Header and yellow section (scrollable)
+                SliverToBoxAdapter(
+                  child: Container(
+                    color: AppColors.secondary,
                     child: Column(
                       children: [
-                        ProfileAvatar(
-                          radius: 25,
-                          profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _selectedKid?.name ?? 'Kid',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.textDark,
+                        // Header with title and profile on same line
+                        SafeArea(
+                          bottom: false,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(
+                              AppTheme.getGlobalPadding(context),
+                              AppTheme.screenHeaderTopPadding,
+                              AppTheme.getGlobalPadding(context),
+                              0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'My tales',
+                                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.textDark,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(context, '/profile-select');
+                                  },
+                                  child: Column(
+                                    children: [
+                                      ProfileAvatar(
+                                        radius: 25,
+                                        profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        _selectedKid?.name ?? 'Kid',
+                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                          color: AppColors.textDark,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
+                        // Yellow section content (Create button and icons aligned)
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(
+                            AppTheme.getGlobalPadding(context),
+                            20, // Less spacing after header
+                            AppTheme.getGlobalPadding(context),
+                            30, // Less bottom padding to not overlap shadow
+                          ),
+                          child: _buildCreateSection(),
+                        ),
+                        
+                        // Space for shadow to show
+                        const SizedBox(height: 10),
                       ],
                     ),
                   ),
                 ),
-                // Yellow section content (Create button)
-                Container(
-                  width: double.infinity,
-                  color: AppColors.secondary,
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      AppTheme.getGlobalPadding(context),
-                      AppTheme.screenHeaderAfterTitleSpacing + 20, // Move title lower
-                      AppTheme.getGlobalPadding(context),
-                      20,
-                    ),
-                    child: _buildCreateSection(),
-                  ),
-                ),
-                // White section
-                Expanded(
+                // White section with shadow
+                SliverToBoxAdapter(
                   child: Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(24),
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 6,
+                          offset: const Offset(0, -1),
+                          spreadRadius: 0,
+                        ),
+                      ],
                     ),
                     child: SafeArea(
+                      bottom: true,
                       top: false,
-                      child: _buildWhiteSection(),
+                      child: _buildWhiteSectionContent(),
                     ),
                   ),
                 ),
@@ -283,47 +344,26 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
   }
 
   Widget _buildCreateSection() {
-    return Row(
+    return Column(
       children: [
-        // Create button (fixed size)
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.primary,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: _openUploadScreen,
-              borderRadius: BorderRadius.circular(20),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                child: Text(
-                  'Create',
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-          ),
+        // Format toggle icons at top (centered like upload screen)
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildToggleIcon(FontAwesomeIcons.image, FontAwesomeIcons.solidImage, InputFormat.image),
+            const SizedBox(width: 30),
+            _buildToggleIcon(FontAwesomeIcons.microphone, FontAwesomeIcons.microphone, InputFormat.audio),
+            const SizedBox(width: 30),
+            _buildToggleIcon(FontAwesomeIcons.penToSquare, FontAwesomeIcons.solidPenToSquare, InputFormat.text),
+          ],
         ),
         
-        const SizedBox(width: 20),
+        const SizedBox(height: 25),
         
-        // Format toggle icons (flexible to take remaining space)
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _buildToggleIcon(FontAwesomeIcons.image, FontAwesomeIcons.solidImage, InputFormat.image),
-              const SizedBox(width: 2),
-              _buildToggleIcon(FontAwesomeIcons.microphone, FontAwesomeIcons.microphone, InputFormat.audio),
-              const SizedBox(width: 2),
-              _buildToggleIcon(FontAwesomeIcons.penToSquare, FontAwesomeIcons.solidPenToSquare, InputFormat.text),
-            ],
-          ),
+        // Create button centered below (violet)
+        AppButton.primary(
+          text: 'create',
+          onPressed: _openUploadScreen,
         ),
       ],
     );
@@ -345,7 +385,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
           child: FaIcon(
             isSelected ? solidIcon : regularIcon,
             key: ValueKey(isSelected),
-            color: isSelected ? AppColors.primary : Colors.white.withValues(alpha: 0.6),
+            color: isSelected ? AppColors.primary : Colors.black54,
             size: 20,
           ),
         ),

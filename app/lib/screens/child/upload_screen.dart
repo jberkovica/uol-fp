@@ -7,6 +7,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../models/input_format.dart';
 import '../../widgets/responsive_wrapper.dart';
+import '../../widgets/app_button.dart';
 
 // Custom clipper for angled ellipse curve - same as splash screen
 class AngledEllipseClipper extends CustomClipper<Path> {
@@ -201,7 +202,7 @@ class _UploadScreenState extends State<UploadScreen> {
                       width: 80,
                       height: 40,
                       fit: BoxFit.contain,
-                      colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                      colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
                     ),
                   ),
                 ),
@@ -225,56 +226,20 @@ class _UploadScreenState extends State<UploadScreen> {
   }
   
   Widget _buildUploadButton() {
-    return Container(
-      width: 200,
-      height: 60,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Center(
-        child: Text(
-          'upload',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
+    return AppButton.pill(
+      text: 'upload',
+      onPressed: () {
+        // TODO: Implement upload functionality
+      },
     );
   }
   
   Widget _buildDictateButton() {
-    return Container(
-      width: 200,
-      height: 60,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Center(
-        child: Text(
-          'dictate',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
+    return AppButton.pill(
+      text: 'dictate',
+      onPressed: () {
+        // TODO: Implement dictate functionality
+      },
     );
   }
   
@@ -308,193 +273,20 @@ class _UploadScreenState extends State<UploadScreen> {
               enabledBorder: InputBorder.none,
               fillColor: Colors.transparent,
               filled: false,
-              hintStyle: TextStyle(color: Colors.grey),
+              hintStyle: TextStyle(color: AppColors.textGrey),
               contentPadding: EdgeInsets.zero,
             ),
-            style: const TextStyle(fontSize: 16, color: Colors.black),
+            style: const TextStyle(fontSize: 16, color: AppColors.textDark),
           ),
         ),
         const SizedBox(height: 20),
-        Container(
-          width: 200,
-          height: 60,
-          decoration: BoxDecoration(
-            color: AppColors.orange,
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                offset: const Offset(0, 5),
-              ),
-            ],
-          ),
-          child: Center(
-            child: Text(
-              'submit',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
+        AppButton.orange(
+          text: 'submit',
+          onPressed: () {
+            // TODO: Implement submit functionality
+          },
         ),
       ],
     );
-  }
-
-
-
-  Widget _buildImageInput() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Choose how to add your image',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: AppColors.textDark,
-            fontWeight: FontWeight.w600,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 40),
-        _buildImageButton(
-          icon: FontAwesomeIcons.camera,
-          label: 'Take Photo',
-          onPressed: () => _pickImage(ImageSource.camera),
-        ),
-        const SizedBox(width: 20),
-        _buildImageButton(
-          icon: FontAwesomeIcons.image,
-          label: 'Select from Gallery',
-          onPressed: () => _pickImage(ImageSource.gallery),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildImageButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-  }) {
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
-          minimumSize: const Size(double.infinity, 56),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          elevation: 0,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 24),
-            const SizedBox(width: 12),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAudioInput() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Record your voice to create a story',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: AppColors.textDark,
-            fontWeight: FontWeight.w600,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 40),
-        Container(
-          width: 120,
-          height: 120,
-          decoration: BoxDecoration(
-            color: AppColors.primary,
-            borderRadius: BorderRadius.circular(60),
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: _startRecording,
-              borderRadius: BorderRadius.circular(60),
-              child: const Icon(
-                FontAwesomeIcons.microphone,
-                color: Colors.white,
-                size: 48,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 20),
-        Text(
-          'Tap to start recording',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: AppColors.textGrey,
-          ),
-        ),
-      ],
-    );
-  }
-
-
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final XFile? image = await _picker.pickImage(
-        source: source,
-        maxWidth: 1024,
-        maxHeight: 1024,
-        imageQuality: 85,
-      );
-
-      if (image != null) {
-        _navigateToProcessing();
-        // TODO: Process image with backend
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to pick image: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  }
-
-  void _startRecording() {
-    _navigateToProcessing();
-    // TODO: Implement audio recording
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Audio recording will be implemented soon!')),
-    );
-  }
-
-  void _createStoryFromText() {
-    if (_textController.text.trim().isNotEmpty) {
-      _navigateToProcessing();
-      // TODO: Process text with backend
-    }
-  }
-
-  void _navigateToProcessing() {
-    Navigator.pushReplacementNamed(context, '/processing');
   }
 }
