@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   // PRIMARY BRAND COLORS - New palette
   static const Color primary = Color(0xFFA56AFF); // Violet: #A56AFF - parent screens
-  static const Color secondary = Color(0xFFFFDC7B); // Yellow: #FFDC7B - kids screens
+  static const Color secondary = Color(0xFFFFDD79); // Yellow: #FFDD79 - kids screens (slightly brighter)
   static const Color orange = Color(0xFFFFAC5B); // Orange: #FFAC5B
   static const Color pink = Color(0xFFFFB1BF); // Pink: #FFB1BF
 

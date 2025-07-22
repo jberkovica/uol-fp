@@ -8,6 +8,44 @@ import '../../constants/app_assets.dart';
 import '../../models/input_format.dart';
 import '../../widgets/responsive_wrapper.dart';
 
+// Custom clipper for angled ellipse curve - same as splash screen
+class AngledEllipseClipper extends CustomClipper<Path> {
+  final double screenWidth;
+  final double screenHeight;
+
+  AngledEllipseClipper({required this.screenWidth, required this.screenHeight});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    
+    // Start from bottom left
+    path.moveTo(0, size.height);
+    
+    // Line to bottom right
+    path.lineTo(size.width, size.height);
+    
+    // Line up the right side to start of curve
+    path.lineTo(size.width, size.height * 0.4);
+    
+    // Create simple smooth curve to match design file
+    // Single clean elliptical curve from right to left
+    path.cubicTo(
+      size.width * 0.75, size.height * 0.1,  // First control point
+      size.width * 0.25, size.height * 0.1,  // Second control point
+      0, size.height * 0.4,                  // End point
+    );
+    
+    // Close the path
+    path.close();
+    
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
 class UploadScreen extends StatefulWidget {
   const UploadScreen({super.key});
 
@@ -16,7 +54,7 @@ class UploadScreen extends StatefulWidget {
 }
 
 class _UploadScreenState extends State<UploadScreen> {
-  late InputFormat _currentFormat;
+  InputFormat _currentFormat = InputFormat.image; // Initialize with default value
   final TextEditingController _textController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
 
@@ -43,120 +81,64 @@ class _UploadScreenState extends State<UploadScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.secondary,
+      backgroundColor: AppColors.secondary, // Yellow background
       body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          child: Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
-              constraints: const BoxConstraints(maxWidth: 1200),
-              padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
+        child: Column(
+          children: [
+            // Header with close button
+            _buildHeader(),
+            
+            // Content area with padding only for top content
+            Expanded(
               child: Column(
                 children: [
-                  _buildHeader(),
-                  const SizedBox(height: 40),
-                  _buildMascot(),
-                  const SizedBox(height: 40),
-                  _buildFormatToggle(),
-                  const SizedBox(height: 40),
-                  Expanded(
-                    child: _buildInputArea(),
+                  // Top section with padding
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 20),
+                        
+                        // Icons at top
+                        _buildTopIcons(),
+                        
+                        const SizedBox(height: 40),
+                        
+                        // Main action button/area in center
+                        _buildMainAction(),
+                        
+                        const SizedBox(height: 40),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 20),
+                  
+                  // Bottom section with mascot - no horizontal padding
+                  Expanded(
+                    child: _buildMascotFace(),
+                  ),
                 ],
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildHeader() {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const FaIcon(
-            FontAwesomeIcons.xmark,
-            color: AppColors.textDark,
-            size: 24,
-          ),
-        ),
-        const Spacer(),
-        Text(
-          'Create Story',
-          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-            color: AppColors.textDark,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const Spacer(),
-        const SizedBox(width: 48), // Balance the close button
-      ],
-    );
-  }
-
-  Widget _buildMascot() {
-    return Container(
-      width: 120,
-      height: 120,
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(60),
-      ),
-      child: Center(
-        child: SvgPicture.asset(
-          AppAssets.miraReady,
-          width: 80,
-          height: 80,
-          fit: BoxFit.contain,
-          colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFormatToggle() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildToggleIcon(FontAwesomeIcons.image, FontAwesomeIcons.solidImage, InputFormat.image, 'Image'),
-        const SizedBox(width: 16),
-        _buildToggleIcon(FontAwesomeIcons.microphone, FontAwesomeIcons.microphone, InputFormat.audio, 'Audio'),
-        const SizedBox(width: 16),
-        _buildToggleIcon(FontAwesomeIcons.penToSquare, FontAwesomeIcons.solidPenToSquare, InputFormat.text, 'Text'),
-      ],
-    );
-  }
-
-  Widget _buildToggleIcon(IconData regularIcon, IconData solidIcon, InputFormat format, String label) {
-    final isSelected = _currentFormat == format;
-    
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentFormat = format;
-        });
-      },
-      child: Column(
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
-            child: FaIcon(
-              isSelected ? solidIcon : regularIcon,
-              key: ValueKey(isSelected),
-              color: isSelected ? AppColors.primary : AppColors.textGrey,
-              size: 28,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: isSelected ? AppColors.primary : AppColors.textGrey,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+          const SizedBox(width: 40), // Balance
+          const SizedBox(), // Empty center
+          IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const FaIcon(
+              FontAwesomeIcons.xmark,
+              color: AppColors.textDark,
+              size: 24,
             ),
           ),
         ],
@@ -164,16 +146,204 @@ class _UploadScreenState extends State<UploadScreen> {
     );
   }
 
-  Widget _buildInputArea() {
+  Widget _buildTopIcons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildTopIcon(FontAwesomeIcons.image, InputFormat.image),
+        const SizedBox(width: 40),
+        _buildTopIcon(FontAwesomeIcons.microphone, InputFormat.audio),
+        const SizedBox(width: 40),
+        _buildTopIcon(FontAwesomeIcons.penToSquare, InputFormat.text),
+      ],
+    );
+  }
+  
+  Widget _buildTopIcon(IconData icon, InputFormat format) {
+    final isSelected = _currentFormat == format;
+    return GestureDetector(
+      onTap: () => setState(() => _currentFormat = format),
+      child: FaIcon(
+        icon,
+        size: 24,
+        color: isSelected ? AppColors.primary : Colors.black54,
+      ),
+    );
+  }
+  
+  Widget _buildMascotFace() {
+    final screenSize = MediaQuery.of(context).size;
+    
+    return SizedBox(
+      height: screenSize.height * 0.3, // 30% of screen height
+      child: Stack(
+        children: [
+          // Purple curved shape anchored to bottom - exact same as splash screen
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: ClipPath(
+              clipper: AngledEllipseClipper(
+                screenWidth: screenSize.width,
+                screenHeight: screenSize.height,
+              ),
+              child: Container(
+                height: screenSize.height * 0.5, // 50% of screen height
+                decoration: const BoxDecoration(
+                  color: AppColors.primary, // Purple color
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: screenSize.height * 0.05),
+                    child: SvgPicture.asset(
+                      'assets/images/face-1.svg',
+                      width: 80,
+                      height: 40,
+                      fit: BoxFit.contain,
+                      colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMainAction() {
     switch (_currentFormat) {
       case InputFormat.image:
-        return _buildImageInput();
+        return _buildUploadButton();
       case InputFormat.audio:
-        return _buildAudioInput();
+        return _buildDictateButton();
       case InputFormat.text:
         return _buildTextInput();
     }
   }
+  
+  Widget _buildUploadButton() {
+    return Container(
+      width: 200,
+      height: 60,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          'upload',
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildDictateButton() {
+    return Container(
+      width: 200,
+      height: 60,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          'dictate',
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildTextInput() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 280,
+          height: 150,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: TextField(
+            controller: _textController,
+            maxLines: null,
+            expands: true,
+            decoration: const InputDecoration(
+              hintText: 'write your idea here...',
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              fillColor: Colors.transparent,
+              filled: false,
+              hintStyle: TextStyle(color: Colors.grey),
+              contentPadding: EdgeInsets.zero,
+            ),
+            style: const TextStyle(fontSize: 16, color: Colors.black),
+          ),
+        ),
+        const SizedBox(height: 20),
+        Container(
+          width: 200,
+          height: 60,
+          decoration: BoxDecoration(
+            color: AppColors.orange,
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 5),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              'submit',
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
 
   Widget _buildImageInput() {
     return Column(
@@ -283,66 +453,6 @@ class _UploadScreenState extends State<UploadScreen> {
     );
   }
 
-  Widget _buildTextInput() {
-    return Column(
-      children: [
-        Text(
-          'Write your story idea',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            color: AppColors.textDark,
-            fontWeight: FontWeight.w600,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 40),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.lightGrey),
-            ),
-            child: TextField(
-              controller: _textController,
-              maxLines: null,
-              expands: true,
-              decoration: InputDecoration(
-                hintText: 'Once upon a time...',
-                hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: AppColors.textGrey,
-                ),
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.all(20),
-              ),
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ),
-        ),
-        const SizedBox(height: 20),
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: _textController.text.trim().isNotEmpty ? _createStoryFromText : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              minimumSize: const Size(double.infinity, 56),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              elevation: 0,
-            ),
-            child: Text(
-              'Create Story',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Future<void> _pickImage(ImageSource source) async {
     try {
