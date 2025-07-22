@@ -209,9 +209,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                   color: AppColors.secondary,
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(
-                      ResponsiveBreakpoints.getResponsivePadding(context),
-                      AppTheme.screenHeaderAfterTitleSpacing,
-                      ResponsiveBreakpoints.getResponsivePadding(context),
+                      AppTheme.getGlobalPadding(context),
+                      AppTheme.screenHeaderAfterTitleSpacing + 20, // Move title lower
+                      AppTheme.getGlobalPadding(context),
                       20,
                     ),
                     child: _buildCreateSection(),
@@ -369,7 +369,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
 
   Widget _buildWhiteSectionContent() {
     return Padding(
-      padding: ResponsiveBreakpoints.getResponsiveHorizontalPadding(context),
+      padding: EdgeInsets.symmetric(horizontal: AppTheme.getGlobalPadding(context)),
       child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(0, 40, 0, 20),
       child: Column(
