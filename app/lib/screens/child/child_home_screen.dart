@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
@@ -316,11 +317,11 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _buildToggleIcon(LucideIcons.image, InputFormat.image),
+              _buildToggleIcon(FontAwesomeIcons.image, FontAwesomeIcons.solidImage, InputFormat.image),
               const SizedBox(width: 2),
-              _buildToggleIcon(LucideIcons.mic, InputFormat.audio),
+              _buildToggleIcon(FontAwesomeIcons.microphone, FontAwesomeIcons.microphone, InputFormat.audio),
               const SizedBox(width: 2),
-              _buildToggleIcon(LucideIcons.penTool, InputFormat.text),
+              _buildToggleIcon(FontAwesomeIcons.penToSquare, FontAwesomeIcons.solidPenToSquare, InputFormat.text),
             ],
           ),
         ),
@@ -328,7 +329,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
     );
   }
 
-  Widget _buildToggleIcon(IconData icon, InputFormat format) {
+  Widget _buildToggleIcon(IconData regularIcon, IconData solidIcon, InputFormat format) {
     final isSelected = _selectedFormat == format;
     
     return GestureDetector(
@@ -339,10 +340,14 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
       },
       child: Padding(
         padding: const EdgeInsets.all(6.0),
-        child: Icon(
-          icon,
-          color: isSelected ? AppColors.primary : Colors.white.withValues(alpha: 0.6),
-          size: 24,
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: FaIcon(
+            isSelected ? solidIcon : regularIcon,
+            key: ValueKey(isSelected),
+            color: isSelected ? AppColors.primary : Colors.white.withValues(alpha: 0.6),
+            size: 20,
+          ),
         ),
       ),
     );
@@ -491,7 +496,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
                               color: AppColors.lightGrey,
                               child: const Center(
                                 child: Icon(
-                                  Icons.image,
+                                  FontAwesomeIcons.image,
                                   color: AppColors.grey,
                                   size: 24,
                                 ),
@@ -559,7 +564,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
 
               // Camera option
               _buildSourceButton(
-                icon: Icons.camera_alt,
+                icon: FontAwesomeIcons.camera,
                 label: 'Take Photo',
                 onPressed: () {
                   Navigator.pop(context);
@@ -571,7 +576,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> {
 
               // Gallery option
               _buildSourceButton(
-                icon: Icons.photo_library,
+                icon: FontAwesomeIcons.image,
                 label: 'Choose from Gallery',
                 onPressed: () {
                   Navigator.pop(context);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../models/input_format.dart';
@@ -77,10 +78,10 @@ class _UploadScreenState extends State<UploadScreen> {
       children: [
         IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(
-            LucideIcons.x,
+          icon: const FaIcon(
+            FontAwesomeIcons.xmark,
             color: AppColors.textDark,
-            size: 28,
+            size: 24,
           ),
         ),
         const Spacer(),
@@ -121,16 +122,16 @@ class _UploadScreenState extends State<UploadScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildToggleIcon(LucideIcons.image, InputFormat.image, 'Image'),
+        _buildToggleIcon(FontAwesomeIcons.image, FontAwesomeIcons.solidImage, InputFormat.image, 'Image'),
         const SizedBox(width: 16),
-        _buildToggleIcon(LucideIcons.mic, InputFormat.audio, 'Audio'),
+        _buildToggleIcon(FontAwesomeIcons.microphone, FontAwesomeIcons.microphone, InputFormat.audio, 'Audio'),
         const SizedBox(width: 16),
-        _buildToggleIcon(LucideIcons.penTool, InputFormat.text, 'Text'),
+        _buildToggleIcon(FontAwesomeIcons.penToSquare, FontAwesomeIcons.solidPenToSquare, InputFormat.text, 'Text'),
       ],
     );
   }
 
-  Widget _buildToggleIcon(IconData icon, InputFormat format, String label) {
+  Widget _buildToggleIcon(IconData regularIcon, IconData solidIcon, InputFormat format, String label) {
     final isSelected = _currentFormat == format;
     
     return GestureDetector(
@@ -141,10 +142,14 @@ class _UploadScreenState extends State<UploadScreen> {
       },
       child: Column(
         children: [
-          Icon(
-            icon,
-            color: isSelected ? AppColors.primary : AppColors.textGrey,
-            size: 32,
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 200),
+            child: FaIcon(
+              isSelected ? solidIcon : regularIcon,
+              key: ValueKey(isSelected),
+              color: isSelected ? AppColors.primary : AppColors.textGrey,
+              size: 28,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
@@ -184,13 +189,13 @@ class _UploadScreenState extends State<UploadScreen> {
         ),
         const SizedBox(height: 40),
         _buildImageButton(
-          icon: LucideIcons.camera,
+          icon: FontAwesomeIcons.camera,
           label: 'Take Photo',
           onPressed: () => _pickImage(ImageSource.camera),
         ),
         const SizedBox(width: 20),
         _buildImageButton(
-          icon: LucideIcons.image,
+          icon: FontAwesomeIcons.image,
           label: 'Select from Gallery',
           onPressed: () => _pickImage(ImageSource.gallery),
         ),
@@ -260,7 +265,7 @@ class _UploadScreenState extends State<UploadScreen> {
               onTap: _startRecording,
               borderRadius: BorderRadius.circular(60),
               child: const Icon(
-                LucideIcons.mic,
+                FontAwesomeIcons.microphone,
                 color: Colors.white,
                 size: 48,
               ),

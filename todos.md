@@ -19,6 +19,7 @@ app:
 [] screen to verify story
 [] notificstion about new story
 [] change all icons to fontawesome or 
+[] home page alligh title wit profile
 
 backend:
 [] image generation prompt
