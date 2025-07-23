@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
@@ -12,7 +11,6 @@ import '../../models/kid.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
 import '../../widgets/responsive_wrapper.dart';
-import '../../models/input_format.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
 import '../parent/pin_entry_screen.dart';
@@ -35,7 +33,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
   List<Story> _latestStories = [];
   bool _isLoadingStories = false;
   int _currentNavIndex = 1; // Home tab is default (middle)
-  InputFormat _selectedFormat = InputFormat.image; // Default to image
   late AnimationController _animationController;
   late Animation<double> _slideAnimation;
   bool _isAnimating = false;
@@ -147,7 +144,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
         });
         break;
       case 2:
-        // Create - open upload screen with selected format
+        // Create - open upload screen
         _openUploadScreen();
         // Reset navigation index since we don't stay on create tab
         setState(() {
@@ -202,99 +199,178 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
 
     return Scaffold(
       backgroundColor: AppColors.secondary,
-      body: CustomScrollView(
-              slivers: [
-                // Header and yellow section (scrollable)
-                SliverToBoxAdapter(
-                  child: Container(
-                    color: AppColors.secondary,
-                    child: Column(
-                      children: [
-                        // Header with title and profile on same line
-                        SafeArea(
-                          bottom: false,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              AppTheme.getGlobalPadding(context),
-                              AppTheme.screenHeaderTopPadding,
-                              AppTheme.getGlobalPadding(context),
-                              0,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'My tales',
-                                  style: Theme.of(context).textTheme.headlineLarge,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, '/profile-select');
-                                  },
-                                  child: Column(
-                                    children: [
-                                      ProfileAvatar(
-                                        radius: 25,
-                                        profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        _selectedKid?.name ?? 'Kid',
-                                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                          color: AppColors.textDark,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Yellow section content (Create button and icons aligned)
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            AppTheme.getGlobalPadding(context),
-                            20, // Less spacing after header
-                            AppTheme.getGlobalPadding(context),
-                            30, // Less bottom padding to not overlap shadow
-                          ),
-                          child: _buildCreateSection(),
-                        ),
-                        
-                        // Space for shadow to show
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
+      body: Stack(
+        children: [
+          // Bottom layer: Yellow background only
+          Container(
+            color: AppColors.secondary,
+            child: Column(
+              children: [
+                // Header space (header moved to Positioned)
+                SizedBox(
+                  height: AppTheme.screenHeaderTopPadding + 60, // Space for header
                 ),
-                // White section with shadow - fills remaining space
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
-                          blurRadius: 6,
-                          offset: const Offset(0, -1),
-                          spreadRadius: 0,
-                        ),
-                      ],
-                    ),
-                    child: SafeArea(
-                      bottom: true,
-                      top: false,
-                      child: _buildWhiteSectionContent(),
-                    ),
-                  ),
+                // Yellow section content (just spacing, button moved outside)
+                SizedBox(
+                  height: 120, // Space for mascot and button
+                ),
+                // Fill remaining space with yellow
+                Expanded(
+                  child: Container(color: AppColors.secondary),
                 ),
               ],
             ),
+          ),
+          // Middle layer: Cloud and mascot behind white container
+          Positioned(
+            top: 120, // Higher up in yellow section
+            left: _getResponsiveCloudPosition(context), // Responsive positioning
+            child: SvgPicture.asset(
+              'assets/images/cloud-1.svg',
+              width: MediaQuery.of(context).size.width * 1.8, // Larger
+              height: MediaQuery.of(context).size.width * 0.9,
+              fit: BoxFit.contain,
+              colorFilter: const ColorFilter.mode(
+                Color(0xFFDFBBC6), // EXACT same color as pink cloud in processing screen
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
+          Positioned(
+            top: 180, // Higher up in yellow section
+            left: 20, // Moved even further to the left
+            child: SvgPicture.asset(
+              'assets/images/mascot-body-1.svg',
+              width: 160,
+              height: 160,
+              fit: BoxFit.contain,
+            ),
+          ),
+          Positioned(
+            top: 210, // Move face lower on mascot body
+            left: 85, // Move face to the right
+            child: SvgPicture.asset(
+              'assets/images/face-1.svg', // Changed to face-1 as requested
+              width: 50,
+              height: 25,
+              fit: BoxFit.contain,
+            ),
+          ),
+          // Top layer: White container covers cloud and mascot
+          Positioned(
+            top: 260, // Position where white container should start
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 6,
+                    offset: const Offset(0, -1),
+                    spreadRadius: 0,
+                  ),
+                ],
+              ),
+              child: SafeArea(
+                bottom: true,
+                top: false,
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.only(left: AppTheme.getGlobalPadding(context)),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 24, 0, 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Favourites section
+                        _buildStorySection('Favourites', _favouriteStories),
+                        
+                        const SizedBox(height: 32),
+                        
+                        // Latest section
+                        _buildStorySection('Latest', _latestStories),
+                        
+                        const SizedBox(height: 32),
+                        
+                        // Kid's stories section
+                        _buildStorySection('${_selectedKid!.name}\'s stories', _stories),
+                        
+                        const SizedBox(height: 100), // Extra space for bottom nav
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // Header with title and profile on top of everything
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                  AppTheme.getGlobalPadding(context),
+                  AppTheme.screenHeaderTopPadding,
+                  AppTheme.getGlobalPadding(context),
+                  0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'My tales',
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/profile-select');
+                      },
+                      child: Column(
+                        children: [
+                          ProfileAvatar(
+                            radius: 25,
+                            profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            _selectedKid?.name ?? 'Kid',
+                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              color: AppColors.textDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Create button positioned on top of everything
+          Positioned(
+            top: 140, // Position it in the yellow section
+            right: AppTheme.getGlobalPadding(context),
+            child: SafeArea(
+              child: FilledButton(
+                onPressed: _openUploadScreen,
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Reduced horizontal padding
+                  minimumSize: const Size(120, 60), // Shorter width, same height
+                ),
+                child: const Text('create'),
+              ),
+            ),
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNav(
         currentIndex: _currentNavIndex,
         onTap: _onNavTap,
@@ -304,61 +380,21 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
 
 
   Widget _buildCreateSection() {
-    return Column(
-      children: [
-        // Format toggle icons at top (centered like upload screen)
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildToggleIcon(FontAwesomeIcons.image, FontAwesomeIcons.solidImage, InputFormat.image),
-            const SizedBox(width: 30),
-            _buildToggleIcon(FontAwesomeIcons.microphone, FontAwesomeIcons.microphone, InputFormat.audio),
-            const SizedBox(width: 30),
-            _buildToggleIcon(FontAwesomeIcons.penToSquare, FontAwesomeIcons.solidPenToSquare, InputFormat.text),
-          ],
-        ),
-        
-        const SizedBox(height: 25),
-        
-        // Create button centered below (violet)
-        ElevatedButton(
-          onPressed: _openUploadScreen,
-          child: const Text('create'),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildToggleIcon(IconData regularIcon, IconData solidIcon, InputFormat format) {
-    final isSelected = _selectedFormat == format;
-    
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedFormat = format;
-        });
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(6.0),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 200),
-          child: FaIcon(
-            isSelected ? solidIcon : regularIcon,
-            key: ValueKey(isSelected),
-            color: isSelected ? AppColors.primary : Colors.black54,
-            size: 20,
-          ),
-        ),
+    return Align(
+      alignment: Alignment.centerRight,
+      child: FilledButton(
+        onPressed: _openUploadScreen,
+        child: const Text('create'),
       ),
     );
   }
+
   
   void _openUploadScreen() {
     Navigator.pushNamed(
       context,
       '/upload',
       arguments: {
-        'format': _selectedFormat,
         'kid': _selectedKid,
       },
     ).then((_) {
@@ -497,7 +533,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                               color: AppColors.lightGrey,
                               child: const Center(
                                 child: Icon(
-                                  FontAwesomeIcons.image,
+                                  Icons.image,
                                   color: AppColors.grey,
                                   size: 24,
                                 ),
@@ -525,6 +561,22 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
         ),
       ),
     );
+  }
+
+  /// Get responsive cloud position to ensure it looks consistent across screen sizes
+  double _getResponsiveCloudPosition(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    
+    if (screenWidth < 600) {
+      // Mobile: position cloud further left, mostly off-screen
+      return -200;
+    } else if (screenWidth < 1200) {
+      // Tablet: move cloud much further left to maintain proportion
+      return -500;
+    } else {
+      // Desktop: move cloud very far left for much larger screens
+      return -800;
+    }
   }
 
 

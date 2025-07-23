@@ -2178,4 +2178,149 @@ case 2:
 
 ---
 
+## 🎨 Home Screen UI Redesign - Layered Design Implementation
+*July 23, 2025*
+
+### 🎯 Objective
+Redesign the home screen upper section to match the design mockup with proper layering: violet cloud, mascot character, and white create button positioned correctly with clean visual hierarchy.
+
+### 🏗️ Architecture Overhaul
+
+#### Stack-Based Layering System
+Implemented a robust 3-layer architecture to achieve the desired visual effect:
+
+```dart
+Stack(
+  children: [
+    // Layer 1: Yellow background (bottom)
+    Container(color: AppColors.secondary),
+    
+    // Layer 2: Cloud and mascot (middle) 
+    Positioned(...), // Cloud and mascot elements
+    
+    // Layer 3: White container + UI elements (top)
+    Positioned(...), // White container covers lower parts
+  ],
+)
+```
+
+#### Clean Separation of Concerns
+- **Background layer**: Pure yellow background filling entire screen
+- **Decorative layer**: Cloud and mascot positioned behind white container
+- **Content layer**: White container with stories, separate from background elements
+
+### 🎨 Visual Design Implementation
+
+#### Cloud Positioning System
+- **Color**: Used exact processing screen color (`Color(0xFFDFBBC6)`) as requested
+- **Responsive positioning**: Mobile (-200px), Tablet (-500px), Desktop (-800px)
+- **Size**: 1.8x screen width for proper partial visibility
+- **Layer**: Positioned behind white container for natural depth
+
+#### Mascot Character Integration  
+- **Body**: 160x160px positioned at `left: 20, top: 180`
+- **Face**: Changed to `face-1.svg` as requested, positioned at `left: 85, top: 210`
+- **Alignment**: Face perfectly centered on mascot body with proper vertical positioning
+- **Layer**: Behind white container, on top of yellow background
+
+#### Button System Optimization
+- **Create button**: Redesigned to be shorter (120px width) but same height (60px)
+- **Positioning**: Right-aligned in yellow section, on top of all elements
+- **Style**: White FilledButton with reduced horizontal padding (20px vs 32px)
+
+### 🔧 Technical Solutions
+
+#### Layering Architecture Problem-Solving
+**Challenge**: Initial implementation had cloud/mascot appearing on top of white container
+**Solution**: Restructured Stack order to place decorative elements before content elements
+
+**Challenge**: White container was part of same widget as yellow background  
+**Solution**: Separated into independent layers - yellow background, decorative elements, white container
+
+**Challenge**: Negative margins caused Flutter assertion errors
+**Solution**: Used `Transform.translate` for positioning, then ultimately restructured with proper Stack layering
+
+#### Responsive Design Implementation
+```dart
+double _getResponsiveCloudPosition(BuildContext context) {
+  final screenWidth = MediaQuery.of(context).size.width;
+  if (screenWidth < 600) return -200;      // Mobile
+  else if (screenWidth < 1200) return -500; // Tablet  
+  else return -800;                        // Desktop
+}
+```
+
+#### Header and Navigation Integration
+- **Header positioning**: Moved to positioned element on top of all layers
+- **Create button**: Positioned independently with custom styling
+- **Navigation**: Maintained bottom navigation bar functionality
+
+### 📱 User Experience Improvements
+
+#### Visual Hierarchy
+- **Clean layering**: Yellow → Cloud/Mascot → White container → UI elements
+- **Natural depth**: Cloud and mascot appear "behind" white container
+- **Consistent spacing**: Proper positioning maintains design integrity
+
+#### Responsive Behavior  
+- **Mobile-first design**: Optimized positioning for mobile screens
+- **Tablet adaptation**: Cloud repositioned to maintain visual balance
+- **Desktop scaling**: Proper cloud positioning for large screens
+
+#### Performance Optimization
+- **Efficient rendering**: Stack-based approach with minimal widget rebuilds
+- **Asset management**: SVG assets with proper colorFilter application
+- **Memory management**: Positioned widgets prevent unnecessary layout calculations
+
+### 🎯 Design System Consistency
+
+#### Color Implementation
+- **Exact color matching**: Used `Color(0xFFDFBBC6)` from processing screen
+- **Theme integration**: Maintained AppColors system throughout
+- **Visual consistency**: Colors match established design patterns
+
+#### Typography and Layout
+- **Font consistency**: All text uses centralized Manrope font system
+- **Spacing system**: Follows 8px grid spacing principles  
+- **Component reuse**: Leveraged existing story section and navigation components
+
+### 📊 Code Quality Metrics
+
+#### Architecture Improvements
+- **Clean separation**: 3 distinct layers with clear responsibilities
+- **Maintainability**: Responsive helper methods for easy adjustment
+- **Reusability**: Component structure allows for future design iterations
+- **Performance**: Efficient Stack-based rendering
+
+#### Files Modified
+- `child_home_screen.dart`: Complete UI restructure with layered Stack implementation
+- Removed dependencies on Sliver widgets for decorative elements
+- Added responsive cloud positioning system
+- Implemented proper mascot face/body alignment
+
+### 🚀 Results Achieved
+
+#### Visual Design Goals
+✅ **Layer hierarchy**: Yellow background → Cloud/Mascot → White container → UI  
+✅ **Cloud positioning**: Exact color and responsive positioning implemented  
+✅ **Mascot integration**: face-1.svg properly aligned with mascot body  
+✅ **Button optimization**: Shorter create button with maintained functionality  
+✅ **Responsive design**: Consistent appearance across mobile, tablet, desktop  
+
+#### User Experience Benefits
+- **Visual appeal**: Professional layered design matching mockup specifications
+- **Responsive experience**: Consistent visual balance across all screen sizes  
+- **Intuitive navigation**: Clear visual hierarchy guides user attention
+- **Performance**: Smooth rendering with efficient Stack-based architecture
+
+#### Technical Excellence
+- **Robust architecture**: Clean separation of background, decorative, and content layers
+- **Maintainable code**: Responsive helper methods and clear component structure
+- **Future-ready**: Architecture supports easy design iterations and improvements
+- **Cross-platform**: Consistent experience across mobile, tablet, and desktop platforms
+
+**Result**: Successfully implemented the layered home screen design with proper visual hierarchy, responsive cloud positioning, aligned mascot character, and optimized create button - creating a polished, professional interface that matches the design specifications while maintaining excellent code quality and user experience.
+
+---
+
 _Last updated: 2025-07-23_

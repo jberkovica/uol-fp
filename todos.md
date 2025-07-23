@@ -25,18 +25,18 @@ app:
 [] animation on home page when scroll down
 [] gallery view "see all" for more then 10?
 [] home page sections
-[] stories not loaded after new story created in galleryr
+[x] stories not loaded after new story created in galleryr
 [] font spacing
-[] use Manrope?
+[x] use Manrope?
 [] remove /test-processing
 [] improve text style in story, make it paragraphs
 [] logout at parent screen
 
 Priority:
-[] Manrope font
-[] darker violet color?
-[] create button in menu
-[] home page design
+[x] Manrope font
+[x] darker violet color?
+[x] create button in menu
+[x] home page design
 [] parent approve
 [] 3 language support
 [] all prompts separated and redesigned
