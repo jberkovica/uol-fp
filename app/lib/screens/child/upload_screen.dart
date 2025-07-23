@@ -11,6 +11,7 @@ import '../../widgets/app_button.dart';
 import '../../services/ai_story_service.dart';
 import '../../models/story.dart';
 import '../../models/kid.dart';
+import './processing_screen.dart';
 
 // Custom clipper for angled ellipse curve - same as splash screen
 class AngledEllipseClipper extends CustomClipper<Path> {
@@ -91,9 +92,9 @@ class _UploadScreenState extends State<UploadScreen> {
     return Scaffold(
       backgroundColor: AppColors.secondary, // Yellow background
       body: SafeArea(
-        child: _isProcessing
-            ? _buildProcessingView()
-            : Column(
+        child: Stack(
+          children: [
+            Column(
                 children: [
                   // Header with close button
                   _buildHeader(),
@@ -131,6 +132,18 @@ class _UploadScreenState extends State<UploadScreen> {
                   ),
                 ],
               ),
+            // Show ProcessingScreen overlay when processing
+            if (_isProcessing)
+              ProcessingScreen(
+                showCloseButton: true,
+                onClose: () {
+                  setState(() {
+                    _isProcessing = false;
+                  });
+                },
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -502,44 +515,4 @@ class _UploadScreenState extends State<UploadScreen> {
     }
   }
 
-  Widget _buildProcessingView() {
-    return Container(
-      color: AppColors.secondary,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/images/face-1.svg',
-              width: 120,
-              height: 60,
-              fit: BoxFit.contain,
-              colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
-            ),
-            const SizedBox(height: 40),
-            const CircularProgressIndicator(
-              color: AppColors.primary,
-              strokeWidth: 3,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Creating your magical story...',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: AppColors.textDark,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'This may take a few moments',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontSize: 14,
-                color: AppColors.textGrey,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }

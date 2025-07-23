@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
-import '../../services/ai_story_service.dart';
 import '../../services/kid_service.dart';
 import '../../services/app_state_service.dart';
 import '../../models/story.dart';
@@ -32,9 +30,6 @@ class ChildHomeScreen extends StatefulWidget {
 
 
 class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderStateMixin {
-  final AIStoryService _aiService = AIStoryService();
-  final ImagePicker _picker = ImagePicker();
-  bool _isProcessing = false;
   Kid? _selectedKid;
   List<Story> _stories = [];
   List<Story> _favouriteStories = [];
@@ -200,9 +195,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
 
     return Scaffold(
       backgroundColor: AppColors.secondary,
-      body: _isProcessing
-          ? SafeArea(child: _buildProcessingView())
-          : CustomScrollView(
+      body: CustomScrollView(
               slivers: [
                 // Header and yellow section (scrollable)
                 SliverToBoxAdapter(
@@ -304,44 +297,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
     );
   }
 
-  Widget _buildProcessingView() {
-    return Container(
-      color: AppColors.secondary,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              AppAssets.miraReady,
-              width: 120,
-              height: 120,
-              fit: BoxFit.contain,
-            ),
-            const SizedBox(height: 40),
-            const CircularProgressIndicator(
-              color: AppColors.primary,
-              strokeWidth: 3,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              'Creating your magical story...',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'This may take a few moments',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontSize: 14,
-                color: AppColors.textGrey,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildCreateSection() {
     return Column(
@@ -569,192 +524,5 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
     );
   }
 
-  void _showImageSourceOptions(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(24),
-          decoration: const BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(24),
-              topRight: Radius.circular(24),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Handle bar
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 24),
-                decoration: BoxDecoration(
-                  color: AppColors.textLight,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
 
-              // Title
-              Text(
-                'Select Image Source',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-
-              const SizedBox(height: 24),
-
-              // Camera option
-              _buildSourceButton(
-                icon: FontAwesomeIcons.camera,
-                label: 'Take Photo',
-                onPressed: () {
-                  Navigator.pop(context);
-                  _pickImage(ImageSource.camera);
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // Gallery option
-              _buildSourceButton(
-                icon: FontAwesomeIcons.image,
-                label: 'Choose from Gallery',
-                onPressed: () {
-                  Navigator.pop(context);
-                  _pickImage(ImageSource.gallery);
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // Cancel button
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.lightGrey,
-                  foregroundColor: AppColors.textGrey,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  'Cancel',
-                  style: Theme.of(context).textTheme.labelLarge,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildSourceButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-  }) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.white,
-          minimumSize: const Size(double.infinity, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          elevation: 0,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 24),
-            const SizedBox(width: 12),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final XFile? image = await _picker.pickImage(
-        source: source,
-        maxWidth: 1024,
-        maxHeight: 1024,
-        imageQuality: 85,
-      );
-
-      if (image != null) {
-        setState(() {
-          _isProcessing = true;
-        });
-
-        // Generate story using the AI service (pass XFile directly)
-        await _generateStory(image);
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to pick image: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  }
-
-  Future<void> _generateStory(XFile imageFile) async {
-    try {
-      // Use the selected kid's ID for story generation
-      if (_selectedKid == null) {
-        throw Exception('No kid profile selected');
-      }
-
-      // Generate story using AI service with kid ID
-      final Story story =
-          await _aiService.generateStoryFromImageFile(imageFile, _selectedKid!.id);
-
-      setState(() {
-        _isProcessing = false;
-      });
-
-      // Refresh stories list to show the new story
-      await _loadStories();
-
-      // Navigate to story display/playback screen
-      if (mounted) {
-        Navigator.pushNamed(
-          context,
-          '/story-display',
-          arguments: story,
-        );
-      }
-    } catch (e) {
-      setState(() {
-        _isProcessing = false;
-      });
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to generate story: $e'),
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 5),
-          ),
-        );
-      }
-    }
-  }
 }

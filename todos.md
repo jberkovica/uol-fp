@@ -20,6 +20,16 @@ app:
 [] notificstion about new story
 [] change all icons to fontawesome or 
 [] home page alligh title wit profile
+[] remove print to console
+[] all icons same style
+[] animation on home page when scroll down
+[] gallery view "see all" for more then 10?
+[] home page sections
+[] stories not loaded after new story created in galleryr
+[] font spacing
+[] use Manrope?
+[] remove /test-processing
+[] improve text style in story, make it paragraphs
 
 backend:
 [] image generation prompt
@@ -27,6 +37,7 @@ backend:
 [] use only open ai for all models
 [] log requests and responces
 [] save audio and images to db? s3?
+[] age 3-10?
 
 
 [] multi language support

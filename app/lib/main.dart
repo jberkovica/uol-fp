@@ -67,6 +67,7 @@ class MiraStorytellerApp extends StatelessWidget {
         '/parent-dashboard': (context) => const PinEntryScreen(),
         '/parent-dashboard-main': (context) => const ParentDashboardMain(),
         '/story-preview': (context) => const StoryPreviewScreen(),
+        '/test-processing': (context) => const ProcessingScreen(),
       },
     );
   }
