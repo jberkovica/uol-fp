@@ -12,7 +12,6 @@ import '../../models/kid.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
 import '../../widgets/responsive_wrapper.dart';
-import '../../widgets/app_button.dart';
 import '../../models/input_format.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
@@ -120,7 +119,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to load stories: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
           ),
         );
       }
@@ -314,9 +313,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
         const SizedBox(height: 25),
         
         // Create button centered below (violet)
-        AppButton.primary(
-          text: 'create',
+        ElevatedButton(
           onPressed: _openUploadScreen,
+          child: const Text('create'),
         ),
       ],
     );

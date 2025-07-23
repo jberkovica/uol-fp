@@ -30,6 +30,16 @@ app:
 [] use Manrope?
 [] remove /test-processing
 [] improve text style in story, make it paragraphs
+[] logout at parent screen
+
+Priority:
+[] Manrope font
+[] create button in menu
+[] home page design
+[] parent approve
+[] 3 language support
+[] all prompts separated and redesigned
+[] switch from elevenlab to open ai for tts
 
 backend:
 [] image generation prompt

@@ -5,9 +5,9 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
+import '../../constants/app_theme.dart';
 import '../../models/input_format.dart';
 import '../../widgets/responsive_wrapper.dart';
-import '../../widgets/app_button.dart';
 import '../../services/ai_story_service.dart';
 import '../../models/story.dart';
 import '../../models/kid.dart';
@@ -248,15 +248,14 @@ class _UploadScreenState extends State<UploadScreen> {
   }
   
   Widget _buildUploadButton() {
-    return AppButton.pill(
-      text: 'upload',
+    return FilledButton(
       onPressed: _showImageSourceOptions,
+      child: const Text('upload'),
     );
   }
   
   Widget _buildDictateButton() {
-    return AppButton.pill(
-      text: 'dictate',
+    return FilledButton(
       onPressed: () {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -265,6 +264,7 @@ class _UploadScreenState extends State<UploadScreen> {
           ),
         );
       },
+      child: const Text('dictate'),
     );
   }
   
@@ -291,39 +291,32 @@ class _UploadScreenState extends State<UploadScreen> {
             controller: _textController,
             maxLines: null,
             expands: true,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'write your idea here...',
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
               fillColor: Colors.transparent,
               filled: false,
-              hintStyle: TextStyle(color: AppColors.textGrey),
+              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textGrey),
               contentPadding: EdgeInsets.zero,
             ),
-            style: const TextStyle(fontSize: 16, color: AppColors.textDark),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.textDark),
           ),
         ),
         const SizedBox(height: 20),
-        AppButton.orange(
-          text: 'submit',
+        FilledButton(
           onPressed: () {
             if (_textController.text.trim().isNotEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('Text story generation will be implemented soon!'),
-                  backgroundColor: AppColors.orange,
-                ),
-              );
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Please enter some text first'),
-                  backgroundColor: AppColors.error,
+                  backgroundColor: AppColors.primary,
                 ),
               );
             }
           },
+          child: const Text('submit'),
         ),
       ],
     );
@@ -392,19 +385,8 @@ class _UploadScreenState extends State<UploadScreen> {
               // Cancel button
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.lightGrey,
-                  foregroundColor: AppColors.textGrey,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  'Cancel',
-                  style: Theme.of(context).textTheme.labelLarge,
-                ),
+                style: AppTheme.cancelButtonStyle,
+                child: const Text('Cancel'),
               ),
             ],
           ),
@@ -422,24 +404,13 @@ class _UploadScreenState extends State<UploadScreen> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.white,
-          minimumSize: const Size(double.infinity, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          elevation: 0,
-        ),
+        style: AppTheme.modalActionButtonStyle,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 24),
             const SizedBox(width: 12),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
+            Text(label),
           ],
         ),
       ),
@@ -466,7 +437,7 @@ class _UploadScreenState extends State<UploadScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to pick image: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
           ),
         );
       }
@@ -507,7 +478,7 @@ class _UploadScreenState extends State<UploadScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to generate story: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
             duration: const Duration(seconds: 5),
           ),
         );

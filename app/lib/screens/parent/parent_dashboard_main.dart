@@ -80,7 +80,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to load kids: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
           ),
         );
       }
@@ -552,7 +552,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
+              leading: const Icon(Icons.logout, color: AppColors.error),
               title: const Text('Exit Parent Mode'),
               onTap: () {
                 Navigator.pop(context);
@@ -585,7 +585,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           ),
           TextButton(
             onPressed: () => _deleteKid(kid),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
             child: const Text('Delete'),
           ),
         ],
@@ -614,7 +614,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('${kid.name}\'s profile deleted successfully'),
-            backgroundColor: Colors.green,
+            backgroundColor: AppColors.success,
           ),
         );
       }
@@ -623,7 +623,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to delete profile: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
           ),
         );
       }

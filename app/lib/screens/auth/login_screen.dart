@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
+import '../../constants/app_theme.dart';
 import '../../services/auth_service.dart';
 import '../../utils/page_transitions.dart';
 import 'signup_screen.dart';
@@ -73,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.error,
         ),
       );
     }
@@ -124,14 +125,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextFormField(
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          decoration: const InputDecoration(
                             labelText: 'Email',
-                            prefixIcon: const Icon(Icons.email),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[50],
+                            prefixIcon: Icon(Icons.email),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -150,6 +147,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextFormField(
                           controller: _passwordController,
                           obscureText: _obscurePassword,
+                          style: Theme.of(context).textTheme.bodyMedium,
                           decoration: InputDecoration(
                             labelText: 'Password',
                             prefixIcon: const Icon(Icons.lock),
@@ -165,11 +163,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               },
                             ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[50],
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -184,30 +177,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 24),
 
                         // Login button
-                        ElevatedButton(
-                          onPressed: _isLoading ? null : _signInWithEmail,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primary,
-                            foregroundColor: AppColors.textLight,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 48,
+                          child: ElevatedButton(
+                            onPressed: _isLoading ? null : _signInWithEmail,
+                            style: AppTheme.authButtonStyle,
+                            child: _isLoading
+                                ? const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                    ),
+                                  )
+                                : const Text('Sign In'),
                           ),
-                          child: _isLoading
-                              ? const SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        AppColors.textLight),
-                                  ),
-                                )
-                              : Text(
-                                  'Sign In',
-                                  style: Theme.of(context).textTheme.labelLarge,
-                                ),
                         ),
                         const SizedBox(height: 16),
 

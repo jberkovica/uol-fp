@@ -34,6 +34,8 @@ class AppColors {
   static const Color buttonSecondary = Color(0xFFFFDC7B); // Yellow buttons
   static const Color buttonOrange = Color(0xFFFFAC5B); // Orange buttons
   static const Color buttonWhite = Colors.white; // White buttons
+  static const Color buttonCancel = Color(0xFFF5F5F5); // Cancel buttons (light grey)
+  static const Color buttonYellow = Color(0xFFFFDC7B); // Alternative yellow buttons
 
   // AVATAR/CHARACTER COLORS - for widget compatibility
   static const Color avatarViolet = Color(0xFFA56AFF);

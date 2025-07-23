@@ -76,9 +76,9 @@ class ProfileAvatar extends StatelessWidget {
       case ProfileType.profile2:
         return AppColors.secondary;
       case ProfileType.profile3:
-        return Colors.green;
+        return AppColors.success;
       case ProfileType.profile4:
-        return Colors.orange;
+        return AppColors.orange;
     }
   }
 

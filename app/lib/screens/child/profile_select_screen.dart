@@ -211,7 +211,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                             Text(
                               _errorMessage!,
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Colors.red,
+                                color: AppColors.error,
                               ),
                               textAlign: TextAlign.center,
                             ),

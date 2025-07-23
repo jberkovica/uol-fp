@@ -544,7 +544,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to play audio: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
           ),
         );
       }

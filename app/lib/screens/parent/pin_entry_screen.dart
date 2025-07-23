@@ -48,7 +48,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Incorrect PIN. Please try again.'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -149,7 +149,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: _isError 
-                ? Colors.red
+                ? AppColors.error
                 : (isFilled ? Colors.white : Colors.white.withValues(alpha: 0.3)),
           ),
         );

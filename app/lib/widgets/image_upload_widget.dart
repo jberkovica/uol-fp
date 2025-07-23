@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import '../constants/app_theme.dart';
 import '../constants/app_colors.dart';
+import '../constants/app_theme.dart';
 
 class ImageUploadWidget extends StatefulWidget {
   final Function(XFile) onImageSelected;
@@ -47,7 +47,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to pick image: $e'),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.error,
           ),
         );
       }
@@ -119,9 +119,8 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
               const SizedBox(height: 16),
 
               // Cancel button
-              ElevatedButton(
+              FilledButton(
                 onPressed: () => Navigator.pop(context),
-                style: AppTheme.whiteButton,
                 child: const Text('Cancel'),
               ),
             ],
@@ -140,7 +139,7 @@ class _ImageUploadWidgetState extends State<ImageUploadWidget> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: onPressed,
-        style: AppTheme.secondaryButton,
+        style: AppTheme.yellowActionButtonStyle,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

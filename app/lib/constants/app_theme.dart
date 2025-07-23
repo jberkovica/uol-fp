@@ -24,7 +24,7 @@ class ResponsivePaddingConfig {
 ///
 /// DESIGN PRINCIPLES:
 /// 1. FLAT DESIGN ONLY - NO shadows, gradients, elevation
-/// 2. ROBOTO FONT throughout
+/// 2. MANROPE FONT throughout
 /// 3. EXACT BRAND COLORS: Purple #9F60FF, Yellow #FFD560
 /// 4. 8px grid spacing system
 /// 5. CHILD-FRIENDLY, clean interface
@@ -37,6 +37,12 @@ class ResponsivePaddingConfig {
 ///
 class AppTheme {
   /// ═══════════════════════════════════════════════════════════════════════════
+  /// FONT FAMILY CONFIGURATION - Single source of truth
+  /// ═══════════════════════════════════════════════════════════════════════════
+  
+  static String get _fontFamily => GoogleFonts.manrope().fontFamily!;
+
+  /// ═══════════════════════════════════════════════════════════════════════════
   /// CORE THEME DATA - Apply this to MaterialApp
   /// ═══════════════════════════════════════════════════════════════════════════
 
@@ -44,7 +50,7 @@ class AppTheme {
     return ThemeData(
       primaryColor: AppColors.primary,
       scaffoldBackgroundColor: AppColors.white,
-      fontFamily: GoogleFonts.roboto().fontFamily,
+      fontFamily: _fontFamily,
 
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primary,
@@ -59,6 +65,7 @@ class AppTheme {
 
       // COMPONENT THEMES
       elevatedButtonTheme: _elevatedButtonTheme,
+      filledButtonTheme: _filledButtonTheme,
       appBarTheme: _appBarTheme,
       cardTheme: _cardTheme,
       inputDecorationTheme: _inputDecorationTheme,
@@ -78,13 +85,15 @@ class AppTheme {
   static TextTheme get _textTheme {
     return TextTheme(
       // DISPLAY TEXT - For main titles
-      displayLarge: GoogleFonts.roboto(
+      displayLarge: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 32,
         fontWeight: FontWeight.w700,
         color: AppColors.textDark,
         height: 1.2,
       ),
-      displayMedium: GoogleFonts.roboto(
+      displayMedium: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 28,
         fontWeight: FontWeight.w700,
         color: AppColors.textDark,
@@ -92,19 +101,22 @@ class AppTheme {
       ),
 
       // HEADLINES - For section headers
-      headlineLarge: GoogleFonts.roboto(
+      headlineLarge: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 24,
         fontWeight: FontWeight.w700,
         color: AppColors.textDark,
         height: 1.3,
       ),
-      headlineMedium: GoogleFonts.roboto(
+      headlineMedium: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 20,
         fontWeight: FontWeight.w700,
         color: AppColors.textDark,
         height: 1.3,
       ),
-      headlineSmall: GoogleFonts.roboto(
+      headlineSmall: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: AppColors.textDark,
@@ -112,19 +124,22 @@ class AppTheme {
       ),
 
       // BODY TEXT - For paragraphs
-      bodyLarge: GoogleFonts.roboto(
+      bodyLarge: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 18,
         fontWeight: FontWeight.normal,
         color: AppColors.textDark,
         height: 1.5,
       ),
-      bodyMedium: GoogleFonts.roboto(
+      bodyMedium: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 16,
         fontWeight: FontWeight.normal,
         color: AppColors.textDark,
         height: 1.5,
       ),
-      bodySmall: GoogleFonts.roboto(
+      bodySmall: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 14,
         fontWeight: FontWeight.normal,
         color: AppColors.textGrey,
@@ -132,17 +147,20 @@ class AppTheme {
       ),
 
       // LABELS - For buttons and small text
-      labelLarge: GoogleFonts.roboto(
+      labelLarge: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 16,
         fontWeight: FontWeight.w500,
         color: AppColors.textDark,
       ),
-      labelMedium: GoogleFonts.roboto(
+      labelMedium: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 14,
         fontWeight: FontWeight.w500,
         color: AppColors.textDark,
       ),
-      labelSmall: GoogleFonts.roboto(
+      labelSmall: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 12,
         fontWeight: FontWeight.w500,
         color: AppColors.textGrey,
@@ -151,62 +169,126 @@ class AppTheme {
   }
 
   /// ═══════════════════════════════════════════════════════════════════════════
-  /// BUTTON THEME SYSTEM
+  /// BUTTON THEME SYSTEM - Flutter Best Practice
+  /// ═══════════════════════════════════════════════════════════════════════════
+  /// 
+  /// USAGE:
+  /// - ElevatedButton() - Primary violet buttons (pill-shaped with shadow)
+  /// - FilledButton() - White buttons (pill-shaped with shadow)  
+  /// - ElevatedButton(style: AppTheme.authButtonStyle) - Auth buttons (no shadow, less rounded)
+  /// 
+  /// This follows Flutter's recommended theming approach.
   /// ═══════════════════════════════════════════════════════════════════════════
 
+  /// Primary violet buttons - matches AppButton.primary() exactly
   static ElevatedButtonThemeData get _elevatedButtonTheme {
     return ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.secondary,
-        foregroundColor: AppColors.textDark,
+        backgroundColor: AppColors.buttonPrimary,
+        foregroundColor: AppColors.textLight,
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 0, // ZERO elevation
-        shadowColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)), // Pill shape (60/2)
+        elevation: 5, // Proper elevation for shadow
+        shadowColor: Colors.black.withOpacity(0.1),
         surfaceTintColor: Colors.transparent,
-        textStyle:
-            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500),
-        minimumSize: const Size(140, 56),
+        textStyle: TextStyle(
+            fontFamily: _fontFamily, 
+            fontSize: 20, 
+            fontWeight: FontWeight.w500,
+        ),
+        minimumSize: const Size(200, 60),
       ),
     );
   }
 
-  // INDIVIDUAL BUTTON STYLES
-  static ButtonStyle get primaryButton => ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.textLight,
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 0,
-        shadowColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        textStyle:
-            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500),
-      );
-
-  static ButtonStyle get secondaryButton => ElevatedButton.styleFrom(
-        backgroundColor: AppColors.secondary,
+  /// White buttons - matches AppButton.white() exactly
+  static FilledButtonThemeData get _filledButtonTheme {
+    return FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: AppColors.buttonWhite,
         foregroundColor: AppColors.textDark,
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 0,
-        shadowColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)), // Pill shape (60/2)
+        elevation: 5, // Proper elevation for shadow
+        shadowColor: Colors.black.withOpacity(0.1),
         surfaceTintColor: Colors.transparent,
-        textStyle:
-            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500),
-      );
+        textStyle: TextStyle(
+            fontFamily: _fontFamily, 
+            fontSize: 20, 
+            fontWeight: FontWeight.w500,
+        ),
+        minimumSize: const Size(200, 60),
+      ),
+    );
+  }
 
-  static ButtonStyle get whiteButton => ElevatedButton.styleFrom(
-        backgroundColor: AppColors.white,
-        foregroundColor: AppColors.textDark,
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 0,
-        shadowColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        textStyle:
-            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500),
-      );
+  /// Auth button style - matches auth buttons exactly (no shadow, less rounded)
+  static ButtonStyle get authButtonStyle => ElevatedButton.styleFrom(
+    backgroundColor: AppColors.buttonPrimary,
+    foregroundColor: AppColors.textLight,
+    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), // Medium rounded
+    elevation: 0,
+    shadowColor: Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+    textStyle: TextStyle(
+        fontFamily: _fontFamily, 
+        fontSize: 20, 
+        fontWeight: FontWeight.w500,
+    ),
+    minimumSize: const Size(double.infinity, 48),
+  );
+
+  /// Cancel button style - light grey background with no shadow
+  static ButtonStyle get cancelButtonStyle => ElevatedButton.styleFrom(
+    backgroundColor: AppColors.buttonCancel,
+    foregroundColor: AppColors.textGrey,
+    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    elevation: 0,
+    shadowColor: Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+    textStyle: TextStyle(
+        fontFamily: _fontFamily, 
+        fontSize: 16, 
+        fontWeight: FontWeight.w500,
+    ),
+    minimumSize: const Size(double.infinity, 50),
+  );
+
+  /// Modal action button style - violet background for modal actions
+  static ButtonStyle get modalActionButtonStyle => ElevatedButton.styleFrom(
+    backgroundColor: AppColors.buttonPrimary,
+    foregroundColor: AppColors.textLight,
+    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    elevation: 0,
+    shadowColor: Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+    textStyle: TextStyle(
+        fontFamily: _fontFamily, 
+        fontSize: 16, 
+        fontWeight: FontWeight.w500,
+    ),
+    minimumSize: const Size(double.infinity, 50),
+  );
+
+  /// Yellow modal action button style - for image upload widget
+  static ButtonStyle get yellowActionButtonStyle => ElevatedButton.styleFrom(
+    backgroundColor: AppColors.buttonYellow,
+    foregroundColor: AppColors.textDark,
+    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+    elevation: 0,
+    shadowColor: Colors.transparent,
+    surfaceTintColor: Colors.transparent,
+    textStyle: TextStyle(
+        fontFamily: _fontFamily, 
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+    ),
+    minimumSize: const Size(double.infinity, 50),
+  );
 
   /// ═══════════════════════════════════════════════════════════════════════════
   /// COMPONENT THEMES
@@ -219,7 +301,8 @@ class AppTheme {
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       centerTitle: true,
-      titleTextStyle: GoogleFonts.roboto(
+      titleTextStyle: TextStyle(
+        fontFamily: _fontFamily,
         fontSize: 22,
         fontWeight: FontWeight.w600,
         color: AppColors.textLight,
@@ -242,7 +325,8 @@ class AppTheme {
 
   static InputDecorationTheme get _inputDecorationTheme {
     return InputDecorationTheme(
-      labelStyle: GoogleFonts.roboto(
+      labelStyle: TextStyle(
+        fontFamily: _fontFamily,
         color: AppColors.textGrey,
         fontSize: 14,
         fontWeight: FontWeight.w500,
