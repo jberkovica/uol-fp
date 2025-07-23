@@ -121,8 +121,9 @@ class AppButton extends StatelessWidget {
                   )
                 : Text(
                     text,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: effectiveTextColor,
+                      fontWeight: FontWeight.w500,
                       fontSize: 20,
                     ),
                   ),

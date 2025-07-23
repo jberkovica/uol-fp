@@ -261,8 +261,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                     ),
                   ),
                 ),
-                // White section with shadow
-                SliverToBoxAdapter(
+                // White section with shadow - fills remaining space
+                SliverFillRemaining(
+                  hasScrollBody: false,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
