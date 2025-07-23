@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
+import '../../models/input_format.dart';
 import '../../models/kid.dart';
 import '../../models/story.dart';
 import '../../widgets/bottom_nav.dart';
@@ -20,7 +21,7 @@ class ParentDashboardMain extends StatefulWidget {
 }
 
 class _ParentDashboardMainState extends State<ParentDashboardMain> {
-  int _currentNavIndex = 2; // Settings tab
+  int _currentNavIndex = 3; // Settings tab (moved from 2 to 3)
   List<Kid> _kids = [];
   Map<String, List<Story>> _kidStories = {};
   bool _isLoading = false;
@@ -98,14 +99,68 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         Navigator.of(context).pop();
         break;
       case 2:
-        // Already on parent dashboard
+        // Create - navigate to upload screen for selected kid
+        _navigateToCreateStory();
+        break;
+      case 3:
+        // Already on parent dashboard (Settings)
         setState(() {
-          _currentNavIndex = 2;
+          _currentNavIndex = 3;
         });
         break;
     }
   }
   
+  void _navigateToCreateStory() {
+    // Get the last selected kid from local storage
+    final selectedKid = AppStateService.getSelectedKid();
+    
+    if (selectedKid != null) {
+      // Navigate to upload screen for creating a story
+      Navigator.pushNamed(
+        context,
+        '/upload',
+        arguments: {
+          'format': InputFormat.image, // Default to image format
+          'kid': selectedKid, // Selected kid profile
+        },
+      ).then((_) {
+        // Reset navigation index when returning from upload
+        setState(() {
+          _currentNavIndex = 3;
+        });
+        // Refresh stories after creating new one
+        _loadKids();
+      });
+    } else if (_kids.isNotEmpty) {
+      // If no specific kid selected, use first available kid
+      final firstKid = _kids.first;
+      Navigator.pushNamed(
+        context,
+        '/upload',
+        arguments: {
+          'format': InputFormat.image, // Default to image format
+          'kid': firstKid, // First available kid
+        },
+      ).then((_) {
+        // Reset navigation index when returning from upload
+        setState(() {
+          _currentNavIndex = 3;
+        });
+        // Refresh stories after creating new one
+        _loadKids();
+      });
+    } else {
+      // No kids available - show message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please add a kid profile first to create stories'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
+  }
+
   void _navigateToKidProfile() {
     // Get the last selected kid from local storage
     final selectedKid = AppStateService.getSelectedKid();

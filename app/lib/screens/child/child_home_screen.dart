@@ -147,6 +147,14 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
         });
         break;
       case 2:
+        // Create - open upload screen with selected format
+        _openUploadScreen();
+        // Reset navigation index since we don't stay on create tab
+        setState(() {
+          _currentNavIndex = 1;
+        });
+        break;
+      case 3:
         // Settings - navigate to parent dashboard with slide RIGHT (from right to left)
         Navigator.of(context).push(
           SlideFromRightRoute(page: const PinEntryScreen()),

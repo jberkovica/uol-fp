@@ -47,6 +47,13 @@ class BottomNav extends StatelessWidget {
               _buildNavItem(
                 context: context,
                 index: 2,
+                icon: Icons.add_circle_outline,
+                activeIcon: Icons.add_circle,
+                label: 'Create',
+              ),
+              _buildNavItem(
+                context: context,
+                index: 3,
                 icon: Icons.settings_outlined,
                 activeIcon: Icons.settings,
                 label: 'Settings',

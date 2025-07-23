@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
+import '../../models/input_format.dart';
 import '../../models/kid.dart';
 import '../../models/story.dart';
 import '../../services/kid_service.dart';
@@ -90,6 +91,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Navigator.of(context).pushReplacementNamed('/child-home');
         break;
       case 2:
+        // Create - navigate to upload screen with default image format
+        Navigator.pushNamed(
+          context,
+          '/upload',
+          arguments: {
+            'format': InputFormat.image, // Default to image format
+            'kid': _kid, // Current kid profile
+          },
+        ).then((_) {
+          // Reset navigation index when returning from upload
+          setState(() {
+            _currentNavIndex = 0;
+          });
+          // Refresh stories after creating new one
+          _loadStories();
+        });
+        break;
+      case 3:
         // Settings - navigate to parent dashboard with slide RIGHT (from right to left)
         Navigator.of(context).push(
           SlideFromRightRoute(page: const PinEntryScreen()),
