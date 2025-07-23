@@ -95,10 +95,9 @@ class BottomNav extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               label,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: isActive ? AppColors.primary : AppColors.textGrey,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                fontSize: 12,
               ),
             ),
           ],

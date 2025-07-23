@@ -99,9 +99,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
                         Text(
                           'Parent Access',
                           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
-                            fontSize: 32,
+                            color: AppColors.textLight,
                             letterSpacing: -0.5,
                           ),
                         ),
@@ -111,9 +109,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
                         Text(
                           'Enter your 4-digit PIN',
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: Colors.white.withValues(alpha: 0.9),
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
+                            color: AppColors.textLight.withValues(alpha: 0.9),
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -223,9 +219,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
             child: Text(
               number,
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                fontSize: 28,
+                color: AppColors.textLight,
                 height: 1.0,
               ),
             ),

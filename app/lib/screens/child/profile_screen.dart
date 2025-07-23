@@ -299,10 +299,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Join date
           Text(
             'Creating stories since ${_formatDate(_kid!.createdAt)}',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textGrey,
-              fontSize: 14,
-            ),
+            style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
       ),
@@ -386,10 +383,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(height: 4),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontSize: 12,
-            color: AppColors.textGrey,
-          ),
+          style: Theme.of(context).textTheme.labelSmall,
         ),
       ],
     );
@@ -421,10 +415,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 4),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontSize: 12,
-              color: AppColors.textGrey,
-            ),
+            style: Theme.of(context).textTheme.labelSmall,
             textAlign: TextAlign.center,
           ),
         ],
@@ -496,16 +487,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
+        style: Theme.of(context).textTheme.labelLarge,
       ),
       subtitle: Text(
         subtitle,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          fontSize: 12,
-          color: AppColors.textGrey,
-        ),
+        style: Theme.of(context).textTheme.labelSmall,
       ),
       trailing: const Icon(
         Icons.arrow_forward_ios,

@@ -19,7 +19,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
   bool _isLoading = false;
   bool _backgroundMusicEnabled = true;
   bool _isBackgroundPlaying = false;
-  double _fontSize = 16.0;
+  int _fontSizeIndex = 0; // 0=bodyMedium(16px), 1=headlineMedium(20px), 2=headlineLarge(24px)
   double _backgroundVolume = 0.2; // Initial volume for background music intro
   double _backgroundVolumeMid = 0.1; // Medium volume as narration approaches
   double _backgroundVolumeNarration = 0.01; // Very low volume during narration
@@ -110,11 +110,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
       contentWidgets.add(
         Text(
           paragraph,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontSize: _fontSize,
-            height: 1.8,
-            color: AppColors.textDark,
-          ),
+          style: _getStoryTextStyle(context),
         ),
       );
       
@@ -317,17 +313,11 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
           children: [
             Text(
               _formatDuration(_currentPosition),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontSize: 12,
-                color: AppColors.textGrey,
-              ),
+              style: Theme.of(context).textTheme.labelSmall,
             ),
             Text(
               _formatDuration(_totalDuration),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontSize: 12,
-                color: AppColors.textGrey,
-              ),
+              style: Theme.of(context).textTheme.labelSmall,
             ),
           ],
         ),
@@ -442,14 +432,35 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
 
   void _toggleTextSize() {
     setState(() {
-      if (_fontSize == 16.0) {
-        _fontSize = 20.0;
-      } else if (_fontSize == 20.0) {
-        _fontSize = 24.0;
-      } else {
-        _fontSize = 16.0;
-      }
+      _fontSizeIndex = (_fontSizeIndex + 1) % 3;
     });
+  }
+
+  TextStyle _getStoryTextStyle(BuildContext context) {
+    switch (_fontSizeIndex) {
+      case 0:
+        return Theme.of(context).textTheme.bodyMedium!.copyWith(
+          height: 1.8,
+          color: AppColors.textDark,
+        );
+      case 1:
+        return Theme.of(context).textTheme.headlineMedium!.copyWith(
+          height: 1.8,
+          color: AppColors.textDark,
+          fontWeight: FontWeight.normal, // Override bold for reading
+        );
+      case 2:
+        return Theme.of(context).textTheme.headlineLarge!.copyWith(
+          height: 1.8,
+          color: AppColors.textDark,
+          fontWeight: FontWeight.normal, // Override bold for reading
+        );
+      default:
+        return Theme.of(context).textTheme.bodyMedium!.copyWith(
+          height: 1.8,
+          color: AppColors.textDark,
+        );
+    }
   }
 
   void _showOptionsMenu() {
@@ -473,7 +484,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
             ListTile(
               leading: const Icon(Icons.text_fields),
               title: const Text('Text Size'),
-              subtitle: Text('Current: ${_fontSize.toInt()}pt'),
+              subtitle: Text('Current: ${[16, 20, 24][_fontSizeIndex]}pt'),
               onTap: () {
                 Navigator.pop(context);
                 _toggleTextSize();

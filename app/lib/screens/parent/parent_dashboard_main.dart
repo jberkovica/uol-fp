@@ -384,9 +384,8 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                   const SizedBox(height: 4),
                   Text(
                     '$storyCount ${storyCount == 1 ? 'story' : 'stories'}',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: AppColors.primary,
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   const SizedBox(height: 2),

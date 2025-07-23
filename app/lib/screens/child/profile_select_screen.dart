@@ -86,7 +86,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                   const SizedBox(height: 20),
                   Text(
                     'Choose Avatar:',
-                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.w600),
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   const SizedBox(height: 12),
                   Wrap(
@@ -157,7 +157,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                   ),
                   child: Text(
                     'Add',
-                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.w600),
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
               ],
@@ -404,10 +404,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
             const SizedBox(height: 12),
             Text(
               name,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.normal, // Changed from bold to normal
-                color: AppColors.textDark,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
           ],
@@ -440,10 +437,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
             const SizedBox(height: 12),
             Text(
               'Add profile',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.normal,
-                color: AppColors.textDark,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),
           ],

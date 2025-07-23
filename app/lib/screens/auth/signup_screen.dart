@@ -342,9 +342,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                       child: Text(
                         'Sign In',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: AppColors.secondary,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),

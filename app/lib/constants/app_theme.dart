@@ -84,23 +84,11 @@ class AppTheme {
 
   static TextTheme get _textTheme {
     return TextTheme(
-      // DISPLAY TEXT - For main titles
-      displayLarge: TextStyle(
-        fontFamily: _fontFamily,
-        fontSize: 32,
-        fontWeight: FontWeight.w700,
-        color: AppColors.textDark,
-        height: 1.2,
-      ),
-      displayMedium: TextStyle(
-        fontFamily: _fontFamily,
-        fontSize: 28,
-        fontWeight: FontWeight.w700,
-        color: AppColors.textDark,
-        height: 1.2,
-      ),
-
-      // HEADLINES - For section headers
+      /// ═══════════════════════════════════════════════════════════════════════════
+      /// BOLD TITLES - Only 2 sizes for consistency
+      /// ═══════════════════════════════════════════════════════════════════════════
+      
+      // Large bold title - 24px (main screen titles, section headers)
       headlineLarge: TextStyle(
         fontFamily: _fontFamily,
         fontSize: 24,
@@ -108,6 +96,8 @@ class AppTheme {
         color: AppColors.textDark,
         height: 1.3,
       ),
+      
+      // Medium bold title - 20px (subsection headers, card titles)
       headlineMedium: TextStyle(
         fontFamily: _fontFamily,
         fontSize: 20,
@@ -115,15 +105,12 @@ class AppTheme {
         color: AppColors.textDark,
         height: 1.3,
       ),
-      headlineSmall: TextStyle(
-        fontFamily: _fontFamily,
-        fontSize: 18,
-        fontWeight: FontWeight.w700,
-        color: AppColors.textDark,
-        height: 1.3,
-      ),
 
-      // BODY TEXT - For paragraphs
+      /// ═══════════════════════════════════════════════════════════════════════════
+      /// REGULAR TEXT - 3 sizes for all content
+      /// ═══════════════════════════════════════════════════════════════════════════
+      
+      // Large text - 18px (main content, descriptions)
       bodyLarge: TextStyle(
         fontFamily: _fontFamily,
         fontSize: 18,
@@ -131,6 +118,8 @@ class AppTheme {
         color: AppColors.textDark,
         height: 1.5,
       ),
+      
+      // Medium text - 16px (standard body text, buttons)
       bodyMedium: TextStyle(
         fontFamily: _fontFamily,
         fontSize: 16,
@@ -138,6 +127,8 @@ class AppTheme {
         color: AppColors.textDark,
         height: 1.5,
       ),
+      
+      // Small text - 14px (secondary info, captions)
       bodySmall: TextStyle(
         fontFamily: _fontFamily,
         fontSize: 14,
@@ -146,24 +137,55 @@ class AppTheme {
         height: 1.4,
       ),
 
-      // LABELS - For buttons and small text
-      labelLarge: TextStyle(
-        fontFamily: _fontFamily,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
-        color: AppColors.textDark,
-      ),
-      labelMedium: TextStyle(
-        fontFamily: _fontFamily,
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        color: AppColors.textDark,
-      ),
+      /// ═══════════════════════════════════════════════════════════════════════════
+      /// SMALL LABELS - For tiny text and metadata
+      /// ═══════════════════════════════════════════════════════════════════════════
+      
+      // Small labels - 12px (navigation, timestamps, metadata)
       labelSmall: TextStyle(
         fontFamily: _fontFamily,
         fontSize: 12,
         fontWeight: FontWeight.w500,
         color: AppColors.textGrey,
+      ),
+      
+      /// ═══════════════════════════════════════════════════════════════════════════
+      /// LEGACY MAPPINGS - Keep for backward compatibility
+      /// ═══════════════════════════════════════════════════════════════════════════
+      
+      // Map old styles to new consistent system
+      displayLarge: TextStyle(
+        fontFamily: _fontFamily,
+        fontSize: 24, // Same as headlineLarge
+        fontWeight: FontWeight.w700,
+        color: AppColors.textDark,
+        height: 1.3,
+      ),
+      displayMedium: TextStyle(
+        fontFamily: _fontFamily,
+        fontSize: 20, // Same as headlineMedium  
+        fontWeight: FontWeight.w700,
+        color: AppColors.textDark,
+        height: 1.3,
+      ),
+      headlineSmall: TextStyle(
+        fontFamily: _fontFamily,
+        fontSize: 18, // Same as bodyLarge but bold
+        fontWeight: FontWeight.w700,
+        color: AppColors.textDark,
+        height: 1.3,
+      ),
+      labelLarge: TextStyle(
+        fontFamily: _fontFamily,
+        fontSize: 16, // Same as bodyMedium but medium weight
+        fontWeight: FontWeight.w500,
+        color: AppColors.textDark,
+      ),
+      labelMedium: TextStyle(
+        fontFamily: _fontFamily,
+        fontSize: 14, // Same as bodySmall but medium weight
+        fontWeight: FontWeight.w500,
+        color: AppColors.textDark,
       ),
     );
   }

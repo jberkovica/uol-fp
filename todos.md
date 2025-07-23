@@ -34,12 +34,14 @@ app:
 
 Priority:
 [] Manrope font
+[] darker violet color?
 [] create button in menu
 [] home page design
 [] parent approve
 [] 3 language support
 [] all prompts separated and redesigned
 [] switch from elevenlab to open ai for tts
+[] fix screens scrollin animation
 
 backend:
 [] image generation prompt
