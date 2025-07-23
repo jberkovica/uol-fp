@@ -270,7 +270,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(24),
+                        topLeft: Radius.circular(40),
                       ),
                       boxShadow: [
                         BoxShadow(

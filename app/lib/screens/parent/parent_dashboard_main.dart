@@ -240,8 +240,8 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
       decoration: const BoxDecoration(
         color: AppTheme.whiteScreenBackground,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
         ),
       ),
       child: _isLoading 
