@@ -80,13 +80,13 @@ class AppTheme {
       // DISPLAY TEXT - For main titles
       displayLarge: GoogleFonts.roboto(
         fontSize: 32,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w700,
         color: AppColors.textDark,
         height: 1.2,
       ),
       displayMedium: GoogleFonts.roboto(
         fontSize: 28,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: AppColors.textDark,
         height: 1.2,
       ),
@@ -94,19 +94,19 @@ class AppTheme {
       // HEADLINES - For section headers
       headlineLarge: GoogleFonts.roboto(
         fontSize: 24,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: AppColors.textDark,
         height: 1.3,
       ),
       headlineMedium: GoogleFonts.roboto(
         fontSize: 20,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: AppColors.textDark,
         height: 1.3,
       ),
       headlineSmall: GoogleFonts.roboto(
         fontSize: 18,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
         color: AppColors.textDark,
         height: 1.3,
       ),
@@ -134,7 +134,7 @@ class AppTheme {
       // LABELS - For buttons and small text
       labelLarge: GoogleFonts.roboto(
         fontSize: 16,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w500,
         color: AppColors.textDark,
       ),
       labelMedium: GoogleFonts.roboto(
@@ -165,7 +165,7 @@ class AppTheme {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         textStyle:
-            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600),
+            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500),
         minimumSize: const Size(140, 56),
       ),
     );
@@ -181,7 +181,7 @@ class AppTheme {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         textStyle:
-            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600),
+            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500),
       );
 
   static ButtonStyle get secondaryButton => ElevatedButton.styleFrom(
@@ -193,7 +193,7 @@ class AppTheme {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         textStyle:
-            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600),
+            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500),
       );
 
   static ButtonStyle get whiteButton => ElevatedButton.styleFrom(
@@ -205,7 +205,7 @@ class AppTheme {
         shadowColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         textStyle:
-            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600),
+            GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500),
       );
 
   /// ═══════════════════════════════════════════════════════════════════════════
@@ -221,7 +221,7 @@ class AppTheme {
       centerTitle: true,
       titleTextStyle: GoogleFonts.roboto(
         fontSize: 22,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w600,
         color: AppColors.textLight,
       ),
       iconTheme: const IconThemeData(color: AppColors.textLight),
@@ -283,7 +283,7 @@ class AppTheme {
   
   /// Global responsive padding configuration
   static const ResponsivePaddingConfig globalPadding = ResponsivePaddingConfig(
-    mobile: 20.0,
+    mobile: 28.0, // Increased padding for better spacing on mobile
     tablet: 60.0,
     desktop: 200.0, // Much more padding for web-like centered content
   );
@@ -446,7 +446,7 @@ class AppTheme {
                 title,
                 style: Theme.of(context).textTheme.displayMedium?.copyWith(
                   color: AppColors.textDark,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               if (action != null) action,

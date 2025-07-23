@@ -13,19 +13,19 @@
 
 ## Design Style Guidelines
 
-### Flat Design - No Backgrounds or Shadows
-- Never add background containers, cards, or boxes around UI elements
-- No shadows, elevation, or visual depth effects
+### Clean Design Guidelines
+- Use minimal, clean design with subtle shadows where appropriate
+- No excessive background containers around UI elements
 - No background colors behind icons, buttons (unless it's the button itself)
-- Elements should sit directly on the main background color
-- Keep design completely flat and minimal
+- Elements should sit cleanly on the main background color
+- Keep design clean and minimal
 - Examples:
   - ❌ Icons with background circles or containers
-  - ❌ Profile cards with white/colored backgrounds
-  - ❌ Buttons with shadow effects
+  - ❌ Excessive profile cards with backgrounds
   - ✅ Icons directly on background
   - ✅ Text and images directly on colored backgrounds
-  - ✅ Flat buttons with solid colors only
+  - ✅ Clean buttons with appropriate styling
+  - ✅ Subtle shadows for depth when needed
 
 ### Centralized Theme System (CRITICAL)
 - **Never use hardcoded styles** - always use the centralized theme system

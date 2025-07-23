@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
+import '../../models/story.dart';
 
 class StoryPreviewScreen extends StatefulWidget {
-  const StoryPreviewScreen({super.key});
+  final Story? story;
+  
+  const StoryPreviewScreen({super.key, this.story});
 
   @override
   State<StoryPreviewScreen> createState() => _StoryPreviewScreenState();
@@ -11,9 +14,37 @@ class StoryPreviewScreen extends StatefulWidget {
 class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
   bool _isPlaying = false;
   String _feedbackText = '';
+  Story? _story;
+  
+  @override
+  void initState() {
+    super.initState();
+    _story = widget.story;
+  }
+  
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Get story from route arguments if not provided in constructor
+    if (_story == null) {
+      _story = ModalRoute.of(context)?.settings.arguments as Story?;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_story == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Story preview'),
+          backgroundColor: AppColors.primary,
+        ),
+        body: const Center(
+          child: Text('No story data available'),
+        ),
+      );
+    }
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Story preview'),
@@ -53,21 +84,32 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
             color: AppColors.secondary,
             width: 4,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 26),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
         ),
-        child: Center(
-          // In a real app, display the actual uploaded image
-          child: Icon(
-            Icons.image,
-            size: 80,
-            color: Colors.grey.withValues(alpha: 128),
-          ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: _story!.imageUrl != null && _story!.imageUrl!.isNotEmpty
+              ? Image.network(
+                  _story!.imageUrl!,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Center(
+                      child: Icon(
+                        Icons.image,
+                        size: 80,
+                        color: Colors.grey.withValues(alpha: 128),
+                      ),
+                    );
+                  },
+                )
+              : Center(
+                  child: Icon(
+                    Icons.image,
+                    size: 80,
+                    color: Colors.grey.withValues(alpha: 128),
+                  ),
+                ),
         ),
       ),
     );
@@ -90,21 +132,18 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Froggy Frog',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+          Text(
+            _story!.title,
+            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
               color: AppColors.textDark,
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Froggy was a tiny green frog. He lived on a big lily pad in a quiet pond. One day, Froggy decided to explore beyond his lily pad. He hopped to a nearby rock, then to the shore. Along the way, Froggy met a friendly butterfly who showed him beautiful flowers at the pond\'s edge. Froggy had never seen such colorful plants before! When the sun began to set, Froggy hopped all the way back to his lily pad. He was happy to be home, but excited for more adventures tomorrow.',
-            style: TextStyle(
-              fontSize: 16,
-              height: 1.5,
+          Text(
+            _story!.content,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppColors.textDark,
+              height: 1.5,
             ),
           ),
         ],
@@ -160,11 +199,9 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Feedback (optional):',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
             color: AppColors.textDark,
           ),
         ),

@@ -179,10 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Center(
                   child: Text(
                     _kid!.name,
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      fontWeight: FontWeight.normal,
-                      color: AppColors.textDark,
-                    ),
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
               ],
@@ -211,7 +208,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             'Profile',
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
               color: AppColors.white,
-              fontWeight: FontWeight.bold,
             ),
           ),
           const Spacer(),
@@ -287,9 +283,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Name
           Text(
             _kid!.name,
-            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).textTheme.headlineLarge,
           ),
           const SizedBox(height: 8),
           
@@ -386,7 +380,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Text(
           value,
           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-            fontWeight: FontWeight.bold,
             color: color,
           ),
         ),
@@ -422,7 +415,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Text(
             value,
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-              fontWeight: FontWeight.bold,
               color: color,
             ),
           ),
@@ -446,9 +438,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(
           'Profile Options',
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(height: 12),
         Container(

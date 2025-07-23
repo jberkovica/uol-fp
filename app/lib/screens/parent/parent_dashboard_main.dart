@@ -282,7 +282,6 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           value,
           style: Theme.of(context).textTheme.displayMedium?.copyWith(
             color: Colors.white,
-            fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 8),

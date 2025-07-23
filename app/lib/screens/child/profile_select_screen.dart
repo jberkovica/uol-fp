@@ -69,7 +69,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
               ),
               title: Text(
                 'Add New Profile',
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -285,9 +285,8 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                     const SizedBox(height: 16),
                     Text(
                       name,
-                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         fontSize: fontSize,
-                        fontWeight: FontWeight.bold,
                         color: AppColors.textDark,
                       ),
                       overflow: TextOverflow.ellipsis,

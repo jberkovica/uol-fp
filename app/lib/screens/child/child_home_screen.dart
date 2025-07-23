@@ -218,10 +218,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                               children: [
                                 Text(
                                   'My tales',
-                                  style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.textDark,
-                                  ),
+                                  style: Theme.of(context).textTheme.headlineLarge,
                                 ),
                                 GestureDetector(
                                   onTap: () {
@@ -372,9 +369,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
 
   Widget _buildWhiteSectionContent() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: AppTheme.getGlobalPadding(context)),
+      padding: EdgeInsets.only(left: AppTheme.getGlobalPadding(context)),
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(0, 40, 0, 20),
+        padding: const EdgeInsets.fromLTRB(0, 24, 0, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -404,9 +401,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
       children: [
         Text(
           title,
-          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         
         const SizedBox(height: 16),

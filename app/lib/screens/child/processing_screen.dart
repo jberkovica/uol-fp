@@ -160,10 +160,8 @@ class _ProcessingScreenState extends State<ProcessingScreen> with TickerProvider
                     // Text
                     Text(
                       'Magic is happening..',
-                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
                         color: AppColors.textDark,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32, // Fixed font size
                       ),
                       textAlign: TextAlign.center,
                     ),
