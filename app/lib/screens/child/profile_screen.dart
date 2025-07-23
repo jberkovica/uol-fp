@@ -87,8 +87,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
         break;
       case 1:
-        // Home - navigate to child home screen (replaces current screen)
-        Navigator.of(context).pushReplacementNamed('/child-home');
+        // Home - go back to previous screen (home) with animation
+        Navigator.of(context).pop();
         break;
       case 2:
         // Create - navigate to upload screen with default image format

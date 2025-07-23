@@ -248,11 +248,11 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
           ),
           Positioned(
             top: 210, // Move face lower on mascot body
-            left: 85, // Move face to the right
+            left: 90, // Move face to the right to center it (was 85)
             child: SvgPicture.asset(
               'assets/images/face-1.svg', // Changed to face-1 as requested
-              width: 50,
-              height: 25,
+              width: 40, // Made smaller (was 50)
+              height: 20, // Made smaller (was 25)
               fit: BoxFit.contain,
             ),
           ),
