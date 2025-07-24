@@ -210,28 +210,9 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
             color: AppColors.primary,
           ),
           
-          // Layer 2: Fixed header content and back button (stays under white container)
+          // Layer 2: Fixed header content (stays under white container)
           SafeArea(
-            child: Stack(
-              children: [
-                _buildHeader(),
-                // Back button positioned at top left
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: ResponsiveBreakpoints.getResponsivePadding(context),
-                    top: 20,
-                  ),
-                  child: IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    icon: const Icon(
-                      Icons.arrow_back_ios,
-                      color: AppColors.white,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: _buildHeader(),
           ),
           
           // Layer 3: Scrollable white content with parallax effect
@@ -257,6 +238,24 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                     // White content container
                     _buildContent(),
                   ],
+                ),
+              ),
+            ),
+          ),
+          
+          // Layer 4: Back button (on top for clicks)
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: ResponsiveBreakpoints.getResponsivePadding(context),
+                top: 20,
+              ),
+              child: IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: AppColors.white,
+                  size: 24,
                 ),
               ),
             ),
