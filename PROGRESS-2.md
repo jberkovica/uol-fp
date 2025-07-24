@@ -272,4 +272,39 @@ return ListenableBuilder(
 
 ---
 
+### Home Screen Parallax Scroll Optimization
+
+#### Issue Resolution: Conflicting Scroll Views
+- **Problem identified**: Two competing `SingleChildScrollView` widgets causing scroll gesture conflicts
+  - Layer 3: White container with story content scroll
+  - Layer 4: Invisible scroll detector for parallax effect
+- **Root cause**: Horizontal story card scrolls were triggering parallax calculations, causing UI blinking
+
+#### Technical Solution Implementation
+- **Unified scroll architecture**: Replaced dual scroll system with single `NotificationListener<ScrollNotification>` + `SingleChildScrollView`
+- **Scroll axis filtering**: Added `notification.metrics.axis == Axis.vertical` check to ignore horizontal story card scrolls
+- **Parallax calculation**: Used dynamic `SizedBox` height with `(260 + (-_scrollOffset * 0.5)).clamp(160, 260)` for smooth effect
+- **Clean widget hierarchy**: Removed nested scrollable widgets that caused gesture conflicts
+
+#### Code Quality Improvements
+- **Dead code removal**: Eliminated unused methods:
+  - `_buildWhiteSection()`
+  - `_buildWhiteSectionContent()`
+  - `_buildCreateSection()`
+- **Performance optimization**: Reduced unnecessary state updates during horizontal scrolling
+- **Maintainable structure**: Single scroll view handles both content scrolling and parallax detection
+
+#### User Experience Enhancement
+- **Smooth parallax effect**: Vertical scrolling moves white container with proper easing
+- **Uninterrupted story browsing**: Horizontal story card scrolls work without triggering parallax
+- **No visual glitches**: Eliminated blinking/flickering during scroll interactions
+- **Responsive design**: Parallax effect scales appropriately across screen sizes
+
+#### Files Modified
+- `app/lib/screens/child/child_home_screen.dart` - Complete scroll system refactor (lines 305-370)
+
+**Result**: Resolved scroll conflicts and achieved smooth parallax scrolling with clean, maintainable code architecture that properly separates vertical page scrolling from horizontal story card interactions.
+
+---
+
 _Last updated: 2025-07-24_

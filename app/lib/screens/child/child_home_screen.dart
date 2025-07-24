@@ -302,69 +302,72 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
             ),
           ),
           
-          // Layer 3: White container with parallax effect
-          Positioned(
-            top: 260 + (-_scrollOffset * 0.5), // Start at 260px, move up with scroll
-            left: 0,
-            right: 0,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 2, // Extra tall to cover any parallax movement
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  // Only left corner rounded, as per original design
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    blurRadius: 6,
-                    offset: const Offset(0, -1),
-                    spreadRadius: 0,
-                  ),
-                ],
-              ),
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  left: AppTheme.getGlobalPadding(context),
-                  top: 24,
-                  bottom: 120, // Extra space for bottom nav
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Favourites section
-                    _buildStorySection(AppLocalizations.of(context)!.favourites, _favouriteStories),
-                    
-                    const SizedBox(height: 32),
-                    
-                    // Latest section
-                    _buildStorySection(AppLocalizations.of(context)!.latest, _latestStories),
-                    
-                    const SizedBox(height: 32),
-                    
-                    // Kid's stories section
-                    _buildStorySection(AppLocalizations.of(context)!.kidStories(_selectedKid!.name), _stories),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          
-          // Layer 4: Invisible scroll detector (to trigger parallax)
+          // Layer 3: Single unified scroll with parallax effect
           NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification notification) {
               if (notification is ScrollUpdateNotification) {
-                setState(() {
-                  _scrollOffset = notification.metrics.pixels;
-                });
+                // Only handle vertical scrolls, ignore horizontal story card scrolls
+                if (notification.metrics.axis == Axis.vertical) {
+                  setState(() {
+                    _scrollOffset = notification.metrics.pixels;
+                  });
+                }
               }
               return false;
             },
             child: SingleChildScrollView(
-              child: Container(
-                height: MediaQuery.of(context).size.height * 2, // Tall enough to scroll
-                color: Colors.transparent,
+              child: Column(
+                children: [
+                  // Spacer to push white container down with parallax effect
+                  SizedBox(height: (260 + (-_scrollOffset * 0.5)).clamp(160, 260)),
+                  
+                  // White container with stories
+                  Container(
+                    width: double.infinity,
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height - 160,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        // Only left corner rounded, as per original design
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 6,
+                          offset: const Offset(0, -1),
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: AppTheme.getGlobalPadding(context),
+                        top: 24,
+                        bottom: 120, // Extra space for bottom nav
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Favourites section
+                          _buildStorySection(AppLocalizations.of(context)!.favourites, _favouriteStories),
+                          
+                          const SizedBox(height: 32),
+                          
+                          // Latest section
+                          _buildStorySection(AppLocalizations.of(context)!.latest, _latestStories),
+                          
+                          const SizedBox(height: 32),
+                          
+                          // Kid's stories section
+                          _buildStorySection(AppLocalizations.of(context)!.kidStories(_selectedKid!.name), _stories),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -377,16 +380,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
     );
   }
 
-
-  Widget _buildCreateSection() {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: FilledButton(
-        onPressed: _openUploadScreen,
-        child: const Text('create'),
-      ),
-    );
-  }
 
   
   void _openUploadScreen() {
@@ -402,41 +395,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
     });
   }
 
-  Widget _buildWhiteSection() {
-    if (_isLoadingStories) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    
-    return _buildWhiteSectionContent();
-  }
-
-  Widget _buildWhiteSectionContent() {
-    return Padding(
-      padding: EdgeInsets.only(left: AppTheme.getGlobalPadding(context)),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(0, 24, 0, 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Favourites section
-          _buildStorySection('Favourites', _favouriteStories),
-          
-          const SizedBox(height: 32),
-          
-          // Latest section
-          _buildStorySection('Latest', _latestStories),
-          
-          const SizedBox(height: 32),
-          
-          // Kid's stories section
-          _buildStorySection('${_selectedKid!.name}\'s stories', _stories),
-          
-          const SizedBox(height: 100), // Extra space for bottom nav
-        ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildStorySection(String title, List<Story> stories) {
     return Column(
