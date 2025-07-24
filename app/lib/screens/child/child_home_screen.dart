@@ -37,6 +37,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
   late AnimationController _animationController;
   late Animation<double> _slideAnimation;
   bool _isAnimating = false;
+  
+  // Parallax scroll variables
+  double _scrollOffset = 0.0;
 
   @override
   void initState() {
@@ -202,44 +205,31 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
       backgroundColor: AppColors.secondary,
       body: Stack(
         children: [
-          // Bottom layer: Yellow background only
+          // Layer 1: Yellow background (fills entire screen)
           Container(
             color: AppColors.secondary,
-            child: Column(
-              children: [
-                // Header space (header moved to Positioned)
-                SizedBox(
-                  height: AppTheme.screenHeaderTopPadding + 60, // Space for header
-                ),
-                // Yellow section content (just spacing, button moved outside)
-                SizedBox(
-                  height: 120, // Space for mascot and button
-                ),
-                // Fill remaining space with yellow
-                Expanded(
-                  child: Container(color: AppColors.secondary),
-                ),
-              ],
-            ),
           ),
-          // Middle layer: Cloud and mascot behind white container
+          
+          // Layer 2: Fixed elements on yellow background (cloud, mascot, header, button)
+          // Cloud - fixed position
           Positioned(
-            top: 120, // Higher up in yellow section
-            left: _getResponsiveCloudPosition(context), // Responsive positioning
+            top: 120,
+            left: _getResponsiveCloudPosition(context),
             child: SvgPicture.asset(
               'assets/images/cloud-1.svg',
-              width: MediaQuery.of(context).size.width * 1.8, // Larger
+              width: MediaQuery.of(context).size.width * 1.8,
               height: MediaQuery.of(context).size.width * 0.9,
               fit: BoxFit.contain,
               colorFilter: const ColorFilter.mode(
-                Color(0xFFDFBBC6), // EXACT same color as pink cloud in processing screen
+                Color(0xFFDFBBC6),
                 BlendMode.srcIn,
               ),
             ),
           ),
+          // Mascot - fixed position
           Positioned(
-            top: 180, // Higher up in yellow section
-            left: 20, // Moved even further to the left
+            top: 180,
+            left: 20,
             child: SvgPicture.asset(
               'assets/images/mascot-body-1.svg',
               width: 160,
@@ -247,27 +237,83 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
               fit: BoxFit.contain,
             ),
           ),
+          // Mascot face - fixed position
           Positioned(
-            top: 210, // Move face lower on mascot body
-            left: 90, // Move face to the right to center it (was 85)
+            top: 210,
+            left: 90,
             child: SvgPicture.asset(
-              'assets/images/face-1.svg', // Changed to face-1 as requested
-              width: 40, // Made smaller (was 50)
-              height: 20, // Made smaller (was 25)
+              'assets/images/face-1.svg',
+              width: 40,
+              height: 20,
               fit: BoxFit.contain,
             ),
           ),
-          // Top layer: White container covers cloud and mascot
+          // Header with title and profile - fixed position
           Positioned(
-            top: 260, // Position where white container should start
+            top: AppTheme.screenHeaderTopPadding,
+            left: AppTheme.getGlobalPadding(context),
+            right: AppTheme.getGlobalPadding(context),
+            child: SafeArea(
+              bottom: false,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.myTales,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/profile-select');
+                    },
+                    child: Column(
+                      children: [
+                        ProfileAvatar(
+                          radius: 25,
+                          profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _selectedKid?.name ?? 'Kid',
+                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Create button - fixed position
+          Positioned(
+            top: 140,
+            right: AppTheme.getGlobalPadding(context),
+            child: SafeArea(
+              child: FilledButton(
+                onPressed: _openUploadScreen,
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                  minimumSize: const Size(120, 60),
+                ),
+                child: Text(AppLocalizations.of(context)!.create),
+              ),
+            ),
+          ),
+          
+          // Layer 3: White container with parallax effect
+          Positioned(
+            top: 260 + (-_scrollOffset * 0.5), // Start at 260px, move up with scroll
             left: 0,
             right: 0,
-            bottom: 0,
             child: Container(
+              height: MediaQuery.of(context).size.height * 2, // Extra tall to cover any parallax movement
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(40),
+                  // Only left corner rounded, as per original design
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -278,95 +324,47 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                   ),
                 ],
               ),
-              child: SafeArea(
-                bottom: true,
-                top: false,
-                child: SingleChildScrollView(
-                  padding: EdgeInsets.only(left: AppTheme.getGlobalPadding(context)),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 24, 0, 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Favourites section
-                        _buildStorySection(AppLocalizations.of(context)!.favourites, _favouriteStories),
-                        
-                        const SizedBox(height: 32),
-                        
-                        // Latest section
-                        _buildStorySection(AppLocalizations.of(context)!.latest, _latestStories),
-                        
-                        const SizedBox(height: 32),
-                        
-                        // Kid's stories section
-                        _buildStorySection(AppLocalizations.of(context)!.kidStories(_selectedKid!.name), _stories),
-                        
-                        const SizedBox(height: 100), // Extra space for bottom nav
-                      ],
-                    ),
-                  ),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  left: AppTheme.getGlobalPadding(context),
+                  top: 24,
+                  bottom: 120, // Extra space for bottom nav
                 ),
-              ),
-            ),
-          ),
-          // Header with title and profile on top of everything
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: SafeArea(
-              bottom: false,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                  AppTheme.getGlobalPadding(context),
-                  AppTheme.screenHeaderTopPadding,
-                  AppTheme.getGlobalPadding(context),
-                  0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      AppLocalizations.of(context)!.myTales,
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/profile-select');
-                      },
-                      child: Column(
-                        children: [
-                          ProfileAvatar(
-                            radius: 25,
-                            profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            _selectedKid?.name ?? 'Kid',
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: AppColors.textDark,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Favourites section
+                    _buildStorySection(AppLocalizations.of(context)!.favourites, _favouriteStories),
+                    
+                    const SizedBox(height: 32),
+                    
+                    // Latest section
+                    _buildStorySection(AppLocalizations.of(context)!.latest, _latestStories),
+                    
+                    const SizedBox(height: 32),
+                    
+                    // Kid's stories section
+                    _buildStorySection(AppLocalizations.of(context)!.kidStories(_selectedKid!.name), _stories),
                   ],
                 ),
               ),
             ),
           ),
-          // Create button positioned on top of everything
-          Positioned(
-            top: 140, // Position it in the yellow section
-            right: AppTheme.getGlobalPadding(context),
-            child: SafeArea(
-              child: FilledButton(
-                onPressed: _openUploadScreen,
-                style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Reduced horizontal padding
-                  minimumSize: const Size(120, 60), // Shorter width, same height
-                ),
-                child: Text(AppLocalizations.of(context)!.create),
+          
+          // Layer 4: Invisible scroll detector (to trigger parallax)
+          NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification notification) {
+              if (notification is ScrollUpdateNotification) {
+                setState(() {
+                  _scrollOffset = notification.metrics.pixels;
+                });
+              }
+              return false;
+            },
+            child: SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height * 2, // Tall enough to scroll
+                color: Colors.transparent,
               ),
             ),
           ),
