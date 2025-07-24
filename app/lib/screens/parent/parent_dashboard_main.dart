@@ -28,6 +28,9 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
   Map<String, List<Story>> _kidStories = {};
   bool _isLoading = false;
   String? _currentUserId;
+  
+  // Parallax scroll variables  
+  double _scrollOffset = 0.0;
 
   @override
   void initState() {
@@ -200,15 +203,65 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primary,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildHeader(),
-            Expanded(
-              child: _buildContent(),
+      body: Stack(
+        children: [
+          // Layer 1: Purple background (fills entire screen)
+          Container(
+            color: AppColors.primary,
+          ),
+          
+          // Layer 2: Fixed header content and back button (stays under white container)
+          SafeArea(
+            child: Stack(
+              children: [
+                _buildHeader(),
+                // Back button positioned at top left
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: ResponsiveBreakpoints.getResponsivePadding(context),
+                    top: 20,
+                  ),
+                  child: IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: AppColors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          
+          // Layer 3: Scrollable white content with parallax effect
+          SafeArea(
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification notification) {
+                if (notification is ScrollUpdateNotification) {
+                  // Only handle vertical scrolls
+                  if (notification.metrics.axis == Axis.vertical) {
+                    setState(() {
+                      _scrollOffset = notification.metrics.pixels;
+                    });
+                  }
+                }
+                return false;
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Spacer to push white container down with parallax effect
+                    SizedBox(height: (220 + (-_scrollOffset * 0.5)).clamp(120, 220)),
+                    
+                    // White content container
+                    _buildContent(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNav(
         currentIndex: _currentNavIndex,
@@ -225,33 +278,9 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
       child: Container(
         width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
         constraints: const BoxConstraints(maxWidth: 1200),
-        padding: EdgeInsets.fromLTRB(horizontalPadding, 20, horizontalPadding, 40),
+        padding: EdgeInsets.fromLTRB(horizontalPadding, 60, horizontalPadding, 40),
         child: Column(
         children: [
-          // Top row with back button and menu
-          Row(
-            children: [
-              IconButton(
-                onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  color: AppColors.white,
-                  size: 24,
-                ),
-              ),
-              const Spacer(),
-              IconButton(
-                onPressed: _showSettingsMenu,
-                icon: const Icon(
-                  Icons.more_vert,
-                  color: AppColors.white,
-                  size: 24,
-                ),
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: 8),
           
           // Title
           Text(
@@ -295,12 +324,24 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
 
   Widget _buildContent() {
     return Container(
+      width: double.infinity,
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.height - 250,
+      ),
       decoration: const BoxDecoration(
         color: AppTheme.whiteScreenBackground,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(40),
           topRight: Radius.circular(40),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, -1),
+            spreadRadius: 0,
+          ),
+        ],
       ),
       child: _isLoading 
           ? const Center(child: CircularProgressIndicator())
@@ -310,9 +351,13 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 constraints: const BoxConstraints(maxWidth: 1200),
                 child: RefreshIndicator(
                   onRefresh: _loadKids,
-                  child: SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      AppTheme.getGlobalPadding(context),
+                      AppTheme.getGlobalPadding(context),
+                      AppTheme.getGlobalPadding(context),
+                      120, // Extra bottom padding for nav
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -363,7 +408,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           children: [
             Text(
               AppLocalizations.of(context)!.kidsProfiles,
-              style: Theme.of(context).textTheme.headlineLarge,
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             const Spacer(),
             TextButton.icon(
@@ -505,8 +550,8 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Parent Controls',
-          style: Theme.of(context).textTheme.headlineLarge,
+          AppLocalizations.of(context)!.parentControls,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 20),
         
@@ -554,6 +599,51 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 },
               ),
             ],
+          ),
+        ),
+        
+        const SizedBox(height: 32),
+        
+        // Logout button
+        SizedBox(
+          width: double.infinity,
+          child: OutlinedButton.icon(
+            onPressed: () async {
+              try {
+                await AuthService.instance.signOut();
+                if (mounted) {
+                  // Use a more efficient navigation approach
+                  while (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  }
+                  Navigator.pushReplacementNamed(context, '/login');
+                }
+              } catch (e) {
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Failed to logout: $e'),
+                      backgroundColor: AppColors.error,
+                    ),
+                  );
+                }
+              }
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: AppColors.error,
+              size: 20,
+            ),
+            label: Text(
+              AppLocalizations.of(context)!.logout,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: AppColors.error,
+              ),
+            ),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: AppColors.error),
+              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            ),
           ),
         ),
       ],

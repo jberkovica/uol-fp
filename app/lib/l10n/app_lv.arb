@@ -131,5 +131,7 @@
   "passwordsDoNotMatch": "Paroles nesakrīt",
   "pleaseEnterPassword": "Lūdzu, ievadiet paroli",
   "pleaseConfirmPassword": "Lūdzu, apstipriniet paroli",
-  "appleSignUpComingSoon": "Reģistrācija ar Apple drīz būs pieejama!"
+  "appleSignUpComingSoon": "Reģistrācija ar Apple drīz būs pieejama!",
+  
+  "logout": "Iziet no konta"
 }

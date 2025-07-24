@@ -131,5 +131,7 @@
   "passwordsDoNotMatch": "Пароли не совпадают",
   "pleaseEnterPassword": "Пожалуйста, введите пароль",
   "pleaseConfirmPassword": "Пожалуйста, подтвердите пароль",
-  "appleSignUpComingSoon": "Регистрация через Apple скоро будет доступна!"
+  "appleSignUpComingSoon": "Регистрация через Apple скоро будет доступна!",
+  
+  "logout": "Выйти из аккаунта"
 }

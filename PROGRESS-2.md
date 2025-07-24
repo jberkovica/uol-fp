@@ -307,4 +307,44 @@ return ListenableBuilder(
 
 ---
 
+### UI/UX Polish and Consistency Improvements
+
+#### Parallax Scrolling System Expansion
+- **Extended parallax effect to all major screens**: Applied the same smooth scrolling architecture from home screen to kids profile and parent dashboard
+- **Kids profile screen parallax**: Yellow header with profile picture and name slides under white content container (240px → 150px range)
+- **Parent dashboard parallax**: Purple header with statistics slides under white content container (220px → 120px range)
+- **Unified scroll architecture**: All screens now use consistent `NotificationListener<ScrollNotification>` + `SingleChildScrollView` pattern
+- **Proper layer management**: Fixed clickable button positioning while maintaining parallax effect
+
+#### Visual Hierarchy and Typography Consistency
+- **Established clear text hierarchy standards**:
+  - `headlineLarge` for titles on colored backgrounds (kid names, "Parent Dashboard", "My Tales")
+  - `headlineMedium` for section titles in white containers ("Profile Options", "Kids Profiles", "Parent Controls")
+- **Consistent spacing**: Unified padding system using `AppTheme.getGlobalPadding(context)` across all screens
+- **Clean design implementation**: Removed excessive background containers and maintained minimal, clean visual style
+
+#### User Authentication and Navigation
+- **Added proper logout functionality**: Implemented full user sign-out with `AuthService.instance.signOut()`
+- **Optimized navigation performance**: Used efficient route clearing with `Navigator.pop()` loop + `pushReplacementNamed()` to eliminate laggy animations
+- **Multi-language logout support**: Added localized "logout" text in all supported languages:
+  - English: "Logout"
+  - Russian: "Выйти из аккаунта" (logout from account)
+  - Latvian: "Iziet no konta" (exit from account)
+- **Proper routing**: Fixed logout flow to redirect to login screen (`/login`) instead of signup
+
+#### Localization System Enhancement
+- **Added new translation keys**: Extended ARB files with logout functionality
+- **Regenerated localization files**: Updated Flutter l10n system with `flutter gen-l10n`
+- **Maintained translation quality**: Ensured logout terminology is clear and unambiguous in all languages
+
+#### Files Modified
+- `app/lib/screens/child/profile_screen.dart` - Added parallax scrolling with proper layer management
+- `app/lib/screens/parent/parent_dashboard_main.dart` - Added parallax scrolling, logout functionality, and UI consistency fixes
+- `app/lib/l10n/app_*.arb` - Added logout translations for all supported languages
+- `app/lib/generated/app_localizations*.dart` - Regenerated localization classes
+
+**Result**: Achieved consistent, polished user experience across all major screens with smooth parallax scrolling, proper visual hierarchy, and seamless authentication flow. All screens now maintain the same high-quality interaction patterns and visual standards.
+
+---
+
 _Last updated: 2025-07-24_

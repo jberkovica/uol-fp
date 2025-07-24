@@ -27,6 +27,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int _currentNavIndex = 0; // Profile tab
   Kid? _kid;
   List<Story> _stories = [];
+  
+  // Parallax scroll variables
+  double _scrollOffset = 0.0;
 
   @override
   void initState() {
@@ -138,15 +141,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       backgroundColor: AppTheme.yellowScreenBackground,
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildProfileHeader(),
-            Expanded(
-              child: _buildContent(),
+      body: Stack(
+        children: [
+          // Layer 1: Yellow background (fills entire screen)
+          Container(
+            color: AppTheme.yellowScreenBackground,
+          ),
+          
+          // Layer 2: Fixed profile header (stays under white container)
+          SafeArea(
+            child: _buildProfileHeader(),
+          ),
+          
+          // Layer 3: Scrollable white content with parallax effect
+          SafeArea(
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (ScrollNotification notification) {
+                if (notification is ScrollUpdateNotification) {
+                  // Only handle vertical scrolls
+                  if (notification.metrics.axis == Axis.vertical) {
+                    setState(() {
+                      _scrollOffset = notification.metrics.pixels;
+                    });
+                  }
+                }
+                return false;
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Spacer to push white container down with parallax effect
+                    SizedBox(height: (240 + (-_scrollOffset * 0.5)).clamp(150, 240)),
+                    
+                    // White content container
+                    _buildContent(),
+                  ],
+                ),
+              ),
             ),
-          ],
-        ),
+          ),
+          
+          // Layer 4: Only the back button (on top for clicks)
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 20,
+            right: 20,
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.textDark,
+                size: 28,
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNav(
         currentIndex: _currentNavIndex,
@@ -158,7 +206,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildProfileHeader() {
     return Container(
       width: double.infinity,
-      color: AppTheme.yellowScreenBackground,
       child: Stack(
         children: [
           // Back button in corner - no padding
@@ -239,33 +286,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buildContent() {
     return Container(
+      width: double.infinity,
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.height - 200,
+      ),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(40),
           topRight: Radius.circular(40),
         ),
-      ),
-      child: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(
-            AppTheme.getGlobalPadding(context), // Left padding
-            40, // Fixed top padding
-            AppTheme.getGlobalPadding(context), // Right padding
-            40, // Fixed bottom padding
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, -1),
+            spreadRadius: 0,
           ),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600),
-              child: Column(
-                children: [
-                  _buildSimpleStats(),
-                  const SizedBox(height: 60), // More space after stats
-                  _buildOptionsSection(),
-                  const SizedBox(height: 40),
-                ],
-              ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(
+          AppTheme.getGlobalPadding(context), // Left padding
+          40, // Fixed top padding
+          AppTheme.getGlobalPadding(context), // Right padding
+          120, // Extra bottom padding for nav
+        ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: Column(
+              children: [
+                _buildSimpleStats(),
+                const SizedBox(height: 60), // More space after stats
+                _buildOptionsSection(),
+                const SizedBox(height: 40),
+              ],
             ),
           ),
         ),
@@ -449,7 +505,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(
           AppLocalizations.of(context)!.profileOptions,
-          style: Theme.of(context).textTheme.labelLarge,
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 12),
         Container(

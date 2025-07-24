@@ -86,6 +86,9 @@ class AppLocalizationsLv extends AppLocalizations {
   String get alreadyHaveAccount => 'Jau ir konts?';
 
   @override
+  String get logout => 'Iziet no konta';
+
+  @override
   String get dontHaveAccount => 'Nav konta?';
 
   @override

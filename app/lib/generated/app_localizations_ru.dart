@@ -86,6 +86,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get alreadyHaveAccount => 'Уже есть аккаунт?';
 
   @override
+  String get logout => 'Выйти из аккаунта';
+
+  @override
   String get dontHaveAccount => 'Нет аккаунта?';
 
   @override

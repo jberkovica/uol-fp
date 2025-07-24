@@ -42,12 +42,14 @@ Priority:
 [x] 3 language support
 [] all prompts separated and redesigned
 [] switch from elevenlab to open ai for tts
+[] switch from mistral to open ai
 [x] fix screens scrollin animation
 [] fix scrolling issue on home page
 [] logout button
 [] profile options - bold
 [] parent dashboard less spacing
 [] parent dashboard remove 3 dots and add logout
+[] generate story in selected language
 
 
 backend:
@@ -58,6 +60,7 @@ backend:
 [] save audio and images to db? s3?
 [] age 3-10?
 [] for prod I want testing db and prod db and also backup, research best practise
+[] image generation and audio generation in parallel
 
 
 [] multi language support

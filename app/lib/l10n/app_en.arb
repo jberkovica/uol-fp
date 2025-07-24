@@ -131,6 +131,11 @@
   "@alreadyHaveAccount": {
     "description": "Login prompt on signup page"
   },
+
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button text"
+  },
   
   "dontHaveAccount": "Don't have an account?",
   "@dontHaveAccount": {
