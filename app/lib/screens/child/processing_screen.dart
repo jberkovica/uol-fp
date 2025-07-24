@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constants/app_colors.dart';
+import '../../generated/app_localizations.dart';
 
 class ProcessingScreen extends StatefulWidget {
   final bool showCloseButton;
@@ -159,7 +160,7 @@ class _ProcessingScreenState extends State<ProcessingScreen> with TickerProvider
                   children: [
                     // Text
                     Text(
-                      'Magic is happening..',
+                      AppLocalizations.of(context)!.magicIsHappening,
                       style: Theme.of(context).textTheme.displayLarge?.copyWith(
                         color: AppColors.textDark,
                       ),

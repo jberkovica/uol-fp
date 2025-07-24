@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
 import '../../models/story.dart';
+import '../../generated/app_localizations.dart';
 
 class StoryPreviewScreen extends StatefulWidget {
   final Story? story;
@@ -36,7 +37,7 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
     if (_story == null) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Story preview'),
+          title: Text(AppLocalizations.of(context)!.storyPreview),
           backgroundColor: AppColors.primary,
         ),
         body: const Center(
@@ -214,7 +215,7 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
           },
           maxLines: 3,
           decoration: InputDecoration(
-            hintText: 'Enter any feedback or request changes...',
+            hintText: AppLocalizations.of(context)!.enterFeedbackOrChanges,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -236,7 +237,7 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
               backgroundColor: AppColors.grey,
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
-            child: const Text('Decline'),
+            child: Text(AppLocalizations.of(context)!.decline),
           ),
         ),
         const SizedBox(width: 16),
@@ -261,7 +262,7 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
               backgroundColor: AppColors.success,
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
-            child: const Text('Approve'),
+            child: Text(AppLocalizations.of(context)!.approve),
           ),
         ),
       ],

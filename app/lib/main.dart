@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'generated/app_localizations.dart';
 import 'config/supabase_config.dart';
 import 'constants/app_theme.dart';
 import 'screens/child/splash_screen.dart';
@@ -17,6 +19,7 @@ import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
 import 'services/ai_story_service.dart';
 import 'services/app_state_service.dart';
+import 'services/language_service.dart';
 
 void main() async {
   // Ensure that Flutter binding is initialized
@@ -41,6 +44,9 @@ void main() async {
   // Initialize app state service for local storage
   await AppStateService.init();
   
+  // Initialize language service
+  await LanguageService.instance.initialize();
+  
   runApp(const MiraStorytellerApp());
 }
 
@@ -49,25 +55,43 @@ class MiraStorytellerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mira Storyteller',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.theme,
-      initialRoute: '/splash',
-      routes: {
-        '/splash': (context) => const SplashScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignupScreen(),
-        '/profile-select': (context) => const ProfileSelectScreen(),
-        '/child-home': (context) => const ChildHomeScreen(),
-        '/profile': (context) => const ProfileScreen(),
-        '/upload': (context) => const UploadScreen(),
-        '/processing': (context) => const ProcessingScreen(),
-        '/story-display': (context) => const StoryDisplayScreen(),
-        '/parent-dashboard': (context) => const PinEntryScreen(),
-        '/parent-dashboard-main': (context) => const ParentDashboardMain(),
-        '/story-preview': (context) => const StoryPreviewScreen(),
-        '/test-processing': (context) => const ProcessingScreen(),
+    return ListenableBuilder(
+      listenable: LanguageService.instance,
+      builder: (context, child) {
+        return MaterialApp(
+          title: 'Mira Storyteller',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.theme,
+          
+          // Dynamic locale from LanguageService
+          locale: LanguageService.instance.currentLocale,
+          
+          // Localization configuration
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: LanguageService.supportedLocales,
+          
+          initialRoute: '/splash',
+          routes: {
+            '/splash': (context) => const SplashScreen(),
+            '/login': (context) => const LoginScreen(),
+            '/signup': (context) => const SignupScreen(),
+            '/profile-select': (context) => const ProfileSelectScreen(),
+            '/child-home': (context) => const ChildHomeScreen(),
+            '/profile': (context) => const ProfileScreen(),
+            '/upload': (context) => const UploadScreen(),
+            '/processing': (context) => const ProcessingScreen(),
+            '/story-display': (context) => const StoryDisplayScreen(),
+            '/parent-dashboard': (context) => const PinEntryScreen(),
+            '/parent-dashboard-main': (context) => const ParentDashboardMain(),
+            '/story-preview': (context) => const StoryPreviewScreen(),
+            '/test-processing': (context) => const ProcessingScreen(),
+          },
+        );
       },
     );
   }

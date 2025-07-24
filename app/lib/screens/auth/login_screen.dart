@@ -5,6 +5,7 @@ import '../../constants/app_theme.dart';
 import '../../services/auth_service.dart';
 import '../../utils/page_transitions.dart';
 import 'signup_screen.dart';
+import '../../generated/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -126,17 +127,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           style: Theme.of(context).textTheme.bodyMedium,
-                          decoration: const InputDecoration(
-                            labelText: 'Email',
-                            prefixIcon: Icon(Icons.email),
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)!.email,
+                            prefixIcon: const Icon(Icons.email),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
+                              return AppLocalizations.of(context)!.pleaseEnterEmail;
                             }
                             if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                 .hasMatch(value)) {
-                              return 'Please enter a valid email';
+                              return AppLocalizations.of(context)!.pleaseEnterValidEmail;
                             }
                             return null;
                           },
@@ -149,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           obscureText: _obscurePassword,
                           style: Theme.of(context).textTheme.bodyMedium,
                           decoration: InputDecoration(
-                            labelText: 'Password',
+                            labelText: AppLocalizations.of(context)!.password,
                             prefixIcon: const Icon(Icons.lock),
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -166,10 +167,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
+                              return AppLocalizations.of(context)!.pleaseEnterPassword;
                             }
                             if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
+                              return AppLocalizations.of(context)!.passwordMinLength;
                             }
                             return null;
                           },
@@ -192,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                     ),
                                   )
-                                : const Text('Sign In'),
+                                : Text(AppLocalizations.of(context)!.signIn),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -219,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         OutlinedButton.icon(
                           onPressed: _isLoading ? null : _signInWithGoogle,
                           icon: const Icon(Icons.g_mobiledata, size: 24),
-                          label: const Text('Continue with Google'),
+                          label: Text(AppLocalizations.of(context)!.continueWithGoogle),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.grey[700],
                             padding: const EdgeInsets.symmetric(vertical: 12),
@@ -236,13 +237,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: _isLoading ? null : () {
                             // Apple sign in not implemented yet
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Apple sign in coming soon!'),
+                              SnackBar(
+                                content: Text(AppLocalizations.of(context)!.appleSignInComingSoon),
                               ),
                             );
                           },
                           icon: const Icon(Icons.apple, size: 24),
-                          label: const Text('Continue with Apple'),
+                          label: Text(AppLocalizations.of(context)!.continueWithApple),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.grey[700],
                             padding: const EdgeInsets.symmetric(vertical: 12),
@@ -264,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Don't have an account? ",
+                      AppLocalizations.of(context)!.dontHaveAccount,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textLight,
                       ),
@@ -277,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                       child: Text(
-                        'Sign Up',
+                        AppLocalizations.of(context)!.signUp,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: AppColors.secondary,
                         ),

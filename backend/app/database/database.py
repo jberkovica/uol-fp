@@ -23,13 +23,10 @@ supabase_client = None
 
 def get_database_url() -> str:
     """Get database URL from environment"""
-    # For development, allow SQLite fallback
     database_url = os.getenv("DATABASE_URL")
     
     if not database_url:
-        # SQLite fallback for development
-        database_url = "sqlite:///./mira_storyteller.db"
-        logger.warning("No DATABASE_URL found, using SQLite fallback")
+        raise ValueError("DATABASE_URL environment variable is required")
     
     return database_url
 

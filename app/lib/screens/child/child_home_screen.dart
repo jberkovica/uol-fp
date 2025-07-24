@@ -4,6 +4,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
+import '../../generated/app_localizations.dart';
 import '../../services/kid_service.dart';
 import '../../services/app_state_service.dart';
 import '../../models/story.dart';
@@ -288,17 +289,17 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Favourites section
-                        _buildStorySection('Favourites', _favouriteStories),
+                        _buildStorySection(AppLocalizations.of(context)!.favourites, _favouriteStories),
                         
                         const SizedBox(height: 32),
                         
                         // Latest section
-                        _buildStorySection('Latest', _latestStories),
+                        _buildStorySection(AppLocalizations.of(context)!.latest, _latestStories),
                         
                         const SizedBox(height: 32),
                         
                         // Kid's stories section
-                        _buildStorySection('${_selectedKid!.name}\'s stories', _stories),
+                        _buildStorySection(AppLocalizations.of(context)!.kidStories(_selectedKid!.name), _stories),
                         
                         const SizedBox(height: 100), // Extra space for bottom nav
                       ],
@@ -326,7 +327,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'My tales',
+                      AppLocalizations.of(context)!.myTales,
                       style: Theme.of(context).textTheme.headlineLarge,
                     ),
                     GestureDetector(
@@ -365,7 +366,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18), // Reduced horizontal padding
                   minimumSize: const Size(120, 60), // Shorter width, same height
                 ),
-                child: const Text('create'),
+                child: Text(AppLocalizations.of(context)!.create),
               ),
             ),
           ),
@@ -455,7 +456,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
             height: 120,
             alignment: Alignment.center,
             child: Text(
-              'No stories yet',
+              AppLocalizations.of(context)!.noStoriesYet,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textGrey,
               ),

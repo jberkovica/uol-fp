@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
+import '../../generated/app_localizations.dart';
 
 class PinEntryScreen extends StatefulWidget {
   const PinEntryScreen({super.key});
@@ -47,7 +48,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
       // Show error message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Incorrect PIN. Please try again.'),
+          content: Text(AppLocalizations.of(context)!.incorrectPin),
           backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
@@ -97,7 +98,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
                       children: [
                         // Title
                         Text(
-                          'Parent Access',
+                          AppLocalizations.of(context)!.parentDashboard,
                           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                             color: AppColors.textLight,
                             letterSpacing: -0.5,
@@ -107,7 +108,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
 
                         // Subtitle
                         Text(
-                          'Enter your 4-digit PIN',
+                          AppLocalizations.of(context)!.enterPin,
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: AppColors.textLight.withValues(alpha: 0.9),
                           ),

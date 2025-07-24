@@ -12,6 +12,7 @@ import '../../services/ai_story_service.dart';
 import '../../models/story.dart';
 import '../../models/kid.dart';
 import './processing_screen.dart';
+import '../../generated/app_localizations.dart';
 
 // Custom clipper for angled ellipse curve - same as splash screen
 class AngledEllipseClipper extends CustomClipper<Path> {
@@ -74,7 +75,7 @@ class _UploadScreenState extends State<UploadScreen> {
       final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
       if (args != null) {
         setState(() {
-          _currentFormat = args['format'] as InputFormat;
+          _currentFormat = args['format'] as InputFormat? ?? InputFormat.image;
           _selectedKid = args['kid'] as Kid?;
         });
       }
@@ -250,7 +251,7 @@ class _UploadScreenState extends State<UploadScreen> {
   Widget _buildUploadButton() {
     return FilledButton(
       onPressed: _showImageSourceOptions,
-      child: const Text('upload'),
+      child: Text(AppLocalizations.of(context)!.upload),
     );
   }
   
@@ -258,13 +259,13 @@ class _UploadScreenState extends State<UploadScreen> {
     return FilledButton(
       onPressed: () {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Audio recording will be implemented soon!'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.audioRecordingComingSoon),
             backgroundColor: AppColors.primary,
           ),
         );
       },
-      child: const Text('dictate'),
+      child: Text(AppLocalizations.of(context)!.dictate),
     );
   }
   
@@ -292,7 +293,7 @@ class _UploadScreenState extends State<UploadScreen> {
             maxLines: null,
             expands: true,
             decoration: InputDecoration(
-              hintText: 'write your idea here...',
+              hintText: AppLocalizations.of(context)!.writeYourIdeaHere,
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
@@ -309,14 +310,14 @@ class _UploadScreenState extends State<UploadScreen> {
           onPressed: () {
             if (_textController.text.trim().isNotEmpty) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Text story generation will be implemented soon!'),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.textStoryComingSoon),
                   backgroundColor: AppColors.primary,
                 ),
               );
             }
           },
-          child: const Text('submit'),
+          child: Text(AppLocalizations.of(context)!.submit),
         ),
       ],
     );
@@ -386,7 +387,7 @@ class _UploadScreenState extends State<UploadScreen> {
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: AppTheme.cancelButtonStyle,
-                child: const Text('Cancel'),
+                child: Text(AppLocalizations.of(context)!.cancel),
               ),
             ],
           ),
@@ -436,7 +437,7 @@ class _UploadScreenState extends State<UploadScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to pick image: $e'),
+            content: Text(AppLocalizations.of(context)!.failedToPickImage(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -477,7 +478,7 @@ class _UploadScreenState extends State<UploadScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to generate story: $e'),
+            content: Text(AppLocalizations.of(context)!.failedToGenerateStory(e.toString())),
             backgroundColor: AppColors.error,
             duration: const Duration(seconds: 5),
           ),

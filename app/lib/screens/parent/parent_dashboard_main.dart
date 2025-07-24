@@ -10,8 +10,10 @@ import '../../widgets/responsive_wrapper.dart';
 import '../../services/app_state_service.dart';
 import '../../services/kid_service.dart';
 import '../../services/auth_service.dart';
+import '../../services/language_service.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
+import '../../generated/app_localizations.dart';
 
 class ParentDashboardMain extends StatefulWidget {
   const ParentDashboardMain({super.key});
@@ -80,7 +82,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to load kids: $e'),
+            content: Text(AppLocalizations.of(context)!.failedToLoadKids(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -153,8 +155,8 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
     } else {
       // No kids available - show message
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please add a kid profile first to create stories'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.addKidProfileFirst),
           backgroundColor: AppColors.error,
         ),
       );
@@ -178,8 +180,9 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
     } else {
       // No kids available - show message
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('No kids profiles available. Add a kid first!'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.noKidsProfilesAvailable),
+          backgroundColor: AppColors.grey,
         ),
       );
     }
@@ -252,7 +255,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           
           // Title
           Text(
-            'Parent Dashboard',
+            AppLocalizations.of(context)!.parentDashboard,
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
               color: AppColors.white,
               letterSpacing: -0.5,
@@ -267,7 +270,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
               Expanded(
                 child: _buildHeaderStatCard(
                   value: '${_kids.length}',
-                  label: 'Kids Profiles',
+                  label: AppLocalizations.of(context)!.kidsProfiles,
                 ),
               ),
               SizedBox(width: ResponsiveBreakpoints.getResponsivePadding(
@@ -279,7 +282,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
               Expanded(
                 child: _buildHeaderStatCard(
                   value: '$totalStories',
-                  label: 'Total Stories',
+                  label: AppLocalizations.of(context)!.totalStories,
                 ),
               ),
             ],
@@ -359,7 +362,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         Row(
           children: [
             Text(
-              'Kids Profiles',
+              AppLocalizations.of(context)!.kidsProfiles,
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             const Spacer(),
@@ -368,7 +371,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 Navigator.pushNamed(context, '/profile-select');
               },
               icon: const Icon(Icons.add, size: 18),
-              label: const Text('Add Kid'),
+              label: Text(AppLocalizations.of(context)!.addKid),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.primary,
                 textStyle: Theme.of(context).textTheme.labelMedium,
@@ -394,12 +397,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
       child: Column(
         children: [
           Text(
-            'No Kids Profiles Yet',
+            AppLocalizations.of(context)!.noKidsProfilesYet,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 8),
           Text(
-            'Add your first kid profile to get started with personalized stories!',
+            AppLocalizations.of(context)!.addFirstKidProfile,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppColors.textGrey,
             ),
@@ -438,14 +441,14 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '$storyCount ${storyCount == 1 ? 'story' : 'stories'}',
+                    AppLocalizations.of(context)!.stories(storyCount),
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: AppColors.primary,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Created ${_formatDate(kid.createdAt)}',
+                    AppLocalizations.of(context)!.createdDate(_formatDate(kid.createdAt)),
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
@@ -463,12 +466,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 switch (value) {
                   case 'edit':
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Edit profile coming soon!')),
+                      SnackBar(content: Text(AppLocalizations.of(context)!.editProfileComingSoon)),
                     );
                     break;
                   case 'stories':
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('View stories coming soon!')),
+                      SnackBar(content: Text(AppLocalizations.of(context)!.viewStories)),
                     );
                     break;
                   case 'delete':
@@ -477,17 +480,17 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 }
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'edit',
-                  child: Text('Edit Profile'),
+                  child: Text(AppLocalizations.of(context)!.editProfile),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'stories',
-                  child: Text('View Stories'),
+                  child: Text(AppLocalizations.of(context)!.viewStories),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'delete',
-                  child: Text('Delete Profile'),
+                  child: Text(AppLocalizations.of(context)!.deleteProfile),
                 ),
               ],
             ),
@@ -512,35 +515,41 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           child: Column(
             children: [
               _buildControlTile(
+                icon: Icons.language,
+                title: AppLocalizations.of(context)!.language,
+                subtitle: _getLanguageDisplayName(LanguageService.instance.currentLocale.languageCode),
+                onTap: _showLanguageSelector,
+              ),
+              _buildControlTile(
                 icon: Icons.security,
-                title: 'Change PIN',
-                subtitle: 'Update your parent dashboard PIN',
+                title: AppLocalizations.of(context)!.changePin,
+                subtitle: AppLocalizations.of(context)!.updateParentDashboardPin,
                 onTap: () {
                   // TODO: Navigate to change PIN
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Change PIN coming soon!')),
+                    SnackBar(content: Text(AppLocalizations.of(context)!.changePinComingSoon)),
                   );
                 },
               ),
               _buildControlTile(
                 icon: Icons.tune,
-                title: 'Story Settings',
-                subtitle: 'Configure story generation preferences',
+                title: AppLocalizations.of(context)!.storySettings,
+                subtitle: AppLocalizations.of(context)!.configureStoryGenerationPreferences,
                 onTap: () {
                   // TODO: Navigate to story settings
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Story settings coming soon!')),
+                    SnackBar(content: Text(AppLocalizations.of(context)!.storySettingsComingSoon)),
                   );
                 },
               ),
               _buildControlTile(
                 icon: Icons.download,
-                title: 'Export Data',
-                subtitle: 'Download all stories and data',
+                title: AppLocalizations.of(context)!.exportData,
+                subtitle: AppLocalizations.of(context)!.downloadAllStoriesAndData,
                 onTap: () {
                   // TODO: Export functionality
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Export data coming soon!')),
+                    SnackBar(content: Text(AppLocalizations.of(context)!.exportDataComingSoon)),
                   );
                 },
               ),
@@ -607,7 +616,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
             ),
             ListTile(
               leading: const Icon(Icons.logout, color: AppColors.error),
-              title: const Text('Exit Parent Mode'),
+              title: Text(AppLocalizations.of(context)!.exitParentMode),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushReplacementNamed(context, '/child-home');
@@ -628,19 +637,19 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        title: const Text('Delete Profile'),
+        title: Text(AppLocalizations.of(context)!.deleteProfile),
         content: Text(
-          'Are you sure you want to delete ${kid.name}\'s profile? This will also delete all their $storyCount stories.',
+          AppLocalizations.of(context)!.deleteProfileConfirm(kid.name, storyCount),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           TextButton(
             onPressed: () => _deleteKid(kid),
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Delete'),
+            child: Text(AppLocalizations.of(context)!.delete),
           ),
         ],
       ),
@@ -653,7 +662,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
     // Show loading indicator
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Deleting ${kid.name}\'s profile...'),
+        content: Text(AppLocalizations.of(context)!.deletingKidProfile(kid.name)),
         duration: const Duration(seconds: 2),
       ),
     );
@@ -667,7 +676,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${kid.name}\'s profile deleted successfully'),
+            content: Text(AppLocalizations.of(context)!.kidProfileDeleted(kid.name)),
             backgroundColor: AppColors.success,
           ),
         );
@@ -676,7 +685,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to delete profile: $e'),
+            content: Text(AppLocalizations.of(context)!.failedToDeleteProfile(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -704,6 +713,115 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         return ProfileType.profile4;
       default:
         return ProfileType.profile1;
+    }
+  }
+
+  String _getLanguageDisplayName(String languageCode) {
+    switch (languageCode) {
+      case 'en':
+        return AppLocalizations.of(context)!.english;
+      case 'ru':
+        return AppLocalizations.of(context)!.russian;
+      case 'lv':
+        return AppLocalizations.of(context)!.latvian;
+      default:
+        return AppLocalizations.of(context)!.english;
+    }
+  }
+
+  void _showLanguageSelector() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
+        decoration: const BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 24),
+              decoration: BoxDecoration(
+                color: AppColors.textLight,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            Text(
+              AppLocalizations.of(context)!.selectLanguage,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 16),
+            _buildLanguageOption('en', AppLocalizations.of(context)!.english, '🇺🇸'),
+            _buildLanguageOption('ru', AppLocalizations.of(context)!.russian, '🇷🇺'),
+            _buildLanguageOption('lv', AppLocalizations.of(context)!.latvian, '🇱🇻'),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageOption(String languageCode, String languageName, String flag) {
+    final isSelected = LanguageService.instance.currentLocale.languageCode == languageCode;
+    
+    return ListTile(
+      leading: Text(flag, style: const TextStyle(fontSize: 24)),
+      title: Text(
+        languageName,
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
+      ),
+      trailing: isSelected 
+        ? const Icon(Icons.check, color: AppColors.primary)
+        : null,
+      onTap: () async {
+        Navigator.pop(context);
+        await _updateLanguage(languageCode);
+      },
+    );
+  }
+
+  Future<void> _updateLanguage(String languageCode) async {
+    try {
+      final success = await LanguageService.instance.updateLanguage(languageCode);
+      
+      if (success && mounted) {
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.languageUpdatedTo(_getLanguageDisplayName(languageCode))),
+            backgroundColor: AppColors.primary,
+          ),
+        );
+        
+        // UI will update automatically via LanguageService listeners
+        setState(() {});
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.failedToUpdateLanguage),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.errorUpdatingLanguage(e.toString())),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
     }
   }
 }

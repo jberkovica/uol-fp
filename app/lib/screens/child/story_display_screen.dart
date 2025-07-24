@@ -4,6 +4,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../models/story.dart';
 import '../../widgets/responsive_wrapper.dart';
+import '../../generated/app_localizations.dart';
 
 class StoryDisplayScreen extends StatefulWidget {
   const StoryDisplayScreen({super.key});
@@ -483,8 +484,8 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
             const SizedBox(height: 24),
             ListTile(
               leading: const Icon(Icons.text_fields),
-              title: const Text('Text Size'),
-              subtitle: Text('Current: ${[16, 20, 24][_fontSizeIndex]}pt'),
+              title: Text(AppLocalizations.of(context)!.textSize),
+              subtitle: Text(AppLocalizations.of(context)!.currentFontSize([16, 20, 24][_fontSizeIndex])),
               onTap: () {
                 Navigator.pop(context);
                 _toggleTextSize();
@@ -492,8 +493,8 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
             ),
             ListTile(
               leading: Icon(_backgroundMusicEnabled ? Icons.music_note : Icons.music_off),
-              title: const Text('Background Music'),
-              subtitle: Text(_backgroundMusicEnabled ? 'Enabled' : 'Disabled'),
+              title: Text(AppLocalizations.of(context)!.backgroundMusic),
+              subtitle: Text(_backgroundMusicEnabled ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled),
               onTap: () {
                 Navigator.pop(context);
                 _toggleBackgroundMusic();
@@ -501,7 +502,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.add),
-              title: const Text('Create Another Story'),
+              title: Text(AppLocalizations.of(context)!.createAnotherStory),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pop(context);
@@ -554,7 +555,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to play audio: $e'),
+            content: Text(AppLocalizations.of(context)!.failedToPlayAudio(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );

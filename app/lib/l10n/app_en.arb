@@ -1,0 +1,384 @@
+{
+  "@@locale": "en",
+  
+  "appTitle": "Mira Storyteller",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "myTales": "My tales",
+  "@myTales": {
+    "description": "Home screen title"
+  },
+  
+  "create": "create",
+  "@create": {
+    "description": "Create button text"
+  },
+  
+  "favourites": "Favourites",
+  "@favourites": {
+    "description": "Favourites section title"
+  },
+  
+  "latest": "Latest",
+  "@latest": {
+    "description": "Latest stories section title"
+  },
+  
+  "kidStories": "{kidName}'s stories",
+  "@kidStories": {
+    "description": "Kid's personal stories section",
+    "placeholders": {
+      "kidName": {
+        "type": "String",
+        "example": "Ava"
+      }
+    }
+  },
+  
+  "noStoriesYet": "No stories yet",
+  "@noStoriesYet": {
+    "description": "Empty state message"
+  },
+  
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile navigation item"
+  },
+  
+  "home": "Home",
+  "@home": {
+    "description": "Home navigation item"
+  },
+  
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings navigation item"
+  },
+  
+  "selectProfile": "Select Profile",
+  "@selectProfile": {
+    "description": "Profile selection screen title"
+  },
+  
+  "noProfileSelected": "No profile selected",
+  "@noProfileSelected": {
+    "description": "Error when no profile is selected"
+  },
+  
+  "magicIsHappening": "Magic is happening..",
+  "@magicIsHappening": {
+    "description": "Processing screen message"
+  },
+  
+  "uploadYourCreation": "Upload your creation",
+  "@uploadYourCreation": {
+    "description": "Upload screen title"
+  },
+  
+  "dragDropHere": "Drag & drop here",
+  "@dragDropHere": {
+    "description": "Upload area text"
+  },
+  
+  "or": "OR",
+  "@or": {
+    "description": "Alternative option separator"
+  },
+  
+  "browseFile": "Browse file",
+  "@browseFile": {
+    "description": "File browser button"
+  },
+  
+  "generateStory": "Generate story",
+  "@generateStory": {
+    "description": "Generate story button"
+  },
+  
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Sign in button"
+  },
+  
+  "signUp": "Sign Up",
+  "@signUp": {
+    "description": "Sign up button"
+  },
+  
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  
+  "confirmPassword": "Confirm Password",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  
+  "forgotPassword": "Forgot Password?",
+  "@forgotPassword": {
+    "description": "Forgot password link"
+  },
+  
+  "alreadyHaveAccount": "Already have an account?",
+  "@alreadyHaveAccount": {
+    "description": "Login prompt on signup page"
+  },
+  
+  "dontHaveAccount": "Don't have an account?",
+  "@dontHaveAccount": {
+    "description": "Signup prompt on login page"
+  },
+  
+  "welcomeBack": "Welcome back!",
+  "@welcomeBack": {
+    "description": "Login screen greeting"
+  },
+  
+  "createYourAccount": "Create your account",
+  "@createYourAccount": {
+    "description": "Signup screen title"
+  },
+  
+  "parentDashboard": "Parent Dashboard",
+  "@parentDashboard": {
+    "description": "Parent dashboard title"
+  },
+  
+  "enterPin": "Enter PIN",
+  "@enterPin": {
+    "description": "PIN entry screen title"
+  },
+  
+  "failedToLoadStories": "Failed to load stories: {error}",
+  "@failedToLoadStories": {
+    "description": "Error message when stories fail to load",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "audioRecordingComingSoon": "Audio recording will be implemented soon!",
+  "textStoryComingSoon": "Text story generation will be implemented soon!",
+  "failedToPickImage": "Failed to pick image: {error}",
+  "@failedToPickImage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToGenerateStory": "Failed to generate story: {error}",
+  "@failedToGenerateStory": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "pleaseEnterName": "Please enter a name",
+  "failedToCreateProfile": "Failed to create profile: {error}",
+  "@failedToCreateProfile": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "editProfileComingSoon": "Edit profile coming soon!",
+  "favoritesComingSoon": "Favorites coming soon!",
+  "failedToPlayAudio": "Failed to play audio: {error}",
+  "@failedToPlayAudio": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "incorrectPin": "Incorrect PIN. Please try again.",
+  "accountCreatedSuccessfully": "Account created successfully! Please check your email to verify your account.",
+  "appleSignInComingSoon": "Apple sign in coming soon!",
+  "appleSignUpComingSoon": "Apple sign up coming soon!",
+  "failedToLoadKids": "Failed to load kids: {error}",
+  "@failedToLoadKids": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "addKidProfileFirst": "Please add a kid profile first to create stories",
+  "noKidsProfilesAvailable": "No kids profiles available. Add a kid first!",
+  "changePinComingSoon": "Change PIN coming soon!",
+  "storySettingsComingSoon": "Story settings coming soon!",
+  "exportDataComingSoon": "Export data coming soon!",
+  "deletingKidProfile": "Deleting {kidName}'s profile...",
+  "@deletingKidProfile": {
+    "placeholders": {
+      "kidName": {
+        "type": "String"
+      }
+    }
+  },
+  "kidProfileDeleted": "{kidName}'s profile deleted successfully",
+  "@kidProfileDeleted": {
+    "placeholders": {
+      "kidName": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToDeleteProfile": "Failed to delete profile: {error}",
+  "@failedToDeleteProfile": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "languageUpdatedTo": "Language updated to {language}",
+  "@languageUpdatedTo": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToUpdateLanguage": "Failed to update language",
+  "errorUpdatingLanguage": "Error updating language: {error}",
+  "@errorUpdatingLanguage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "upload": "upload",
+  "dictate": "dictate",
+  "submit": "submit",
+  "cancel": "Cancel",
+  "continueWithGoogle": "Continue with Google",
+  "continueWithApple": "Continue with Apple",
+  "createAccount": "Create Account",
+  "editProfile": "Edit Profile",
+  "viewStories": "View Stories", 
+  "deleteProfile": "Delete Profile",
+  "addKid": "Add Kid",
+  "decline": "Decline",
+  "approve": "Approve",
+  "delete": "Delete",
+  
+  "storyPreview": "Story preview",
+  "exitParentMode": "Exit Parent Mode",
+  "textSize": "Text Size",
+  "backgroundMusic": "Background Music",
+  "createAnotherStory": "Create Another Story",
+  
+  "fullNameOptional": "Full Name (Optional)",
+  "enterChildName": "Enter child's name",
+  "writeYourIdeaHere": "write your idea here...",
+  "enterFeedbackOrChanges": "Enter any feedback or request changes...",
+  
+  "changeNameAgeAvatar": "Change name, age, or avatar",
+  "switchProfile": "Switch Profile",
+  "changeToDifferentKidProfile": "Change to different kid profile",
+  "favoriteStories": "Favorite Stories", 
+  "viewYourMostLovedTales": "View your most loved tales",
+  "language": "Language",
+  "changePin": "Change PIN",
+  "updateParentDashboardPin": "Update your parent dashboard PIN",
+  "storySettings": "Story Settings",
+  "configureStoryGenerationPreferences": "Configure story generation preferences",
+  "exportData": "Export Data",
+  "downloadAllStoriesAndData": "Download all stories and data",
+  
+  "noStoryDataAvailable": "No story data available",
+  "currentFontSize": "Current: {size}pt",
+  "@currentFontSize": {
+    "placeholders": {
+      "size": {
+        "type": "int"
+      }
+    }
+  },
+  "enabled": "Enabled",
+  "disabled": "Disabled",
+  
+  "kidsProfiles": "Kids Profiles",
+  "totalStories": "Total Stories",
+  "noKidsProfilesYet": "No Kids Profiles Yet",
+  "addFirstKidProfile": "Add your first kid profile to get started with personalized stories!",
+  "parentControls": "Parent Controls",
+  "selectLanguage": "Select Language",
+  "newStory": "New Story",
+  "stories": "{count} {count, plural, =0{stories} =1{story} other{stories}}",
+  "@stories": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "createdDate": "Created {date}",
+  "@createdDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteProfileConfirm": "Are you sure you want to delete {kidName}'s profile? This will also delete all their {storyCount} stories.",
+  "@deleteProfileConfirm": {
+    "placeholders": {
+      "kidName": {
+        "type": "String"
+      },
+      "storyCount": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "profileDetails": "Profile: {avatarType}",
+  "@profileDetails": {
+    "placeholders": {
+      "avatarType": {
+        "type": "String"
+      }
+    }
+  },
+  "creatingStoriesSince": "Creating stories since {date}",
+  "@creatingStoriesSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "storiesCreated": "Stories Created",
+  "wordsWritten": "Words Written",
+  "profileOptions": "Profile Options",
+  "changeToDifferentProfile": "Change to different kid profile",
+  
+  "english": "English",
+  "russian": "Русский", 
+  "latvian": "Latviešu",
+  
+  "pleaseEnterEmail": "Please enter your email",
+  "pleaseEnterValidEmail": "Please enter a valid email",
+  "passwordMinLength": "Password must be at least 6 characters",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "pleaseEnterPassword": "Please enter a password",
+  "pleaseConfirmPassword": "Please confirm your password",
+  "appleSignUpComingSoon": "Apple sign up coming soon!"
+}

@@ -5,6 +5,7 @@ import '../models/kid.dart';
 class AppStateService {
   static const String _selectedKidKey = 'selected_kid';
   static const String _authUserIdKey = 'auth_user_id';
+  static const String _languageKey = 'app_language';
   
   static SharedPreferences? _prefs;
   
@@ -56,11 +57,25 @@ class AppStateService {
     await prefs.remove(_authUserIdKey);
   }
   
+  // Language preference persistence
+  static Future<void> saveLanguage(String languageCode) async {
+    await prefs.setString(_languageKey, languageCode);
+  }
+  
+  static String? getLanguage() {
+    return prefs.getString(_languageKey);
+  }
+  
+  static Future<void> clearLanguage() async {
+    await prefs.remove(_languageKey);
+  }
+  
   // Clear all app state (for logout)
   static Future<void> clearAllState() async {
     await Future.wait([
       clearSelectedKid(),
       clearAuthUserId(),
+      // Note: Keep language preference on logout
     ]);
   }
 }

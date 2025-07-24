@@ -31,6 +31,7 @@ app:
 [] remove /test-processing
 [] improve text style in story, make it paragraphs
 [] logout at parent screen
+[] remove export button but implement it later (Export data - download all stories and data)
 
 Priority:
 [x] Manrope font
@@ -38,10 +39,16 @@ Priority:
 [x] create button in menu
 [x] home page design
 [] parent approve
-[] 3 language support
+[x] 3 language support
 [] all prompts separated and redesigned
 [] switch from elevenlab to open ai for tts
-[] fix screens scrollin animation
+[x] fix screens scrollin animation
+[] fix scrolling issue on home page
+[] logout button
+[] profile options - bold
+[] parent dashboard less spacing
+[] parent dashboard remove 3 dots and add logout
+
 
 backend:
 [] image generation prompt
@@ -50,6 +57,7 @@ backend:
 [] log requests and responces
 [] save audio and images to db? s3?
 [] age 3-10?
+[] for prod I want testing db and prod db and also backup, research best practise
 
 
 [] multi language support

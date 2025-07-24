@@ -12,6 +12,7 @@ import '../../widgets/profile_avatar.dart';
 import '../../widgets/responsive_wrapper.dart';
 import '../../utils/page_transitions.dart';
 import '../parent/pin_entry_screen.dart';
+import '../../generated/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
   final Kid? kid;
@@ -127,9 +128,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (_kid == null) {
       return Scaffold(
         backgroundColor: AppTheme.whiteScreenBackground,
-        body: const SafeArea(
+        body: SafeArea(
           child: Center(
-            child: Text('No profile selected'),
+            child: Text(AppLocalizations.of(context)!.noProfileSelected),
           ),
         ),
       );
@@ -308,7 +309,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           
           // Avatar type info
           Text(
-            'Profile: ${_kid!.avatarType}',
+            AppLocalizations.of(context)!.profileDetails(_kid!.avatarType),
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: AppColors.textGrey,
             ),
@@ -317,7 +318,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           
           // Join date
           Text(
-            'Creating stories since ${_formatDate(_kid!.createdAt)}',
+            AppLocalizations.of(context)!.creatingStoriesSince(_formatDate(_kid!.createdAt)),
             style: Theme.of(context).textTheme.bodySmall,
           ),
         ],
@@ -335,7 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: _buildStatCard(
             icon: Icons.book_outlined,
             value: '$completedStories',
-            label: 'Stories Created',
+            label: AppLocalizations.of(context)!.storiesCreated,
             color: AppColors.primary,
           ),
         ),
@@ -349,7 +350,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: _buildStatCard(
             icon: Icons.edit_outlined,
             value: '$totalWords',
-            label: 'Words Written',
+            label: AppLocalizations.of(context)!.wordsWritten,
             color: AppColors.secondary,
           ),
         ),
@@ -366,13 +367,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _buildSimpleStat(
           icon: LucideIcons.bookOpen,
           value: '${_stories.length}',
-          label: 'Stories Created',
+          label: AppLocalizations.of(context)!.storiesCreated,
           color: AppColors.primary,
         ),
         _buildSimpleStat(
           icon: LucideIcons.penTool,
           value: '$totalWords',
-          label: 'Words Written',
+          label: AppLocalizations.of(context)!.wordsWritten,
           color: AppColors.orange,
         ),
       ],
@@ -447,7 +448,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Profile Options',
+          AppLocalizations.of(context)!.profileOptions,
           style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(height: 12),
@@ -457,31 +458,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               _buildOptionTile(
                 icon: Icons.edit,
-                title: 'Edit Profile',
-                subtitle: 'Change name, age, or avatar',
+                title: AppLocalizations.of(context)!.editProfile,
+                subtitle: AppLocalizations.of(context)!.changeNameAgeAvatar,
                 onTap: () {
                   // TODO: Navigate to edit profile
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Edit profile coming soon!')),
+                    SnackBar(content: Text(AppLocalizations.of(context)!.editProfileComingSoon)),
                   );
                 },
               ),
               _buildOptionTile(
                 icon: Icons.switch_account,
-                title: 'Switch Profile',
-                subtitle: 'Change to different kid profile',
+                title: AppLocalizations.of(context)!.switchProfile,
+                subtitle: AppLocalizations.of(context)!.changeToDifferentProfile,
                 onTap: () {
                   Navigator.pushReplacementNamed(context, '/profile-select');
                 },
               ),
               _buildOptionTile(
                 icon: Icons.favorite,
-                title: 'Favorite Stories',
-                subtitle: 'View your most loved tales',
+                title: AppLocalizations.of(context)!.favoriteStories,
+                subtitle: AppLocalizations.of(context)!.viewYourMostLovedTales,
                 onTap: () {
                   // TODO: Navigate to favorites
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Favorites coming soon!')),
+                    SnackBar(content: Text(AppLocalizations.of(context)!.favoritesComingSoon)),
                   );
                 },
               ),

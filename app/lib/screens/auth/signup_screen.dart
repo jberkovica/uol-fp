@@ -5,6 +5,7 @@ import '../../constants/app_theme.dart';
 import '../../services/auth_service.dart';
 import '../../utils/page_transitions.dart';
 import 'login_screen.dart';
+import '../../generated/app_localizations.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -50,8 +51,8 @@ class _SignupScreenState extends State<SignupScreen> {
         if (mounted) {
           // Show success message
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Account created successfully! Please check your email to verify your account.'),
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.accountCreatedSuccessfully),
               backgroundColor: AppColors.success,
             ),
           );
@@ -145,9 +146,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         TextFormField(
                           controller: _nameController,
                           style: Theme.of(context).textTheme.bodyMedium,
-                          decoration: const InputDecoration(
-                            labelText: 'Full Name (Optional)',
-                            prefixIcon: Icon(Icons.person),
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)!.fullNameOptional,
+                            prefixIcon: const Icon(Icons.person),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -157,17 +158,17 @@ class _SignupScreenState extends State<SignupScreen> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           style: Theme.of(context).textTheme.bodyMedium,
-                          decoration: const InputDecoration(
-                            labelText: 'Email',
-                            prefixIcon: Icon(Icons.email),
+                          decoration: InputDecoration(
+                            labelText: AppLocalizations.of(context)!.email,
+                            prefixIcon: const Icon(Icons.email),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
+                              return AppLocalizations.of(context)!.pleaseEnterEmail;
                             }
                             if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                                 .hasMatch(value)) {
-                              return 'Please enter a valid email';
+                              return AppLocalizations.of(context)!.pleaseEnterValidEmail;
                             }
                             return null;
                           },
@@ -180,7 +181,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           obscureText: _obscurePassword,
                           style: Theme.of(context).textTheme.bodyMedium,
                           decoration: InputDecoration(
-                            labelText: 'Password',
+                            labelText: AppLocalizations.of(context)!.password,
                             prefixIcon: const Icon(Icons.lock),
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -197,10 +198,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter a password';
+                              return AppLocalizations.of(context)!.pleaseEnterPassword;
                             }
                             if (value.length < 6) {
-                              return 'Password must be at least 6 characters';
+                              return AppLocalizations.of(context)!.passwordMinLength;
                             }
                             return null;
                           },
@@ -213,7 +214,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           obscureText: _obscureConfirmPassword,
                           style: Theme.of(context).textTheme.bodyMedium,
                           decoration: InputDecoration(
-                            labelText: 'Confirm Password',
+                            labelText: AppLocalizations.of(context)!.confirmPassword,
                             prefixIcon: const Icon(Icons.lock_outline),
                             suffixIcon: IconButton(
                               icon: Icon(
@@ -230,10 +231,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please confirm your password';
+                              return AppLocalizations.of(context)!.pleaseConfirmPassword;
                             }
                             if (value != _passwordController.text) {
-                              return 'Passwords do not match';
+                              return AppLocalizations.of(context)!.passwordsDoNotMatch;
                             }
                             return null;
                           },
@@ -256,7 +257,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                     ),
                                   )
-                                : const Text('Create Account'),
+                                : Text(AppLocalizations.of(context)!.createAccount),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -283,7 +284,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         OutlinedButton.icon(
                           onPressed: _isLoading ? null : _signUpWithGoogle,
                           icon: const Icon(Icons.g_mobiledata, size: 24),
-                          label: const Text('Continue with Google'),
+                          label: Text(AppLocalizations.of(context)!.continueWithGoogle),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.grey[700],
                             padding: const EdgeInsets.symmetric(vertical: 12),
@@ -300,13 +301,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           onPressed: _isLoading ? null : () {
                             // Apple sign in not implemented yet
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Apple sign up coming soon!'),
+                              SnackBar(
+                                content: Text(AppLocalizations.of(context)!.appleSignUpComingSoon),
                               ),
                             );
                           },
                           icon: const Icon(Icons.apple, size: 24),
-                          label: const Text('Continue with Apple'),
+                          label: Text(AppLocalizations.of(context)!.continueWithApple),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.grey[700],
                             padding: const EdgeInsets.symmetric(vertical: 12),
@@ -328,7 +329,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Already have an account? ",
+                      AppLocalizations.of(context)!.alreadyHaveAccount,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textLight,
                       ),
@@ -341,7 +342,7 @@ class _SignupScreenState extends State<SignupScreen> {
         );
                       },
                       child: Text(
-                        'Sign In',
+                        AppLocalizations.of(context)!.signIn,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
                           color: AppColors.secondary,
                         ),

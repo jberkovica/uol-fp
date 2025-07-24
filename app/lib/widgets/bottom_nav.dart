@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
+import '../generated/app_localizations.dart';
 
 class BottomNav extends StatelessWidget {
   final int currentIndex;
@@ -35,28 +36,28 @@ class BottomNav extends StatelessWidget {
                 index: 0,
                 icon: Icons.person_outline,
                 activeIcon: Icons.person,
-                label: 'Profile',
+                label: AppLocalizations.of(context)!.profile,
               ),
               _buildNavItem(
                 context: context,
                 index: 1,
                 icon: Icons.home_outlined,
                 activeIcon: Icons.home,
-                label: 'Home',
+                label: AppLocalizations.of(context)!.home,
               ),
               _buildNavItem(
                 context: context,
                 index: 2,
                 icon: Icons.add_circle_outline,
                 activeIcon: Icons.add_circle,
-                label: 'Create',
+                label: AppLocalizations.of(context)!.create,
               ),
               _buildNavItem(
                 context: context,
                 index: 3,
                 icon: Icons.settings_outlined,
                 activeIcon: Icons.settings,
-                label: 'Settings',
+                label: AppLocalizations.of(context)!.settings,
               ),
             ],
           ),

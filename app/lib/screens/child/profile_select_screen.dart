@@ -8,6 +8,7 @@ import '../../services/auth_service.dart';
 import '../../services/kid_service.dart';
 import '../../services/app_state_service.dart';
 import '../../models/kid.dart';
+import '../../generated/app_localizations.dart';
 
 class ProfileSelectScreen extends StatefulWidget {
   const ProfileSelectScreen({super.key});
@@ -76,9 +77,9 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                 children: [
                   TextField(
                     controller: nameController,
-                    decoration: const InputDecoration(
-                      hintText: "Enter child's name",
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.enterChildName,
+                      border: const OutlineInputBorder(),
                     ),
                     style: Theme.of(context).textTheme.headlineLarge,
                     autofocus: true,
@@ -129,7 +130,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                   onPressed: () async {
                     if (nameController.text.trim().isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Please enter a name')),
+                        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseEnterName)),
                       );
                       return;
                     }
@@ -146,7 +147,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       Navigator.of(context).pop(newKid);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to create profile: $e')),
+                        SnackBar(content: Text(AppLocalizations.of(context)!.failedToCreateProfile(e.toString()))),
                       );
                     }
                   },
@@ -187,7 +188,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
           // Consistent header using AppTheme
           AppTheme.screenHeader(
             context: context,
-            title: 'Select profile',
+            title: AppLocalizations.of(context)!.selectProfile,
             action: GestureDetector(
               onTap: () {
                 Navigator.pushNamed(context, '/parent-dashboard');

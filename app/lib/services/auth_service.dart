@@ -85,4 +85,36 @@ class AuthService {
   Future<void> signOut() async {
     await _supabase.auth.signOut();
   }
+
+  /// Get user's language preference from metadata
+  String getUserLanguage() {
+    final user = currentUser;
+    if (user?.userMetadata != null) {
+      return user!.userMetadata!['language'] as String? ?? 'en';
+    }
+    return 'en'; // Default to English
+  }
+
+  /// Update user's language preference in metadata
+  Future<bool> updateUserLanguage(String languageCode) async {
+    try {
+      final user = currentUser;
+      if (user == null) return false;
+
+      // Update user metadata with language preference
+      final response = await _supabase.auth.updateUser(
+        UserAttributes(
+          data: {
+            ...?user.userMetadata,
+            'language': languageCode,
+          },
+        ),
+      );
+
+      return response.user != null;
+    } catch (e) {
+      print('Error updating user language: $e');
+      return false;
+    }
+  }
 } 
