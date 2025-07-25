@@ -7,9 +7,17 @@
 - **NO Co-Authored-By: Claude lines**
 - Keep commit messages clean and professional
 - Focus on what was changed and why, not who/what made the change
-2. **Transparency**: Always be transparent when uncertain - explicitly state "I'm not sure about..." rather than guessing
-3. **Best Practices**: Always search for current documentation and best practices using WebSearch before implementing solutions
-4. **No Hallucinations**: If unsure about syntax, APIs, or implementation details, search for official docs first
+
+### Code Style Rules
+- **NO EMOJIS** - Never use emojis in any code, comments, docstrings, or output messages
+- Keep all text professional and clean
+- Use clear descriptive text instead of emojis for status indicators
+
+### Development Guidelines
+1. **Transparency**: Always be transparent when uncertain - explicitly state "I'm not sure about..." rather than guessing
+2. **Best Practices**: Always search for current documentation and best practices using WebSearch before implementing solutions
+3. **No Hallucinations**: If unsure about syntax, APIs, or implementation details, search for official docs first
+4. **Comprehensive Testing**: Write thorough tests for all components during refactoring
 
 ## Design Style Guidelines
 

@@ -13,20 +13,26 @@ email-validator==2.0.0
 # Image processing and validation
 pillow==10.0.0
 
-# Database (Supabase + SQLAlchemy)
+# Database (Supabase only - removed SQLAlchemy)
 supabase==2.8.1
 gotrue==2.8.1
-sqlalchemy==2.0.23
-psycopg2-binary==2.9.9
-asyncpg==0.29.0
-alembic==1.13.1
 
-# AI Services (current)
+# Configuration
+pyyaml==6.0.1
+
+# AI Services - Vision Agents
 google-generativeai==0.3.0
+openai==1.54.0
+anthropic==0.40.0
 
-# Google Cloud services (legacy/optional)
-google-cloud-storage==2.9.0
+# AI Services - Storyteller Agents  
+mistralai==1.2.0
+# openai and anthropic already listed above
+
+# AI Services - Voice Agents
+elevenlabs==1.14.0
 google-cloud-texttospeech==2.14.1
+azure-cognitiveservices-speech==1.40.0
 
 # Testing
 pytest==7.3.1

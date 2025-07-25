@@ -61,6 +61,20 @@ backend:
 [] age 3-10?
 [] for prod I want testing db and prod db and also backup, research best practise
 [] image generation and audio generation in parallel
+[] clean ai to use supabase
+[] use SDKs instead of plain HTTP?
+
+
+  Minor Areas for Future Enhancement:
+  - Add async connection pooling for high load
+  - Implement circuit breaker pattern for AI service failures
+  - Add metrics/monitoring endpoints
+
+Next Steps for Production:
+  - Add API rate limiting
+  - Implement health check endpoints
+  - Add monitoring/metrics
+  - Security audit
 
 
 [] multi language support

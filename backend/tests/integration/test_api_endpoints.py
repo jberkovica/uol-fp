@@ -1,143 +1,364 @@
-"""
-Integration tests for API endpoints
-"""
-
+"""Integration tests for API endpoints."""
 import pytest
-from fastapi.testclient import TestClient
-from app.main import app
+from unittest.mock import AsyncMock, patch
+from httpx import AsyncClient
+from src.types.domain import Kid, Story, StoryStatus, Language
+from src.types.requests import CreateKidRequest, GenerateStoryRequest
 
 
-@pytest.fixture
-def client():
-    """Create test client for FastAPI app"""
-    return TestClient(app)
-
-
-class TestRootEndpoint:
-    """Test root API endpoint"""
+class TestHealthEndpoints:
+    """Test health check endpoints."""
     
-    def test_root_endpoint_returns_info(self, client):
-        """Test that root endpoint returns application info"""
-        response = client.get("/")
+    @pytest.mark.asyncio
+    async def test_basic_health_check(self, test_client):
+        """Test basic health check endpoint."""
+        response = await test_client.get("/health")
         
         assert response.status_code == 200
         data = response.json()
-        
-        # Check required fields
-        assert "message" in data
-        assert "status" in data
-        assert "version" in data
-        assert "ai_services" in data
-        assert "features" in data
-        
-        # Check AI services are listed
-        ai_services = data["ai_services"]
-        assert "image_analysis" in ai_services
-        assert "story_generation" in ai_services
-        assert "text_to_speech" in ai_services
-        
-        # Check version format
-        assert isinstance(data["version"], str)
-        assert data["status"] == "active"
-
-
-class TestStoryGenerationEndpoint:
-    """Test story generation API endpoint"""
+        assert data["status"] == "healthy"
+        assert data["version"] == "2.0.0"
+        assert "timestamp" in data
     
-    def test_story_generation_requires_valid_input(self, client, mock_api_keys):
-        """Test that story generation validates input"""
-        # Test with missing fields
-        response = client.post("/generate-story-from-image/", json={})
-        assert response.status_code == 422  # Validation error
-        
-        # Test with invalid child name
-        invalid_request = {
-            "child_name": "<script>alert('xss')</script>",
-            "image_data": "invalid_base64",
-            "mime_type": "image/jpeg"
+    @pytest.mark.asyncio
+    async def test_detailed_health_check(self, test_client, mock_supabase_service):
+        """Test detailed health check endpoint."""
+        # Mock successful health check
+        mock_supabase_service.health_check.return_value = {
+            "status": "healthy",
+            "connected": True
         }
-        response = client.post("/generate-story-from-image/", json=invalid_request)
-        assert response.status_code == 400  # Our validation should catch this
+        
+        with patch("src.api.routes.health.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.get("/health/detailed")
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["status"] == "healthy"
+        assert "services" in data
+        assert "supabase" in data["services"]
+
+
+class TestKidEndpoints:
+    """Test kid profile management endpoints."""
     
-    def test_story_generation_with_valid_input_structure(self, client, valid_story_request, mock_api_keys):
-        """Test story generation endpoint accepts properly structured input"""
-        # Note: This will fail due to image size validation or missing AI APIs
-        # but we can test that the endpoint accepts the request structure
-        response = client.post("/generate-story-from-image/", json=valid_story_request)
+    @pytest.mark.asyncio
+    async def test_create_kid_success(self, test_client, mock_supabase_service, sample_kid_data):
+        """Test successful kid profile creation."""
+        # Setup mock
+        kid = Kid(**sample_kid_data)
+        mock_supabase_service.create_kid.return_value = kid
+        mock_supabase_service.get_stories_for_kid.return_value = []
         
-        # Should either succeed (200) or fail due to validation/AI issues (400/500)
-        # but not due to malformed request (422)
-        assert response.status_code in [200, 400, 500]
+        request_data = {
+            "name": "Alice",
+            "age": 6,
+            "avatar_type": "profile1",
+            "user_id": "user-456"
+        }
         
-        if response.status_code == 400:
-            # If it's a validation error, should be about image size
-            error_detail = response.json().get("detail", "")
-            assert "image" in error_detail.lower() or "validation" in error_detail.lower()
+        with patch("src.api.routes.kids.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.post("/kids/", json=request_data)
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["name"] == "Alice"
+        assert data["age"] == 6
+        assert data["stories_count"] == 0
+        
+        # Verify service was called correctly
+        mock_supabase_service.create_kid.assert_called_once()
+        call_args = mock_supabase_service.create_kid.call_args[0][0]
+        assert isinstance(call_args, CreateKidRequest)
+        assert call_args.name == "Alice"
+    
+    @pytest.mark.asyncio
+    async def test_create_kid_validation_error(self, test_client):
+        """Test kid creation with validation errors."""
+        invalid_request_data = {
+            "name": "",  # Empty name
+            "age": 0,    # Invalid age
+            "user_id": "user-456"
+        }
+        
+        response = await test_client.post("/kids/", json=invalid_request_data)
+        assert response.status_code == 400
+        assert "error" in response.json()
+    
+    @pytest.mark.asyncio
+    async def test_get_kid_success(self, test_client, mock_supabase_service, sample_kid_data):
+        """Test successful kid profile retrieval."""
+        # Setup mock
+        kid = Kid(**sample_kid_data)
+        mock_supabase_service.get_kid.return_value = kid
+        mock_supabase_service.get_stories_for_kid.return_value = []
+        
+        with patch("src.api.routes.kids.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.get("/kids/kid-123")
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["id"] == "kid-123"
+        assert data["name"] == "Alice"
+        
+        mock_supabase_service.get_kid.assert_called_once_with("kid-123")
+    
+    @pytest.mark.asyncio
+    async def test_get_kid_not_found(self, test_client, mock_supabase_service):
+        """Test kid profile not found."""
+        mock_supabase_service.get_kid.return_value = None
+        
+        with patch("src.api.routes.kids.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.get("/kids/nonexistent")
+        
+        assert response.status_code == 404
+        assert "not found" in response.json()["detail"]
+    
+    @pytest.mark.asyncio
+    async def test_get_kids_for_user(self, test_client, mock_supabase_service, sample_kid_data):
+        """Test getting all kids for a user."""
+        # Setup mock
+        kid = Kid(**sample_kid_data)
+        mock_supabase_service.get_kids_for_user.return_value = [kid]
+        mock_supabase_service.get_stories_for_kid.return_value = []
+        
+        with patch("src.api.routes.kids.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.get("/kids/user/user-456")
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] == 1
+        assert len(data["kids"]) == 1
+        assert data["kids"][0]["name"] == "Alice"
+    
+    @pytest.mark.asyncio
+    async def test_update_kid_success(self, test_client, mock_supabase_service, sample_kid_data):
+        """Test successful kid profile update."""
+        # Setup mock
+        updated_data = sample_kid_data.copy()
+        updated_data["name"] = "Bob"
+        updated_kid = Kid(**updated_data)
+        
+        mock_supabase_service.update_kid.return_value = updated_kid
+        mock_supabase_service.get_stories_for_kid.return_value = []
+        
+        update_request = {"name": "Bob", "age": 7}
+        
+        with patch("src.api.routes.kids.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.put("/kids/kid-123", json=update_request)
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["name"] == "Bob"
+
+
+class TestStoryEndpoints:
+    """Test story management endpoints."""
+    
+    @pytest.mark.asyncio
+    async def test_generate_story_success(self, test_client, mock_supabase_service, sample_kid_data, sample_story_data, sample_base64_image):
+        """Test successful story generation."""
+        # Setup mocks
+        kid = Kid(**sample_kid_data)
+        story = Story(**sample_story_data)
+        
+        mock_supabase_service.get_kid.return_value = kid
+        mock_supabase_service.create_story.return_value = story
+        
+        request_data = {
+            "image_data": sample_base64_image,
+            "kid_id": "kid-123",
+            "language": "en"
+        }
+        
+        with patch("src.api.routes.stories.get_supabase_service", return_value=mock_supabase_service):
+            with patch("src.api.routes.stories.get_story_processor") as mock_processor:
+                response = await test_client.post("/stories/generate", json=request_data)
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["story_id"] == "story-789"
+        assert data["status"] == "processing"
+        
+        # Verify story creation was called
+        mock_supabase_service.create_story.assert_called_once()
+    
+    @pytest.mark.asyncio
+    async def test_generate_story_kid_not_found(self, test_client, mock_supabase_service, sample_base64_image):
+        """Test story generation with non-existent kid."""
+        mock_supabase_service.get_kid.return_value = None
+        
+        request_data = {
+            "image_data": sample_base64_image,
+            "kid_id": "nonexistent",
+            "language": "en"
+        }
+        
+        with patch("src.api.routes.stories.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.post("/stories/generate", json=request_data)
+        
+        assert response.status_code == 400
+        assert "not found" in response.json()["detail"]
+    
+    @pytest.mark.asyncio
+    async def test_generate_story_invalid_image(self, test_client):
+        """Test story generation with invalid image data."""
+        request_data = {
+            "image_data": "invalid_base64",
+            "kid_id": "kid-123",
+            "language": "en"
+        }
+        
+        response = await test_client.post("/stories/generate", json=request_data)
+        assert response.status_code == 400
+        assert "error" in response.json()
+    
+    @pytest.mark.asyncio
+    async def test_get_story_success(self, test_client, mock_supabase_service, sample_story_data):
+        """Test successful story retrieval."""
+        # Setup mock
+        story = Story(**sample_story_data)
+        mock_supabase_service.get_story.return_value = story
+        
+        with patch("src.api.routes.stories.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.get("/stories/story-789")
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["id"] == "story-789"
+        assert data["title"] == "The Magic Garden"
+        assert data["status"] == "approved"
+    
+    @pytest.mark.asyncio
+    async def test_get_story_not_found(self, test_client, mock_supabase_service):
+        """Test story not found."""
+        mock_supabase_service.get_story.return_value = None
+        
+        with patch("src.api.routes.stories.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.get("/stories/nonexistent")
+        
+        assert response.status_code == 404
+        assert "not found" in response.json()["detail"]
+    
+    @pytest.mark.asyncio
+    async def test_get_stories_for_kid(self, test_client, mock_supabase_service, sample_story_data):
+        """Test getting all stories for a kid."""
+        # Setup mock
+        story = Story(**sample_story_data)
+        mock_supabase_service.get_stories_for_kid.return_value = [story]
+        
+        with patch("src.api.routes.stories.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.get("/stories/kid/kid-123")
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] >= 1
+        assert len(data["stories"]) == 1
+        assert data["stories"][0]["title"] == "The Magic Garden"
+    
+    @pytest.mark.asyncio
+    async def test_get_stories_pagination(self, test_client, mock_supabase_service, sample_story_data):
+        """Test story pagination parameters."""
+        # Setup mock
+        story = Story(**sample_story_data)
+        mock_supabase_service.get_stories_for_kid.return_value = [story]
+        
+        with patch("src.api.routes.stories.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.get("/stories/kid/kid-123?page=2&page_size=10")
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["page"] == 2
+        assert data["page_size"] == 10
+        
+        # Verify pagination was passed to service
+        mock_supabase_service.get_stories_for_kid.assert_called_once_with(
+            "kid-123", limit=10, offset=10
+        )
+    
+    @pytest.mark.asyncio
+    async def test_review_story_success(self, test_client, mock_supabase_service, sample_story_data):
+        """Test successful story review/update."""
+        # Setup mock
+        updated_data = sample_story_data.copy()
+        updated_data["title"] = "Updated Title"
+        updated_story = Story(**updated_data)
+        
+        mock_supabase_service.update_story.return_value = updated_story
+        
+        review_data = {"title": "Updated Title", "status": "approved"}
+        
+        with patch("src.api.routes.stories.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.put("/stories/story-789/review", json=review_data)
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["title"] == "Updated Title"
+        
+        # Verify update was called
+        mock_supabase_service.update_story.assert_called_once()
 
 
 class TestLegacyEndpoints:
-    """Test legacy API endpoints for backward compatibility"""
+    """Test legacy endpoint compatibility."""
     
-    def test_upload_image_endpoint_exists(self, client):
-        """Test that legacy upload-image endpoint exists"""
-        # This endpoint requires form data, so we expect a 422 for JSON
-        response = client.post("/upload-image/", json={})
+    @pytest.mark.asyncio
+    async def test_legacy_generate_story_endpoint(self, test_client, mock_supabase_service, sample_kid_data, sample_story_data, sample_base64_image):
+        """Test legacy story generation endpoint maintains compatibility."""
+        # Setup mocks
+        kid = Kid(**sample_kid_data)
+        story = Story(**sample_story_data)
         
-        # Should return validation error for wrong content type, not 404
-        assert response.status_code != 404
+        mock_supabase_service.get_kid.return_value = kid
+        mock_supabase_service.create_story.return_value = story
+        
+        request_data = {
+            "image_data": sample_base64_image,
+            "kid_id": "kid-123",
+            "language": "en"
+        }
+        
+        with patch("src.api.app.get_supabase_service", return_value=mock_supabase_service):
+            with patch("src.api.app.get_story_processor") as mock_processor:
+                response = await test_client.post("/generate-story-from-image/", json=request_data)
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["story_id"] == "story-789"
+        assert data["status"] == "processing"
     
-    def test_story_endpoints_exist(self, client):
-        """Test that story retrieval endpoints exist"""
-        # Test story detail endpoint (should return 404 for non-existent story)
-        response = client.get("/story/nonexistent-id")
-        assert response.status_code in [404, 422]  # Not found or validation error
+    @pytest.mark.asyncio
+    async def test_legacy_get_story_endpoint(self, test_client, mock_supabase_service, sample_story_data):
+        """Test legacy story retrieval endpoint maintains compatibility."""
+        # Setup mock
+        story = Story(**sample_story_data)
+        mock_supabase_service.get_story.return_value = story
         
-        # Test stories list endpoint
-        response = client.get("/stories/")
-        assert response.status_code in [200, 422]  # Should exist
-
-
-class TestCORSHeaders:
-    """Test CORS configuration"""
+        with patch("src.api.app.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.get("/story/story-789")
+        
+        assert response.status_code == 200
+        data = response.json()
+        assert data["id"] == "story-789"
+        assert data["title"] == "The Magic Garden"
+        # Check legacy format includes ISO timestamps
+        assert "created_at" in data
+        assert "updated_at" in data
     
-    def test_cors_headers_present(self, client):
-        """Test that CORS headers are present in responses"""
-        response = client.get("/")
+    @pytest.mark.asyncio
+    async def test_legacy_get_user_kids_endpoint(self, test_client, mock_supabase_service, sample_kid_data):
+        """Test legacy user kids endpoint maintains compatibility."""
+        # Setup mock
+        kid = Kid(**sample_kid_data)
+        mock_supabase_service.get_kids_for_user.return_value = [kid]
         
-        # Should have CORS headers (currently configured to allow all)
-        assert "access-control-allow-origin" in response.headers
+        with patch("src.api.app.get_supabase_service", return_value=mock_supabase_service):
+            response = await test_client.get("/users/user-456/kids")
         
-        # For development, should allow all origins
-        assert response.headers["access-control-allow-origin"] == "*"
-    
-    def test_options_request_handled(self, client):
-        """Test that OPTIONS requests are handled for CORS preflight"""
-        response = client.options("/generate-story-from-image/")
-        
-        # Should handle OPTIONS request
-        assert response.status_code in [200, 204]
-
-
-class TestErrorHandling:
-    """Test API error handling"""
-    
-    def test_404_for_nonexistent_endpoint(self, client):
-        """Test that nonexistent endpoints return 404"""
-        response = client.get("/nonexistent-endpoint")
-        assert response.status_code == 404
-    
-    def test_405_for_wrong_method(self, client):
-        """Test that wrong HTTP methods return 405"""
-        # Try to POST to GET-only endpoint
-        response = client.post("/")
-        assert response.status_code == 405
-    
-    def test_error_response_format(self, client):
-        """Test that error responses have consistent format"""
-        response = client.get("/nonexistent-endpoint")
-        
-        assert response.status_code == 404
-        error_data = response.json()
-        
-        # FastAPI should return standard error format
-        assert "detail" in error_data
+        assert response.status_code == 200
+        data = response.json()
+        assert data["total"] == 1
+        assert len(data["kids"]) == 1
+        assert data["kids"][0]["name"] == "Alice"
+        # Check legacy format includes ISO timestamps
+        assert "created_at" in data["kids"][0]

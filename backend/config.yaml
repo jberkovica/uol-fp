@@ -1,0 +1,175 @@
+# Mira Storyteller Backend Configuration
+app:
+  name: "Mira Storyteller"
+  version: "2.0.0"
+  environment: ${ENVIRONMENT:development}
+  
+api:
+  host: "0.0.0.0"
+  port: 8000
+  cors:
+    allowed_origins: ["*"]
+    allowed_methods: ["GET", "POST", "PUT", "DELETE"]
+    allowed_headers: ["*"]
+    
+agents:
+  vision:
+    vendor: "google"  # Options: google, openai, anthropic
+    model: "gemini-2.0-flash-exp"
+    api_key: ${GOOGLE_API_KEY}
+    fallback:
+      vendor: "openai"
+      model: "gpt-4-vision-preview"
+      api_key: ${OPENAI_API_KEY}
+    prompts:
+      image_caption:
+        default: |
+          Describe this image in a way that would help create a children's story.
+          Focus on the main elements, colors, mood, and any characters or objects.
+          Keep the description family-friendly and imaginative.
+        google: |
+          Describe this image in detail for creating a children's story.
+          Include:
+          - Main subjects (characters, objects, animals)
+          - Setting and environment
+          - Colors and mood
+          - Any actions or interactions
+          Keep it family-friendly and spark imagination.
+        openai: |
+          You are looking at a child's drawing or image. Describe what you see
+          in a way that could inspire a magical children's story. Focus on:
+          - Characters or creatures (real or imaginary)
+          - The setting or world
+          - Colors and atmosphere
+          - Potential story elements
+          Be creative and child-appropriate.
+        anthropic: |
+          Analyze this image as source material for a children's story.
+          Provide a rich, imaginative description that captures:
+          - Visual elements and their relationships
+          - Emotional tone and atmosphere
+          - Potential narrative elements
+          - Child-friendly interpretations of abstract elements
+          Write in a warm, engaging tone suitable for young audiences.
+      
+  storyteller:
+    vendor: "mistral"  # Options: mistral, openai, anthropic, google
+    model: "mistral-medium-latest"
+    api_key: ${MISTRAL_API_KEY}
+    max_tokens: 300
+    temperature: 0.7
+    prompts:
+      story_generation:
+        system:
+          default: |
+            You are a creative children's storyteller. Create engaging, family-friendly stories
+            that are 150-200 words long. The stories should be imaginative, positive, and
+            appropriate for children aged 3-8 years old.
+          mistral: |
+            You are Mira, a magical storyteller who creates wonderful tales for children.
+            Your stories should be:
+            - Exactly 150-200 words long
+            - Family-friendly and positive
+            - Imaginative and engaging
+            - Appropriate for ages 3-8
+            - Include a simple moral or learning moment
+          openai: |
+            You are an expert children's author creating bedtime stories.
+            Guidelines:
+            - Length: 150-200 words exactly
+            - Tone: Warm, gentle, imaginative
+            - Audience: Children aged 3-8 years
+            - Include: Simple vocabulary, vivid descriptions, happy endings
+            - Avoid: Scary content, complex themes, violence
+          anthropic: |
+            You are a caring storyteller creating tales that spark young imaginations.
+            Each story should:
+            - Be precisely 150-200 words
+            - Use age-appropriate language for 3-8 year olds
+            - Include wonder, friendship, or gentle adventure
+            - End with hope, joy, or a gentle lesson
+            - Avoid anything frightening or inappropriate
+        user:
+          default: |
+            Based on this image description, create a magical children's story:
+            {image_description}
+            
+            Remember to keep it 150-200 words and appropriate for young children.
+          with_language: |
+            Based on this image description, create a magical children's story in {language}:
+            {image_description}
+            
+            Remember to keep it 150-200 words and appropriate for young children.
+          with_theme: |
+            Based on this image description, create a magical children's story:
+            {image_description}
+            
+            Theme: {theme}
+            Keep it 150-200 words and appropriate for young children.
+    
+  voice:
+    vendor: "elevenlabs"  # Options: elevenlabs, google, azure, aws
+    api_key: ${ELEVENLABS_API_KEY}
+    default_voice: "callum"
+    voices:
+      elevenlabs:
+        callum:
+          id: "ZQe5CZNOzWyzPSCn5a3c"
+          description: "Warm, friendly male voice"
+        rachel:
+          id: "21m00Tcm4TlvDq8ikWAM"
+          description: "Gentle, caring female voice"
+        adam:
+          id: "pNInz6obpgDQGcFmaJgB"
+          description: "Clear, engaging male voice"
+      google:
+        en-US-Journey-F:
+          description: "Warm female voice"
+          language: "en-US"
+        en-US-Journey-D:
+          description: "Friendly male voice"
+          language: "en-US"
+      azure:
+        en-US-JennyNeural:
+          description: "Natural female voice"
+          style: "cheerful"
+    settings:
+      elevenlabs:
+        stability: 0.5
+        similarity_boost: 0.5
+        style: 0.0
+        use_speaker_boost: true
+      google:
+        speaking_rate: 1.0
+        pitch: 0.0
+        volume_gain_db: 0.0
+      azure:
+        rate: "+0%"
+        pitch: "+0Hz"
+      
+  speech:  # Future - Speech Recognition
+    vendor: "openai"
+    model: "whisper-1"
+    api_key: ${OPENAI_API_KEY}
+    
+  artist:  # Future - Image Generation
+    vendor: "openai"
+    model: "dall-e-3"
+    api_key: ${OPENAI_API_KEY}
+
+supabase:
+  url: ${SUPABASE_URL}
+  key: ${SUPABASE_SERVICE_KEY}
+  storage:
+    bucket: "audio-files"
+    public_url_base: ${SUPABASE_URL}/storage/v1/object/public/
+    
+logging:
+  level: ${LOG_LEVEL:INFO}
+  format: "json"
+  
+# Rate limiting
+rate_limit:
+  enabled: true
+  requests_per_minute: 60
+  requests_per_hour: 1000
