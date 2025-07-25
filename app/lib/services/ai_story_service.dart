@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 import '../models/story.dart';
+import 'auth_service.dart';
 
 /// Efficient AI service implementation using backend API with:
 /// - Gemini 2.0 Flash for image captioning
@@ -90,6 +91,14 @@ class AIStoryService {
       print(
           'Image converted to base64 (${base64Image.length} chars), MIME: $mimeType');
 
+      // Get user's language preference
+      String userLanguage = 'en'; // Default fallback
+      if (AuthService.instance.isAuthenticated) {
+        userLanguage = AuthService.instance.getUserLanguage();
+      }
+
+      print('Story generation using language: $userLanguage');
+
       // Call the new efficient endpoint
       final response = await http.post(
         Uri.parse('$baseUrl/generate-story-from-image/'),
@@ -100,6 +109,7 @@ class AIStoryService {
           'kid_id': kidId,
           'image_data': base64Image,
           'mime_type': mimeType,
+          'language': userLanguage,
           'preferences': null,
         }),
       );
