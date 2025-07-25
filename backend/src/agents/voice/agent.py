@@ -16,96 +16,94 @@ class VoiceAgent(BaseAgent):
         super().__init__(vendor, config)
         self.main_config = get_config()
         self.voice_config = self.main_config["agents"]["voice"]
-        self.default_voice = config.get("default_voice", "callum")
-        self._client = None
+        self._clients = {}  # Cache clients per vendor
     
     def validate_config(self) -> bool:
         """Validate agent configuration."""
-        if not self.api_key:
-            raise ValueError(f"API key not provided for {self.vendor}")
+        # Validate that we have language configurations
+        languages = self.voice_config.get("languages", {})
+        if not languages:
+            raise ValueError("No language configurations found in voice config")
         return True
-    
-    def get_vendor_client(self):
-        """Get vendor-specific client."""
-        if self._client:
-            return self._client
-            
-        if self.vendor == AgentVendor.ELEVENLABS:
-            # ElevenLabs uses HTTP API calls, no client needed
-            self._client = None
-            
-        elif self.vendor == AgentVendor.GOOGLE:
-            from google.cloud import texttospeech
-            self._client = texttospeech.TextToSpeechClient()
-            
-        elif self.vendor == AgentVendor.AZURE:
-            import azure.cognitiveservices.speech as speechsdk
-            speech_config = speechsdk.SpeechConfig(
-                subscription=self.api_key,
-                region=self.config.get("region", "eastus")
-            )
-            self._client = speech_config
-            
-        else:
-            raise ValueError(f"Unsupported vendor: {self.vendor}")
-            
-        return self._client
     
     async def process(self, input_data: str, **kwargs) -> Tuple[bytes, str]:
         """
-        Convert text to speech.
+        Convert text to speech using language-specific configuration.
         
         Args:
             input_data: Text to convert to speech
-            **kwargs: Additional parameters (voice, language, etc.)
+            **kwargs: Additional parameters (language is required)
             
         Returns:
             Tuple of (audio_bytes, content_type)
         """
-        self.validate_config()
-        
-        voice = kwargs.get("voice", self.default_voice)
         language = kwargs.get("language", "en")
+        logger.info(f"Processing TTS for language: {language}")
+        
+        # Get language-specific configuration
+        lang_config = self._get_language_config(language)
+        vendor = lang_config["vendor"]
         
         try:
-            client = self.get_vendor_client()
-            
-            if self.vendor == AgentVendor.ELEVENLABS:
-                return await self._process_elevenlabs(client, input_data, voice)
-            elif self.vendor == AgentVendor.GOOGLE:
-                return await self._process_google(client, input_data, voice, language)
-            elif self.vendor == AgentVendor.AZURE:
-                return await self._process_azure(client, input_data, voice, language)
+            if vendor == "elevenlabs":
+                return await self._process_elevenlabs(lang_config, input_data)
+            elif vendor == "openai":
+                return await self._process_openai(lang_config, input_data)
+            elif vendor == "google":
+                return await self._process_google(lang_config, input_data)
+            elif vendor == "azure":
+                return await self._process_azure(lang_config, input_data)
             else:
-                raise ValueError(f"Unsupported vendor: {self.vendor}")
+                raise ValueError(f"Unsupported vendor: {vendor}")
                 
         except Exception as e:
-            logger.error(f"TTS processing failed: {e}")
+            logger.error(f"TTS processing failed for language {language}: {e}")
             raise
     
-    async def _process_elevenlabs(self, client, text: str, voice: str) -> Tuple[bytes, str]:
-        """Generate speech with ElevenLabs using HTTP API (like old backend)."""
+    def _get_language_config(self, language: str) -> Dict[str, Any]:
+        """Get configuration for specific language."""
+        lang_configs = self.voice_config.get("languages", {})
+        
+        if language in lang_configs:
+            return lang_configs[language]
+        
+        # Fallback to English if language not configured
+        if "en" in lang_configs:
+            logger.warning(f"Language {language} not configured, falling back to English")
+            return lang_configs["en"]
+        
+        raise ValueError(f"No TTS configuration found for language {language} or fallback English")
+    
+    async def _process_elevenlabs(self, lang_config: Dict[str, Any], text: str) -> Tuple[bytes, str]:
+        """Generate speech with ElevenLabs using language-specific configuration."""
         import httpx
         
-        voice_id = self._get_voice_id(voice)
-        settings = self.voice_config["settings"]["elevenlabs"]
+        voice_id = lang_config["voice_id"]
+        settings = lang_config["settings"]
+        api_key = lang_config["api_key"]
         
         headers = {
             "Accept": "audio/mpeg",
             "Content-Type": "application/json",
-            "xi-api-key": self.api_key
+            "xi-api-key": api_key
         }
+        
+        # Apply speed setting to ElevenLabs (using stability as speed control)
+        speed_factor = settings.get("speed", 1.0)
+        adjusted_stability = max(0.0, min(1.0, settings["stability"] * speed_factor))
         
         payload = {
             "text": text,
-            "model_id": "eleven_multilingual_v2",
+            "model_id": lang_config.get("model", "eleven_multilingual_v2"),
             "voice_settings": {
-                "stability": settings["stability"],
+                "stability": adjusted_stability,
                 "similarity_boost": settings["similarity_boost"],
                 "style": settings["style"],
                 "use_speaker_boost": settings["use_speaker_boost"]
             }
         }
+        
+        logger.info(f"ElevenLabs TTS: voice_id={voice_id}, speed={speed_factor}")
         
         async with httpx.AsyncClient() as http_client:
             response = await http_client.post(
@@ -119,24 +117,78 @@ class VoiceAgent(BaseAgent):
         
         return audio_bytes, "audio/mpeg"
     
-    async def _process_google(self, client, text: str, voice: str, language: str) -> Tuple[bytes, str]:
-        """Generate speech with Google Cloud TTS."""
+    async def _process_openai(self, lang_config: Dict[str, Any], text: str) -> Tuple[bytes, str]:
+        """Generate speech with OpenAI TTS using language-specific configuration."""
+        import httpx
+        
+        voice = lang_config["voice"]
+        model = lang_config.get("model", "tts-1")
+        settings = lang_config["settings"]
+        api_key = lang_config["api_key"]
+        
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": model,
+            "input": text,
+            "voice": voice,
+            "speed": settings.get("speed", 1.0),
+            "response_format": settings.get("response_format", "mp3")
+        }
+        
+        format_type = settings.get("response_format", "mp3")
+        logger.info(f"OpenAI TTS: voice={voice}, model={model}, speed={settings.get('speed', 1.0)}, format={format_type}")
+        
+        async with httpx.AsyncClient() as http_client:
+            response = await http_client.post(
+                "https://api.openai.com/v1/audio/speech",
+                headers=headers,
+                json=payload,
+                timeout=60.0
+            )
+            response.raise_for_status()
+            audio_bytes = response.content
+        
+        # Return appropriate content type based on format
+        content_type_map = {
+            "mp3": "audio/mpeg",
+            "flac": "audio/flac", 
+            "wav": "audio/wav",
+            "opus": "audio/opus",
+            "aac": "audio/aac",
+            "pcm": "audio/pcm"
+        }
+        content_type = content_type_map.get(format_type, "audio/mpeg")
+        
+        return audio_bytes, content_type
+    
+    async def _process_google(self, lang_config: Dict[str, Any], text: str) -> Tuple[bytes, str]:
+        """Generate speech with Google Cloud TTS using language-specific configuration."""
         from google.cloud import texttospeech
         
-        voice_name = self._get_voice_id(voice)
-        settings = self.voice_config["settings"]["google"]
+        voice = lang_config["voice"]
+        settings = lang_config["settings"]
+        api_key = lang_config["api_key"]
+        
+        # Initialize client with API key
+        client = texttospeech.TextToSpeechClient()
         
         synthesis_input = texttospeech.SynthesisInput(text=text)
         voice_params = texttospeech.VoiceSelectionParams(
-            language_code=language,
-            name=voice_name
+            language_code=settings.get("language_code", "en-US"),
+            name=voice
         )
         audio_config = texttospeech.AudioConfig(
             audio_encoding=texttospeech.AudioEncoding.MP3,
-            speaking_rate=settings["speaking_rate"],
-            pitch=settings["pitch"],
-            volume_gain_db=settings["volume_gain_db"]
+            speaking_rate=settings.get("speaking_rate", 1.0),
+            pitch=settings.get("pitch", 0.0),
+            volume_gain_db=settings.get("volume_gain_db", 0.0)
         )
+        
+        logger.info(f"Google TTS: voice={voice}, speaking_rate={settings.get('speaking_rate', 1.0)}")
         
         response = client.synthesize_speech(
             input=synthesis_input,
@@ -146,15 +198,21 @@ class VoiceAgent(BaseAgent):
         
         return response.audio_content, "audio/mpeg"
     
-    async def _process_azure(self, speech_config, text: str, voice: str, language: str) -> Tuple[bytes, str]:
-        """Generate speech with Azure Cognitive Services."""
+    async def _process_azure(self, lang_config: Dict[str, Any], text: str) -> Tuple[bytes, str]:
+        """Generate speech with Azure Cognitive Services using language-specific configuration."""
         import azure.cognitiveservices.speech as speechsdk
         
-        voice_name = self._get_voice_id(voice)
-        settings = self.voice_config["settings"]["azure"]
+        voice = lang_config["voice"]
+        settings = lang_config["settings"]
+        api_key = lang_config["api_key"]
+        region = lang_config.get("region", "eastus")
         
         # Configure speech synthesis
-        speech_config.speech_synthesis_voice_name = voice_name
+        speech_config = speechsdk.SpeechConfig(
+            subscription=api_key,
+            region=region
+        )
+        speech_config.speech_synthesis_voice_name = voice
         
         # Create synthesizer with audio output to memory
         synthesizer = speechsdk.SpeechSynthesizer(
@@ -162,16 +220,19 @@ class VoiceAgent(BaseAgent):
             audio_config=None  # Output to memory
         )
         
-        # Build SSML
+        # Build SSML with language-specific settings
+        language_code = settings.get("language_code", "en-US")
         ssml = f"""
-        <speak version='1.0' xml:lang='{language}'>
-            <voice name='{voice_name}'>
-                <prosody rate='{settings["rate"]}' pitch='{settings["pitch"]}'>
+        <speak version='1.0' xml:lang='{language_code}'>
+            <voice name='{voice}'>
+                <prosody rate='{settings.get("rate", "1.0")}' pitch='{settings.get("pitch", "0%")}'>
                     {text}
                 </prosody>
             </voice>
         </speak>
         """
+        
+        logger.info(f"Azure TTS: voice={voice}, rate={settings.get('rate', '1.0')}")
         
         result = synthesizer.speak_ssml_async(ssml).get()
         
@@ -180,20 +241,9 @@ class VoiceAgent(BaseAgent):
         else:
             raise Exception(f"Speech synthesis failed: {result.reason}")
     
-    def _get_voice_id(self, voice_name: str) -> str:
-        """Get voice ID for the current vendor."""
-        vendor_voices = self.voice_config["voices"].get(self.vendor.value, {})
-        voice_info = vendor_voices.get(voice_name, {})
-        
-        if self.vendor == AgentVendor.ELEVENLABS:
-            return voice_info.get("id", voice_name)
-        else:
-            # For Google and Azure, the voice name is the ID
-            return voice_name
-    
-    def list_voices(self) -> Dict[str, Any]:
-        """List available voices for the current vendor."""
-        return self.voice_config["voices"].get(self.vendor.value, {})
+    def list_available_voices(self) -> Dict[str, Any]:
+        """List all available voices from configuration."""
+        return self.voice_config.get("available_voices", {})
 
 
 def create_voice_agent(config: Dict[str, Any]) -> VoiceAgent:

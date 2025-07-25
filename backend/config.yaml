@@ -108,20 +108,84 @@ agents:
             Keep it 150-200 words and appropriate for young children.
     
   voice:
-    vendor: "elevenlabs"  # Options: elevenlabs, google, azure, aws
-    api_key: ${ELEVENLABS_API_KEY}
-    default_voice: "callum"
-    voices:
+    # Per-language TTS provider configuration
+    languages:
+      en:  # English
+        vendor: "elevenlabs"
+        api_key: ${ELEVENLABS_API_KEY}
+        voice: "callum"
+        voice_id: "N2lVS1w4EtoT3dr4eOWO"  # Correct Callum voice ID
+        model: "eleven_multilingual_v2"  # Best model for multilingual content
+        settings:
+          stability: 0.5
+          similarity_boost: 0.5
+          style: 0.0
+          use_speaker_boost: true
+          speed: 0.8  # Slower speed for better clarity
+      ru:  # Russian
+        vendor: "elevenlabs"
+        api_key: ${ELEVENLABS_API_KEY}
+        voice: "nina"
+        voice_id: "N8lIVPsFkvOoqev5Csxo"  # Nina - Professional Russian voice, perfect for stories
+        model: "eleven_multilingual_v2"  # Best model for multilingual content
+        settings:
+          stability: 0.4          # Lower for more variation and expressiveness
+          similarity_boost: 0.6   # Reduced for more creative interpretation
+          style: 0.4              # Increased for more emotional expression
+          use_speaker_boost: true # Enhanced clarity
+          speed: 0.9              # Slightly slower for better comprehension
+          # Additional emotional settings:
+          # stability: 0.3-0.5 (lower = more expressive, higher = more consistent)
+          # similarity_boost: 0.5-0.6 (lower = more creative, higher = more similar to original)
+          # style: 0.3-0.6 (higher = more dramatic and emotional)
+      lv:  # Latvian
+        vendor: "openai"
+        api_key: ${OPENAI_API_KEY}
+        voice: "sage"  # More expressive newer voice, good for Latvian
+        model: "tts-1-hd"  # High quality model (could try gpt-4o-mini-tts)
+        settings:
+          speed: 0.95       # Slightly slower for more natural rhythm
+          response_format: "flac"  # Lossless audio for best quality
+        # Alternative configurations to try:
+        # voice: "coral" - also good for Latvian according to your tests
+        # model: "gpt-4o-mini-tts" - newer model, may have better quality
+        # response_format: "wav" - uncompressed alternative to flac
+        # speed: 0.9 to 1.1 - experiment in this range for most natural sound
+    
+    # Voice library for reference
+    available_voices:
       elevenlabs:
         callum:
-          id: "ZQe5CZNOzWyzPSCn5a3c"
-          description: "Warm, friendly male voice"
+          id: "N2lVS1w4EtoT3dr4eOWO"
+          description: "Warm, friendly male voice (corrected ID)"
+          language: "en"
         rachel:
           id: "21m00Tcm4TlvDq8ikWAM"
           description: "Gentle, caring female voice"
-        adam:
-          id: "pNInz6obpgDQGcFmaJgB"
-          description: "Clear, engaging male voice"
+          language: "en"
+        nina:
+          id: "N8lIVPsFkvOoqev5Csxo"
+          description: "Professional Russian voice - soft, melodic tone ideal for narratives"
+          language: "ru"
+          category: "professional"
+        antoni:
+          id: "ErXwobaYiN019PkySvjV"
+          description: "Well-rounded voice, great for narration"
+          language: "en"
+        bella:
+          id: "EXAVITQu4vr4xnSDxMaL"
+          description: "American female voice"
+          language: "en"
+      openai:
+        coral:
+          description: "Expressive female voice"
+          language: "en"
+        sage:
+          description: "Calm, thoughtful voice"
+          language: "en"
+        nova:
+          description: "Bright, engaging voice"
+          language: "en"
       google:
         en-US-Journey-F:
           description: "Warm female voice"
@@ -129,23 +193,6 @@ agents:
         en-US-Journey-D:
           description: "Friendly male voice"
           language: "en-US"
-      azure:
-        en-US-JennyNeural:
-          description: "Natural female voice"
-          style: "cheerful"
-    settings:
-      elevenlabs:
-        stability: 0.5
-        similarity_boost: 0.5
-        style: 0.0
-        use_speaker_boost: true
-      google:
-        speaking_rate: 1.0
-        pitch: 0.0
-        volume_gain_db: 0.0
-      azure:
-        rate: "+0%"
-        pitch: "+0Hz"
       
   speech:  # Future - Speech Recognition
     vendor: "openai"
