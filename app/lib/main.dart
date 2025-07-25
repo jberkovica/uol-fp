@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'generated/app_localizations.dart';
 import 'config/supabase_config.dart';
 import 'constants/app_theme.dart';
+import 'constants/app_colors.dart';
 import 'screens/child/splash_screen.dart';
 import 'screens/child/profile_select_screen.dart';
 import 'screens/child/child_home_screen.dart';
@@ -20,6 +22,7 @@ import 'screens/auth/signup_screen.dart';
 import 'services/ai_story_service.dart';
 import 'services/app_state_service.dart';
 import 'services/language_service.dart';
+import 'services/auth_service.dart';
 
 void main() async {
   // Ensure that Flutter binding is initialized
@@ -50,14 +53,58 @@ void main() async {
   runApp(const MiraStorytellerApp());
 }
 
-class MiraStorytellerApp extends StatelessWidget {
+class MiraStorytellerApp extends StatefulWidget {
   const MiraStorytellerApp({super.key});
+
+  @override
+  State<MiraStorytellerApp> createState() => _MiraStorytellerAppState();
+}
+
+class _MiraStorytellerAppState extends State<MiraStorytellerApp> {
+  late final StreamSubscription<AuthState> _authSubscription;
+  
+  @override
+  void initState() {
+    super.initState();
+    // Monitor auth state changes to sync language from server
+    _authSubscription = AuthService.instance.authStateChanges.listen((authState) {
+      if (authState.event == AuthChangeEvent.signedIn) {
+        // User signed in - sync language from server after a brief delay
+        Future.delayed(const Duration(milliseconds: 500), () {
+          LanguageService.instance.syncFromServer();
+        });
+      } else if (authState.event == AuthChangeEvent.signedOut) {
+        // User signed out - could optionally reset to system language
+        // For now, keep the last selected language
+      }
+    });
+  }
+  
+  @override
+  void dispose() {
+    _authSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: LanguageService.instance,
       builder: (context, child) {
+        // Wait for LanguageService to be fully initialized before showing UI
+        if (!LanguageService.instance.isInitialized) {
+          return MaterialApp(
+            home: Scaffold(
+              backgroundColor: AppColors.primary,
+              body: const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.secondary),
+                ),
+              ),
+            ),
+          );
+        }
+        
         return MaterialApp(
           title: 'Mira Storyteller',
           debugShowCheckedModeBanner: false,

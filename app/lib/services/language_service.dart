@@ -4,82 +4,152 @@ import 'auth_service.dart';
 import 'app_state_service.dart';
 
 /// Service to manage app language state and persistence
+/// Following best practices: Server as single source of truth with local caching
 class LanguageService extends ChangeNotifier {
   static LanguageService? _instance;
   static LanguageService get instance => _instance ??= LanguageService._();
   LanguageService._();
 
   Locale _currentLocale = const Locale('en');
+  String _currentLanguageCode = 'en';
+  bool _isInitialized = false;
   
-  /// Get current locale
+  /// Get current locale for UI
   Locale get currentLocale => _currentLocale;
+  
+  /// Get current language code for API calls - single source of truth
+  String get currentLanguageCode => _currentLanguageCode;
+  
+  /// Check if service is initialized
+  bool get isInitialized => _isInitialized;
 
-  /// Initialize language service
-  /// Priority: 1) User explicit choice (auth metadata != default), 2) Local storage, 3) System language, 4) Default English
+  /// Initialize language service with clean priority logic
+  /// Best practice: Server (Supabase) is source of truth, local is cache
   Future<void> initialize() async {
-    String? languageCode;
-    
-    // 1. Check if user has explicitly chosen a language (not just default)
-    if (AuthService.instance.isAuthenticated) {
-      languageCode = AuthService.instance.getUserLanguage();
-      // Only use auth metadata if it's been explicitly set (has metadata key)
-      final user = AuthService.instance.currentUser;
-      if (user?.userMetadata != null && user!.userMetadata!.containsKey('language')) {
-        _currentLocale = Locale(languageCode);
-        notifyListeners();
-        return;
+    try {
+      String detectedLanguage = 'en';
+      
+      // For authenticated users: Server is source of truth
+      if (AuthService.instance.isAuthenticated) {
+        // Wait briefly for auth to stabilize
+        await Future.delayed(const Duration(milliseconds: 100));
+        
+        final user = AuthService.instance.currentUser;
+        if (user?.userMetadata != null && user!.userMetadata!.containsKey('language')) {
+          // User has explicit language preference in server
+          detectedLanguage = user.userMetadata!['language'] as String? ?? 'en';
+          
+          // Sync to local cache
+          await AppStateService.saveLanguage(detectedLanguage);
+          
+          print('[LanguageService] Initialized from server: $detectedLanguage');
+        } else {
+          // Authenticated but no server preference - check local cache
+          detectedLanguage = await _initializeFromLocalOrSystem();
+          
+          // Sync to server for future consistency
+          await AuthService.instance.updateUserLanguage(detectedLanguage);
+        }
+      } else {
+        // Not authenticated - use local cache or system detection
+        detectedLanguage = await _initializeFromLocalOrSystem();
       }
+      
+      // Apply the detected language
+      _applyLanguage(detectedLanguage);
+      _isInitialized = true;
+      
+    } catch (e) {
+      print('[LanguageService] Initialization error: $e');
+      // Fallback to English on any error
+      _applyLanguage('en');
+      _isInitialized = true;
+    }
+  }
+  
+  /// Initialize from local cache or system language
+  Future<String> _initializeFromLocalOrSystem() async {
+    // Check local cache first
+    final cachedLanguage = AppStateService.getLanguage();
+    if (cachedLanguage != null && isSupported(cachedLanguage)) {
+      print('[LanguageService] Initialized from cache: $cachedLanguage');
+      return cachedLanguage;
     }
     
-    // 2. Check local storage for previously saved preference
-    final savedLanguage = AppStateService.getLanguage();
-    if (savedLanguage != null) {
-      _currentLocale = Locale(savedLanguage);
-      notifyListeners();
-      return;
-    }
-    
-    // 3. Detect system language for first-time users
+    // Fall back to system language detection
     final systemLocale = ui.window.locale;
     final systemLanguageCode = systemLocale.languageCode;
     
-    // Use system language if supported, otherwise default to English
     if (isSupported(systemLanguageCode)) {
-      _currentLocale = Locale(systemLanguageCode);
-      // Save system language as initial preference
       await AppStateService.saveLanguage(systemLanguageCode);
-    } else {
-      _currentLocale = const Locale('en');
-      await AppStateService.saveLanguage('en');
+      print('[LanguageService] Initialized from system: $systemLanguageCode');
+      return systemLanguageCode;
     }
     
+    // Default to English
+    await AppStateService.saveLanguage('en');
+    print('[LanguageService] Initialized with default: en');
+    return 'en';
+  }
+  
+  /// Apply language to both locale and language code
+  void _applyLanguage(String languageCode) {
+    _currentLanguageCode = languageCode;
+    _currentLocale = Locale(languageCode);
     notifyListeners();
   }
 
-  /// Update app language
+  /// Update app language - best practice implementation
+  /// Updates all stores: memory, local cache, and server
   Future<bool> updateLanguage(String languageCode) async {
     try {
-      // Update locale immediately for UI responsiveness
-      _currentLocale = Locale(languageCode);
-      notifyListeners();
-
-      // Save to local storage for offline access
+      // Validate language code
+      if (!isSupported(languageCode)) {
+        print('[LanguageService] Unsupported language code: $languageCode');
+        return false;
+      }
+      
+      // Apply immediately for responsive UI
+      _applyLanguage(languageCode);
+      
+      // Save to local cache (works offline)
       await AppStateService.saveLanguage(languageCode);
-
-      // Save to user metadata if authenticated
+      print('[LanguageService] Language updated locally: $languageCode');
+      
+      // Sync to server if authenticated
       if (AuthService.instance.isAuthenticated) {
         final success = await AuthService.instance.updateUserLanguage(languageCode);
-        if (!success) {
-          // If cloud save fails, still keep local change
-          print('Warning: Failed to save language to cloud, but local change preserved');
+        if (success) {
+          print('[LanguageService] Language synced to server: $languageCode');
+        } else {
+          print('[LanguageService] Warning: Server sync failed, but local update preserved');
         }
-        return success;
       }
-
+      
       return true;
     } catch (e) {
-      print('Error updating language: $e');
+      print('[LanguageService] Error updating language: $e');
       return false;
+    }
+  }
+  
+  /// Sync language from server - used when auth state changes
+  Future<void> syncFromServer() async {
+    if (!AuthService.instance.isAuthenticated) return;
+    
+    try {
+      final user = AuthService.instance.currentUser;
+      if (user?.userMetadata != null && user!.userMetadata!.containsKey('language')) {
+        final serverLanguage = user.userMetadata!['language'] as String;
+        
+        if (serverLanguage != _currentLanguageCode && isSupported(serverLanguage)) {
+          print('[LanguageService] Syncing language from server: $serverLanguage');
+          _applyLanguage(serverLanguage);
+          await AppStateService.saveLanguage(serverLanguage);
+        }
+      }
+    } catch (e) {
+      print('[LanguageService] Error syncing from server: $e');
     }
   }
 

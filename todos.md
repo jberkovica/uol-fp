@@ -1,8 +1,8 @@
 
 app:
-[] svgs for mascot
-[] svg for clouds and stars
-[] make mascot changing colors while waiting
+[x] svgs for mascot
+[x] svg for clouds and stars
+[-] make mascot changing colors while waiting
 [x] consise app menu on bottom
 [] play, speed, font size in reading screen
 [x] screens: splash -> login -> users -> parent/kid 
@@ -38,26 +38,35 @@ Priority:
 [x] darker violet color?
 [x] create button in menu
 [x] home page design
-[] parent approve
 [x] 3 language support
-[] all prompts separated and redesigned
-[] switch from elevenlab to open ai for tts
-[] switch from mistral to open ai
+[x] all prompts separated and redesigned
+[x] switch from elevenlab to open ai for tts
+[-] switch from mistral to open ai
 [x] fix screens scrollin animation
-[] fix scrolling issue on home page
-[] logout button
-[] profile options - bold
-[] parent dashboard less spacing
-[] parent dashboard remove 3 dots and add logout
-[] generate story in selected language
+[x] fix scrolling issue on home page
+[x] logout button
+[x] profile options - bold
+[x] parent dashboard less spacing
+[x] parent dashboard remove 3 dots and add logout
+[x] generate story in selected language
+
+[] store language in supabase
+[] parent approve
+[] auth with apple and google
+[] alchemy something
+[] ui cleanup 
+[] input as audio or text (whisper for audio)
+[] analytics
+[] empty fields in stories table
+[] languages: english amercian and british, spanish, french
 
 
 backend:
 [] image generation prompt
 [] improve story generation prompt
-[] use only open ai for all models
+[-] use only open ai for all models
 [] log requests and responces
-[] save audio and images to db? s3?
+[x] save audio and images to db? s3?
 [] age 3-10?
 [] for prod I want testing db and prod db and also backup, research best practise
 [] image generation and audio generation in parallel
@@ -77,8 +86,8 @@ Next Steps for Production:
   - Security audit
 
 
-[] multi language support
-[] input as audio or text (whisper for audio)
+[x] multi language support
+
 
 
 when logged in:
@@ -96,11 +105,10 @@ when logged in:
 [] picture under 2n paragraph not sentence
 [x] add background music
 [] ui on small screen
-[] bug on story reload
 [] select ganre in generation (bedtime story, adventure, etc)
 [] cashing data from db, loading is happening on every screen change and it is slow
-[] improve select profiel UI
-[] settign button in profile seelct is wrong style and point to wrong page, we should delete that screen
+[x] improve select profiel UI
+[x] settign button in profile seelct is wrong style and point to wrong page, we should delete that screen
 
 
 <!-- models update -->
@@ -123,4 +131,3 @@ story generation:
 - words timestamps -> whisper 
 - image generation -> open ai
 
-store everything in db 
