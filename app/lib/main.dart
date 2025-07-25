@@ -13,7 +13,7 @@ import 'screens/child/upload_screen.dart';
 import 'screens/child/processing_screen.dart';
 import 'screens/child/story_display_screen.dart';
 import 'screens/parent/pin_entry_screen.dart';
-import 'screens/parent/parent_dashboard_main.dart';
+import 'screens/parent/parent_dashboard.dart';
 import 'screens/parent/story_preview_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';

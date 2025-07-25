@@ -811,8 +811,8 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         return AppLocalizations.of(context)!.english;
       case 'ru':
         return AppLocalizations.of(context)!.russian;
-      case 'lv':
-        return AppLocalizations.of(context)!.latvian;
+      // case 'lv': // TODO: Re-enable later
+      //   return AppLocalizations.of(context)!.latvian;
       default:
         return AppLocalizations.of(context)!.english;
     }
@@ -850,7 +850,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
             const SizedBox(height: 16),
             _buildLanguageOption('en', AppLocalizations.of(context)!.english, '🇺🇸'),
             _buildLanguageOption('ru', AppLocalizations.of(context)!.russian, '🇷🇺'),
-            _buildLanguageOption('lv', AppLocalizations.of(context)!.latvian, '🇱🇻'),
+            // _buildLanguageOption('lv', AppLocalizations.of(context)!.latvian, '🇱🇻'), // TODO: Re-enable later
             const SizedBox(height: 16),
           ],
         ),
