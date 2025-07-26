@@ -9,9 +9,11 @@ import '../../constants/app_theme.dart';
 import '../../models/input_format.dart';
 import '../../widgets/responsive_wrapper.dart';
 import '../../services/ai_story_service.dart';
+import '../../services/auth_service.dart';
 import '../../models/story.dart';
 import '../../models/kid.dart';
 import './processing_screen.dart';
+import './story_ready_screen.dart';
 import '../../generated/app_localizations.dart';
 
 // Custom clipper for angled ellipse curve - same as splash screen
@@ -459,16 +461,32 @@ class _UploadScreenState extends State<UploadScreen> {
         _isProcessing = false;
       });
 
-      // Navigate to story display/playback screen
+      // Navigate to story ready screen with appropriate approval mode
       if (mounted) {
-        Navigator.pushNamed(
+        // Get current user's approval mode
+        final approvalModeString = AuthService.instance.getUserApprovalMode();
+        ApprovalMode approvalMode;
+        switch (approvalModeString) {
+          case 'app':
+            approvalMode = ApprovalMode.app;
+            break;
+          case 'email':
+            approvalMode = ApprovalMode.email;
+            break;
+          default:
+            approvalMode = ApprovalMode.auto;
+            break;
+        }
+        
+        Navigator.pushReplacement(
           context,
-          '/story-display',
-          arguments: story,
-        ).then((_) {
-          // When returning from story display, pop back to home screen
-          Navigator.pop(context);
-        });
+          MaterialPageRoute(
+            builder: (context) => StoryReadyScreen(
+              story: story,
+              approvalMode: approvalMode,
+            ),
+          ),
+        );
       }
     } catch (e) {
       setState(() {

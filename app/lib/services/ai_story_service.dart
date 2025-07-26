@@ -184,21 +184,20 @@ class AIStoryService {
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic> data = responseData['stories'] ?? [];
         return data
             .map((item) => Story(
-                  id: item['story_id'],
+                  id: item['id'] ?? item['story_id'],
                   title: item['title'] ?? 'Untitled Story',
                   content: item['content'] ?? '',
-                  caption: item['caption'],
+                  caption: item['image_description'] ?? item['caption'] ?? '',
                   imageUrl: '',
-                  audioUrl: item['audio_url'] != null
-                      ? '$baseUrl${item['audio_url']}'
-                      : null,
+                  audioUrl: item['audio_url'],
                   status: _mapStatus(item['status']),
                   createdAt:
                       DateTime.tryParse(item['created_at']) ?? DateTime.now(),
-                  childName: item['child_name'],
+                  childName: item['kid_name'] ?? '',
                 ))
             .toList();
       } else {

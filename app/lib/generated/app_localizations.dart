@@ -822,6 +822,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please confirm your password'**
   String get pleaseConfirmPassword;
+
+  /// No description provided for @storyApprovedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Story approved successfully!'**
+  String get storyApprovedSuccessfully;
+
+  /// No description provided for @storyDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Story declined'**
+  String get storyDeclined;
+
+  /// No description provided for @declineStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline Story'**
+  String get declineStory;
+
+  /// No description provided for @pleaseProvideReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Please provide a reason for declining:'**
+  String get pleaseProvideReason;
+
+  /// No description provided for @declineReasonHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g., too scary, inappropriate content, etc.'**
+  String get declineReasonHint;
+
+  /// No description provided for @suggestEdits.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest Edits'**
+  String get suggestEdits;
+
+  /// No description provided for @provideSuggestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide suggestions to improve the story:'**
+  String get provideSuggestions;
+
+  /// No description provided for @suggestionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'E.g., make it less scary, add more about friendship, etc.'**
+  String get suggestionsHint;
+
+  /// No description provided for @regeneratingStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerating story with your suggestions...'**
+  String get regeneratingStory;
+
+  /// No description provided for @regenerateStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerate Story'**
+  String get regenerateStory;
+
+  /// No description provided for @imageNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Image not available'**
+  String get imageNotAvailable;
+
+  /// No description provided for @pendingStories.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Stories'**
+  String get pendingStories;
+
+  /// No description provided for @noPendingStories.
+  ///
+  /// In en, this message translates to:
+  /// **'No Pending Stories'**
+  String get noPendingStories;
+
+  /// No description provided for @allStoriesReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'All stories have been reviewed'**
+  String get allStoriesReviewed;
+
+  /// No description provided for @forChild.
+  ///
+  /// In en, this message translates to:
+  /// **'For {childName}'**
+  String forChild(String childName);
+
+  /// No description provided for @review.
+  ///
+  /// In en, this message translates to:
+  /// **'Review'**
+  String get review;
+
+  /// No description provided for @approvalMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval Method'**
+  String get approvalMethod;
+
+  /// No description provided for @selectApprovalMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Approval Method'**
+  String get selectApprovalMethod;
+
+  /// No description provided for @autoApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto Approve'**
+  String get autoApprove;
+
+  /// No description provided for @reviewInApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Review in App'**
+  String get reviewInApp;
+
+  /// No description provided for @reviewByEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Review by Email'**
+  String get reviewByEmail;
+
+  /// No description provided for @autoApproveDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Stories are automatically approved and available immediately'**
+  String get autoApproveDescription;
+
+  /// No description provided for @reviewInAppDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Review stories in the parent dashboard before they\'re shown to children'**
+  String get reviewInAppDescription;
+
+  /// No description provided for @reviewByEmailDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Receive email notifications to review stories before approval'**
+  String get reviewByEmailDescription;
+
+  /// No description provided for @approvalMethodUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Approval method updated to {method}'**
+  String approvalMethodUpdated(String method);
+
+  /// No description provided for @failedToUpdateApprovalMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update approval method'**
+  String get failedToUpdateApprovalMethod;
+
+  /// No description provided for @errorUpdatingApprovalMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating approval method: {error}'**
+  String errorUpdatingApprovalMethod(String error);
+
+  /// No description provided for @yourStoryIsReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Your story is ready! 🎉'**
+  String get yourStoryIsReady;
+
+  /// No description provided for @parentReviewPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Parent review pending 👨‍👩‍👧‍👦'**
+  String get parentReviewPending;
+
+  /// No description provided for @tapReviewToApprove.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap Review to ask parent for approval'**
+  String get tapReviewToApprove;
+
+  /// No description provided for @weWillNotifyWhenReady.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll let you know when your story is ready!'**
+  String get weWillNotifyWhenReady;
+
+  /// No description provided for @openStory.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Story'**
+  String get openStory;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

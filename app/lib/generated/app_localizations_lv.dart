@@ -413,4 +413,106 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get pleaseConfirmPassword => 'Lūdzu, apstipriniet paroli';
+
+  @override
+  String get storyApprovedSuccessfully => 'Stāsts veiksmīgi apstiprināts!';
+
+  @override
+  String get storyDeclined => 'Stāsts noraidīts';
+
+  @override
+  String get declineStory => 'Noraidīt stāstu';
+
+  @override
+  String get pleaseProvideReason => 'Lūdzu, norādiet noraidīšanas iemeslu:';
+
+  @override
+  String get declineReasonHint => 'Piemēram, pārāk baidoši, nepiedienīgs saturs utt.';
+
+  @override
+  String get suggestEdits => 'Ieteikt izmaiņas';
+
+  @override
+  String get provideSuggestions => 'Sniedziet ieteikumus stāsta uzlabošanai:';
+
+  @override
+  String get suggestionsHint => 'Piemēram, padarīt mazāk baidošu, pievienot vairāk par draudzību utt.';
+
+  @override
+  String get regeneratingStory => 'Izveidojam jaunu stāsta versiju ar jūsu ieteikumiem...';
+
+  @override
+  String get regenerateStory => 'Izveidot jaunu versiju';
+
+  @override
+  String get imageNotAvailable => 'Attēls nav pieejams';
+
+  @override
+  String get pendingStories => 'Gaida apstiprinājumu';
+
+  @override
+  String get noPendingStories => 'Nav stāstu, kas gaida apstiprinājumu';
+
+  @override
+  String get allStoriesReviewed => 'Visi stāsti ir pārskatīti';
+
+  @override
+  String forChild(String childName) {
+    return 'Priekš $childName';
+  }
+
+  @override
+  String get review => 'Pārskatīt';
+
+  @override
+  String get approvalMethod => 'Apstiprinājuma veids';
+
+  @override
+  String get selectApprovalMethod => 'Izvēlieties apstiprinājuma veidu';
+
+  @override
+  String get autoApprove => 'Automātiski apstiprināt';
+
+  @override
+  String get reviewInApp => 'Pārskatīt lietotnē';
+
+  @override
+  String get reviewByEmail => 'Pārskatīt pa e-pastu';
+
+  @override
+  String get autoApproveDescription => 'Stāsti tiek automātiski apstiprināti un uzreiz pieejami';
+
+  @override
+  String get reviewInAppDescription => 'Pārskatiet stāstus vecāku panelī, pirms tie tiek rādīti bērniem';
+
+  @override
+  String get reviewByEmailDescription => 'Saņemiet e-pasta paziņojumus, lai pārskatītu stāstus pirms apstiprināšanas';
+
+  @override
+  String approvalMethodUpdated(String method) {
+    return 'Apstiprinājuma veids nomainīts uz $method';
+  }
+
+  @override
+  String get failedToUpdateApprovalMethod => 'Neizdevās nomainīt apstiprinājuma veidu';
+
+  @override
+  String errorUpdatingApprovalMethod(String error) {
+    return 'Kļūda mainot apstiprinājuma veidu: $error';
+  }
+
+  @override
+  String get yourStoryIsReady => 'Tavs stāsts ir gatavs! 🎉';
+
+  @override
+  String get parentReviewPending => 'Gaida vecāku apstiprinājumu 👨‍👩‍👧‍👦';
+
+  @override
+  String get tapReviewToApprove => 'Nospied Pārskatīt, lai lūgtu vecāku apstiprinājumu';
+
+  @override
+  String get weWillNotifyWhenReady => 'Mēs paziņosim, kad tavs stāsts būs gatavs!';
+
+  @override
+  String get openStory => 'Atvērt stāstu';
 }

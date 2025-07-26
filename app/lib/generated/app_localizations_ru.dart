@@ -414,4 +414,106 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get pleaseConfirmPassword => 'Пожалуйста, подтвердите пароль';
+
+  @override
+  String get storyApprovedSuccessfully => 'Сказка одобрена успешно!';
+
+  @override
+  String get storyDeclined => 'Сказка отклонена';
+
+  @override
+  String get declineStory => 'Отклонить сказку';
+
+  @override
+  String get pleaseProvideReason => 'Пожалуйста, укажите причину отклонения:';
+
+  @override
+  String get declineReasonHint => 'Например, слишком страшно, неподходящий контент и т.д.';
+
+  @override
+  String get suggestEdits => 'Предложить правки';
+
+  @override
+  String get provideSuggestions => 'Предложите улучшения для сказки:';
+
+  @override
+  String get suggestionsHint => 'Например, сделать менее страшно, добавить больше о дружбе и т.д.';
+
+  @override
+  String get regeneratingStory => 'Создаем новую версию сказки с вашими предложениями...';
+
+  @override
+  String get regenerateStory => 'Создать новую версию';
+
+  @override
+  String get imageNotAvailable => 'Изображение недоступно';
+
+  @override
+  String get pendingStories => 'Ожидают одобрения';
+
+  @override
+  String get noPendingStories => 'Нет историй ожидающих одобрения';
+
+  @override
+  String get allStoriesReviewed => 'Все истории проверены';
+
+  @override
+  String forChild(String childName) {
+    return 'Для $childName';
+  }
+
+  @override
+  String get review => 'Проверить';
+
+  @override
+  String get approvalMethod => 'Способ одобрения';
+
+  @override
+  String get selectApprovalMethod => 'Выберите способ одобрения';
+
+  @override
+  String get autoApprove => 'Автоматическое одобрение';
+
+  @override
+  String get reviewInApp => 'Проверка в приложении';
+
+  @override
+  String get reviewByEmail => 'Проверка по email';
+
+  @override
+  String get autoApproveDescription => 'Истории автоматически одобряются и сразу становятся доступными';
+
+  @override
+  String get reviewInAppDescription => 'Проверяйте истории в родительской панели перед показом детям';
+
+  @override
+  String get reviewByEmailDescription => 'Получайте уведомления по email для проверки историй перед одобрением';
+
+  @override
+  String approvalMethodUpdated(String method) {
+    return 'Способ одобрения изменен на $method';
+  }
+
+  @override
+  String get failedToUpdateApprovalMethod => 'Не удалось изменить способ одобрения';
+
+  @override
+  String errorUpdatingApprovalMethod(String error) {
+    return 'Ошибка при изменении способа одобрения: $error';
+  }
+
+  @override
+  String get yourStoryIsReady => 'Ваша история готова! 🎉';
+
+  @override
+  String get parentReviewPending => 'Ожидает одобрения родителей 👨‍👩‍👧‍👦';
+
+  @override
+  String get tapReviewToApprove => 'Нажмите Проверить, чтобы попросить родителей одобрить';
+
+  @override
+  String get weWillNotifyWhenReady => 'Мы сообщим, когда ваша история будет готова!';
+
+  @override
+  String get openStory => 'Открыть историю';
 }

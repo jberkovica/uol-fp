@@ -132,6 +132,43 @@
   "pleaseEnterPassword": "Lūdzu, ievadiet paroli",
   "pleaseConfirmPassword": "Lūdzu, apstipriniet paroli",
   "appleSignUpComingSoon": "Reģistrācija ar Apple drīz būs pieejama!",
+
+  "storyApprovedSuccessfully": "Stāsts veiksmīgi apstiprināts!",
+  "storyDeclined": "Stāsts noraidīts",
+  "declineStory": "Noraidīt stāstu",
+  "pleaseProvideReason": "Lūdzu, norādiet noraidīšanas iemeslu:",
+  "declineReasonHint": "Piemēram, pārāk baidoši, nepiedienīgs saturs utt.",
+  "suggestEdits": "Ieteikt izmaiņas",
+  "provideSuggestions": "Sniedziet ieteikumus stāsta uzlabošanai:",
+  "suggestionsHint": "Piemēram, padarīt mazāk baidošu, pievienot vairāk par draudzību utt.",
+  "regeneratingStory": "Izveidojam jaunu stāsta versiju ar jūsu ieteikumiem...",
+  "regenerateStory": "Izveidot jaunu versiju",
+  "imageNotAvailable": "Attēls nav pieejams",
+  "cancel": "Atcelt",
+  
+  "pendingStories": "Gaida apstiprinājumu",
+  "noPendingStories": "Nav stāstu, kas gaida apstiprinājumu",
+  "allStoriesReviewed": "Visi stāsti ir pārskatīti",
+  "forChild": "Priekš {childName}",
+  "review": "Pārskatīt",
+  
+  "approvalMethod": "Apstiprinājuma veids",
+  "selectApprovalMethod": "Izvēlieties apstiprinājuma veidu",
+  "autoApprove": "Automātiski apstiprināt",
+  "reviewInApp": "Pārskatīt lietotnē",
+  "reviewByEmail": "Pārskatīt pa e-pastu",
+  "autoApproveDescription": "Stāsti tiek automātiski apstiprināti un uzreiz pieejami",
+  "reviewInAppDescription": "Pārskatiet stāstus vecāku panelī, pirms tie tiek rādīti bērniem",
+  "reviewByEmailDescription": "Saņemiet e-pasta paziņojumus, lai pārskatītu stāstus pirms apstiprināšanas",
+  "approvalMethodUpdated": "Apstiprinājuma veids nomainīts uz {method}",
+  "failedToUpdateApprovalMethod": "Neizdevās nomainīt apstiprinājuma veidu",
+  "errorUpdatingApprovalMethod": "Kļūda mainot apstiprinājuma veidu: {error}",
+  
+  "yourStoryIsReady": "Tavs stāsts ir gatavs! 🎉",
+  "parentReviewPending": "Gaida vecāku apstiprinājumu 👨‍👩‍👧‍👦",
+  "tapReviewToApprove": "Nospied Pārskatīt, lai lūgtu vecāku apstiprinājumu",
+  "weWillNotifyWhenReady": "Mēs paziņosim, kad tavs stāsts būs gatavs!",
+  "openStory": "Atvērt stāstu",
   
   "logout": "Iziet no konta"
 }

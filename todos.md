@@ -22,7 +22,7 @@ app:
 [] home page alligh title wit profile
 [] remove print to console
 [] all icons same style
-[] animation on home page when scroll down
+[x] animation on home page when scroll down
 [] gallery view "see all" for more then 10?
 [] home page sections
 [x] stories not loaded after new story created in galleryr
@@ -30,7 +30,7 @@ app:
 [x] use Manrope?
 [] remove /test-processing
 [] improve text style in story, make it paragraphs
-[] logout at parent screen
+[x] logout at parent screen
 [] remove export button but implement it later (Export data - download all stories and data)
 
 Priority:
@@ -50,15 +50,18 @@ Priority:
 [x] parent dashboard remove 3 dots and add logout
 [x] generate story in selected language
 
-[] store language in supabase
+[x] store language in supabase
 [] parent approve
 [] auth with apple and google
-[] alchemy something
+[x] alchemy something
 [] ui cleanup 
 [] input as audio or text (whisper for audio)
-[] analytics
+[] analytics - posthog
 [] empty fields in stories table
 [] languages: english amercian and british, spanish, french
+[] notifications
+[] color hunt
+[] language detection (system) if not in our selection
 
 
 backend:

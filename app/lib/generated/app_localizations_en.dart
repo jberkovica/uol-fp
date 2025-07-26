@@ -413,4 +413,106 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseConfirmPassword => 'Please confirm your password';
+
+  @override
+  String get storyApprovedSuccessfully => 'Story approved successfully!';
+
+  @override
+  String get storyDeclined => 'Story declined';
+
+  @override
+  String get declineStory => 'Decline Story';
+
+  @override
+  String get pleaseProvideReason => 'Please provide a reason for declining:';
+
+  @override
+  String get declineReasonHint => 'E.g., too scary, inappropriate content, etc.';
+
+  @override
+  String get suggestEdits => 'Suggest Edits';
+
+  @override
+  String get provideSuggestions => 'Provide suggestions to improve the story:';
+
+  @override
+  String get suggestionsHint => 'E.g., make it less scary, add more about friendship, etc.';
+
+  @override
+  String get regeneratingStory => 'Regenerating story with your suggestions...';
+
+  @override
+  String get regenerateStory => 'Regenerate Story';
+
+  @override
+  String get imageNotAvailable => 'Image not available';
+
+  @override
+  String get pendingStories => 'Pending Stories';
+
+  @override
+  String get noPendingStories => 'No Pending Stories';
+
+  @override
+  String get allStoriesReviewed => 'All stories have been reviewed';
+
+  @override
+  String forChild(String childName) {
+    return 'For $childName';
+  }
+
+  @override
+  String get review => 'Review';
+
+  @override
+  String get approvalMethod => 'Approval Method';
+
+  @override
+  String get selectApprovalMethod => 'Select Approval Method';
+
+  @override
+  String get autoApprove => 'Auto Approve';
+
+  @override
+  String get reviewInApp => 'Review in App';
+
+  @override
+  String get reviewByEmail => 'Review by Email';
+
+  @override
+  String get autoApproveDescription => 'Stories are automatically approved and available immediately';
+
+  @override
+  String get reviewInAppDescription => 'Review stories in the parent dashboard before they\'re shown to children';
+
+  @override
+  String get reviewByEmailDescription => 'Receive email notifications to review stories before approval';
+
+  @override
+  String approvalMethodUpdated(String method) {
+    return 'Approval method updated to $method';
+  }
+
+  @override
+  String get failedToUpdateApprovalMethod => 'Failed to update approval method';
+
+  @override
+  String errorUpdatingApprovalMethod(String error) {
+    return 'Error updating approval method: $error';
+  }
+
+  @override
+  String get yourStoryIsReady => 'Your story is ready! 🎉';
+
+  @override
+  String get parentReviewPending => 'Parent review pending 👨‍👩‍👧‍👦';
+
+  @override
+  String get tapReviewToApprove => 'Tap Review to ask parent for approval';
+
+  @override
+  String get weWillNotifyWhenReady => 'We\'ll let you know when your story is ready!';
+
+  @override
+  String get openStory => 'Open Story';
 }

@@ -117,4 +117,81 @@ class AuthService {
       return false;
     }
   }
+
+  /// Get user's approval mode preference from metadata
+  String getUserApprovalMode() {
+    final user = currentUser;
+    if (user?.userMetadata != null) {
+      return user!.userMetadata!['approval_mode'] as String? ?? 'auto';
+    }
+    return 'auto'; // Default to auto-approve
+  }
+
+  /// Update user's approval mode preference in metadata
+  Future<bool> updateUserApprovalMode(String approvalMode) async {
+    try {
+      final user = currentUser;
+      if (user == null) return false;
+
+      // Validate approval mode
+      if (!['auto', 'app', 'email'].contains(approvalMode)) {
+        print('Invalid approval mode: $approvalMode');
+        return false;
+      }
+
+      // Update user metadata with approval mode preference
+      final response = await _supabase.auth.updateUser(
+        UserAttributes(
+          data: {
+            ...?user.userMetadata,
+            'approval_mode': approvalMode,
+          },
+        ),
+      );
+
+      return response.user != null;
+    } catch (e) {
+      print('Error updating user approval mode: $e');
+      return false;
+    }
+  }
+
+  /// Get user's notification preferences from metadata
+  Map<String, bool> getUserNotificationPreferences() {
+    final user = currentUser;
+    if (user?.userMetadata != null && user!.userMetadata!.containsKey('notification_preferences')) {
+      final prefs = user.userMetadata!['notification_preferences'] as Map<String, dynamic>?;
+      return {
+        'new_story': prefs?['new_story'] as bool? ?? true,
+        'email_notifications': prefs?['email_notifications'] as bool? ?? true,
+      };
+    }
+    return {
+      'new_story': true,
+      'email_notifications': true,
+    };
+  }
+
+  /// Update user's notification preferences in metadata
+  Future<bool> updateUserNotificationPreferences(Map<String, bool> preferences) async {
+    try {
+      final user = currentUser;
+      if (user == null) return false;
+
+      // Update user metadata with notification preferences
+      final response = await _supabase.auth.updateUser(
+        UserAttributes(
+          data: {
+            ...?user.userMetadata,
+            'notification_preferences': preferences,
+          },
+        ),
+      );
+
+      return response.user != null;
+    } catch (e) {
+      print('Error updating user notification preferences: $e');
+      return false;
+    }
+  }
 } 

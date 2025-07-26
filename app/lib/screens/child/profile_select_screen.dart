@@ -55,6 +55,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
   Future<void> _showCreateKidDialog() async {
     final nameController = TextEditingController();
     String selectedAvatarType = 'profile1';
+    int selectedAge = 5; // Default age
 
     final result = await showDialog<Kid>(
       context: context,
@@ -83,6 +84,54 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                     ),
                     style: Theme.of(context).textTheme.headlineLarge,
                     autofocus: true,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Age:',
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: List.generate(10, (index) {
+                      final age = index + 3; // Ages 3-12
+                      return GestureDetector(
+                        onTap: () {
+                          setDialogState(() {
+                            selectedAge = age;
+                          });
+                        },
+                        child: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: selectedAge == age 
+                                ? AppColors.primary 
+                                : AppColors.lightGrey,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: selectedAge == age 
+                                  ? AppColors.primary 
+                                  : AppColors.grey,
+                              width: 2,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              age.toString(),
+                              style: TextStyle(
+                                color: selectedAge == age 
+                                    ? Colors.white 
+                                    : AppColors.textDark,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
                   ),
                   const SizedBox(height: 20),
                   Text(
@@ -142,6 +191,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       final newKid = await KidService.createKid(
                         userId: user.id,
                         name: nameController.text.trim(),
+                        age: selectedAge,
                         avatarType: selectedAvatarType,
                       );
                       Navigator.of(context).pop(newKid);

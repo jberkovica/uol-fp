@@ -32,6 +32,7 @@ class StoryListResponse(BaseModel):
 class KidResponse(BaseModel):
     """Response for a single kid profile."""
     id: str
+    user_id: str
     name: str
     age: int
     avatar_type: str

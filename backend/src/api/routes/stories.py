@@ -1,6 +1,7 @@
 """Story generation and management endpoints."""
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends
 from typing import List, Optional
+from datetime import datetime
 
 from ...types.requests import GenerateStoryRequest, ReviewStoryRequest
 from ...types.responses import StoryResponse, StoryListResponse, GenerateStoryResponse
@@ -69,6 +70,45 @@ async def generate_story(
     except Exception as e:
         logger.error(f"Failed to start story generation: {e}")
         raise HTTPException(status_code=500, detail="Failed to start story generation")
+
+
+@router.get("/pending", response_model=StoryListResponse)
+async def get_pending_stories() -> StoryListResponse:
+    """Get all pending stories for parent review."""
+    try:
+        logger.info("Getting pending stories")
+        supabase = get_supabase_service()
+        
+        # Get all pending stories from database using the service method
+        stories_data = await supabase.get_pending_stories()
+        logger.info(f"Found {len(stories_data)} pending stories")
+        
+        # Convert to response format
+        stories = [
+            StoryResponse(
+                id=story.id,
+                kid_id=story.kid_id,
+                title=story.title,
+                content=story.content,
+                audio_url=story.audio_url,
+                status=story.status,
+                language=story.language,
+                created_at=story.created_at,
+                updated_at=story.updated_at
+            )
+            for story in stories_data
+        ]
+        
+        return StoryListResponse(
+            stories=stories,
+            total=len(stories),
+            page=1,
+            page_size=len(stories)
+        )
+        
+    except Exception as e:
+        logger.error(f"Failed to get pending stories: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get pending stories")
 
 
 @router.get("/{story_id}", response_model=StoryResponse)
@@ -238,3 +278,80 @@ async def delete_story(story_id: str):
     except Exception as e:
         logger.error(f"Failed to delete story: {e}")
         raise HTTPException(status_code=500, detail="Failed to delete story")
+
+
+@router.post("/review-story/")
+async def review_story_simple(request: dict):
+    """Review story endpoint that matches Flutter expectations."""
+    try:
+        story_id = request.get("story_id")
+        approved = request.get("approved")
+        feedback = request.get("feedback")
+        
+        if not story_id:
+            raise ValidationError("story_id is required")
+        if approved is None:
+            raise ValidationError("approved field is required")
+            
+        validate_uuid(story_id, "story_id")
+        
+        supabase = get_supabase_service()
+        
+        # Get current story to find the kid and parent
+        story = await supabase.get_story(story_id)
+        if not story:
+            raise NotFoundError("Story", story_id)
+            
+        # Get kid to find parent user_id
+        kid = await supabase.get_kid(story.kid_id)
+        if not kid:
+            raise NotFoundError("Kid", story.kid_id)
+        
+        # Determine new status and reason
+        if approved:
+            new_status = StoryStatus.APPROVED.value
+            action = "approve"
+        else:
+            new_status = StoryStatus.REJECTED.value  
+            action = "decline"
+        
+        # Update story status and feedback
+        update_data = {
+            "status": new_status,
+            "parent_review_status": "approved" if approved else "declined"
+        }
+        
+        if feedback:
+            if approved:
+                update_data["parent_feedback"] = feedback
+            else:
+                update_data["declined_reason"] = feedback
+        
+        updated_story = await supabase.update_story(story_id, update_data)
+        
+        # Log the review action in story_review_actions table
+        await supabase.client.table("story_review_actions").insert({
+            "story_id": story_id,
+            "user_id": kid.user_id,
+            "action": action,
+            "feedback": feedback,
+            "declined_reason": feedback if not approved else None,
+            "review_method": "app"
+        }).execute()
+        
+        logger.info(f"Story {story_id} {action}ed by parent {kid.user_id}")
+        
+        return {
+            "success": True,
+            "story_id": story_id,
+            "status": new_status,
+            "message": f"Story {'approved' if approved else 'declined'} successfully"
+        }
+        
+    except (NotFoundError, ValidationError) as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Failed to review story: {e}")
+        raise HTTPException(status_code=500, detail="Failed to review story")
+
+

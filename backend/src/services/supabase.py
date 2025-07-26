@@ -4,7 +4,7 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 import uuid
 from supabase import create_client, Client
-from ..types.domain import Kid, Story, StoryStatus
+from ..types.domain import Kid, Story, StoryStatus, Language
 from ..types.requests import CreateKidRequest, UpdateKidRequest
 from ..utils.logger import get_logger
 from ..utils.config import get_config
@@ -116,6 +116,39 @@ class SupabaseService:
         """Update story status."""
         return await self.update_story(story_id, {"status": status.value})
     
+    async def get_pending_stories(self) -> List[Story]:
+        """Get all pending stories for parent review."""
+        try:
+            result = self.client.table("stories").select("*").eq("status", "pending").order("created_at.desc").execute()
+            
+            stories = []
+            for item in result.data:
+                # Handle optional fields properly
+                audio_filename = item.get("audio_filename")
+                audio_url = None
+                if audio_filename:
+                    audio_url = f"{self.storage_bucket}/{audio_filename}"
+                
+                story = Story(
+                    id=item["id"],
+                    kid_id=item["kid_id"],
+                    title=item.get("title", ""),
+                    content=item.get("content", ""),
+                    audio_url=audio_url,
+                    status=StoryStatus(item.get("status", "pending")),
+                    language=Language(item.get("language", "english")),
+                    created_at=datetime.fromisoformat(item["created_at"].replace('Z', '+00:00')),
+                    updated_at=datetime.fromisoformat(item["updated_at"].replace('Z', '+00:00')) if item.get("updated_at") else None,
+                    image_description=item.get("image_description", ""),
+                    audio_filename=audio_filename
+                )
+                stories.append(story)
+            
+            return stories
+        except Exception as e:
+            logger.error(f"Error getting pending stories: {e}")
+            return []
+    
     # Storage Operations
     async def upload_audio(self, file_data: bytes, filename: str) -> str:
         """Upload audio file to Supabase storage."""
@@ -145,6 +178,47 @@ class SupabaseService:
         result = self.client.storage.from_(bucket).remove([filename])
         return len(result) > 0
     
+    # User Settings Operations
+    async def get_user_approval_mode(self, user_id: str) -> str:
+        """Get user's approval mode from auth metadata."""
+        try:
+            # Get user from auth
+            user = self.client.auth.admin.get_user_by_id(user_id)
+            if user and user.user and user.user.user_metadata:
+                return user.user.user_metadata.get('approval_mode', 'auto')
+            return 'auto'
+        except Exception as e:
+            logger.error(f"Error getting user approval mode: {e}")
+            return 'auto'  # Default fallback
+    
+    async def get_user_email(self, user_id: str) -> Optional[str]:
+        """Get user's email address from auth."""
+        try:
+            # Get user from auth
+            user = self.client.auth.admin.get_user_by_id(user_id)
+            if user and user.user:
+                return user.user.email
+            return None
+        except Exception as e:
+            logger.error(f"Error getting user email: {e}")
+            return None
+    
+    async def get_user_notification_preferences(self, user_id: str) -> Dict[str, bool]:
+        """Get user's notification preferences from auth metadata."""
+        try:
+            # Get user from auth
+            user = self.client.auth.admin.get_user_by_id(user_id)
+            if user and user.user and user.user.user_metadata:
+                prefs = user.user.user_metadata.get('notification_preferences', {})
+                return {
+                    'new_story': prefs.get('new_story', True),
+                    'email_notifications': prefs.get('email_notifications', True),
+                }
+            return {'new_story': True, 'email_notifications': True}
+        except Exception as e:
+            logger.error(f"Error getting user notification preferences: {e}")
+            return {'new_story': True, 'email_notifications': True}  # Default fallback
+
     # Health Check
     async def health_check(self) -> Dict[str, Any]:
         """Check Supabase connection health."""

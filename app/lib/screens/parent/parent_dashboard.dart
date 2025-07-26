@@ -11,6 +11,7 @@ import '../../services/app_state_service.dart';
 import '../../services/kid_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/language_service.dart';
+import '../../services/ai_story_service.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
 import '../../generated/app_localizations.dart';
@@ -26,8 +27,11 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
   int _currentNavIndex = 3; // Settings tab (moved from 2 to 3)
   List<Kid> _kids = [];
   Map<String, List<Story>> _kidStories = {};
+  List<Story> _pendingStories = [];
   bool _isLoading = false;
+  bool _isLoadingPendingStories = false;
   String? _currentUserId;
+  String _currentApprovalMode = 'auto'; // Default to auto-approve
   
   // Parallax scroll variables  
   double _scrollOffset = 0.0;
@@ -42,7 +46,9 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
     // Get current user ID from auth service or use placeholder
     final authUser = AuthService.instance.currentUser;
     _currentUserId = authUser?.id ?? 'placeholder-user-id';
+    await _loadApprovalMode();
     await _loadKids();
+    await _loadPendingStories();
   }
 
   Future<void> _loadKids() async {
@@ -90,6 +96,39 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           ),
         );
       }
+    }
+  }
+
+  Future<void> _loadPendingStories() async {
+    setState(() {
+      _isLoadingPendingStories = true;
+    });
+
+    try {
+      final pendingStories = await AIStoryService().getPendingStories();
+      
+      setState(() {
+        _pendingStories = pendingStories;
+        _isLoadingPendingStories = false;
+      });
+    } catch (e) {
+      print('Error loading pending stories: $e');
+      setState(() {
+        _pendingStories = [];
+        _isLoadingPendingStories = false;
+      });
+    }
+  }
+
+  Future<void> _loadApprovalMode() async {
+    try {
+      final approvalMode = AuthService.instance.getUserApprovalMode();
+      setState(() {
+        _currentApprovalMode = approvalMode;
+      });
+    } catch (e) {
+      print('Error loading approval mode: $e');
+      // Keep default 'auto' if there's an error
     }
   }
 
@@ -349,7 +388,10 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
                 constraints: const BoxConstraints(maxWidth: 1200),
                 child: RefreshIndicator(
-                  onRefresh: _loadKids,
+                  onRefresh: () async {
+                    await _loadKids();
+                    await _loadPendingStories();
+                  },
                   child: Padding(
                     padding: EdgeInsets.fromLTRB(
                       AppTheme.getGlobalPadding(context),
@@ -362,6 +404,8 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                       children: [
                         const SizedBox(height: 16),
                         _buildKidsSection(),
+                        const SizedBox(height: 32),
+                        _buildPendingStoriesSection(),
                         const SizedBox(height: 32),
                         _buildControlsSection(),
                         const SizedBox(height: 40),
@@ -565,6 +609,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 onTap: _showLanguageSelector,
               ),
               _buildControlTile(
+                icon: Icons.admin_panel_settings,
+                title: AppLocalizations.of(context)!.approvalMethod,
+                subtitle: _getApprovalModeDisplayName(_currentApprovalMode),
+                onTap: _showApprovalModeSelector,
+              ),
+              _buildControlTile(
                 icon: Icons.security,
                 title: AppLocalizations.of(context)!.changePin,
                 subtitle: AppLocalizations.of(context)!.updateParentDashboardPin,
@@ -646,6 +696,185 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildPendingStoriesSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              AppLocalizations.of(context)!.pendingStories,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const Spacer(),
+            if (_pendingStories.isNotEmpty)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: AppColors.secondary,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  '${_pendingStories.length}',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textDark,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        
+        if (_isLoadingPendingStories)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(32),
+            decoration: AppTheme.flatWhiteCard,
+            child: const Center(child: CircularProgressIndicator()),
+          )
+        else if (_pendingStories.isEmpty)
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(32),
+            decoration: AppTheme.flatWhiteCard,
+            child: Column(
+              children: [
+                Icon(
+                  Icons.check_circle_outline,
+                  size: 48,
+                  color: AppColors.success,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  AppLocalizations.of(context)!.noPendingStories,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: AppColors.success,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  AppLocalizations.of(context)!.allStoriesReviewed,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.textGrey,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          )
+        else
+          ..._pendingStories.map((story) => _buildPendingStoryCard(story)),
+      ],
+    );
+  }
+
+  Widget _buildPendingStoryCard(Story story) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: AppTheme.flatWhiteCard,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          children: [
+            // Story icon with pending indicator
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: AppColors.secondary.withValues(alpha: 51),
+                borderRadius: BorderRadius.circular(28),
+              ),
+              child: Stack(
+                children: [
+                  Center(
+                    child: Icon(
+                      Icons.auto_stories,
+                      color: AppColors.primary,
+                      size: 28,
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        color: AppColors.secondary,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 16),
+            
+            // Story info
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    story.title,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  if (story.childName != null)
+                    Text(
+                      AppLocalizations.of(context)!.forChild(story.childName!),
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  const SizedBox(height: 2),
+                  Text(
+                    _formatDate(story.createdAt),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+            
+            // Review button
+            ElevatedButton(
+              onPressed: () async {
+                final result = await Navigator.pushNamed(
+                  context,
+                  '/story-preview',
+                  arguments: story,
+                );
+                
+                // Refresh pending stories if story was reviewed
+                if (result == true) {
+                  await _loadPendingStories();
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.review,
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -907,6 +1136,130 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(AppLocalizations.of(context)!.errorUpdatingLanguage(e.toString())),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
+  }
+
+  String _getApprovalModeDisplayName(String approvalMode) {
+    switch (approvalMode) {
+      case 'auto':
+        return AppLocalizations.of(context)!.autoApprove;
+      case 'app':
+        return AppLocalizations.of(context)!.reviewInApp;
+      case 'email':
+        return AppLocalizations.of(context)!.reviewByEmail;
+      default:
+        return AppLocalizations.of(context)!.autoApprove;
+    }
+  }
+
+  void _showApprovalModeSelector() {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(24),
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 24),
+              decoration: BoxDecoration(
+                color: AppColors.textLight,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            Text(
+              AppLocalizations.of(context)!.selectApprovalMethod,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 24),
+            _buildApprovalModeOption('auto', AppLocalizations.of(context)!.autoApprove, 
+                AppLocalizations.of(context)!.autoApproveDescription),
+            _buildApprovalModeOption('app', AppLocalizations.of(context)!.reviewInApp,
+                AppLocalizations.of(context)!.reviewInAppDescription),
+            _buildApprovalModeOption('email', AppLocalizations.of(context)!.reviewByEmail,
+                AppLocalizations.of(context)!.reviewByEmailDescription),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildApprovalModeOption(String modeCode, String modeName, String description) {
+    final isSelected = _currentApprovalMode == modeCode;
+    
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      title: Text(
+        modeName,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          color: isSelected ? AppColors.primary : AppColors.textDark,
+        ),
+      ),
+      subtitle: Text(
+        description,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+          color: AppColors.textGrey,
+        ),
+      ),
+      trailing: isSelected 
+        ? const Icon(Icons.check, color: AppColors.primary)
+        : null,
+      onTap: () async {
+        Navigator.pop(context);
+        await _updateApprovalMode(modeCode);
+      },
+    );
+  }
+
+  Future<void> _updateApprovalMode(String approvalMode) async {
+    try {
+      final success = await AuthService.instance.updateUserApprovalMode(approvalMode);
+      
+      if (success && mounted) {
+        setState(() {
+          _currentApprovalMode = approvalMode;
+        });
+        
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.approvalMethodUpdated(_getApprovalModeDisplayName(approvalMode))),
+            backgroundColor: AppColors.primary,
+          ),
+        );
+        
+        // Reload pending stories since approval mode affects what shows up
+        await _loadPendingStories();
+      } else if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.failedToUpdateApprovalMethod),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.errorUpdatingApprovalMethod(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );

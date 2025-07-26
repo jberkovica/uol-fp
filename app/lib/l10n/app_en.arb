@@ -385,5 +385,64 @@
   "passwordsDoNotMatch": "Passwords do not match",
   "pleaseEnterPassword": "Please enter a password",
   "pleaseConfirmPassword": "Please confirm your password",
+
+  "storyApprovedSuccessfully": "Story approved successfully!",
+  "storyDeclined": "Story declined",
+  "declineStory": "Decline Story",
+  "pleaseProvideReason": "Please provide a reason for declining:",
+  "declineReasonHint": "E.g., too scary, inappropriate content, etc.",
+  "suggestEdits": "Suggest Edits",
+  "provideSuggestions": "Provide suggestions to improve the story:",
+  "suggestionsHint": "E.g., make it less scary, add more about friendship, etc.",
+  "regeneratingStory": "Regenerating story with your suggestions...",
+  "regenerateStory": "Regenerate Story",
+  "imageNotAvailable": "Image not available",
+  "cancel": "Cancel",
+  
+  "pendingStories": "Pending Stories",
+  "noPendingStories": "No Pending Stories",
+  "allStoriesReviewed": "All stories have been reviewed",
+  "forChild": "For {childName}",
+  "@forChild": {
+    "placeholders": {
+      "childName": {
+        "type": "String"
+      }
+    }
+  },
+  "review": "Review",
+  
+  "approvalMethod": "Approval Method",
+  "selectApprovalMethod": "Select Approval Method",
+  "autoApprove": "Auto Approve",
+  "reviewInApp": "Review in App",
+  "reviewByEmail": "Review by Email",
+  "autoApproveDescription": "Stories are automatically approved and available immediately",
+  "reviewInAppDescription": "Review stories in the parent dashboard before they're shown to children",
+  "reviewByEmailDescription": "Receive email notifications to review stories before approval",
+  "approvalMethodUpdated": "Approval method updated to {method}",
+  "@approvalMethodUpdated": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToUpdateApprovalMethod": "Failed to update approval method",
+  "errorUpdatingApprovalMethod": "Error updating approval method: {error}",
+  "@errorUpdatingApprovalMethod": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "yourStoryIsReady": "Your story is ready! 🎉",
+  "parentReviewPending": "Parent review pending 👨‍👩‍👧‍👦",
+  "tapReviewToApprove": "Tap Review to ask parent for approval",
+  "weWillNotifyWhenReady": "We'll let you know when your story is ready!",
+  "openStory": "Open Story",
+  
   "appleSignUpComingSoon": "Apple sign up coming soon!"
 }

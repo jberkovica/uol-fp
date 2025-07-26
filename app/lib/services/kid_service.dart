@@ -47,6 +47,7 @@ class KidService {
   static Future<Kid> createKid({
     required String userId,
     required String name,
+    required int age,
     String avatarType = 'profile1',
   }) async {
     try {
@@ -57,6 +58,7 @@ class KidService {
         body: jsonEncode({
           'user_id': userId,
           'name': name.trim(),
+          'age': age,
           'avatar_type': avatarType,
         }),
       );

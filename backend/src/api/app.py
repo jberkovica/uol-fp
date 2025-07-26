@@ -3,7 +3,7 @@ import os
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
-from .routes import health, kids, stories
+from .routes import health, kids, stories, email_review
 from .middleware import add_cors_middleware, add_security_middleware, add_exception_handlers
 from ..utils.logger import setup_logging, get_logger
 from ..utils.config import load_config
@@ -55,6 +55,7 @@ def create_app() -> FastAPI:
     app.include_router(health.router)
     app.include_router(kids.router)
     app.include_router(stories.router)
+    app.include_router(email_review.router)
     
     # Add main API endpoints for Flutter app compatibility
     add_main_endpoints(app)

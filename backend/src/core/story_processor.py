@@ -87,13 +87,18 @@ class StoryProcessor:
             filename = f"{story_id}.mp3"
             audio_url = await self.supabase.upload_audio(audio_data, filename)
             
-            # Update story with audio URL and mark as approved
-            story = await self.supabase.update_story(story_id, {
+            # Update story with audio URL
+            await self.supabase.update_story(story_id, {
                 "audio_filename": audio_url,  # Database stores as audio_filename
-                "status": StoryStatus.APPROVED.value
             })
             
-            logger.info(f"Story {story_id} completed successfully")
+            # Determine final story status based on parent's approval mode
+            final_status = await self._determine_story_status(request.kid_id, story_id)
+            story = await self.supabase.update_story(story_id, {
+                "status": final_status.value
+            })
+            
+            logger.info(f"Story {story_id} completed with status: {final_status.value}")
             return story
             
         except Exception as e:
@@ -104,6 +109,83 @@ class StoryProcessor:
                 "metadata": {"error": str(e)}
             })
             raise
+    
+    async def _determine_story_status(self, kid_id: str, story_id: str) -> StoryStatus:
+        """
+        Determine the final story status based on parent's approval mode.
+        """
+        try:
+            # Get kid profile to find parent user_id
+            kid = await self.supabase.get_kid(kid_id)
+            if not kid:
+                logger.error(f"Kid profile not found: {kid_id}")
+                return StoryStatus.PENDING  # Safe fallback
+            
+            # Get parent's approval mode
+            approval_mode = await self.supabase.get_user_approval_mode(kid.user_id)
+            logger.info(f"Parent approval mode for kid {kid_id}: {approval_mode}")
+            
+            if approval_mode == 'auto':
+                # Auto-approve stories
+                return StoryStatus.APPROVED
+            elif approval_mode == 'app':
+                # Require parent review in app
+                return StoryStatus.PENDING
+            elif approval_mode == 'email':
+                # Require parent review via email - send notification
+                await self._send_email_notification(story_id, kid)
+                return StoryStatus.PENDING
+            else:
+                # Unknown mode, default to pending for safety
+                logger.warning(f"Unknown approval mode: {approval_mode}, defaulting to pending")
+                return StoryStatus.PENDING
+                
+        except Exception as e:
+            logger.error(f"Error determining story status: {e}")
+            return StoryStatus.PENDING  # Safe fallback
+    
+    async def _send_email_notification(self, story_id: str, kid):
+        """
+        Send email notification to parent for story review.
+        """
+        try:
+            # Get parent's email address
+            parent_email = await self.supabase.get_user_email(kid.user_id)
+            if not parent_email:
+                logger.error(f"No email found for parent of kid {kid.id}")
+                return
+            
+            # Get story details
+            story = await self.supabase.get_story(story_id)
+            if not story:
+                logger.error(f"Story not found: {story_id}")
+                return
+            
+            # Get approval mode to determine email type
+            approval_mode = await self.supabase.get_user_approval_mode(kid.user_id)
+            
+            # Call Supabase Edge Function for email notification
+            result = await self.supabase.client.functions.invoke(
+                "send-story-notification",
+                {"body": {
+                    "storyId": story_id,
+                    "kidId": kid.id,
+                    "parentEmail": parent_email,
+                    "parentName": parent_email.split('@')[0],  # Extract name from email as fallback
+                    "kidName": kid.name,
+                    "storyTitle": story.title,
+                    "approvalMode": approval_mode
+                }}
+            )
+            
+            if result.get("error"):
+                logger.error(f"Failed to send email notification for story {story_id}: {result['error']}")
+            else:
+                logger.info(f"Email notification sent for story {story_id} to {parent_email}")
+                
+        except Exception as e:
+            logger.error(f"Error sending email notification for story {story_id}: {e}")
+            # Don't raise - email failure shouldn't stop story processing
     
     async def process_text_to_story(self, prompt: str, kid_id: str, language: Language = Language.ENGLISH) -> Story:
         """

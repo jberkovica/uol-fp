@@ -25,6 +25,7 @@ class GenerateStoryRequest(BaseModel):
 class CreateKidRequest(BaseModel):
     """Request to create a new kid profile."""
     name: str = Field(..., min_length=1, max_length=50, description="Kid's name")
+    age: int = Field(..., ge=3, le=12, description="Kid's age (3-12 years)")
     avatar_type: str = Field(default="profile1", description="Avatar selection")
     user_id: str = Field(..., description="Parent's Supabase Auth ID")
 

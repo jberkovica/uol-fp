@@ -31,6 +31,7 @@ async def create_kid(request: CreateKidRequest) -> KidResponse:
         
         return KidResponse(
             id=kid.id,
+            user_id=kid.user_id,
             name=kid.name,
             age=kid.age,
             avatar_type=kid.avatar_type,
@@ -62,6 +63,7 @@ async def get_kid(kid_id: str) -> KidResponse:
         
         return KidResponse(
             id=kid.id,
+            user_id=kid.user_id,
             name=kid.name,
             age=kid.age,
             avatar_type=kid.avatar_type,
@@ -94,6 +96,7 @@ async def get_kids_for_user(user_id: str) -> KidListResponse:
             kid_responses.append(
                 KidResponse(
                     id=kid.id,
+                    user_id=kid.user_id,
                     name=kid.name,
                     age=kid.age,
                     avatar_type=kid.avatar_type,
@@ -137,6 +140,7 @@ async def update_kid(kid_id: str, request: UpdateKidRequest) -> KidResponse:
         
         return KidResponse(
             id=kid.id,
+            user_id=kid.user_id,
             name=kid.name,
             age=kid.age,
             avatar_type=kid.avatar_type,
