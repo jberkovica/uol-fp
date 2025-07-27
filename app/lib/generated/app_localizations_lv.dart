@@ -222,6 +222,18 @@ class AppLocalizationsLv extends AppLocalizations {
   String get continueWithApple => 'Turpināt ar Apple';
 
   @override
+  String get continueWithFacebook => 'Turpināt ar Facebook';
+
+  @override
+  String get googleSignInFailed => 'Google pierakstīšanās neizdevās';
+
+  @override
+  String get appleSignInFailed => 'Apple pierakstīšanās neizdevās';
+
+  @override
+  String get facebookSignInFailed => 'Facebook pierakstīšanās neizdevās';
+
+  @override
   String get createAccount => 'Izveidot kontu';
 
   @override

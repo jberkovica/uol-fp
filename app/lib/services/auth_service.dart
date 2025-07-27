@@ -1,4 +1,9 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 /// Authentication service using Supabase
 class AuthService {
@@ -8,6 +13,22 @@ class AuthService {
 
   /// Get the current Supabase client
   final SupabaseClient _supabase = Supabase.instance.client;
+
+  /// Google Sign In instance
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: ['email', 'profile'],
+  );
+
+  /// Initialize OAuth listener for Supabase redirects
+  void initializeOAuthListener() {
+    _supabase.auth.onAuthStateChange.listen((data) {
+      // Handle auth state changes for OAuth flows
+      if (data.event == AuthChangeEvent.signedIn) {
+        // OAuth sign-in successful
+        print('OAuth sign-in successful: ${data.session?.user?.email}');
+      }
+    });
+  }
 
   /// Get current user
   User? get currentUser => _supabase.auth.currentUser;
@@ -45,33 +66,124 @@ class AuthService {
   }
 
   /// Sign in with Google OAuth
-  Future<bool> signInWithGoogle() async {
+  Future<AuthResponse?> signInWithGoogle() async {
     try {
-      await _supabase.auth.signInWithOAuth(
-        OAuthProvider.google,
-        redirectTo: 'io.supabase.flutterquickstart://login-callback/',
+      // Web platform uses Supabase OAuth directly
+      if (kIsWeb) {
+        await _supabase.auth.signInWithOAuth(
+          OAuthProvider.google,
+          redirectTo: '${Uri.base.origin}/auth/callback',
+        );
+        // On web, OAuth happens via redirect, so we return null
+        // The actual auth response will come through the auth state listener
+        return null;
+      }
+      
+      // Mobile platforms use Google Sign In plugin
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return null; // User cancelled
+      
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      
+      if (googleAuth.accessToken == null || googleAuth.idToken == null) {
+        throw Exception('Failed to get Google credentials');
+      }
+      
+      final response = await _supabase.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: googleAuth.idToken!,
+        accessToken: googleAuth.accessToken,
       );
-      return true;
+      
+      return response;
     } catch (e) {
       print('Google sign in error: $e');
-      return false;
+      return null;
     }
   }
 
   /// Sign in with Apple OAuth  
-  Future<String?> signInWithApple({
-    required String idToken,
-    String? nonce,
-  }) async {
+  Future<AuthResponse?> signInWithApple() async {
     try {
+      // Check if Apple Sign In is available
+      if (!kIsWeb && !Platform.isIOS && !Platform.isMacOS) {
+        throw Exception('Apple Sign In is only available on iOS, macOS, and Web');
+      }
+
+      // Web platform uses Supabase OAuth directly
+      if (kIsWeb) {
+        await _supabase.auth.signInWithOAuth(
+          OAuthProvider.apple,
+          redirectTo: '${Uri.base.origin}/auth/callback',
+        );
+        // On web, OAuth happens via redirect, so we return null
+        return null;
+      }
+
+      // Check if Apple Sign In is available on device
+      final isAvailable = await SignInWithApple.isAvailable();
+      if (!isAvailable) {
+        throw Exception('Apple Sign In is not available on this device');
+      }
+
+      // Request Apple Sign In credentials
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      if (credential.identityToken == null) {
+        throw Exception('Failed to get Apple ID token');
+      }
+
+      // Sign in with Supabase using Apple credentials
       final response = await _supabase.auth.signInWithIdToken(
         provider: OAuthProvider.apple,
-        idToken: idToken,
-        nonce: nonce,
+        idToken: credential.identityToken!,
+        nonce: credential.authorizationCode,
       );
-      return response.user?.id;
+
+      return response;
     } catch (e) {
       print('Apple sign in error: $e');
+      return null;
+    }
+  }
+
+  /// Sign in with Facebook OAuth
+  Future<AuthResponse?> signInWithFacebook() async {
+    try {
+      // Web platform uses Supabase OAuth directly
+      if (kIsWeb) {
+        await _supabase.auth.signInWithOAuth(
+          OAuthProvider.facebook,
+          redirectTo: '${Uri.base.origin}/auth/callback',
+        );
+        // On web, OAuth happens via redirect, so we return null
+        return null;
+      }
+
+      // Mobile platforms use Facebook Auth plugin
+      final LoginResult result = await FacebookAuth.instance.login(
+        permissions: ['email', 'public_profile'],
+      );
+
+      if (result.status != LoginStatus.success) {
+        throw Exception('Facebook login failed: ${result.status}');
+      }
+
+      final AccessToken accessToken = result.accessToken!;
+      
+      final response = await _supabase.auth.signInWithIdToken(
+        provider: OAuthProvider.facebook,
+        idToken: accessToken.tokenString,
+      );
+
+      return response;
+    } catch (e) {
+      print('Facebook sign in error: $e');
       return null;
     }
   }

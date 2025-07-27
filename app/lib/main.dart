@@ -50,6 +50,9 @@ void main() async {
   // Initialize language service
   await LanguageService.instance.initialize();
   
+  // Initialize OAuth listener for social authentication
+  AuthService.instance.initializeOAuthListener();
+  
   runApp(const MiraStorytellerApp());
 }
 

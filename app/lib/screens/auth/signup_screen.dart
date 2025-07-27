@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../services/auth_service.dart';
@@ -73,20 +75,76 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  Future<void> _signUpWithGoogle() async {
+
+  Future<void> _signInWithGoogle() async {
     setState(() => _isLoading = true);
     
     try {
-      final success = await AuthService.instance.signInWithGoogle();
-      if (success && mounted) {
+      final response = await AuthService.instance.signInWithGoogle();
+      if (kIsWeb) {
+        // On web, OAuth happens via redirect, so we don't need to handle navigation here
+        return;
+      }
+      
+      if (response?.user != null && mounted) {
         Navigator.pushReplacementNamed(context, '/profile-select');
       } else {
-        _showError('Google sign up failed. Please try again.');
+        _showError(AppLocalizations.of(context)!.googleSignInFailed);
       }
     } catch (e) {
-      _showError('Google sign up failed: ${e.toString()}');
+      _showError('${AppLocalizations.of(context)!.googleSignInFailed}: ${e.toString()}');
     } finally {
-      setState(() => _isLoading = false);
+      if (!kIsWeb) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _signInWithApple() async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final response = await AuthService.instance.signInWithApple();
+      if (kIsWeb) {
+        // On web, OAuth happens via redirect, so we don't need to handle navigation here
+        return;
+      }
+      
+      if (response?.user != null && mounted) {
+        Navigator.pushReplacementNamed(context, '/profile-select');
+      } else {
+        _showError(AppLocalizations.of(context)!.appleSignInFailed);
+      }
+    } catch (e) {
+      _showError('${AppLocalizations.of(context)!.appleSignInFailed}: ${e.toString()}');
+    } finally {
+      if (!kIsWeb) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  Future<void> _signInWithFacebook() async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final response = await AuthService.instance.signInWithFacebook();
+      if (kIsWeb) {
+        // On web, OAuth happens via redirect, so we don't need to handle navigation here
+        return;
+      }
+      
+      if (response?.user != null && mounted) {
+        Navigator.pushReplacementNamed(context, '/profile-select');
+      } else {
+        _showError(AppLocalizations.of(context)!.facebookSignInFailed);
+      }
+    } catch (e) {
+      _showError('${AppLocalizations.of(context)!.facebookSignInFailed}: ${e.toString()}');
+    } finally {
+      if (!kIsWeb) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -99,6 +157,42 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       );
     }
+  }
+
+  Widget _buildSocialImageButton({
+    required VoidCallback? onPressed,
+    required String imagePath,
+    bool isSvg = false,
+  }) {
+    return SizedBox(
+      width: 64,
+      height: 64,
+      child: IconButton(
+        onPressed: onPressed,
+        icon: SizedBox(
+          width: 32,
+          height: 32,
+          child: isSvg
+              ? SvgPicture.asset(
+                  imagePath,
+                  width: 32,
+                  height: 32,
+                  colorFilter: onPressed == null 
+                      ? ColorFilter.mode(Colors.grey[400]!, BlendMode.srcIn)
+                      : null,
+                )
+              : Image.asset(
+                  imagePath,
+                  width: 32,
+                  height: 32,
+                  color: onPressed == null ? Colors.grey[400] : null,
+                  colorBlendMode: onPressed == null ? BlendMode.saturation : null,
+                ),
+        ),
+        splashRadius: 32,
+        padding: EdgeInsets.zero,
+      ),
+    );
   }
 
   @override
@@ -278,44 +372,31 @@ class _SignupScreenState extends State<SignupScreen> {
                             Expanded(child: Divider(color: Colors.grey[300])),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 24),
 
-                        // Google sign up button (placeholder)
-                        OutlinedButton.icon(
-                          onPressed: _isLoading ? null : _signUpWithGoogle,
-                          icon: const Icon(Icons.g_mobiledata, size: 24),
-                          label: Text(AppLocalizations.of(context)!.continueWithGoogle),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.grey[700],
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            side: BorderSide(color: Colors.grey[300]!),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                        // Social sign in buttons row
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            // Google sign in
+                            _buildSocialImageButton(
+                              onPressed: _isLoading ? null : _signInWithGoogle,
+                              imagePath: 'assets/images/auth/google.png',
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-
-                        // Apple sign up button (placeholder)
-                        OutlinedButton.icon(
-                          onPressed: _isLoading ? null : () {
-                            // Apple sign in not implemented yet
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(AppLocalizations.of(context)!.appleSignUpComingSoon),
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.apple, size: 24),
-                          label: Text(AppLocalizations.of(context)!.continueWithApple),
-                          style: OutlinedButton.styleFrom(
-                            foregroundColor: Colors.grey[700],
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            side: BorderSide(color: Colors.grey[300]!),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                            
+                            // Apple sign in
+                            _buildSocialImageButton(
+                              onPressed: _isLoading ? null : _signInWithApple,
+                              imagePath: 'assets/images/auth/apple.svg',
+                              isSvg: true,
                             ),
-                          ),
+                            
+                            // Facebook sign in
+                            _buildSocialImageButton(
+                              onPressed: _isLoading ? null : _signInWithFacebook,
+                              imagePath: 'assets/images/auth/facebook.png',
+                            ),
+                          ],
                         ),
                       ],
                     ),

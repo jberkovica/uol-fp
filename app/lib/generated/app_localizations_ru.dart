@@ -222,6 +222,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get continueWithApple => 'Продолжить с Apple';
 
   @override
+  String get continueWithFacebook => 'Продолжить с Facebook';
+
+  @override
+  String get googleSignInFailed => 'Ошибка входа через Google';
+
+  @override
+  String get appleSignInFailed => 'Ошибка входа через Apple';
+
+  @override
+  String get facebookSignInFailed => 'Ошибка входа через Facebook';
+
+  @override
   String get createAccount => 'Создать аккаунт';
 
   @override

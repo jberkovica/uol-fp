@@ -475,6 +475,30 @@ abstract class AppLocalizations {
   /// **'Continue with Apple'**
   String get continueWithApple;
 
+  /// No description provided for @continueWithFacebook.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Facebook'**
+  String get continueWithFacebook;
+
+  /// No description provided for @googleSignInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Google sign in failed'**
+  String get googleSignInFailed;
+
+  /// No description provided for @appleSignInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple sign in failed'**
+  String get appleSignInFailed;
+
+  /// No description provided for @facebookSignInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Facebook sign in failed'**
+  String get facebookSignInFailed;
+
   /// No description provided for @createAccount.
   ///
   /// In en, this message translates to:

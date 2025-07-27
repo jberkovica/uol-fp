@@ -222,6 +222,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get continueWithApple => 'Continue with Apple';
 
   @override
+  String get continueWithFacebook => 'Continue with Facebook';
+
+  @override
+  String get googleSignInFailed => 'Google sign in failed';
+
+  @override
+  String get appleSignInFailed => 'Apple sign in failed';
+
+  @override
+  String get facebookSignInFailed => 'Facebook sign in failed';
+
+  @override
   String get createAccount => 'Create Account';
 
   @override
