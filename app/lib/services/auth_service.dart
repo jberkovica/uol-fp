@@ -1,23 +1,37 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// TODO: Uncomment when Google Sign-In is configured
+// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'logging_service.dart';
 
 /// Authentication service using Supabase
 class AuthService {
   static AuthService? _instance;
   static AuthService get instance => _instance ??= AuthService._();
   AuthService._();
+  
+  static final _logger = LoggingService.getLogger('AuthService');
 
   /// Get the current Supabase client
   final SupabaseClient _supabase = Supabase.instance.client;
 
-  /// Google Sign In instance
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email', 'profile'],
-  );
+  // TODO: Complete Google Sign-In setup for web
+  // 1. Add Google OAuth client ID to web/index.html: <meta name="google-signin-client_id" content="YOUR_CLIENT_ID" />
+  // 2. Configure Google Sign-In in Google Cloud Console
+  // 3. Uncomment the code below:
+  
+  /*
+  /// Google Sign In instance (lazy initialization)
+  GoogleSignIn? _googleSignIn;
+  GoogleSignIn get _googleSignInInstance {
+    return _googleSignIn ??= GoogleSignIn(
+      scopes: ['email', 'profile'],
+    );
+  }
+  */
 
   /// Initialize OAuth listener for Supabase redirects
   void initializeOAuthListener() {
@@ -25,7 +39,7 @@ class AuthService {
       // Handle auth state changes for OAuth flows
       if (data.event == AuthChangeEvent.signedIn) {
         // OAuth sign-in successful
-        print('OAuth sign-in successful: ${data.session?.user?.email}');
+        _logger.i('OAuth sign-in successful'); // User email not logged for privacy
       }
     });
   }
@@ -79,8 +93,11 @@ class AuthService {
         return null;
       }
       
+      // TODO: Uncomment when Google Sign-In setup is complete
+      throw Exception('Google Sign-In not configured yet');
+      /*
       // Mobile platforms use Google Sign In plugin
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignInInstance.signIn();
       if (googleUser == null) return null; // User cancelled
       
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -96,8 +113,9 @@ class AuthService {
       );
       
       return response;
+      */
     } catch (e) {
-      print('Google sign in error: $e');
+      _logger.e('Google sign in error', error: e);
       return null;
     }
   }
@@ -147,7 +165,7 @@ class AuthService {
 
       return response;
     } catch (e) {
-      print('Apple sign in error: $e');
+      _logger.e('Apple sign in error', error: e);
       return null;
     }
   }
@@ -183,7 +201,7 @@ class AuthService {
 
       return response;
     } catch (e) {
-      print('Facebook sign in error: $e');
+      _logger.e('Facebook sign in error', error: e);
       return null;
     }
   }
@@ -225,7 +243,7 @@ class AuthService {
 
       return response.user != null;
     } catch (e) {
-      print('Error updating user language: $e');
+      _logger.e('Error updating user language', error: e);
       return false;
     }
   }
@@ -247,7 +265,7 @@ class AuthService {
 
       // Validate approval mode
       if (!['auto', 'app', 'email'].contains(approvalMode)) {
-        print('Invalid approval mode: $approvalMode');
+        _logger.w('Invalid approval mode: $approvalMode');
         return false;
       }
 
@@ -263,7 +281,7 @@ class AuthService {
 
       return response.user != null;
     } catch (e) {
-      print('Error updating user approval mode: $e');
+      _logger.e('Error updating user approval mode', error: e);
       return false;
     }
   }
@@ -302,7 +320,7 @@ class AuthService {
 
       return response.user != null;
     } catch (e) {
-      print('Error updating user notification preferences: $e');
+      _logger.e('Error updating user notification preferences', error: e);
       return false;
     }
   }

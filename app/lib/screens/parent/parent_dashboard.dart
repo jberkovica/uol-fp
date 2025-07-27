@@ -12,6 +12,7 @@ import '../../services/kid_service.dart';
 import '../../services/auth_service.dart';
 import '../../services/language_service.dart';
 import '../../services/ai_story_service.dart';
+import '../../services/logging_service.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
 import '../../generated/app_localizations.dart';
@@ -24,6 +25,7 @@ class ParentDashboardMain extends StatefulWidget {
 }
 
 class _ParentDashboardMainState extends State<ParentDashboardMain> {
+  static final _logger = LoggingService.getLogger('ParentDashboard');
   int _currentNavIndex = 3; // Settings tab (moved from 2 to 3)
   List<Kid> _kids = [];
   Map<String, List<Story>> _kidStories = {};
@@ -69,7 +71,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           final stories = await KidService.getStoriesForKid(kid.id);
           storiesMap[kid.id] = stories;
         } catch (e) {
-          print('Error loading stories for kid ${kid.id}: $e');
+          _logger.e('Error loading stories for kid', error: e);
           storiesMap[kid.id] = [];
         }
       }
@@ -80,7 +82,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         _isLoading = false;
       });
     } catch (e) {
-      print('Error loading kids: $e');
+      _logger.e('Error loading kids', error: e);
       setState(() {
         _kids = [];
         _kidStories = {};
@@ -112,7 +114,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         _isLoadingPendingStories = false;
       });
     } catch (e) {
-      print('Error loading pending stories: $e');
+      _logger.e('Error loading pending stories', error: e);
       setState(() {
         _pendingStories = [];
         _isLoadingPendingStories = false;
@@ -127,7 +129,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         _currentApprovalMode = approvalMode;
       });
     } catch (e) {
-      print('Error loading approval mode: $e');
+      _logger.e('Error loading approval mode', error: e);
       // Keep default 'auto' if there's an error
     }
   }

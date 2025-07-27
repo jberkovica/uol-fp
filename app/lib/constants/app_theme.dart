@@ -211,7 +211,7 @@ class AppTheme {
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)), // Pill shape (60/2)
         elevation: 5, // Proper elevation for shadow
-        shadowColor: Colors.black.withOpacity(0.1),
+        shadowColor: Colors.black.withValues(alpha: 0.1),
         surfaceTintColor: Colors.transparent,
         textStyle: TextStyle(
             fontFamily: _fontFamily, 
@@ -232,7 +232,7 @@ class AppTheme {
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)), // Pill shape (60/2)
         elevation: 5, // Proper elevation for shadow
-        shadowColor: Colors.black.withOpacity(0.1),
+        shadowColor: Colors.black.withValues(alpha: 0.1),
         surfaceTintColor: Colors.transparent,
         textStyle: TextStyle(
             fontFamily: _fontFamily, 

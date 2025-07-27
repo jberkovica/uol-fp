@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../services/auth_service.dart';
@@ -58,6 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _signInWithGoogle() async {
     setState(() => _isLoading = true);
     
+    final localizations = AppLocalizations.of(context)!;
+    
     try {
       final response = await AuthService.instance.signInWithGoogle();
       if (kIsWeb) {
@@ -68,10 +69,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response?.user != null && mounted) {
         Navigator.pushReplacementNamed(context, '/profile-select');
       } else {
-        _showError(AppLocalizations.of(context)!.googleSignInFailed);
+        _showError(localizations.googleSignInFailed);
       }
     } catch (e) {
-      _showError('${AppLocalizations.of(context)!.googleSignInFailed}: ${e.toString()}');
+      _showError('${localizations.googleSignInFailed}: ${e.toString()}');
     } finally {
       if (!kIsWeb) {
         setState(() => _isLoading = false);
@@ -81,6 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _signInWithApple() async {
     setState(() => _isLoading = true);
+    
+    final localizations = AppLocalizations.of(context)!;
     
     try {
       final response = await AuthService.instance.signInWithApple();
@@ -92,10 +95,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response?.user != null && mounted) {
         Navigator.pushReplacementNamed(context, '/profile-select');
       } else {
-        _showError(AppLocalizations.of(context)!.appleSignInFailed);
+        _showError(localizations.appleSignInFailed);
       }
     } catch (e) {
-      _showError('${AppLocalizations.of(context)!.appleSignInFailed}: ${e.toString()}');
+      _showError('${localizations.appleSignInFailed}: ${e.toString()}');
     } finally {
       if (!kIsWeb) {
         setState(() => _isLoading = false);
@@ -105,6 +108,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _signInWithFacebook() async {
     setState(() => _isLoading = true);
+    
+    final localizations = AppLocalizations.of(context)!;
     
     try {
       final response = await AuthService.instance.signInWithFacebook();
@@ -116,10 +121,10 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response?.user != null && mounted) {
         Navigator.pushReplacementNamed(context, '/profile-select');
       } else {
-        _showError(AppLocalizations.of(context)!.facebookSignInFailed);
+        _showError(localizations.facebookSignInFailed);
       }
     } catch (e) {
-      _showError('${AppLocalizations.of(context)!.facebookSignInFailed}: ${e.toString()}');
+      _showError('${localizations.facebookSignInFailed}: ${e.toString()}');
     } finally {
       if (!kIsWeb) {
         setState(() => _isLoading = false);

@@ -3,6 +3,10 @@ import 'dart:async';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+// TODO: Uncomment when Firebase is configured
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+// import 'package:flutter/foundation.dart';
 import 'generated/app_localizations.dart';
 import 'config/supabase_config.dart';
 import 'constants/app_theme.dart';
@@ -23,6 +27,7 @@ import 'services/ai_story_service.dart';
 import 'services/app_state_service.dart';
 import 'services/language_service.dart';
 import 'services/auth_service.dart';
+import 'services/logging_service.dart';
 
 void main() async {
   // Ensure that Flutter binding is initialized
@@ -30,6 +35,28 @@ void main() async {
 
   // Load environment variables from root .env file
   await dotenv.load(fileName: ".env");
+
+  // TODO: Setup Firebase project and add config files
+  // 1. Create Firebase project at https://console.firebase.google.com
+  // 2. Add web app and download firebase-config.js to web/
+  // 3. Add iOS app and download GoogleService-Info.plist to ios/Runner/
+  // 4. Add Android app and download google-services.json to android/app/
+  // 5. Enable Crashlytics in Firebase Console
+  // Then uncomment the code below:
+  
+  /*
+  // Initialize Firebase
+  await Firebase.initializeApp();
+  
+  // Initialize Firebase Crashlytics (production only)
+  if (!kDebugMode) {
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+  }
+  */
 
   // Initialize Supabase
   if (SupabaseConfig.isConfigured) {
@@ -50,8 +77,13 @@ void main() async {
   // Initialize language service
   await LanguageService.instance.initialize();
   
+  // Logging is now automatically initialized when first used
+  
   // Initialize OAuth listener for social authentication
   AuthService.instance.initializeOAuthListener();
+  
+  final logger = LoggingService.getLogger('main');
+  logger.i('Starting Mira Storyteller app');
   
   runApp(const MiraStorytellerApp());
 }

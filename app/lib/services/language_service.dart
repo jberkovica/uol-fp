@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'auth_service.dart';
 import 'app_state_service.dart';
+import 'logging_service.dart';
 
 /// Service to manage app language state and persistence
 /// Following best practices: Server as single source of truth with local caching
@@ -9,6 +10,8 @@ class LanguageService extends ChangeNotifier {
   static LanguageService? _instance;
   static LanguageService get instance => _instance ??= LanguageService._();
   LanguageService._();
+  
+  static final _logger = LoggingService.getLogger('LanguageService');
 
   Locale _currentLocale = const Locale('en');
   String _currentLanguageCode = 'en';
@@ -42,7 +45,7 @@ class LanguageService extends ChangeNotifier {
           // Sync to local cache
           await AppStateService.saveLanguage(detectedLanguage);
           
-          print('[LanguageService] Initialized from server: $detectedLanguage');
+          _logger.i('Initialized from server: $detectedLanguage');
         } else {
           // Authenticated but no server preference - check local cache
           detectedLanguage = await _initializeFromLocalOrSystem();
@@ -60,7 +63,7 @@ class LanguageService extends ChangeNotifier {
       _isInitialized = true;
       
     } catch (e) {
-      print('[LanguageService] Initialization error: $e');
+      _logger.e('Initialization error', error: e);
       // Fallback to English on any error
       _applyLanguage('en');
       _isInitialized = true;
@@ -72,7 +75,7 @@ class LanguageService extends ChangeNotifier {
     // Check local cache first
     final cachedLanguage = AppStateService.getLanguage();
     if (cachedLanguage != null && isSupported(cachedLanguage)) {
-      print('[LanguageService] Initialized from cache: $cachedLanguage');
+      _logger.i('Initialized from cache: $cachedLanguage');
       return cachedLanguage;
     }
     
@@ -82,13 +85,13 @@ class LanguageService extends ChangeNotifier {
     
     if (isSupported(systemLanguageCode)) {
       await AppStateService.saveLanguage(systemLanguageCode);
-      print('[LanguageService] Initialized from system: $systemLanguageCode');
+      _logger.i('Initialized from system: $systemLanguageCode');
       return systemLanguageCode;
     }
     
     // Default to English
     await AppStateService.saveLanguage('en');
-    print('[LanguageService] Initialized with default: en');
+    _logger.i('Initialized with default: en');
     return 'en';
   }
   
@@ -105,7 +108,7 @@ class LanguageService extends ChangeNotifier {
     try {
       // Validate language code
       if (!isSupported(languageCode)) {
-        print('[LanguageService] Unsupported language code: $languageCode');
+        _logger.w('Unsupported language code: $languageCode');
         return false;
       }
       
@@ -114,21 +117,21 @@ class LanguageService extends ChangeNotifier {
       
       // Save to local cache (works offline)
       await AppStateService.saveLanguage(languageCode);
-      print('[LanguageService] Language updated locally: $languageCode');
+      _logger.i('Language updated locally: $languageCode');
       
       // Sync to server if authenticated
       if (AuthService.instance.isAuthenticated) {
         final success = await AuthService.instance.updateUserLanguage(languageCode);
         if (success) {
-          print('[LanguageService] Language synced to server: $languageCode');
+          _logger.i('Language synced to server: $languageCode');
         } else {
-          print('[LanguageService] Warning: Server sync failed, but local update preserved');
+          _logger.w('Server sync failed, but local update preserved');
         }
       }
       
       return true;
     } catch (e) {
-      print('[LanguageService] Error updating language: $e');
+      _logger.e('Error updating language', error: e);
       return false;
     }
   }
@@ -143,13 +146,13 @@ class LanguageService extends ChangeNotifier {
         final serverLanguage = user.userMetadata!['language'] as String;
         
         if (serverLanguage != _currentLanguageCode && isSupported(serverLanguage)) {
-          print('[LanguageService] Syncing language from server: $serverLanguage');
+          _logger.i('Syncing language from server: $serverLanguage');
           _applyLanguage(serverLanguage);
           await AppStateService.saveLanguage(serverLanguage);
         }
       }
     } catch (e) {
-      print('[LanguageService] Error syncing from server: $e');
+      _logger.e('Error syncing from server', error: e);
     }
   }
 

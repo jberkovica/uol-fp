@@ -5,6 +5,7 @@ import '../../constants/app_theme.dart';
 import '../../models/story.dart';
 import '../../widgets/responsive_wrapper.dart';
 import '../../generated/app_localizations.dart';
+import '../../services/logging_service.dart';
 
 class StoryDisplayScreen extends StatefulWidget {
   const StoryDisplayScreen({super.key});
@@ -14,6 +15,7 @@ class StoryDisplayScreen extends StatefulWidget {
 }
 
 class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
+  static final _logger = LoggingService.getLogger('StoryDisplayScreen');
   final AudioPlayer _audioPlayer = AudioPlayer(); // Story narration
   final AudioPlayer _backgroundPlayer = AudioPlayer(); // Background music
   bool _isPlaying = false;
@@ -82,7 +84,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
         }
       });
     } catch (e) {
-      print('Error setting up background music: $e');
+      _logger.e('Error setting up background music', error: e);
     }
   }
 
@@ -582,7 +584,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
     
     // Gradually lower to 0.2 over 2 seconds (from 3rd to 5th second)
     if (_backgroundMusicEnabled && _isBackgroundPlaying) {
-      print('Gradually lowering background music volume from $_backgroundVolume to $_backgroundVolumeMid');
+      _logger.d('Gradually lowering background music volume from $_backgroundVolume to $_backgroundVolumeMid');
       await _backgroundPlayer.setVolume(_backgroundVolumeMid);
     }
     
@@ -609,7 +611,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
       
       if (_backgroundMusicEnabled && _isBackgroundPlaying) {
         currentVolume -= stepSize;
-        print('Smooth fade step ${i + 1}/$_fadeDurationSeconds: volume ${currentVolume.toStringAsFixed(3)}');
+        _logger.d('Smooth fade step ${i + 1}/$_fadeDurationSeconds: volume ${currentVolume.toStringAsFixed(3)}');
         await _backgroundPlayer.setVolume(currentVolume);
       } else {
         break; // Stop fading if background music is disabled or stopped
@@ -622,17 +624,17 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
       await _backgroundPlayer.setVolume(_backgroundVolumeNarration);
       await _backgroundPlayer.play(AssetSource('audio/Enchanted Forest Loop.mp3'));
     } catch (e) {
-      print('Error playing background music: $e');
+      _logger.e('Error playing background music', error: e);
     }
   }
 
   Future<void> _startBackgroundMusicIntro() async {
     try {
-      print('Starting background music at volume $_backgroundVolume');
+      _logger.d('Starting background music at volume $_backgroundVolume');
       await _backgroundPlayer.setVolume(_backgroundVolume);
       await _backgroundPlayer.play(AssetSource('audio/Enchanted Forest Loop.mp3'));
     } catch (e) {
-      print('Error playing background music intro: $e');
+      _logger.e('Error playing background music intro', error: e);
     }
   }
 

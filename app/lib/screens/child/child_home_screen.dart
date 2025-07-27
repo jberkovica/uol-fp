@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
-import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
 import '../../generated/app_localizations.dart';
 import '../../services/kid_service.dart';
@@ -35,8 +33,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
   bool _isLoadingStories = false;
   int _currentNavIndex = 1; // Home tab is default (middle)
   late AnimationController _animationController;
-  late Animation<double> _slideAnimation;
-  bool _isAnimating = false;
   
   // Parallax scroll variables
   double _scrollOffset = 0.0;
@@ -51,13 +47,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
       vsync: this,
     );
     
-    _slideAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
     
     // Use kid passed from constructor first
     if (widget.kid != null) {
@@ -282,7 +271,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
+                          color: Colors.black.withValues(alpha: 0.08),
                           blurRadius: 6,
                           offset: const Offset(0, -1),
                           spreadRadius: 0,

@@ -9,7 +9,6 @@ import '../../services/kid_service.dart';
 import '../../services/app_state_service.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
-import '../../widgets/responsive_wrapper.dart';
 import '../../utils/page_transitions.dart';
 import '../parent/pin_entry_screen.dart';
 import '../../generated/app_localizations.dart';
@@ -257,32 +256,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildHeader() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppColors.white,
-              size: 24,
-            ),
-          ),
-          const Spacer(),
-          Text(
-            'Profile',
-            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-              color: AppColors.white,
-            ),
-          ),
-          const Spacer(),
-          const SizedBox(width: 48), // Balance the back button
-        ],
-      ),
-    );
-  }
 
   Widget _buildContent() {
     return Container(
@@ -329,90 +302,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildProfileInfo() {
-    return const SizedBox.shrink(); // Remove profile info section
-  }
 
-  Widget _buildProfileCard() {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: AppTheme.flatWhiteCard.copyWith(
-        color: AppColors.primary.withValues(alpha: 0.05),
-      ),
-      child: Column(
-        children: [
-          // Profile Avatar
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: ProfileAvatar(
-              radius: 40,
-              profileType: _getProfileTypeFromString(_kid!.avatarType),
-            ),
-          ),
-          const SizedBox(height: 16),
-          
-          // Name
-          Text(
-            _kid!.name,
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
-          const SizedBox(height: 8),
-          
-          // Avatar type info
-          Text(
-            AppLocalizations.of(context)!.profileDetails(_kid!.avatarType),
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: AppColors.textGrey,
-            ),
-          ),
-          const SizedBox(height: 16),
-          
-          // Join date
-          Text(
-            AppLocalizations.of(context)!.creatingStoriesSince(_formatDate(_kid!.createdAt)),
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildStatsGrid() {
-    final completedStories = _stories.length;
-    final totalWords = _stories.fold<int>(0, (sum, story) => sum + story.content.split(' ').length);
-    
-    return Row(
-      children: [
-        Expanded(
-          child: _buildStatCard(
-            icon: Icons.book_outlined,
-            value: '$completedStories',
-            label: AppLocalizations.of(context)!.storiesCreated,
-            color: AppColors.primary,
-          ),
-        ),
-        SizedBox(width: ResponsiveBreakpoints.getResponsivePadding(
-          context,
-          mobile: 16.0,
-          tablet: 20.0,
-          desktop: 24.0,
-        )),
-        Expanded(
-          child: _buildStatCard(
-            icon: Icons.edit_outlined,
-            value: '$totalWords',
-            label: AppLocalizations.of(context)!.wordsWritten,
-            color: AppColors.secondary,
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildSimpleStats() {
     final totalWords = _stories.fold<int>(0, (sum, story) => sum + story.content.split(' ').length);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
 
 /// Responsive wrapper that constrains content width on larger screens
 /// while maintaining full-width backgrounds

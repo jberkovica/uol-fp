@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 import '../models/story.dart';
 import 'language_service.dart';
+import 'logging_service.dart';
 
 /// Efficient AI service implementation using backend API with:
 /// - Gemini 2.0 Flash for image captioning
@@ -16,6 +17,8 @@ class AIStoryService {
   static final AIStoryService _instance = AIStoryService._internal();
   factory AIStoryService() => _instance;
   AIStoryService._internal();
+  
+  static final _logger = LoggingService.getLogger('AIStoryService');
 
   // Image picker for photo selection
   final ImagePicker _picker = ImagePicker();
@@ -77,7 +80,7 @@ class AIStoryService {
   Future<Story> generateStoryFromImageFile(
       XFile imageFile, String kidId) async {
     try {
-      print('Starting efficient story generation from image...');
+      _logger.i('Starting efficient story generation from image');
 
       // Read image as bytes
       Uint8List imageBytes = await imageFile.readAsBytes();
@@ -88,12 +91,12 @@ class AIStoryService {
       // Determine MIME type
       String mimeType = _getMimeType(imageFile.name);
 
-      print(
+      _logger.d(
           'Image converted to base64 (${base64Image.length} chars), MIME: $mimeType');
 
       // Get user's language preference from single source of truth
       String userLanguage = LanguageService.instance.currentLanguageCode;
-      print('Story generation using language: $userLanguage');
+      _logger.i('Story generation using language: $userLanguage');
 
       // Call the new efficient endpoint
       final response = await http.post(
@@ -110,12 +113,12 @@ class AIStoryService {
         }),
       );
 
-      print('Story generation response status: ${response.statusCode}');
+      _logger.i('Story generation response status: ${response.statusCode}');
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         String storyId = responseData['story_id'];
-        print('Story generation initiated: $storyId');
+        _logger.i('Story generation initiated: $storyId');
 
         // Poll for story completion
         Story? story;
@@ -123,18 +126,18 @@ class AIStoryService {
         const maxAttempts =
             30; // 30 attempts with 2-second delays = 1 minute max
 
-        print('Polling for story completion...');
+        _logger.d('Polling for story completion...');
         while (attempts < maxAttempts) {
           await Future.delayed(const Duration(seconds: 2));
 
           story = await getStory(storyId);
-          print('Attempt ${attempts + 1}: Story status is ${story.status}');
+          _logger.d('Attempt ${attempts + 1}: Story status is ${story.status}');
 
           if (story.status == StoryStatus.approved || story.status == StoryStatus.pending) {
             // Story generation completed! 
             // - approved: Ready for playback
             // - pending: Ready but needs parent approval
-            print('Story generation completed! Status: ${story.status}');
+            _logger.i('Story generation completed! Status: ${story.status}');
             break;
           } else if (story.status == StoryStatus.rejected) {
             throw Exception('Story generation failed on backend');
@@ -150,12 +153,12 @@ class AIStoryService {
 
         return story;
       } else {
-        print('Error response: ${response.body}');
+        _logger.e('Story generation failed', error: 'HTTP ${response.statusCode}: ${response.body}');
         throw Exception(
             'HTTP ${response.statusCode}: Failed to generate story');
       }
     } catch (e) {
-      print('Error in generateStoryFromImageFile: $e');
+      _logger.e('Error in generateStoryFromImageFile', error: e);
       throw Exception('Failed to generate story: $e');
     }
   }
@@ -174,7 +177,7 @@ class AIStoryService {
         throw Exception('HTTP ${response.statusCode}: Failed to get story');
       }
     } catch (e) {
-      print('Error getting story: $e');
+      _logger.e('Error getting story', error: e);
       throw Exception('Failed to get story: $e');
     }
   }
@@ -207,7 +210,7 @@ class AIStoryService {
             'HTTP ${response.statusCode}: Failed to get pending stories');
       }
     } catch (e) {
-      print('Error getting pending stories: $e');
+      _logger.e('Error getting pending stories', error: e);
       throw Exception('Failed to get pending stories: $e');
     }
   }
@@ -241,7 +244,7 @@ class AIStoryService {
             'HTTP ${response.statusCode}: Failed to get approved stories');
       }
     } catch (e) {
-      print('Error getting approved stories: $e');
+      _logger.e('Error getting approved stories', error: e);
       throw Exception('Failed to get approved stories: $e');
     }
   }
@@ -274,7 +277,7 @@ class AIStoryService {
         throw Exception('HTTP ${response.statusCode}: Failed to review story');
       }
     } catch (e) {
-      print('Error reviewing story: $e');
+      _logger.e('Error reviewing story', error: e);
       throw Exception('Failed to review story: $e');
     }
   }

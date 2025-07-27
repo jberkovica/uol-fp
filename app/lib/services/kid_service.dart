@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/kid.dart';
 import '../models/story.dart';
+import 'logging_service.dart';
 
 /// Service for managing kid profiles through the backend API
 class KidService {
   static const String baseUrl = 'http://127.0.0.1:8000';
+  static final _logger = LoggingService.getLogger('KidService');
   
   // Simple in-memory cache to reduce database calls
   static final Map<String, List<Kid>> _kidsCache = {};
@@ -38,7 +40,7 @@ class KidService {
         throw Exception('HTTP ${response.statusCode}: Failed to get kids for user');
       }
     } catch (e) {
-      print('Error getting kids for user: $e');
+      _logger.e('Error getting kids for user', error: e);
       throw Exception('Failed to get kids: $e');
     }
   }
@@ -72,7 +74,7 @@ class KidService {
         throw Exception(errorData['detail'] ?? 'Failed to create kid');
       }
     } catch (e) {
-      print('Error creating kid: $e');
+      _logger.e('Error creating kid', error: e);
       throw Exception('Failed to create kid: $e');
     }
   }
@@ -92,7 +94,7 @@ class KidService {
         throw Exception('HTTP ${response.statusCode}: Failed to get kid');
       }
     } catch (e) {
-      print('Error getting kid: $e');
+      _logger.e('Error getting kid', error: e);
       throw Exception('Failed to get kid: $e');
     }
   }
@@ -126,7 +128,7 @@ class KidService {
         throw Exception(errorData['detail'] ?? 'Failed to update kid');
       }
     } catch (e) {
-      print('Error updating kid: $e');
+      _logger.e('Error updating kid', error: e);
       throw Exception('Failed to update kid: $e');
     }
   }
@@ -146,7 +148,7 @@ class KidService {
         throw Exception('HTTP ${response.statusCode}: Failed to delete kid');
       }
     } catch (e) {
-      print('Error deleting kid: $e');
+      _logger.e('Error deleting kid', error: e);
       throw Exception('Failed to delete kid: $e');
     }
   }
@@ -179,7 +181,7 @@ class KidService {
         throw Exception('HTTP ${response.statusCode}: Failed to get stories');
       }
     } catch (e) {
-      print('Error getting stories for kid: $e');
+      _logger.e('Error getting stories for kid', error: e);
       throw Exception('Failed to get stories: $e');
     }
   }

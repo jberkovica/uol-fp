@@ -4,6 +4,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../models/story.dart';
 import '../../services/ai_story_service.dart';
+import '../../services/logging_service.dart';
 import '../../generated/app_localizations.dart';
 
 class StoryPreviewScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class StoryPreviewScreen extends StatefulWidget {
 }
 
 class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
+  static final _logger = LoggingService.getLogger('StoryPreviewScreen');
   bool _isPlaying = false;
   bool _isLoading = false;
   Story? _story;
@@ -217,7 +219,7 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
               Navigator.pop(context);
               // TODO: Implement story regeneration with suggestions
               // Use the 'suggestions' variable here when implementing regeneration
-              print('Suggestions for regeneration: $suggestions');
+              _logger.d('Suggestions for regeneration: $suggestions');
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(AppLocalizations.of(context)!.regeneratingStory),
