@@ -1332,3 +1332,212 @@ CREATE TABLE story_review_tokens (
 4. **Approval analytics**: Insights into approval patterns
 
 **Result**: Comprehensive parent approval system providing flexible, secure control over AI-generated content with professional UI/UX implementation and robust technical architecture supporting three distinct approval workflows tailored to different family needs.
+
+---
+
+## Date: 2025-07-27
+
+### Email Notification System Enhancement
+
+#### Overview
+Enhanced the parent approval email notification system with complete implementation including child name display, story content preview, three-button layout matching in-app review, and auto-login functionality from email links.
+
+#### What We Fixed and Enhanced
+
+##### 1. Email Notification Data Flow Fix
+**Problem**: Email notifications showing "undefined" for child name and missing story content preview
+**Root Cause**: 
+- Edge Function expected different parameter structure than backend was sending
+- Missing `body` wrapper in Supabase functions.invoke call
+- Template literal error trying to reference undefined `parentName` variable
+
+**Solution**:
+- Fixed backend to wrap payload in `{"body": payload}` structure for Supabase client
+- Updated Edge Function to match parameters sent from backend
+- Corrected template literal from `${there}` to plain text "Hi there,"
+- Added story content preview (first 500 chars) and child name to email data
+
+##### 2. Three-Button Email Layout Implementation
+**Matching In-App Review Design**:
+- **Approve Button**: Green background, direct approval without opening app
+- **Edit Button**: Purple background, opens app for story editing
+- **Decline Button**: Transparent with red border, opens app for decline with feedback
+
+**Button Styling**:
+```css
+.button { 
+  display: inline-block; 
+  padding: 12px 30px; 
+  margin: 10px; 
+  text-decoration: none; 
+  border-radius: 25px; 
+  font-weight: bold; 
+  text-align: center; 
+  min-width: 120px; 
+}
+.approve { background-color: #10B981; color: white; }
+.edit { background-color: #6B46C1; color: white; }
+.decline { background-color: transparent; color: #EF4444; border: 2px solid #EF4444; }
+```
+
+##### 3. Direct Email Approval Implementation
+**Backend Email Review Endpoint**:
+- Created `/api/review-story` endpoint for direct approval from email
+- Validates secure review token from email link
+- Updates story status to approved without requiring app login
+- Returns success HTML page confirming approval
+- Deletes token after use (one-time security)
+
+**Async/Await Fix**:
+- Fixed "object bytes can't be used in 'await' expression" error
+- Removed unnecessary `await` from synchronous Supabase client operations
+- Proper error handling for Edge Function responses
+
+##### 4. Auto-Login from Email Links
+**Email Login Endpoint** (`/api/email-login`):
+- Validates review token and retrieves user information
+- Generates Supabase magic link for passwordless authentication
+- Redirects to Flutter web app with story ID and action
+- Fallback to regular login page if magic link generation fails
+
+**Security Flow**:
+1. User clicks Edit/Decline in email
+2. Backend validates token and gets user email
+3. Generates temporary Supabase auth session
+4. Redirects to parent dashboard with story ready for action
+5. No password required - seamless authentication
+
+##### 5. Edge Function Deployment and Configuration
+**Supabase Edge Function Updates**:
+- Fixed all template literal errors
+- Added proper CORS headers for cross-origin requests
+- Configured environment variables (APP_URL, RESEND_API_KEY)
+- Tested with localhost URLs for development
+
+**Email Content Enhancement**:
+- Added story content preview in grey box
+- Displays child name prominently in header
+- Shows story title and creation date
+- Professional HTML email template with responsive design
+
+#### Technical Implementation Details
+
+##### Backend Enhancements
+```python
+# Fixed Edge Function invocation with proper body wrapper
+result = supabase.client.functions.invoke(
+    "send-story-notification",
+    {"body": {
+        "storyId": story_id,
+        "parentEmail": parent_email,
+        "storyTitle": story.title,
+        "storyContent": story.content[:500] + "...",
+        "childName": kid.name,
+        "approvalMode": approval_mode
+    }}
+)
+
+# Parse response properly
+if isinstance(result, bytes):
+    response_data = json.loads(result.decode('utf-8'))
+    if response_data.get('success'):
+        logger.info(f"Email sent successfully. Email ID: {response_data.get('emailId')}")
+```
+
+##### Edge Function Corrections
+```typescript
+// Fixed interface to match backend data
+interface EmailRequest {
+  storyId: string
+  parentEmail: string
+  storyTitle: string
+  storyContent: string
+  childName: string
+  approvalMode: 'app' | 'email'
+}
+
+// Fixed template literals
+<p>Hi there,</p>  // Was: <p>Hi ${there},</p>
+<h1>📚 New Story from ${childName}</h1>  // Now works correctly
+```
+
+##### Email Review Endpoints
+```python
+# Direct approval from email
+@router.get("/review-story")
+async def review_story_via_email(
+    token: str = Query(...),
+    action: str = Query(...)
+):
+    # Validate token
+    # Update story status
+    # Log review action
+    # Return success HTML page
+
+# Auto-login for Edit/Decline
+@router.get("/email-login")
+async def email_login(
+    token: str = Query(...),
+    redirect: str = Query(...)
+):
+    # Validate token
+    # Get user info
+    # Generate Supabase magic link
+    # Redirect to Flutter app
+```
+
+#### User Experience Improvements
+
+##### Email Notification Flow
+1. **Story Generation**: Child creates story → marked as pending
+2. **Email Sent**: Parent receives professional HTML email with:
+   - Child's name in header
+   - Story title and preview
+   - Three action buttons
+3. **Direct Approval**: Click "Approve" → See success page → Story approved
+4. **Edit/Decline**: Click button → Auto-login → Parent dashboard with story ready
+
+##### Success Pages
+- **Approval Success**: Green theme, checkmark icon, confirmation message
+- **Decline Success**: Red theme, X icon, decline confirmation
+- **Error Page**: Red theme, warning icon, helpful error message
+
+#### Challenges Resolved
+
+##### Async/Await Issues
+- **Problem**: Multiple "can't be used in 'await' expression" errors
+- **Root Cause**: Supabase Python client uses synchronous operations
+- **Solution**: Removed `await` from table operations, kept for async methods
+
+##### JSON Parsing Errors
+- **Problem**: "Unexpected end of JSON input" in Edge Function
+- **Investigation**: Template literal referencing undefined variables
+- **Solution**: Fixed all variable references and data structure
+
+##### Email Data Missing
+- **Problem**: Child name showing as "undefined"
+- **Root Cause**: Parameter mismatch between backend and Edge Function
+- **Solution**: Aligned data structures and added missing fields
+
+#### Logging Improvements
+- Reduced verbose logging for cleaner output
+- Added meaningful log messages for email operations
+- Proper error logging with stack traces when needed
+- Success/failure tracking for email delivery
+
+#### Success Metrics
+
+##### Implementation Completeness
+- **Email content**: ✓ Shows child name and story preview
+- **Three buttons**: ✓ Approve, Edit, Decline matching in-app design
+- **Direct approval**: ✓ Works without opening app
+- **Auto-login**: ✓ Seamless authentication for Edit/Decline
+- **Error handling**: ✓ Graceful failures with user feedback
+
+##### Technical Excellence
+- **Clean async/await usage**: Proper handling of sync vs async operations
+- **Robust error handling**: Try-catch blocks with meaningful errors
+- **Security**: One-time tokens, secure validation
+- **Performance**: Minimal overhead, fast email delivery
+
+**Result**: Fully functional email notification system with professional design, seamless user experience, and robust technical implementation enabling parents to manage story approvals directly from email with auto-login support for advanced actions.

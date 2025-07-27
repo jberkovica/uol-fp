@@ -52,11 +52,12 @@ class Story(BaseModel):
     """Story domain model."""
     id: str = Field(..., description="Unique identifier")
     kid_id: str = Field(..., description="Associated kid profile ID")
-    child_name: str = Field(..., description="Child's name (required by database)")
+    child_name: Optional[str] = Field(default=None, description="Child's name (optional, joined from kids table)")
     title: str = Field(..., min_length=1, max_length=200)
     content: str = Field(default="", max_length=2000)  # Can be empty initially
     image_description: Optional[str] = Field(None, description="AI-generated image description")
     audio_filename: Optional[str] = Field(None, description="Generated audio filename/URL")
+    audio_url: Optional[str] = Field(default=None, description="Full audio URL (computed)")
     input_format: InputFormat = Field(default=InputFormat.IMAGE)
     language: Language = Field(default=Language.ENGLISH)
     status: StoryStatus = Field(default=StoryStatus.PENDING)

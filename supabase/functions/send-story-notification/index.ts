@@ -9,11 +9,10 @@ const corsHeaders = {
 
 interface EmailRequest {
   storyId: string
-  kidId: string
   parentEmail: string
-  parentName: string
-  kidName: string
   storyTitle: string
+  storyContent: string
+  childName: string
   approvalMode: 'app' | 'email'
 }
 
@@ -32,11 +31,10 @@ serve(async (req) => {
 
     const { 
       storyId, 
-      kidId, 
       parentEmail, 
-      parentName, 
-      kidName, 
       storyTitle,
+      storyContent,
+      childName,
       approvalMode 
     }: EmailRequest = await req.json()
 
@@ -57,13 +55,14 @@ serve(async (req) => {
 
     // Construct email content based on approval mode
     let emailHtml = ''
-    let subject = `New story from ${kidName}: "${storyTitle}"`
+    let subject = `New story from ${childName}: "${storyTitle}"`
 
     if (approvalMode === 'email') {
       // Email review mode - include approve/decline links
       const baseUrl = Deno.env.get('APP_URL') || 'http://127.0.0.1:8000'
       const approveUrl = `${baseUrl}/api/review-story?token=${reviewToken}&action=approve`
-      const declineUrl = `${baseUrl}/api/review-story?token=${reviewToken}&action=decline`
+      const editUrl = `${baseUrl}/api/email-login?token=${reviewToken}&redirect=edit`
+      const declineUrl = `${baseUrl}/api/email-login?token=${reviewToken}&redirect=decline`
 
       emailHtml = `
         <!DOCTYPE html>
@@ -75,31 +74,34 @@ serve(async (req) => {
               .header { background-color: #6B46C1; color: white; padding: 20px; text-align: center; border-radius: 10px 10px 0 0; }
               .content { background-color: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
               .story-info { background-color: white; padding: 20px; border-radius: 10px; margin: 20px 0; }
-              .button { display: inline-block; padding: 12px 30px; margin: 10px; text-decoration: none; border-radius: 5px; font-weight: bold; }
+              .button { display: inline-block; padding: 12px 30px; margin: 10px; text-decoration: none; border-radius: 25px; font-weight: bold; text-align: center; min-width: 120px; }
               .approve { background-color: #10B981; color: white; }
-              .decline { background-color: #EF4444; color: white; }
+              .edit { background-color: #6B46C1; color: white; }
+              .decline { background-color: transparent; color: #EF4444; border: 2px solid #EF4444; }
               .footer { text-align: center; margin-top: 30px; color: #666; font-size: 14px; }
             </style>
           </head>
           <body>
             <div class="container">
               <div class="header">
-                <h1>📚 New Story from ${kidName}</h1>
+                <h1>📚 New Story from ${childName}</h1>
               </div>
               <div class="content">
-                <p>Hi ${parentName},</p>
-                <p>${kidName} has created a new story that needs your review!</p>
+                <p>Hi there,</p>
+                <p>${childName} has created a new story that needs your review!</p>
                 
                 <div class="story-info">
                   <h2>${storyTitle}</h2>
+                  <p style="margin: 15px 0; padding: 15px; background-color: #f0f0f0; border-radius: 5px;">${storyContent}</p>
                   <p><strong>Created:</strong> ${new Date().toLocaleDateString()}</p>
                 </div>
                 
                 <p>Please review the story and decide whether to approve it:</p>
                 
                 <div style="text-align: center; margin: 30px 0;">
-                  <a href="${approveUrl}" class="button approve">✓ Approve Story</a>
-                  <a href="${declineUrl}" class="button decline">✗ Decline Story</a>
+                  <a href="${approveUrl}" class="button approve">✓ Approve</a>
+                  <a href="${editUrl}" class="button edit">✏️ Edit</a>
+                  <a href="${declineUrl}" class="button decline">✗ Decline</a>
                 </div>
                 
                 <p>Or you can review it in the Mira app on your phone.</p>
@@ -115,6 +117,7 @@ serve(async (req) => {
       `
     } else {
       // App review mode - just notification
+      const baseUrl = Deno.env.get('APP_URL') || 'http://127.0.0.1:8000'
       emailHtml = `
         <!DOCTYPE html>
         <html>
@@ -132,14 +135,15 @@ serve(async (req) => {
           <body>
             <div class="container">
               <div class="header">
-                <h1>📚 New Story from ${kidName}</h1>
+                <h1>📚 New Story from ${childName}</h1>
               </div>
               <div class="content">
-                <p>Hi ${parentName},</p>
-                <p>${kidName} has created a new story that's waiting for your review!</p>
+                <p>Hi there,</p>
+                <p>${childName} has created a new story that's waiting for your review!</p>
                 
                 <div class="story-info">
                   <h2>${storyTitle}</h2>
+                  <p style="margin: 15px 0; padding: 15px; background-color: #f0f0f0; border-radius: 5px;">${storyContent}</p>
                   <p><strong>Created:</strong> ${new Date().toLocaleDateString()}</p>
                 </div>
                 

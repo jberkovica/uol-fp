@@ -81,9 +81,9 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
       case ApprovalMode.auto:
         return 'assets/images/face-1.svg'; // Happy face
       case ApprovalMode.app:
-        return 'assets/images/face-3.svg'; // Hopeful/waiting face
+        return 'assets/images/face-1.svg'; // Hopeful/waiting face
       case ApprovalMode.email:
-        return 'assets/images/face-3.svg'; // Hopeful/waiting face
+        return 'assets/images/face-1.svg'; // Hopeful/waiting face
     }
   }
 

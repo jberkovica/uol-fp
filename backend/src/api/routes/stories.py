@@ -88,6 +88,7 @@ async def get_pending_stories() -> StoryListResponse:
             StoryResponse(
                 id=story.id,
                 kid_id=story.kid_id,
+                child_name=story.child_name,
                 title=story.title,
                 content=story.content,
                 audio_url=story.audio_url,
@@ -315,10 +316,9 @@ async def review_story_simple(request: dict):
             new_status = StoryStatus.REJECTED.value  
             action = "decline"
         
-        # Update story status and feedback
+        # Update story status
         update_data = {
-            "status": new_status,
-            "parent_review_status": "approved" if approved else "declined"
+            "status": new_status
         }
         
         if feedback:
@@ -330,7 +330,7 @@ async def review_story_simple(request: dict):
         updated_story = await supabase.update_story(story_id, update_data)
         
         # Log the review action in story_review_actions table
-        await supabase.client.table("story_review_actions").insert({
+        supabase.client.table("story_review_actions").insert({
             "story_id": story_id,
             "user_id": kid.user_id,
             "action": action,

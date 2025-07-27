@@ -49,20 +49,44 @@ Priority:
 [x] parent dashboard less spacing
 [x] parent dashboard remove 3 dots and add logout
 [x] generate story in selected language
-
 [x] store language in supabase
-[] parent approve
-[] auth with apple and google
+[x] parent approve
 [x] alchemy something
-[] ui cleanup 
+
+
+
+[] auth with apple and google
 [] input as audio or text (whisper for audio)
+[] kids profile info
 [] analytics - posthog
+
 [] empty fields in stories table
 [] languages: english amercian and british, spanish, french
 [] notifications
-[] color hunt
 [] language detection (system) if not in our selection
+[] improve prompts: lv voice slower and emotional
+[] fallback to another vendor/model of we hit limit
 
+[] send for parent review without audio, because parent can't impact audio quality only text
+[] email waiting stories can be shown in app too
+[] add notifications for children when their stories are approved
+[] save logs
+[] color hunt
+[] ui cleanup 
+
+
+
+{"timestamp": "2025-07-27T07:19:24.736337", "level": "ERROR", "logger": "src.api.app", "message": "Story processing failed for 644b1d0a-191b-40eb-9fa0-9de4626da115: Client error '429 Too Many Requests' for url 'https://api.mistral.ai/v1/chat/completions'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429", "module": "app", "function": "process_story_generation_background", "line": 300}
+
+  1. Add retry logic with exponential backoff for the Mistral API calls
+  2. Switch to a different AI provider (as mentioned in your CLAUDE.md priorities)
+  3. Implement request queuing to space out API calls
+  4. Check your Mistral API dashboard for rate limit details
+
+  The logs show that mira@test.com successfully generates stories while
+  jekaterina.berkovich@gmail.com consistently hits rate limits, but there's no difference in how
+  their requests are processed. This is likely a timing or rate limit issue at the API provider
+  level.
 
 backend:
 [] image generation prompt

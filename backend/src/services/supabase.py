@@ -91,7 +91,21 @@ class SupabaseService:
         return None
     
     async def get_stories_for_kid(self, kid_id: str, limit: int = 20, offset: int = 0) -> List[Story]:
-        """Get all stories for a kid."""
+        """Get all approved stories for a kid (children should only see approved stories)."""
+        result = (
+            self.client.table("stories")
+            .select("*")
+            .eq("kid_id", kid_id)
+            .eq("status", "approved")  # Only show approved stories to children
+            .order("created_at", desc=True)
+            .limit(limit)
+            .offset(offset)
+            .execute()
+        )
+        return [Story(**story) for story in result.data]
+    
+    async def get_all_stories_for_kid(self, kid_id: str, limit: int = 20, offset: int = 0) -> List[Story]:
+        """Get ALL stories for a kid (for parent dashboard - includes pending/rejected)."""
         result = (
             self.client.table("stories")
             .select("*")
@@ -119,7 +133,7 @@ class SupabaseService:
     async def get_pending_stories(self) -> List[Story]:
         """Get all pending stories for parent review."""
         try:
-            result = self.client.table("stories").select("*").eq("status", "pending").order("created_at.desc").execute()
+            result = self.client.table("stories").select("*, kids!inner(name)").eq("status", "pending").order("created_at.desc").execute()
             
             stories = []
             for item in result.data:
@@ -132,6 +146,7 @@ class SupabaseService:
                 story = Story(
                     id=item["id"],
                     kid_id=item["kid_id"],
+                    child_name=item["kids"]["name"] if item.get("kids") else None,
                     title=item.get("title", ""),
                     content=item.get("content", ""),
                     audio_url=audio_url,

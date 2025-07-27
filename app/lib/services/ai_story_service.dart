@@ -130,9 +130,11 @@ class AIStoryService {
           story = await getStory(storyId);
           print('Attempt ${attempts + 1}: Story status is ${story.status}');
 
-          if (story.status == StoryStatus.approved) {
-            // Story is ready with audio!
-            print('Story generation completed! Audio ready for playback.');
+          if (story.status == StoryStatus.approved || story.status == StoryStatus.pending) {
+            // Story generation completed! 
+            // - approved: Ready for playback
+            // - pending: Ready but needs parent approval
+            print('Story generation completed! Status: ${story.status}');
             break;
           } else if (story.status == StoryStatus.rejected) {
             throw Exception('Story generation failed on backend');
@@ -141,7 +143,7 @@ class AIStoryService {
           attempts++;
         }
 
-        if (story == null || story.status != StoryStatus.approved) {
+        if (story == null || (story.status != StoryStatus.approved && story.status != StoryStatus.pending)) {
           throw Exception(
               'Story generation timed out or failed after ${attempts} attempts');
         }
@@ -197,7 +199,7 @@ class AIStoryService {
                   status: _mapStatus(item['status']),
                   createdAt:
                       DateTime.tryParse(item['created_at']) ?? DateTime.now(),
-                  childName: item['kid_name'] ?? '',
+                  childName: item['child_name'] ?? '',
                 ))
             .toList();
       } else {
@@ -248,7 +250,7 @@ class AIStoryService {
   Future<void> reviewStory(String storyId, bool approved,
       {String? feedback}) async {
     try {
-      final uri = Uri.parse('$baseUrl/review-story/');
+      final uri = Uri.parse('$baseUrl/stories/review-story/');
       final response = await http.post(
         uri,
         headers: {'Content-Type': 'application/json'},

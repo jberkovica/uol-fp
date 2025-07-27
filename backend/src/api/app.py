@@ -251,17 +251,69 @@ async def process_story_generation_background(
         filename = f"{story_id}.mp3"
         audio_url = await supabase.upload_audio(audio_data, filename)
         
-        # Update story with all results and mark as approved (matching old backend)
+        # Get kid and user approval mode to determine final status
+        kid = await supabase.get_kid(kid_id)
+        approval_mode = await supabase.get_user_approval_mode(kid.user_id)
+        logger.info(f"User {kid.user_id} approval mode: {approval_mode}")
+        
+        # Set status based on approval mode
+        final_status = StoryStatus.APPROVED.value if approval_mode == "auto" else StoryStatus.PENDING.value
+        
+        # Update story with all results
         updates = {
             "image_caption": image_description,
             "title": story_result["title"],
             "content": story_result["content"],
             "audio_filename": audio_url,
-            "status": StoryStatus.APPROVED.value
+            "status": final_status
         }
         
         await supabase.update_story(story_id, updates)
-        logger.info(f"Story {story_id} completed successfully")
+        
+        # Send email notification if email approval mode
+        if approval_mode == "email":
+            try:
+                parent_email = await supabase.get_user_email(kid.user_id)
+                story = await supabase.get_story(story_id)
+                
+                logger.info(f"Sending email notification to {parent_email} for {kid.name}'s story")
+                
+                # Clean story content to avoid JSON issues
+                import json
+                story_content = story.content[:500] + "..." if len(story.content) > 500 else story.content
+                
+                payload = {
+                    "storyId": story_id,
+                    "parentEmail": parent_email,
+                    "storyTitle": story.title,
+                    "storyContent": story_content,
+                    "childName": kid.name,
+                    "approvalMode": approval_mode
+                }
+                
+                result = supabase.client.functions.invoke(
+                    "send-story-notification",
+                    {"body": payload}
+                )
+                
+                # Parse response if it's bytes
+                if isinstance(result, bytes):
+                    try:
+                        response_data = json.loads(result.decode('utf-8'))
+                        if response_data.get('success'):
+                            logger.info(f"Email notification sent successfully for story {story_id}. Email ID: {response_data.get('emailId')}")
+                        else:
+                            logger.error(f"Email notification failed: {response_data.get('error')}")
+                    except Exception as e:
+                        logger.error(f"Failed to parse Edge function response: {e}")
+                else:
+                    logger.warning(f"Unexpected response type from Edge function: {type(result)}")
+            except Exception as email_error:
+                logger.error(f"Failed to send email notification for story {story_id}: {email_error}")
+                import traceback
+                logger.error(f"Traceback: {traceback.format_exc()}")
+        
+        logger.info(f"Story {story_id} completed successfully with status: {final_status}")
         
     except Exception as e:
         # Import logger and services for error handling

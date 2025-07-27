@@ -9,6 +9,7 @@ class StoryResponse(BaseModel):
     """Response for a single story."""
     id: str
     kid_id: str
+    child_name: Optional[str] = None
     title: str
     content: str
     audio_url: Optional[str]

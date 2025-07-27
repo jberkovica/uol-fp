@@ -26,8 +26,8 @@ async def create_kid(request: CreateKidRequest) -> KidResponse:
         supabase = get_supabase_service()
         kid = await supabase.create_kid(request)
         
-        # Get stories count
-        stories = await supabase.get_stories_for_kid(kid.id, limit=1)
+        # Get all stories count (for parent dashboard)
+        stories = await supabase.get_all_stories_for_kid(kid.id, limit=1)
         
         return KidResponse(
             id=kid.id,
@@ -58,8 +58,8 @@ async def get_kid(kid_id: str) -> KidResponse:
         if not kid:
             raise NotFoundError("Kid profile", kid_id)
             
-        # Get stories count
-        stories = await supabase.get_stories_for_kid(kid_id)
+        # Get all stories count (for parent dashboard)
+        stories = await supabase.get_all_stories_for_kid(kid_id)
         
         return KidResponse(
             id=kid.id,
@@ -89,10 +89,10 @@ async def get_kids_for_user(user_id: str) -> KidListResponse:
         supabase = get_supabase_service()
         kids = await supabase.get_kids_for_user(user_id)
         
-        # Convert to response format with story counts
+        # Convert to response format with story counts  
         kid_responses = []
         for kid in kids:
-            stories = await supabase.get_stories_for_kid(kid.id)
+            stories = await supabase.get_all_stories_for_kid(kid.id)
             kid_responses.append(
                 KidResponse(
                     id=kid.id,
@@ -135,8 +135,8 @@ async def update_kid(kid_id: str, request: UpdateKidRequest) -> KidResponse:
         if not kid:
             raise NotFoundError("Kid profile", kid_id)
             
-        # Get stories count
-        stories = await supabase.get_stories_for_kid(kid_id)
+        # Get all stories count (for parent dashboard)
+        stories = await supabase.get_all_stories_for_kid(kid_id)
         
         return KidResponse(
             id=kid.id,
