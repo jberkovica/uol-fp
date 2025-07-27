@@ -32,6 +32,8 @@ app:
 [] improve text style in story, make it paragraphs
 [x] logout at parent screen
 [] remove export button but implement it later (Export data - download all stories and data)
+ [] reduce social median images size to correct to reduce size of app
+ [] setup Firebase Crashlitics
 
 Priority:
 [x] Manrope font
