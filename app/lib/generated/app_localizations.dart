@@ -1038,6 +1038,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open Story'**
   String get openStory;
+
+  /// No description provided for @pleaseEnterText.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter some text to create your story'**
+  String get pleaseEnterText;
+
+  /// No description provided for @textTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Please write at least 10 characters for your story idea'**
+  String get textTooShort;
+
+  /// No description provided for @textTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Text is too long. Please keep it under 500 characters'**
+  String get textTooLong;
+
+  /// No description provided for @pleaseSelectChild.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select a child first'**
+  String get pleaseSelectChild;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

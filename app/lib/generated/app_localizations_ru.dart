@@ -528,4 +528,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get openStory => 'Открыть историю';
+
+  @override
+  String get pleaseEnterText => 'Пожалуйста, введите текст для создания истории';
+
+  @override
+  String get textTooShort => 'Пожалуйста, напишите хотя бы 10 символов для вашей идеи истории';
+
+  @override
+  String get textTooLong => 'Текст слишком длинный. Пожалуйста, сократите до 500 символов';
+
+  @override
+  String get pleaseSelectChild => 'Пожалуйста, сначала выберите ребенка';
 }

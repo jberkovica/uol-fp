@@ -527,4 +527,16 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get openStory => 'Atvērt stāstu';
+
+  @override
+  String get pleaseEnterText => 'Lūdzu, ievadiet tekstu, lai izveidotu stāstu';
+
+  @override
+  String get textTooShort => 'Lūdzu, uzrakstiet vismaz 10 simbolus savas stāsta idejas aprakstam';
+
+  @override
+  String get textTooLong => 'Teksts ir pārāk garš. Lūdzu, ierobežojiet to līdz 500 simboliem';
+
+  @override
+  String get pleaseSelectChild => 'Lūdzu, vispirms izvēlieties bērnu';
 }

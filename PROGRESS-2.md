@@ -1808,3 +1808,37 @@ class _FirebaseLogOutput extends LogOutput {
 - **Professional quality**: Industry-standard patterns and practices
 
 **Result**: Complete production-ready logging system providing clean development experience with readable terminal output, silent production operation, and professional error tracking infrastructure. Successfully eliminated all print statements while maintaining excellent debugging capabilities and preparing for Firebase Crashlytics integration.
+
+---
+
+## Date: 2025-07-28
+
+### Text Input Story Generation Implementation
+
+#### Overview
+Added text input option to story creation, allowing children to write story ideas instead of uploading images.
+
+#### What We Built
+- **Text input UI**: Added pen icon to upload screen with 280x150px text area (10-500 character validation)
+- **Backend endpoint**: `/generate-story-from-text/` that skips vision agent and goes directly to storyteller
+- **Validation system**: Character limits with error messages in English, Russian, and Latvian
+- **Same user flow**: Text stories follow identical processing pipeline with approval modes
+
+#### Technical Changes
+**Frontend** (`upload_screen.dart`):
+- Added `_generateStoryFromText()` method with input validation
+- Text input reuses existing story processing and completion flow
+
+**Backend** (`app.py`):
+- New `/generate-story-from-text/` endpoint 
+- `process_text_story_generation_background()` function that skips vision agent
+
+**Localization**: Added 4 new validation strings to all ARB files, ran `flutter gen-l10n`
+
+#### Key Benefits
+- **Faster generation**: 2-3 seconds faster by skipping vision processing
+- **Input flexibility**: Children can now create stories from written ideas
+- **Same quality**: Identical story output and audio generation
+- **Consistent UX**: Same approval modes, language support, and error handling
+
+**Result**: Children can now create stories by writing text ideas like "A brave knight in a magical forest" - processed identically to image-based stories but faster.

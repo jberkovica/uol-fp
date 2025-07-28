@@ -309,17 +309,17 @@ class _UploadScreenState extends State<UploadScreen> {
         ),
         const SizedBox(height: 20),
         FilledButton(
-          onPressed: () {
-            if (_textController.text.trim().isNotEmpty) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(AppLocalizations.of(context)!.textStoryComingSoon),
-                  backgroundColor: AppColors.primary,
+          onPressed: _isProcessing ? null : _generateStoryFromText,
+          child: _isProcessing 
+            ? const SizedBox(
+                width: 20,
+                height: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
-              );
-            }
-          },
-          child: Text(AppLocalizations.of(context)!.submit),
+              )
+            : Text(AppLocalizations.of(context)!.submit),
         ),
       ],
     );
@@ -485,6 +485,114 @@ class _UploadScreenState extends State<UploadScreen> {
               story: story,
               approvalMode: approvalMode,
             ),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isProcessing = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.failedToGenerateStory(e.toString())),
+            backgroundColor: AppColors.error,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    }
+  }
+
+  /// Generate story from text input
+  Future<void> _generateStoryFromText() async {
+    final textInput = _textController.text.trim();
+    
+    // Validate input
+    if (textInput.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.pleaseEnterText),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    if (textInput.length < 10) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.textTooShort),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    if (textInput.length > 500) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.textTooLong),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    if (_selectedKid == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.pleaseSelectChild),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isProcessing = true;
+    });
+
+    try {
+      // Generate story from text
+      final story = await _aiService.generateStoryFromText(textInput, _selectedKid!.id);
+      
+      setState(() {
+        _isProcessing = false;
+      });
+
+      if (mounted) {
+        // Get current user's approval mode
+        final approvalModeString = AuthService.instance.getUserApprovalMode();
+        ApprovalMode approvalMode;
+        switch (approvalModeString) {
+          case 'app':
+            approvalMode = ApprovalMode.app;
+            break;
+          case 'email':
+            approvalMode = ApprovalMode.email;
+            break;
+          default:
+            approvalMode = ApprovalMode.auto;
+            break;
+        }
+        
+        // Navigate to story ready screen
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => 
+              StoryReadyScreen(
+                story: story,
+                approvalMode: approvalMode,
+              ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: animation.drive(Tween(begin: const Offset(1.0, 0.0), end: Offset.zero)),
+                child: child,
+              );
+            },
           ),
         );
       }

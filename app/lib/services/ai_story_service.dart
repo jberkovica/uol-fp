@@ -163,6 +163,76 @@ class AIStoryService {
     }
   }
 
+  /// Generate story from text input
+  Future<Story> generateStoryFromText(String textInput, String kidId) async {
+    try {
+      _logger.i('Starting story generation from text input');
+      _logger.d('Text input: ${textInput.length} characters');
+
+      // Get user's language preference
+      String userLanguage = LanguageService.instance.currentLanguageCode;
+      _logger.i('Story generation using language: $userLanguage');
+
+      // Call the text-based story generation endpoint
+      final response = await http.post(
+        Uri.parse('$baseUrl/generate-story-from-text/'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'kid_id': kidId,
+          'text_input': textInput,
+          'language': userLanguage,
+          'preferences': null,
+        }),
+      );
+
+      _logger.i('Story generation response status: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        String storyId = responseData['story_id'];
+        _logger.i('Story generation initiated: $storyId');
+
+        // Poll for story completion (same logic as image)
+        Story? story;
+        int attempts = 0;
+        const maxAttempts = 30; // 30 attempts with 2-second delays = 1 minute max
+
+        _logger.d('Polling for story completion...');
+        while (attempts < maxAttempts) {
+          await Future.delayed(const Duration(seconds: 2));
+
+          story = await getStory(storyId);
+          _logger.d('Attempt ${attempts + 1}: Story status is ${story.status}');
+
+          if (story.status == StoryStatus.approved || story.status == StoryStatus.pending) {
+            _logger.i('Story generation completed! Status: ${story.status}');
+            break;
+          } else if (story.status == StoryStatus.rejected) {
+            throw Exception('Story generation failed on backend');
+          }
+
+          attempts++;
+        }
+
+        if (story == null || (story.status != StoryStatus.approved && story.status != StoryStatus.pending)) {
+          throw Exception(
+              'Story generation timed out or failed after $attempts attempts');
+        }
+
+        return story;
+      } else {
+        _logger.e('Story generation failed', error: 'HTTP ${response.statusCode}: ${response.body}');
+        throw Exception(
+            'HTTP ${response.statusCode}: Failed to generate story');
+      }
+    } catch (e) {
+      _logger.e('Error in generateStoryFromText', error: e);
+      throw Exception('Failed to generate story: $e');
+    }
+  }
+
   /// Get story details from backend
   Future<Story> getStory(String storyId) async {
     try {

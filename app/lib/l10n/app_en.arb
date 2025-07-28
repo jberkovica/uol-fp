@@ -448,5 +448,10 @@
   "weWillNotifyWhenReady": "We'll let you know when your story is ready!",
   "openStory": "Open Story",
   
+  "pleaseEnterText": "Please enter some text to create your story",
+  "textTooShort": "Please write at least 10 characters for your story idea",
+  "textTooLong": "Text is too long. Please keep it under 500 characters",
+  "pleaseSelectChild": "Please select a child first",
+  
   "appleSignUpComingSoon": "Apple sign up coming soon!"
 }

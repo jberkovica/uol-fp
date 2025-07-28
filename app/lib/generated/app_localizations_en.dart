@@ -527,4 +527,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openStory => 'Open Story';
+
+  @override
+  String get pleaseEnterText => 'Please enter some text to create your story';
+
+  @override
+  String get textTooShort => 'Please write at least 10 characters for your story idea';
+
+  @override
+  String get textTooLong => 'Text is too long. Please keep it under 500 characters';
+
+  @override
+  String get pleaseSelectChild => 'Please select a child first';
 }

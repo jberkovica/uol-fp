@@ -128,6 +128,67 @@ def add_main_endpoints(app: FastAPI):
             logger.error(f"Traceback: {traceback.format_exc()}")
             raise HTTPException(status_code=500, detail=f"Failed to start story generation: {str(e)}")
     
+    @app.post("/generate-story-from-text/")
+    async def generate_story_from_text(
+        request: dict,  # Using dict to accept text_input field
+        background_tasks: BackgroundTasks
+    ):
+        """Main endpoint for story generation from text input."""
+        try:
+            # Extract and validate input
+            text_input = request.get("text_input", "").strip()
+            kid_id = request.get("kid_id")
+            language = request.get("language", "en")
+            
+            if not text_input:
+                raise ValidationError("text_input is required")
+            if len(text_input) < 10:
+                raise ValidationError("text_input must be at least 10 characters")
+            if len(text_input) > 500:
+                raise ValidationError("text_input must be less than 500 characters")
+            
+            validate_uuid(kid_id, "kid_id")
+            
+            # Verify kid exists
+            supabase = get_supabase_service()
+            kid = await supabase.get_kid(kid_id)
+            if not kid:
+                raise NotFoundError("Kid profile", kid_id)
+            
+            # Create story record
+            story_data = {
+                "kid_id": kid_id,
+                "child_name": kid.name,
+                "title": "New Story",
+                "content": "",
+                "language": language,
+                "status": StoryStatus.PENDING.value
+            }
+            story = await supabase.create_story(story_data)
+            
+            # Process story in background with text input
+            background_tasks.add_task(
+                process_text_story_generation_background,
+                story.id,
+                text_input,
+                kid_id,
+                Language(language)
+            )
+            
+            return {
+                "story_id": story.id,
+                "status": "processing",
+                "message": "Story generation from text started"
+            }
+            
+        except (NotFoundError, ValidationError) as e:
+            raise HTTPException(status_code=400, detail=str(e))
+        except Exception as e:
+            import traceback
+            logger.error(f"Text story generation failed: {e}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            raise HTTPException(status_code=500, detail=f"Failed to start text story generation: {str(e)}")
+    
     @app.get("/story/{story_id}")
     async def get_story(story_id: str):
         """Main endpoint for getting a story."""
@@ -329,4 +390,133 @@ async def process_story_generation_background(
         await supabase.update_story(story_id, {
             "status": StoryStatus.ERROR.value
             # Note: metadata column doesn't exist in database
+        })
+
+
+async def process_text_story_generation_background(
+    story_id: str,
+    text_input: str,
+    kid_id: str,
+    language
+):
+    """Background task for text-based story generation."""
+    try:
+        # Import required types, services and logger
+        from ..types.domain import StoryStatus, Language
+        from ..utils.logger import get_logger
+        from ..services.supabase import get_supabase_service
+        
+        logger = get_logger(__name__)
+        logger.info(f"Processing text-based story generation for ID: {story_id}")
+        logger.debug(f"Text input: {text_input[:50]}..." if len(text_input) > 50 else f"Text input: {text_input}")
+        
+        # Get configuration
+        config = load_config()
+        
+        # Create agents
+        from ..agents.storyteller.agent import create_storyteller_agent
+        from ..agents.voice.agent import create_voice_agent
+        
+        storyteller_agent = create_storyteller_agent(config["agents"]["storyteller"])
+        voice_agent = create_voice_agent(config["agents"]["voice"])
+        
+        supabase = get_supabase_service()
+        
+        # Update status to processing
+        await supabase.update_story_status(story_id, StoryStatus.PROCESSING)
+        
+        # Step 1: Generate story directly from text input (skip vision step)
+        logger.info(f"Generating story content from text for {story_id}")
+        story_result = await storyteller_agent.process(text_input, language=language)
+        
+        # Step 2: Generate audio
+        logger.info(f"Generating audio for story {story_id}")
+        audio_data, content_type = await voice_agent.process(
+            story_result["content"],
+            language=language.value
+        )
+        
+        # Upload audio to storage
+        filename = f"{story_id}.mp3"
+        audio_url = await supabase.upload_audio(audio_data, filename)
+        
+        # Get kid and user approval mode to determine final status
+        kid = await supabase.get_kid(kid_id)
+        approval_mode = await supabase.get_user_approval_mode(kid.user_id)
+        logger.info(f"User {kid.user_id} approval mode: {approval_mode}")
+        
+        # Set status based on approval mode
+        final_status = StoryStatus.APPROVED.value if approval_mode == "auto" else StoryStatus.PENDING.value
+        
+        # Update story with all results
+        updates = {
+            "image_caption": text_input,  # Store original text input as caption
+            "title": story_result["title"],
+            "content": story_result["content"],
+            "audio_filename": audio_url,
+            "status": final_status
+        }
+        
+        await supabase.update_story(story_id, updates)
+        
+        # Send email notification if email approval mode
+        if approval_mode == "email":
+            try:
+                parent_email = await supabase.get_user_email(kid.user_id)
+                story = await supabase.get_story(story_id)
+                
+                logger.info(f"Sending email notification to {parent_email} for {kid.name}'s story")
+                
+                # Clean story content to avoid JSON issues
+                import json
+                story_content = story.content[:500] + "..." if len(story.content) > 500 else story.content
+                
+                payload = {
+                    "storyId": story_id,
+                    "parentEmail": parent_email,
+                    "storyTitle": story.title,
+                    "storyContent": story_content,
+                    "childName": kid.name,
+                    "approvalMode": approval_mode
+                }
+                
+                result = supabase.client.functions.invoke(
+                    "send-story-notification",
+                    {"body": payload}
+                )
+                
+                # Parse response if it's bytes
+                if isinstance(result, bytes):
+                    try:
+                        response_data = json.loads(result.decode('utf-8'))
+                        if response_data.get('success'):
+                            logger.info(f"Email notification sent successfully for story {story_id}. Email ID: {response_data.get('emailId')}")
+                        else:
+                            logger.error(f"Email notification failed: {response_data.get('error')}")
+                    except Exception as e:
+                        logger.error(f"Failed to parse Edge function response: {e}")
+                else:
+                    logger.warning(f"Unexpected response type from Edge function: {type(result)}")
+            except Exception as email_error:
+                logger.error(f"Failed to send email notification for story {story_id}: {email_error}")
+                import traceback
+                logger.error(f"Traceback: {traceback.format_exc()}")
+        
+        logger.info(f"Text-based story {story_id} completed successfully with status: {final_status}")
+        
+    except Exception as e:
+        # Import logger and services for error handling
+        from ..utils.logger import get_logger
+        from ..types.domain import StoryStatus
+        from ..services.supabase import get_supabase_service
+        
+        logger = get_logger(__name__)
+        logger.error(f"Text story processing failed for {story_id}: {e}")
+        import traceback
+        logger.error(f"Traceback: {traceback.format_exc()}")
+        
+        # Update story status to error
+        supabase = get_supabase_service()
+        await supabase.update_story(story_id, {
+            "status": StoryStatus.ERROR.value
         })
