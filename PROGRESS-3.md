@@ -158,4 +158,24 @@ CREATE INDEX idx_story_inputs_type ON story_inputs(input_type);
 
 ---
 
+### Bug Fix: Latvian Audio Transcription
+
+#### Issue
+Audio input in Latvian language was being transcribed in English due to backend forcing English fallback for Latvian (`language.value if language.value != 'lv' else 'en'`).
+
+#### Solution
+Removed the English fallback and now pass user's selected language directly to Whisper API:
+```python
+# Before: Forced English for Latvian
+language=language.value if language.value != 'lv' else 'en'
+
+# After: Use app's selected language
+language=language.value
+```
+
+#### Result
+Latvian audio is now properly transcribed in Latvian when app language is set to Latvian. Whisper API supports Latvian natively.
+
+---
+
 _Last updated: 2025-07-28_

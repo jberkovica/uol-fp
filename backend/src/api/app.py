@@ -673,12 +673,12 @@ async def process_audio_story_generation_background(
             
             client = openai.OpenAI(api_key=api_key)
             
-            # Transcribe audio file
+            # Transcribe audio file using user's selected language
             with open(temp_audio_path, 'rb') as audio_file:
                 transcript_response = client.audio.transcriptions.create(
                     model="whisper-1",
                     file=audio_file,
-                    language=language.value if language.value != 'lv' else 'en'  # Whisper doesn't support Latvian well
+                    language=language.value  # Use app's selected language directly
                 )
             
             transcribed_text = transcript_response.text
@@ -730,6 +730,7 @@ async def process_audio_story_generation_background(
             "metadata": {
                 "whisper_model": config["agents"]["whisper"]["model"],
                 "whisper_provider": config["agents"]["whisper"]["vendor"],
+                "transcription_language": language.value,
                 "transcription_length": len(transcribed_text),
                 "processing_timestamp": datetime.utcnow().isoformat()
             }

@@ -209,7 +209,8 @@ agents:
     model: "whisper-1"
     api_key: ${OPENAI_API_KEY}
     settings:
-      language: null  # Auto-detect language
+      # Language passed dynamically from user's app selection
+      # Supports: en, ru, lv and all other Whisper-supported languages
       response_format: "text"
       temperature: 0.0  # Most deterministic transcription
 
