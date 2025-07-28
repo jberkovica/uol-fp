@@ -77,7 +77,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                 borderRadius: BorderRadius.circular(16),
               ),
               title: Text(
-                'Add New Profile',
+                AppLocalizations.of(context)!.addNewProfile,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               content: SizedBox(
@@ -113,7 +113,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Age Selection
                       Text(
-                        'Age (Optional):',
+                        AppLocalizations.of(context)!.ageOptional,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -189,7 +189,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Avatar Selection
                       Text(
-                        'Choose Avatar:',
+                        '${AppLocalizations.of(context)!.chooseAvatar}:',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -226,7 +226,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Hair Color Selection
                       Text(
-                        'Hair Color (Optional):',
+                        '${AppLocalizations.of(context)!.hairColorOptional}:',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -246,7 +246,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Hair Length Selection
                       Text(
-                        'Hair Length (Optional):',
+                        '${AppLocalizations.of(context)!.hairLengthOptional}:',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -265,7 +265,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Skin Color Selection
                       Text(
-                        'Skin Color (Optional):',
+                        '${AppLocalizations.of(context)!.skinColorOptional}:',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -285,7 +285,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Eye Color Selection
                       Text(
-                        'Eye Color (Optional):',
+                        '${AppLocalizations.of(context)!.eyeColorOptional}:',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -305,7 +305,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Gender Selection
                       Text(
-                        'Gender (Optional):',
+                        '${AppLocalizations.of(context)!.genderOptional}:',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -324,7 +324,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Favorite Genres Selection
                       Text(
-                        'Favorite Story Types (Optional):',
+                        '${AppLocalizations.of(context)!.favoriteStoryTypesOptional}:',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -348,7 +348,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                   onPressed: () => Navigator.of(context).pop(),
                   style: AppTheme.cancelButtonStyle,
                   child: Text(
-                    'Cancel',
+                    AppLocalizations.of(context)!.cancel,
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -392,7 +392,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                   },
                   style: AppTheme.modalActionButtonStyle,
                   child: Text(
-                    'Create Profile',
+                    AppLocalizations.of(context)!.createProfile,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.white,
                       fontWeight: FontWeight.w600,
@@ -606,7 +606,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Add profile',
+              AppLocalizations.of(context)!.addKid,
               style: Theme.of(context).textTheme.bodyMedium,
               textAlign: TextAlign.center,
             ),

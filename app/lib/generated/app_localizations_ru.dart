@@ -558,4 +558,98 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get noRecordingAvailable => 'Запись недоступна';
+
+  @override
+  String get addNewProfile => 'Добавить новый профиль';
+
+  @override
+  String get createProfile => 'Создать профиль';
+
+  @override
+  String get createNewProfile => 'Создать новый профиль';
+
+  @override
+  String get addDetailsForChild => 'Добавьте детали для вашего ребенка';
+
+  @override
+  String get basicInformation => 'Основная информация';
+
+  @override
+  String get appearance => 'Внешность';
+
+  @override
+  String get appearanceOptional => 'Внешность (необязательно)';
+
+  @override
+  String get personalityPreferences => 'Личность и предпочтения';
+
+  @override
+  String get personalityPreferencesOptional => 'Личность и предпочтения (необязательно)';
+
+  @override
+  String get additionalNotes => 'Дополнительные заметки';
+
+  @override
+  String get additionalNotesOptional => 'Дополнительные заметки (необязательно)';
+
+  @override
+  String get ageOptional => 'Возраст (необязательно)';
+
+  @override
+  String get chooseAvatar => 'Выберите аватар';
+
+  @override
+  String get hairColor => 'Цвет волос';
+
+  @override
+  String get hairColorOptional => 'Цвет волос (необязательно)';
+
+  @override
+  String get hairLength => 'Длина волос';
+
+  @override
+  String get hairLengthOptional => 'Длина волос (необязательно)';
+
+  @override
+  String get skinColor => 'Цвет кожи';
+
+  @override
+  String get skinColorOptional => 'Цвет кожи (необязательно)';
+
+  @override
+  String get eyeColor => 'Цвет глаз';
+
+  @override
+  String get eyeColorOptional => 'Цвет глаз (необязательно)';
+
+  @override
+  String get gender => 'Пол';
+
+  @override
+  String get genderOptional => 'Пол (необязательно)';
+
+  @override
+  String get favoriteStoryTypes => 'Любимые типы историй';
+
+  @override
+  String get favoriteStoryTypesOptional => 'Любимые типы историй (необязательно)';
+
+  @override
+  String get addSpecialNotes => 'Добавьте любые особые заметки о вашем ребенке...';
+
+  @override
+  String addSpecialNotesFor(String childName) {
+    return 'Добавьте любые особые заметки о $childName...';
+  }
+
+  @override
+  String get saveChanges => 'Сохранить изменения';
+
+  @override
+  String get creating => 'Создание...';
+
+  @override
+  String failedToUpdateProfile(String error) {
+    return 'Не удалось обновить профиль: $error';
+  }
 }

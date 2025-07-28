@@ -8,8 +8,7 @@ from src.core.validators import (
     validate_kid_name,
     validate_age,
     validate_uuid,
-    validate_story_content,
-    sanitize_filename
+    validate_story_content
 )
 from src.core.exceptions import ValidationError
 
@@ -79,7 +78,11 @@ class TestKidValidation:
     
     def test_valid_kid_name(self):
         """Test validation of valid kid names."""
-        valid_names = ["Alice", "Bob Smith", "Mary-Jane", "O'Connor", "Jean-Luc"]
+        valid_names = [
+            "Alice", "Bob Smith", "Mary-Jane", "O'Connor", "Jean-Luc",
+            # International characters
+            "Владимир", "José", "Анна", "Léa", "Артём", "Рита", "Кирилл"
+        ]
         for name in valid_names:
             validate_kid_name(name)  # Should not raise
     
@@ -183,43 +186,3 @@ class TestStoryContentValidation:
             validate_story_content(long_story)
 
 
-class TestFilenameValidation:
-    """Test filename sanitization functions."""
-    
-    def test_safe_filename_sanitization(self):
-        """Test sanitization of safe filenames."""
-        safe_cases = [
-            ("story123.mp3", "story123.mp3"),
-            ("my-story.mp3", "my-story.mp3"),
-            ("story_v2.mp3", "story_v2.mp3")
-        ]
-        
-        for input_name, expected in safe_cases:
-            result = sanitize_filename(input_name)
-            assert result == expected
-    
-    def test_unsafe_filename_sanitization(self):
-        """Test sanitization of unsafe filenames."""
-        unsafe_cases = [
-            ("story with spaces.mp3", "story_with_spaces.mp3"),
-            ("story/with/path.mp3", "story_with_path.mp3"),
-            ("story\\with\\backslash.mp3", "story_with_backslash.mp3"),
-            ("story@#$%.mp3", "story____.mp3"),
-            ("story", "story.mp3"),  # No extension
-            ("../../../etc/passwd", "________etc_passwd.mp3")  # Path traversal attempt
-        ]
-        
-        for input_name, expected in unsafe_cases:
-            result = sanitize_filename(input_name)
-            assert result == expected
-    
-    def test_filename_extension_handling(self):
-        """Test filename extension handling."""
-        no_extension_cases = [
-            ("story", "story.mp3"),
-            ("my_story_final", "my_story_final.mp3")
-        ]
-        
-        for input_name, expected in no_extension_cases:
-            result = sanitize_filename(input_name)
-            assert result == expected

@@ -557,4 +557,98 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noRecordingAvailable => 'No recording available';
+
+  @override
+  String get addNewProfile => 'Add New Profile';
+
+  @override
+  String get createProfile => 'Create Profile';
+
+  @override
+  String get createNewProfile => 'Create New Profile';
+
+  @override
+  String get addDetailsForChild => 'Add details for your child';
+
+  @override
+  String get basicInformation => 'Basic Information';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get appearanceOptional => 'Appearance (Optional)';
+
+  @override
+  String get personalityPreferences => 'Personality & Preferences';
+
+  @override
+  String get personalityPreferencesOptional => 'Personality & Preferences (Optional)';
+
+  @override
+  String get additionalNotes => 'Additional Notes';
+
+  @override
+  String get additionalNotesOptional => 'Additional Notes (Optional)';
+
+  @override
+  String get ageOptional => 'Age (Optional)';
+
+  @override
+  String get chooseAvatar => 'Choose Avatar';
+
+  @override
+  String get hairColor => 'Hair Color';
+
+  @override
+  String get hairColorOptional => 'Hair Color (Optional)';
+
+  @override
+  String get hairLength => 'Hair Length';
+
+  @override
+  String get hairLengthOptional => 'Hair Length (Optional)';
+
+  @override
+  String get skinColor => 'Skin Color';
+
+  @override
+  String get skinColorOptional => 'Skin Color (Optional)';
+
+  @override
+  String get eyeColor => 'Eye Color';
+
+  @override
+  String get eyeColorOptional => 'Eye Color (Optional)';
+
+  @override
+  String get gender => 'Gender';
+
+  @override
+  String get genderOptional => 'Gender (Optional)';
+
+  @override
+  String get favoriteStoryTypes => 'Favorite Story Types';
+
+  @override
+  String get favoriteStoryTypesOptional => 'Favorite Story Types (Optional)';
+
+  @override
+  String get addSpecialNotes => 'Add any special notes about your child...';
+
+  @override
+  String addSpecialNotesFor(String childName) {
+    return 'Add any special notes about $childName...';
+  }
+
+  @override
+  String get saveChanges => 'Save Changes';
+
+  @override
+  String get creating => 'Creating...';
+
+  @override
+  String failedToUpdateProfile(String error) {
+    return 'Failed to update profile: $error';
+  }
 }

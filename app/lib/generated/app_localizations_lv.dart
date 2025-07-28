@@ -557,4 +557,98 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get noRecordingAvailable => 'Ieraksts nav pieejams';
+
+  @override
+  String get addNewProfile => 'Pievienot jaunu profilu';
+
+  @override
+  String get createProfile => 'Izveidot profilu';
+
+  @override
+  String get createNewProfile => 'Izveidot jaunu profilu';
+
+  @override
+  String get addDetailsForChild => 'Pievienojiet sava bērna detaļas';
+
+  @override
+  String get basicInformation => 'Pamatinformācija';
+
+  @override
+  String get appearance => 'Izskats';
+
+  @override
+  String get appearanceOptional => 'Izskats (neobligāti)';
+
+  @override
+  String get personalityPreferences => 'Personība un preferences';
+
+  @override
+  String get personalityPreferencesOptional => 'Personība un preferences (neobligāti)';
+
+  @override
+  String get additionalNotes => 'Papildu piezīmes';
+
+  @override
+  String get additionalNotesOptional => 'Papildu piezīmes (neobligāti)';
+
+  @override
+  String get ageOptional => 'Vecums (neobligāti)';
+
+  @override
+  String get chooseAvatar => 'Izvēlieties avatāru';
+
+  @override
+  String get hairColor => 'Matu krāsa';
+
+  @override
+  String get hairColorOptional => 'Matu krāsa (neobligāti)';
+
+  @override
+  String get hairLength => 'Matu garums';
+
+  @override
+  String get hairLengthOptional => 'Matu garums (neobligāti)';
+
+  @override
+  String get skinColor => 'Ādas krāsa';
+
+  @override
+  String get skinColorOptional => 'Ādas krāsa (neobligāti)';
+
+  @override
+  String get eyeColor => 'Acu krāsa';
+
+  @override
+  String get eyeColorOptional => 'Acu krāsa (neobligāti)';
+
+  @override
+  String get gender => 'Dzimums';
+
+  @override
+  String get genderOptional => 'Dzimums (neobligāti)';
+
+  @override
+  String get favoriteStoryTypes => 'Iecienītie stāstu veidi';
+
+  @override
+  String get favoriteStoryTypesOptional => 'Iecienītie stāstu veidi (neobligāti)';
+
+  @override
+  String get addSpecialNotes => 'Pievienojiet jebkādas īpašas piezīmes par savu bērnu...';
+
+  @override
+  String addSpecialNotesFor(String childName) {
+    return 'Pievienojiet jebkādas īpašas piezīmes par $childName...';
+  }
+
+  @override
+  String get saveChanges => 'Saglabāt izmaiņas';
+
+  @override
+  String get creating => 'Veido...';
+
+  @override
+  String failedToUpdateProfile(String error) {
+    return 'Neizdevās atjaunināt profilu: $error';
+  }
 }

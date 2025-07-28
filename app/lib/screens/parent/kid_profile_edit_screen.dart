@@ -132,7 +132,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to update profile: ${e.toString()}'),
+            content: Text(AppLocalizations.of(context)!.failedToUpdateProfile(e.toString())),
             backgroundColor: AppColors.error,
           ),
         );
@@ -224,7 +224,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
                       )
                     : Icon(LucideIcons.save),
                 label: Text(
-                  'Save Changes',
+                  AppLocalizations.of(context)!.saveChanges,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),
@@ -246,7 +246,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         child: Column(
           children: [
             Text(
-              'Edit Profile',
+              AppLocalizations.of(context)!.editProfile,
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                 color: AppColors.white,
                 letterSpacing: -0.5,
@@ -307,7 +307,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Basic Information',
+          AppLocalizations.of(context)!.basicInformation,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
@@ -336,7 +336,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         const SizedBox(height: 24),
         Text(
-          'Age',
+          AppLocalizations.of(context)!.ageOptional,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -347,7 +347,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         const SizedBox(height: 24),
         Text(
-          'Avatar',
+          AppLocalizations.of(context)!.chooseAvatar,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -364,13 +364,13 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Appearance',
+          AppLocalizations.of(context)!.appearanceOptional,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
         
         Text(
-          'Hair Color',
+          AppLocalizations.of(context)!.hairColor,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -390,7 +390,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         const SizedBox(height: 24),
         Text(
-          'Hair Length',
+          AppLocalizations.of(context)!.hairLength,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -401,7 +401,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         const SizedBox(height: 24),
         Text(
-          'Skin Color',
+          AppLocalizations.of(context)!.skinColor,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -421,7 +421,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         const SizedBox(height: 24),
         Text(
-          'Eye Color',
+          AppLocalizations.of(context)!.eyeColor,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -447,13 +447,13 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Personality & Preferences',
+          AppLocalizations.of(context)!.personalityPreferencesOptional,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
         
         Text(
-          'Gender',
+          AppLocalizations.of(context)!.gender,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -464,7 +464,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         const SizedBox(height: 24),
         Text(
-          'Favorite Story Types',
+          AppLocalizations.of(context)!.favoriteStoryTypes,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -481,7 +481,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Additional Notes',
+          AppLocalizations.of(context)!.additionalNotesOptional,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
@@ -496,7 +496,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
             maxLines: 4,
             style: Theme.of(context).textTheme.bodyLarge,
             decoration: InputDecoration(
-              hintText: 'Add any special notes about ${widget.kid.name}...',
+              hintText: AppLocalizations.of(context)!.addSpecialNotesFor(widget.kid.name),
               hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.textGrey,
               ),

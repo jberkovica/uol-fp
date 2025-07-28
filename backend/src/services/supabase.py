@@ -36,7 +36,14 @@ class SupabaseService:
             "id": kid_id,
             "user_id": request.user_id,
             "name": request.name,
+            "age": request.age or 5,
             "avatar_type": request.avatar_type,
+            "hair_color": request.hair_color,
+            "hair_length": request.hair_length,
+            "skin_color": request.skin_color,
+            "eye_color": request.eye_color,
+            "gender": request.gender,
+            "favorite_genres": request.favorite_genres,
             "created_at": datetime.utcnow().isoformat(),
         }
         

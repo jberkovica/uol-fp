@@ -237,4 +237,57 @@ Despite GPT-4's superior factual accuracy, **staying with Gemini** due to:
 
 ---
 
+### Enhanced Kid Profile System Implementation
+
+#### Overview
+Implemented comprehensive kid profile enhancement system with detailed appearance fields, visual selectors, and dedicated edit interface.
+
+#### Key Changes
+
+##### 1. Extended Data Model
+- **Backend**: Added optional fields for hair color/length, skin/eye color, gender, and favorite story genres to Kid model
+- **Database**: New fields stored in Supabase with JSONB support for genre arrays
+- **API**: Updated all Kid-related endpoints (create, update, list) with new fields
+
+##### 2. UI/UX Improvements
+- **Dedicated edit screen**: Full-screen profile editor replacing popup dialog
+- **Visual selectors**: Color palette circles, age grid, multi-select genre tags
+- **Optimistic updates**: Immediate UI feedback without screen reloads
+- **Design compliance**: Follows centralized AppTheme and design system
+
+##### 3. Technical Fixes
+- **API parsing bug**: Fixed KidService endpoint and response parsing for proper data loading
+- **Backend persistence**: Corrected create_kid method to save all new profile fields
+- **Cache management**: Proper invalidation after profile updates
+
+#### Impact
+- **User personalization**: Parents can now create detailed kid profiles with appearance and preferences
+- **Story customization**: Favorite genres enable better story personalization in future features
+- **Inclusive design**: Supports diverse appearance options and gender identities
+- **Professional UX**: Clean, consistent interface following app design standards
+
+**Result**: Complete kid profile management system enabling detailed personalization while maintaining clean, professional user experience.
+
+---
+
+### Code Cleanup: Removed Unused Filename Sanitization
+
+#### Issue
+`sanitize_filename` function existed in validators but was never used in production code - only in tests. This created unnecessary complexity and maintenance burden.
+
+#### Analysis
+- **No actual usage**: Function never called in application code
+- **Architecture mismatch**: App uses UUID-generated filenames (`{story_id}.mp3`) and base64-encoded images, not user-provided filenames
+- **Dead code**: Only existed in tests, indicating leftover from earlier design
+
+#### Changes
+- **Removed** `sanitize_filename` function from `src/core/validators.py`
+- **Removed** all related tests from `tests/unit/test_validators.py`
+- **Verified** Unicode name validation still works properly for international characters
+
+#### Result
+Cleaner, more maintainable codebase without unnecessary complexity. Filename handling now matches actual architecture (UUID-based, no user uploads).
+
+---
+
 _Last updated: 2025-07-28_

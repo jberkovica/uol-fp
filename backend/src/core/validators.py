@@ -67,8 +67,8 @@ def validate_kid_name(name: str) -> None:
     if len(name) > 50:
         raise ValidationError("Name cannot exceed 50 characters")
         
-    # Allow letters, spaces, hyphens, and apostrophes
-    if not re.match(r"^[a-zA-Z\s\-']+$", name):
+    # Allow Unicode letters (including Cyrillic, Latin with diacritics, etc.), spaces, hyphens, and apostrophes
+    if not all(c.isalpha() or c in " -'" for c in name):
         raise ValidationError("Name can only contain letters, spaces, hyphens, and apostrophes")
 
 
@@ -130,24 +130,3 @@ def validate_story_content(content: str) -> None:
         raise ValidationError(f"Story too long ({word_count} words). Maximum 500 words allowed")
 
 
-def sanitize_filename(filename: str) -> str:
-    """
-    Sanitize filename for safe storage.
-    
-    Args:
-        filename: Original filename
-        
-    Returns:
-        Sanitized filename
-    """
-    # Remove any path components
-    filename = filename.split("/")[-1].split("\\")[-1]
-    
-    # Replace spaces and special characters
-    filename = re.sub(r'[^\w\-_\.]', '_', filename)
-    
-    # Ensure it has an extension
-    if "." not in filename:
-        filename += ".mp3"
-        
-    return filename

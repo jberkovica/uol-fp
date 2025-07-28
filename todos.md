@@ -54,6 +54,7 @@ Priority:
 [x] store language in supabase
 [x] parent approve
 [x] alchemy something
+[] upgrade flutter?
 
 
 

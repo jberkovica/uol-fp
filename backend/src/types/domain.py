@@ -34,15 +34,16 @@ class Kid(BaseModel):
     id: str = Field(..., description="Unique identifier")
     user_id: str = Field(..., description="Parent's Supabase Auth ID")
     name: str = Field(..., min_length=1, max_length=50)
+    age: Optional[int] = Field(default=5, ge=3, le=12, description="Child's age (3-12)")
     avatar_type: str = Field(default="profile1")
+    hair_color: Optional[str] = Field(None, description="Hair color key")
+    hair_length: Optional[str] = Field(None, description="Hair length key")
+    skin_color: Optional[str] = Field(None, description="Skin color key")
+    eye_color: Optional[str] = Field(None, description="Eye color key")
+    gender: Optional[str] = Field(None, description="Gender identity")
+    favorite_genres: list[str] = Field(default_factory=list, description="Preferred story genres")
     created_at: datetime
     updated_at: Optional[datetime] = None
-    
-    # Virtual field for backward compatibility
-    @property
-    def age(self) -> int:
-        """Return a default age for backward compatibility."""
-        return 5
     
     class Config:
         from_attributes = True

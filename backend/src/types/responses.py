@@ -35,8 +35,14 @@ class KidResponse(BaseModel):
     id: str
     user_id: str
     name: str
-    age: int
+    age: Optional[int] = None
     avatar_type: str
+    hair_color: Optional[str] = None
+    hair_length: Optional[str] = None
+    skin_color: Optional[str] = None
+    eye_color: Optional[str] = None
+    gender: Optional[str] = None
+    favorite_genres: List[str] = Field(default_factory=list)
     stories_count: int = 0
     created_at: datetime
     

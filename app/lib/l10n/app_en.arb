@@ -460,5 +460,51 @@
   "failedToStopRecording": "Failed to stop recording",
   "noRecordingAvailable": "No recording available",
   
-  "appleSignUpComingSoon": "Apple sign up coming soon!"
+  "appleSignUpComingSoon": "Apple sign up coming soon!",
+  
+  "addNewProfile": "Add New Profile",
+  "createProfile": "Create Profile",
+  "editProfile": "Edit Profile",
+  "createNewProfile": "Create New Profile",
+  "addDetailsForChild": "Add details for your child",
+  "basicInformation": "Basic Information",
+  "appearance": "Appearance",
+  "appearanceOptional": "Appearance (Optional)",
+  "personalityPreferences": "Personality & Preferences",
+  "personalityPreferencesOptional": "Personality & Preferences (Optional)",
+  "additionalNotes": "Additional Notes",
+  "additionalNotesOptional": "Additional Notes (Optional)",
+  "ageOptional": "Age (Optional)",
+  "chooseAvatar": "Choose Avatar",
+  "hairColor": "Hair Color",
+  "hairColorOptional": "Hair Color (Optional)",
+  "hairLength": "Hair Length",
+  "hairLengthOptional": "Hair Length (Optional)",
+  "skinColor": "Skin Color",
+  "skinColorOptional": "Skin Color (Optional)",
+  "eyeColor": "Eye Color",
+  "eyeColorOptional": "Eye Color (Optional)",
+  "gender": "Gender",
+  "genderOptional": "Gender (Optional)",
+  "favoriteStoryTypes": "Favorite Story Types",
+  "favoriteStoryTypesOptional": "Favorite Story Types (Optional)",
+  "addSpecialNotes": "Add any special notes about your child...",
+  "addSpecialNotesFor": "Add any special notes about {childName}...",
+  "@addSpecialNotesFor": {
+    "placeholders": {
+      "childName": {
+        "type": "String"
+      }
+    }
+  },
+  "saveChanges": "Save Changes",
+  "creating": "Creating...",
+  "failedToUpdateProfile": "Failed to update profile: {error}",
+  "@failedToUpdateProfile": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 }

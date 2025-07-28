@@ -19,7 +19,8 @@ async def create_kid(request: CreateKidRequest) -> KidResponse:
     try:
         # Validate input
         validate_kid_name(request.name)
-        validate_age(request.age)
+        if request.age is not None:
+            validate_age(request.age)
         validate_uuid(request.user_id, "user_id")
         
         # Create kid profile
@@ -35,6 +36,12 @@ async def create_kid(request: CreateKidRequest) -> KidResponse:
             name=kid.name,
             age=kid.age,
             avatar_type=kid.avatar_type,
+            hair_color=kid.hair_color,
+            hair_length=kid.hair_length,
+            skin_color=kid.skin_color,
+            eye_color=kid.eye_color,
+            gender=kid.gender,
+            favorite_genres=kid.favorite_genres,
             stories_count=0,
             created_at=kid.created_at
         )
@@ -67,6 +74,12 @@ async def get_kid(kid_id: str) -> KidResponse:
             name=kid.name,
             age=kid.age,
             avatar_type=kid.avatar_type,
+            hair_color=kid.hair_color,
+            hair_length=kid.hair_length,
+            skin_color=kid.skin_color,
+            eye_color=kid.eye_color,
+            gender=kid.gender,
+            favorite_genres=kid.favorite_genres,
             stories_count=len(stories),
             created_at=kid.created_at
         )
@@ -100,6 +113,12 @@ async def get_kids_for_user(user_id: str) -> KidListResponse:
                     name=kid.name,
                     age=kid.age,
                     avatar_type=kid.avatar_type,
+                    hair_color=kid.hair_color,
+                    hair_length=kid.hair_length,
+                    skin_color=kid.skin_color,
+                    eye_color=kid.eye_color,
+                    gender=kid.gender,
+                    favorite_genres=kid.favorite_genres,
                     stories_count=len(stories),
                     created_at=kid.created_at
                 )
@@ -144,6 +163,12 @@ async def update_kid(kid_id: str, request: UpdateKidRequest) -> KidResponse:
             name=kid.name,
             age=kid.age,
             avatar_type=kid.avatar_type,
+            hair_color=kid.hair_color,
+            hair_length=kid.hair_length,
+            skin_color=kid.skin_color,
+            eye_color=kid.eye_color,
+            gender=kid.gender,
+            favorite_genres=kid.favorite_genres,
             stories_count=len(stories),
             created_at=kid.created_at
         )

@@ -1098,6 +1098,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No recording available'**
   String get noRecordingAvailable;
+
+  /// No description provided for @addNewProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Add New Profile'**
+  String get addNewProfile;
+
+  /// No description provided for @createProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Profile'**
+  String get createProfile;
+
+  /// No description provided for @createNewProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Create New Profile'**
+  String get createNewProfile;
+
+  /// No description provided for @addDetailsForChild.
+  ///
+  /// In en, this message translates to:
+  /// **'Add details for your child'**
+  String get addDetailsForChild;
+
+  /// No description provided for @basicInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Information'**
+  String get basicInformation;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @appearanceOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance (Optional)'**
+  String get appearanceOptional;
+
+  /// No description provided for @personalityPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Personality & Preferences'**
+  String get personalityPreferences;
+
+  /// No description provided for @personalityPreferencesOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Personality & Preferences (Optional)'**
+  String get personalityPreferencesOptional;
+
+  /// No description provided for @additionalNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Notes'**
+  String get additionalNotes;
+
+  /// No description provided for @additionalNotesOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Notes (Optional)'**
+  String get additionalNotesOptional;
+
+  /// No description provided for @ageOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Age (Optional)'**
+  String get ageOptional;
+
+  /// No description provided for @chooseAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Avatar'**
+  String get chooseAvatar;
+
+  /// No description provided for @hairColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Hair Color'**
+  String get hairColor;
+
+  /// No description provided for @hairColorOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Hair Color (Optional)'**
+  String get hairColorOptional;
+
+  /// No description provided for @hairLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Hair Length'**
+  String get hairLength;
+
+  /// No description provided for @hairLengthOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Hair Length (Optional)'**
+  String get hairLengthOptional;
+
+  /// No description provided for @skinColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Skin Color'**
+  String get skinColor;
+
+  /// No description provided for @skinColorOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Skin Color (Optional)'**
+  String get skinColorOptional;
+
+  /// No description provided for @eyeColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye Color'**
+  String get eyeColor;
+
+  /// No description provided for @eyeColorOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye Color (Optional)'**
+  String get eyeColorOptional;
+
+  /// No description provided for @gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get gender;
+
+  /// No description provided for @genderOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender (Optional)'**
+  String get genderOptional;
+
+  /// No description provided for @favoriteStoryTypes.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite Story Types'**
+  String get favoriteStoryTypes;
+
+  /// No description provided for @favoriteStoryTypesOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite Story Types (Optional)'**
+  String get favoriteStoryTypesOptional;
+
+  /// No description provided for @addSpecialNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Add any special notes about your child...'**
+  String get addSpecialNotes;
+
+  /// No description provided for @addSpecialNotesFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Add any special notes about {childName}...'**
+  String addSpecialNotesFor(String childName);
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get saveChanges;
+
+  /// No description provided for @creating.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating...'**
+  String get creating;
+
+  /// No description provided for @failedToUpdateProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update profile: {error}'**
+  String failedToUpdateProfile(String error);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
