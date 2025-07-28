@@ -50,7 +50,7 @@ class KidService {
   static Future<Kid> createKid({
     required String userId,
     required String name,
-    required int age,
+    int? age,
     String avatarType = 'profile1',
     String? hairColor,
     String? hairLength,

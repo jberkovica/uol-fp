@@ -56,10 +56,12 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
   Future<void> _showCreateKidDialog() async {
     final nameController = TextEditingController();
     String selectedAvatarType = 'profile1';
-    int selectedAge = 5; // Default age
+    int? selectedAge = 5; // Default age, but optional
     String? selectedHairColor;
+    String? selectedHairLength;
     String? selectedSkinColor;
     String? selectedEyeColor;
+    String? selectedGender;
     List<String> selectedGenres = [];
 
     final result = await showDialog<Kid>(
@@ -76,7 +78,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
               ),
               title: Text(
                 'Add New Profile',
-                style: Theme.of(context).textTheme.headlineLarge,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               content: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
@@ -86,71 +88,112 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Name Field
-                      TextField(
-                        controller: nameController,
-                        decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!.enterChildName,
-                          border: const OutlineInputBorder(),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.lightGrey, width: 1),
                         ),
-                        style: Theme.of(context).textTheme.headlineLarge,
-                        autofocus: true,
+                        child: TextField(
+                          controller: nameController,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                          decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!.enterChildName,
+                            hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: AppColors.textGrey,
+                            ),
+                            prefixIcon: Icon(LucideIcons.user, color: AppColors.textGrey, size: 20),
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.all(16),
+                          ),
+                          autofocus: true,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       
                       // Age Selection
                       Text(
-                        'Age:',
-                        style: Theme.of(context).textTheme.headlineLarge,
+                        'Age (Optional):',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textDark,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
-                        children: List.generate(10, (index) {
-                          final age = index + 3; // Ages 3-12
-                          return GestureDetector(
+                        children: [
+                          // None option
+                          GestureDetector(
                             onTap: () {
                               setDialogState(() {
-                                selectedAge = age;
+                                selectedAge = null;
                               });
                             },
                             child: Container(
-                              width: 40,
-                              height: 40,
+                              width: 44,
+                              height: 44,
                               decoration: BoxDecoration(
-                                color: selectedAge == age 
-                                    ? AppColors.primary 
-                                    : AppColors.lightGrey,
-                                borderRadius: BorderRadius.circular(20),
+                                color: selectedAge == null ? AppColors.primary : AppColors.white,
+                                borderRadius: BorderRadius.circular(12),
                                 border: Border.all(
-                                  color: selectedAge == age 
-                                      ? AppColors.primary 
-                                      : AppColors.grey,
+                                  color: selectedAge == null ? AppColors.primary : AppColors.lightGrey,
                                   width: 2,
                                 ),
                               ),
                               child: Center(
-                                child: Text(
-                                  age.toString(),
-                                  style: TextStyle(
-                                    color: selectedAge == age 
-                                        ? Colors.white 
-                                        : AppColors.textDark,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                child: selectedAge == null
+                                    ? Icon(LucideIcons.check, size: 20, color: Colors.white)
+                                    : Icon(LucideIcons.x, size: 16, color: AppColors.grey),
+                              ),
+                            ),
+                          ),
+                          // Age options
+                          ...List.generate(10, (index) {
+                            final age = index + 3;
+                            final isSelected = selectedAge == age;
+                            
+                            return GestureDetector(
+                              onTap: () {
+                                setDialogState(() {
+                                  selectedAge = age;
+                                });
+                              },
+                              child: Container(
+                                width: 44,
+                                height: 44,
+                                decoration: BoxDecoration(
+                                  color: isSelected ? AppColors.primary : AppColors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: isSelected ? AppColors.primary : AppColors.lightGrey,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    age.toString(),
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      color: isSelected ? Colors.white : AppColors.textDark,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          }),
+                        ],
                       ),
                       const SizedBox(height: 20),
                       
                       // Avatar Selection
                       Text(
                         'Choose Avatar:',
-                        style: Theme.of(context).textTheme.headlineLarge,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textDark,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       Wrap(
@@ -184,7 +227,10 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       // Hair Color Selection
                       Text(
                         'Hair Color (Optional):',
-                        style: Theme.of(context).textTheme.headlineLarge,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textDark,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       _buildColorSelector(
@@ -198,10 +244,32 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       ),
                       const SizedBox(height: 20),
                       
+                      // Hair Length Selection
+                      Text(
+                        'Hair Length (Optional):',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textDark,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      _buildHairLengthSelector(
+                        selectedLength: selectedHairLength,
+                        onLengthSelected: (length) {
+                          setDialogState(() {
+                            selectedHairLength = length;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      
                       // Skin Color Selection
                       Text(
                         'Skin Color (Optional):',
-                        style: Theme.of(context).textTheme.headlineLarge,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textDark,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       _buildColorSelector(
@@ -218,7 +286,10 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       // Eye Color Selection
                       Text(
                         'Eye Color (Optional):',
-                        style: Theme.of(context).textTheme.headlineLarge,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textDark,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       _buildColorSelector(
@@ -232,10 +303,32 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       ),
                       const SizedBox(height: 20),
                       
+                      // Gender Selection
+                      Text(
+                        'Gender (Optional):',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textDark,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      _buildGenderSelector(
+                        selectedGender: selectedGender,
+                        onGenderSelected: (gender) {
+                          setDialogState(() {
+                            selectedGender = gender;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      
                       // Favorite Genres Selection
                       Text(
                         'Favorite Story Types (Optional):',
-                        style: Theme.of(context).textTheme.headlineLarge,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textDark,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       _buildGenreSelector(
@@ -253,16 +346,20 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
+                  style: AppTheme.cancelButtonStyle,
                   child: Text(
                     'Cancel',
-                    style: Theme.of(context).textTheme.headlineLarge,
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
                 ElevatedButton(
                   onPressed: () async {
                     if (nameController.text.trim().isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseEnterName)),
+                        SnackBar(
+                          content: Text(AppLocalizations.of(context)!.pleaseEnterName),
+                          backgroundColor: AppColors.error,
+                        ),
                       );
                       return;
                     }
@@ -277,25 +374,29 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                         age: selectedAge,
                         avatarType: selectedAvatarType,
                         hairColor: selectedHairColor,
+                        hairLength: selectedHairLength,
                         skinColor: selectedSkinColor,
                         eyeColor: selectedEyeColor,
+                        gender: selectedGender,
                         favoriteGenres: selectedGenres,
                       );
                       Navigator.of(context).pop(newKid);
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(AppLocalizations.of(context)!.failedToCreateProfile(e.toString()))),
+                        SnackBar(
+                          content: Text('Failed to create profile: ${e.toString()}'),
+                          backgroundColor: AppColors.error,
+                        ),
                       );
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    shadowColor: Colors.transparent,
-                    surfaceTintColor: Colors.transparent,
-                  ),
+                  style: AppTheme.modalActionButtonStyle,
                   child: Text(
-                    'Add',
-                    style: Theme.of(context).textTheme.headlineLarge,
+                    'Create Profile',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],
@@ -528,19 +629,19 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
         GestureDetector(
           onTap: () => onColorSelected(null),
           child: Container(
-            width: 32,
-            height: 32,
+            width: 48,
+            height: 48,
             decoration: BoxDecoration(
               color: AppColors.lightGrey,
               shape: BoxShape.circle,
               border: Border.all(
-                color: selectedColor == null ? AppColors.primary : AppColors.grey,
-                width: selectedColor == null ? 3 : 1,
+                color: selectedColor == null ? AppColors.primary : Colors.transparent,
+                width: 3,
               ),
             ),
             child: selectedColor == null
-                ? const Icon(Icons.check, size: 16, color: AppColors.primary)
-                : const Icon(Icons.close, size: 12, color: AppColors.grey),
+                ? Icon(LucideIcons.check, size: 20, color: AppColors.primary)
+                : Icon(LucideIcons.x, size: 16, color: AppColors.grey),
           ),
         ),
         // Color options
@@ -552,20 +653,27 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
           return GestureDetector(
             onTap: () => onColorSelected(colorKey),
             child: Container(
-              width: 32,
-              height: 32,
+              width: 48,
+              height: 48,
               decoration: BoxDecoration(
                 color: color,
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected ? AppColors.primary : AppColors.grey,
-                  width: isSelected ? 3 : 1,
+                  color: isSelected ? AppColors.primary : Colors.transparent,
+                  width: 3,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 6,
+                    offset: Offset(0, 2),
+                  ),
+                ],
               ),
               child: isSelected
                   ? Icon(
-                      Icons.check,
-                      size: 16,
+                      LucideIcons.check,
+                      size: 20,
                       color: _getContrastColor(color),
                     )
                   : null,
@@ -598,21 +706,96 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
             onGenresChanged(newGenres);
           },
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: isSelected ? AppColors.secondary : AppColors.lightGrey,
-              borderRadius: BorderRadius.circular(16),
+              color: isSelected ? AppColors.secondary : AppColors.white,
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: isSelected ? AppColors.primary : AppColors.grey,
-                width: isSelected ? 2 : 1,
+                color: isSelected ? AppColors.secondary : AppColors.lightGrey,
+                width: 2,
               ),
             ),
             child: Text(
               displayName,
-              style: TextStyle(
-                color: isSelected ? AppColors.textDark : AppColors.textGrey,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                fontSize: 12,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: isSelected ? AppColors.textDark : AppColors.textDark,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildHairLengthSelector({
+    required String? selectedLength,
+    required Function(String?) onLengthSelected,
+  }) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: KidProfileConstants.hairLengths.map((length) {
+        final isSelected = selectedLength == length;
+        final displayName = KidProfileConstants.getHairLengthDisplayName(length);
+        
+        return GestureDetector(
+          onTap: () {
+            onLengthSelected(isSelected ? null : length);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              color: isSelected ? AppColors.primary : AppColors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: isSelected ? AppColors.primary : AppColors.lightGrey,
+                width: 2,
+              ),
+            ),
+            child: Text(
+              displayName,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: isSelected ? Colors.white : AppColors.textDark,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildGenderSelector({
+    required String? selectedGender,
+    required Function(String?) onGenderSelected,
+  }) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: KidProfileConstants.genderOptions.map((gender) {
+        final isSelected = selectedGender == gender;
+        final displayName = KidProfileConstants.getGenderDisplayName(gender);
+        
+        return GestureDetector(
+          onTap: () {
+            onGenderSelected(isSelected ? null : gender);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              color: isSelected ? AppColors.primary : AppColors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: isSelected ? AppColors.primary : AppColors.lightGrey,
+                width: 2,
+              ),
+            ),
+            child: Text(
+              displayName,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: isSelected ? Colors.white : AppColors.textDark,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
               ),
             ),
           ),
