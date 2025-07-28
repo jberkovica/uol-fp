@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
+import '../../constants/kid_profile_constants.dart';
 import '../../widgets/profile_avatar.dart';
 import '../../widgets/responsive_wrapper.dart';
 import '../../services/auth_service.dart';
@@ -56,6 +57,10 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
     final nameController = TextEditingController();
     String selectedAvatarType = 'profile1';
     int selectedAge = 5; // Default age
+    String? selectedHairColor;
+    String? selectedSkinColor;
+    String? selectedEyeColor;
+    List<String> selectedGenres = [];
 
     final result = await showDialog<Kid>(
       context: context,
@@ -73,99 +78,177 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                 'Add New Profile',
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!.enterChildName,
-                      border: const OutlineInputBorder(),
-                    ),
-                    style: Theme.of(context).textTheme.headlineLarge,
-                    autofocus: true,
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Age:',
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: List.generate(10, (index) {
-                      final age = index + 3; // Ages 3-12
-                      return GestureDetector(
-                        onTap: () {
-                          setDialogState(() {
-                            selectedAge = age;
-                          });
-                        },
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: selectedAge == age 
-                                ? AppColors.primary 
-                                : AppColors.lightGrey,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: selectedAge == age 
-                                  ? AppColors.primary 
-                                  : AppColors.grey,
-                              width: 2,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              age.toString(),
-                              style: TextStyle(
+              content: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Name Field
+                      TextField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.enterChildName,
+                          border: const OutlineInputBorder(),
+                        ),
+                        style: Theme.of(context).textTheme.headlineLarge,
+                        autofocus: true,
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Age Selection
+                      Text(
+                        'Age:',
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      const SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: List.generate(10, (index) {
+                          final age = index + 3; // Ages 3-12
+                          return GestureDetector(
+                            onTap: () {
+                              setDialogState(() {
+                                selectedAge = age;
+                              });
+                            },
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
                                 color: selectedAge == age 
-                                    ? Colors.white 
-                                    : AppColors.textDark,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                    ? AppColors.primary 
+                                    : AppColors.lightGrey,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: selectedAge == age 
+                                      ? AppColors.primary 
+                                      : AppColors.grey,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  age.toString(),
+                                  style: TextStyle(
+                                    color: selectedAge == age 
+                                        ? Colors.white 
+                                        : AppColors.textDark,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    'Choose Avatar:',
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: ProfileType.values.map((type) {
-                      final typeString = ProfileAvatar.typeToString(type);
-                      return GestureDetector(
-                        onTap: () {
+                          );
+                        }),
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Avatar Selection
+                      Text(
+                        'Choose Avatar:',
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      const SizedBox(height: 12),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: ProfileType.values.map((type) {
+                          final typeString = ProfileAvatar.typeToString(type);
+                          return GestureDetector(
+                            onTap: () {
+                              setDialogState(() {
+                                selectedAvatarType = typeString;
+                              });
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: selectedAvatarType == typeString
+                                    ? Border.all(color: AppColors.primary, width: 3)
+                                    : null,
+                              ),
+                              child: ProfileAvatar(
+                                radius: 28,
+                                profileType: type,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Hair Color Selection
+                      Text(
+                        'Hair Color (Optional):',
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildColorSelector(
+                        colors: KidProfileConstants.hairColors,
+                        selectedColor: selectedHairColor,
+                        onColorSelected: (color) {
                           setDialogState(() {
-                            selectedAvatarType = typeString;
+                            selectedHairColor = color;
                           });
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: selectedAvatarType == typeString
-                                ? Border.all(color: AppColors.primary, width: 3)
-                                : null,
-                          ),
-                          child: ProfileAvatar(
-                            radius: 28, // Smaller for mobile dialog
-                            profileType: type,
-                          ),
-                        ),
-                      );
-                    }).toList(),
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Skin Color Selection
+                      Text(
+                        'Skin Color (Optional):',
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildColorSelector(
+                        colors: KidProfileConstants.skinColors,
+                        selectedColor: selectedSkinColor,
+                        onColorSelected: (color) {
+                          setDialogState(() {
+                            selectedSkinColor = color;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Eye Color Selection
+                      Text(
+                        'Eye Color (Optional):',
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildColorSelector(
+                        colors: KidProfileConstants.eyeColors,
+                        selectedColor: selectedEyeColor,
+                        onColorSelected: (color) {
+                          setDialogState(() {
+                            selectedEyeColor = color;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      
+                      // Favorite Genres Selection
+                      Text(
+                        'Favorite Story Types (Optional):',
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      const SizedBox(height: 12),
+                      _buildGenreSelector(
+                        selectedGenres: selectedGenres,
+                        onGenresChanged: (genres) {
+                          setDialogState(() {
+                            selectedGenres = genres;
+                          });
+                        },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
               actions: [
                 TextButton(
@@ -193,6 +276,10 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                         name: nameController.text.trim(),
                         age: selectedAge,
                         avatarType: selectedAvatarType,
+                        hairColor: selectedHairColor,
+                        skinColor: selectedSkinColor,
+                        eyeColor: selectedEyeColor,
+                        favoriteGenres: selectedGenres,
                       );
                       Navigator.of(context).pop(newKid);
                     } catch (e) {
@@ -426,5 +513,117 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildColorSelector({
+    required Map<String, Color> colors,
+    required String? selectedColor,
+    required Function(String?) onColorSelected,
+  }) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        // "None" option
+        GestureDetector(
+          onTap: () => onColorSelected(null),
+          child: Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: AppColors.lightGrey,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: selectedColor == null ? AppColors.primary : AppColors.grey,
+                width: selectedColor == null ? 3 : 1,
+              ),
+            ),
+            child: selectedColor == null
+                ? const Icon(Icons.check, size: 16, color: AppColors.primary)
+                : const Icon(Icons.close, size: 12, color: AppColors.grey),
+          ),
+        ),
+        // Color options
+        ...colors.entries.map((entry) {
+          final colorKey = entry.key;
+          final color = entry.value;
+          final isSelected = selectedColor == colorKey;
+          
+          return GestureDetector(
+            onTap: () => onColorSelected(colorKey),
+            child: Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected ? AppColors.primary : AppColors.grey,
+                  width: isSelected ? 3 : 1,
+                ),
+              ),
+              child: isSelected
+                  ? Icon(
+                      Icons.check,
+                      size: 16,
+                      color: _getContrastColor(color),
+                    )
+                  : null,
+            ),
+          );
+        }),
+      ],
+    );
+  }
+
+  Widget _buildGenreSelector({
+    required List<String> selectedGenres,
+    required Function(List<String>) onGenresChanged,
+  }) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: KidProfileConstants.storyGenres.map((genre) {
+        final isSelected = selectedGenres.contains(genre);
+        final displayName = KidProfileConstants.getGenreDisplayName(genre);
+        
+        return GestureDetector(
+          onTap: () {
+            final newGenres = List<String>.from(selectedGenres);
+            if (isSelected) {
+              newGenres.remove(genre);
+            } else {
+              newGenres.add(genre);
+            }
+            onGenresChanged(newGenres);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: isSelected ? AppColors.secondary : AppColors.lightGrey,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isSelected ? AppColors.primary : AppColors.grey,
+                width: isSelected ? 2 : 1,
+              ),
+            ),
+            child: Text(
+              displayName,
+              style: TextStyle(
+                color: isSelected ? AppColors.textDark : AppColors.textGrey,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Color _getContrastColor(Color backgroundColor) {
+    // Calculate luminance to determine if we need dark or light text
+    final luminance = backgroundColor.computeLuminance();
+    return luminance > 0.5 ? Colors.black : Colors.white;
   }
 }

@@ -24,12 +24,13 @@ class KidService {
     }
 
     try {
-      final uri = Uri.parse('$baseUrl/users/$userId/kids');
+      final uri = Uri.parse('$baseUrl/kids/user/$userId');
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        final kids = data.map((item) => Kid.fromJson(item)).toList();
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final List<dynamic> kidsData = responseData['kids'] ?? [];
+        final kids = kidsData.map((item) => Kid.fromJson(item)).toList();
         
         // Update cache
         _kidsCache[userId] = kids;
@@ -51,6 +52,12 @@ class KidService {
     required String name,
     required int age,
     String avatarType = 'profile1',
+    String? hairColor,
+    String? hairLength,
+    String? skinColor,
+    String? eyeColor,
+    String? gender,
+    List<String>? favoriteGenres,
   }) async {
     try {
       final uri = Uri.parse('$baseUrl/kids/');
@@ -62,6 +69,12 @@ class KidService {
           'name': name.trim(),
           'age': age,
           'avatar_type': avatarType,
+          'hair_color': hairColor,
+          'hair_length': hairLength,
+          'skin_color': skinColor,
+          'eye_color': eyeColor,
+          'gender': gender,
+          'favorite_genres': favoriteGenres ?? [],
         }),
       );
 
@@ -103,14 +116,30 @@ class KidService {
   static Future<Kid> updateKid({
     required String kidId,
     String? name,
+    int? age,
     String? avatarType,
+    String? hairColor,
+    String? hairLength,
+    String? skinColor,
+    String? eyeColor,
+    String? gender,
+    List<String>? favoriteGenres,
+    String? notes,
   }) async {
     try {
       final uri = Uri.parse('$baseUrl/kids/$kidId');
       final updateData = <String, dynamic>{};
       
       if (name != null) updateData['name'] = name.trim();
+      if (age != null) updateData['age'] = age;
       if (avatarType != null) updateData['avatar_type'] = avatarType;
+      if (hairColor != null) updateData['hair_color'] = hairColor;
+      if (hairLength != null) updateData['hair_length'] = hairLength;
+      if (skinColor != null) updateData['skin_color'] = skinColor;
+      if (eyeColor != null) updateData['eye_color'] = eyeColor;
+      if (gender != null) updateData['gender'] = gender;
+      if (favoriteGenres != null) updateData['favorite_genres'] = favoriteGenres;
+      if (notes != null) updateData['notes'] = notes;
 
       final response = await http.put(
         uri,
@@ -120,6 +149,7 @@ class KidService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        clearCache(); // Clear cache when data changes
         return Kid.fromJson(data);
       } else if (response.statusCode == 404) {
         throw Exception('Kid not found');
