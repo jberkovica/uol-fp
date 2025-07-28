@@ -58,7 +58,7 @@ Priority:
 
 
 [] auth with apple and google
-[] input as audio or text (whisper for audio)
+[x] input as audio or text (whisper for audio)
 [] kids profile info
 [] analytics - posthog
 
@@ -69,6 +69,7 @@ Priority:
 [] language detection (system) if not in our selection
 [] improve prompts: lv voice slower and emotional
 [] fallback to another vendor/model of we hit limit
+[] improve db structure
 
 [] send for parent review without audio, because parent can't impact audio quality only text
 [] email waiting stories can be shown in app too

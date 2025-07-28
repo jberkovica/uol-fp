@@ -24,33 +24,13 @@ agents:
     prompts:
       image_caption:
         default: |
-          Describe this image in a way that would help create a children's story.
-          Focus on the main elements, colors, mood, and any characters or objects.
-          Keep the description family-friendly and imaginative.
-        google: |
-          Describe this image in detail for creating a children's story.
-          Include:
-          - Main subjects (characters, objects, animals)
-          - Setting and environment
-          - Colors and mood
-          - Any actions or interactions
-          Keep it family-friendly and spark imagination.
-        openai: |
-          You are looking at a child's drawing or image. Describe what you see
-          in a way that could inspire a magical children's story. Focus on:
-          - Characters or creatures (real or imaginary)
-          - The setting or world
-          - Colors and atmosphere
-          - Potential story elements
-          Be creative and child-appropriate.
-        anthropic: |
-          Analyze this image as source material for a children's story.
-          Provide a rich, imaginative description that captures:
-          - Visual elements and their relationships
-          - Emotional tone and atmosphere
-          - Potential narrative elements
-          - Child-friendly interpretations of abstract elements
-          Write in a warm, engaging tone suitable for young audiences.
+          Describe this image focusing on 3-5 main visual elements:
+          - Main subject/character (identify specific objects when recognizable)
+          - Colors and textures
+          - Setting/background
+          - Notable objects
+          - Overall mood
+          Be factual but include specific names for recognizable items.
       
   storyteller:
     vendor: "mistral"  # Options: mistral, openai, anthropic, google

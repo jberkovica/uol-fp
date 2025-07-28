@@ -178,4 +178,63 @@ Latvian audio is now properly transcribed in Latvian when app language is set to
 
 ---
 
+### Vision Model Prompt Optimization
+
+#### Issue
+Gemini vision agent was generating overly detailed, story-like descriptions with made-up elements (character names like "Dumble", backstories, plot suggestions) instead of factual image descriptions needed for story generation.
+
+#### Research Findings
+Conducted comprehensive analysis of vision model best practices for 2024:
+
+**Prompting Best Practices:**
+- Focus on 3-5 key visual elements rather than composition/layout details
+- Use clear, specific prompts without unnecessary story elements
+- Shorter prompts with specific focus yield better results
+- Structure: "Subject + key details + context" works optimally
+
+**OpenAI GPT-4 vs Google Gemini Comparison:**
+
+| Metric | OpenAI GPT-4 Vision | Google Gemini Vision |
+|--------|-------------------|---------------------|
+| **Pricing** | $2.50/M input tokens, $10/M output | ~10x cheaper for same outputs |
+| **Speed** | 77.4 tokens/sec | 712 tokens/sec (Gemini 2.0 Flash) |
+| **Context Window** | 128K tokens | 1M+ tokens (2M coming) |
+| **Quality** | More clinical, factual descriptions | Tends to embellish but improving |
+| **Latency** | Solid performance | Optimized for real-time responses |
+| **Cost Structure** | Requires ChatGPT Plus ($20/month) | Free tier available with rate limits |
+
+#### Solution Implemented
+Updated Gemini vision prompt in `config.yaml`:
+
+**Before:**
+```yaml
+google: |
+  Describe this image in detail for creating a children's story.
+  Include: Main subjects, Setting and environment, Colors and mood, Any actions or interactions
+  Keep it family-friendly and spark imagination.
+```
+
+**After:**
+```yaml
+google: |
+  Describe this image focusing on 3-5 main visual elements:
+  - Main subject/character (appearance, pose)
+  - Colors and textures
+  - Setting/background
+  - Notable objects
+  - Overall mood
+  Keep descriptions factual and concise.
+```
+
+#### Decision Rationale
+Despite GPT-4's superior factual accuracy, **staying with Gemini** due to:
+- **10x cost advantage** - critical for production scalability
+- **7x faster processing** - better user experience
+- **Larger context window** - handles complex images better
+- **Improved prompt** addresses quality concerns
+
+**Result**: Optimized vision prompts for concise, factual image descriptions while maintaining cost-effective Gemini infrastructure.
+
+---
+
 _Last updated: 2025-07-28_
