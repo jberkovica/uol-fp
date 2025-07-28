@@ -539,4 +539,22 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get pleaseSelectChild => 'Lūdzu, vispirms izvēlieties bērnu';
+
+  @override
+  String get recording => 'Ierakstīšana';
+
+  @override
+  String get stopRecording => 'Beigt ierakstīšanu';
+
+  @override
+  String get microphonePermissionRequired => 'Mikrofonam ir nepieciešama atļauja audio ierakstīšanai';
+
+  @override
+  String get failedToStartRecording => 'Neizdevās sākt ierakstīšanu';
+
+  @override
+  String get failedToStopRecording => 'Neizdevās beigt ierakstīšanu';
+
+  @override
+  String get noRecordingAvailable => 'Ieraksts nav pieejams';
 }

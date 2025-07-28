@@ -453,5 +453,12 @@
   "textTooLong": "Text is too long. Please keep it under 500 characters",
   "pleaseSelectChild": "Please select a child first",
   
+  "recording": "Recording",
+  "stopRecording": "Stop Recording",
+  "microphonePermissionRequired": "Microphone permission is required to record audio",
+  "failedToStartRecording": "Failed to start recording",
+  "failedToStopRecording": "Failed to stop recording",
+  "noRecordingAvailable": "No recording available",
+  
   "appleSignUpComingSoon": "Apple sign up coming soon!"
 }

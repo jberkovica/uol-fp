@@ -179,5 +179,12 @@
   "textTooLong": "Teksts ir pārāk garš. Lūdzu, ierobežojiet to līdz 500 simboliem",
   "pleaseSelectChild": "Lūdzu, vispirms izvēlieties bērnu",
   
+  "recording": "Ierakstīšana",
+  "stopRecording": "Beigt ierakstīšanu",
+  "microphonePermissionRequired": "Mikrofonam ir nepieciešama atļauja audio ierakstīšanai",
+  "failedToStartRecording": "Neizdevās sākt ierakstīšanu",
+  "failedToStopRecording": "Neizdevās beigt ierakstīšanu",
+  "noRecordingAvailable": "Ieraksts nav pieejams",
+  
   "logout": "Iziet no konta"
 }

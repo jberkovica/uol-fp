@@ -130,10 +130,29 @@ class SupabaseService:
         """Update story status."""
         return await self.update_story(story_id, {"status": status.value})
     
+    # Story Input Operations
+    async def create_story_input(self, input_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Create a new story input record."""
+        input_id = str(uuid.uuid4())
+        data = {
+            "id": input_id,
+            **input_data,
+            "created_at": datetime.utcnow().isoformat(),
+        }
+        
+        result = self.client.table("story_inputs").insert(data).execute()
+        return result.data[0] if result.data else {}
+    
+    async def get_story_input(self, story_id: str) -> Optional[Dict[str, Any]]:
+        """Get story input data for a story."""
+        result = self.client.table("story_inputs").select("*").eq("story_id", story_id).execute()
+        return result.data[0] if result.data else None
+    
     async def get_pending_stories(self) -> List[Story]:
         """Get all pending stories for parent review."""
         try:
-            result = self.client.table("stories").select("*, kids!inner(name)").eq("status", "pending").order("created_at.desc").execute()
+            # Get stories with kids info and story inputs
+            result = self.client.table("stories").select("*, kids!inner(name), story_inputs!left(input_value)").eq("status", "pending").order("created_at.desc").execute()
             
             stories = []
             for item in result.data:
@@ -142,6 +161,11 @@ class SupabaseService:
                 audio_url = None
                 if audio_filename:
                     audio_url = f"{self.storage_bucket}/{audio_filename}"
+                
+                # Get caption from story_inputs
+                caption = ""
+                if item.get("story_inputs") and len(item["story_inputs"]) > 0:
+                    caption = item["story_inputs"][0].get("input_value", "")
                 
                 story = Story(
                     id=item["id"],
@@ -154,7 +178,7 @@ class SupabaseService:
                     language=Language(item.get("language", "english")),
                     created_at=datetime.fromisoformat(item["created_at"].replace('Z', '+00:00')),
                     updated_at=datetime.fromisoformat(item["updated_at"].replace('Z', '+00:00')) if item.get("updated_at") else None,
-                    image_description=item.get("image_description", ""),
+                    image_description=caption,  # Use input_value from story_inputs
                     audio_filename=audio_filename
                 )
                 stories.append(story)

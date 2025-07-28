@@ -539,4 +539,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pleaseSelectChild => 'Please select a child first';
+
+  @override
+  String get recording => 'Recording';
+
+  @override
+  String get stopRecording => 'Stop Recording';
+
+  @override
+  String get microphonePermissionRequired => 'Microphone permission is required to record audio';
+
+  @override
+  String get failedToStartRecording => 'Failed to start recording';
+
+  @override
+  String get failedToStopRecording => 'Failed to stop recording';
+
+  @override
+  String get noRecordingAvailable => 'No recording available';
 }

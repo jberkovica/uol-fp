@@ -540,4 +540,22 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get pleaseSelectChild => 'Пожалуйста, сначала выберите ребенка';
+
+  @override
+  String get recording => 'Запись';
+
+  @override
+  String get stopRecording => 'Остановить запись';
+
+  @override
+  String get microphonePermissionRequired => 'Для записи аудио требуется разрешение на использование микрофона';
+
+  @override
+  String get failedToStartRecording => 'Не удалось начать запись';
+
+  @override
+  String get failedToStopRecording => 'Не удалось остановить запись';
+
+  @override
+  String get noRecordingAvailable => 'Запись недоступна';
 }

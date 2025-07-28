@@ -1062,6 +1062,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please select a child first'**
   String get pleaseSelectChild;
+
+  /// No description provided for @recording.
+  ///
+  /// In en, this message translates to:
+  /// **'Recording'**
+  String get recording;
+
+  /// No description provided for @stopRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Recording'**
+  String get stopRecording;
+
+  /// No description provided for @microphonePermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone permission is required to record audio'**
+  String get microphonePermissionRequired;
+
+  /// No description provided for @failedToStartRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to start recording'**
+  String get failedToStartRecording;
+
+  /// No description provided for @failedToStopRecording.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to stop recording'**
+  String get failedToStopRecording;
+
+  /// No description provided for @noRecordingAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No recording available'**
+  String get noRecordingAvailable;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

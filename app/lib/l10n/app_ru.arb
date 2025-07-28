@@ -179,5 +179,12 @@
   "textTooLong": "Текст слишком длинный. Пожалуйста, сократите до 500 символов",
   "pleaseSelectChild": "Пожалуйста, сначала выберите ребенка",
   
+  "recording": "Запись",
+  "stopRecording": "Остановить запись",
+  "microphonePermissionRequired": "Для записи аудио требуется разрешение на использование микрофона",
+  "failedToStartRecording": "Не удалось начать запись",
+  "failedToStopRecording": "Не удалось остановить запись",
+  "noRecordingAvailable": "Запись недоступна",
+  
   "logout": "Выйти из аккаунта"
 }

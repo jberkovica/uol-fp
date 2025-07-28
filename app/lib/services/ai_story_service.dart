@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -160,6 +161,93 @@ class AIStoryService {
     } catch (e) {
       _logger.e('Error in generateStoryFromImageFile', error: e);
       throw Exception('Failed to generate story: $e');
+    }
+  }
+
+  /// Generate story from audio recording
+  Future<Story> generateStoryFromAudio(String audioPath, String kidId) async {
+    try {
+      _logger.i('Starting story generation from audio recording');
+      _logger.d('Audio file path: $audioPath');
+
+      // Get user's language preference
+      String userLanguage = LanguageService.instance.currentLanguageCode;
+      _logger.i('Story generation using language: $userLanguage');
+
+      // Handle different audio path formats (file path vs blob URL)
+      Uint8List audioBytes;
+      
+      if (audioPath.startsWith('blob:')) {
+        // Web blob URL - need to fetch the blob data
+        final response = await http.get(Uri.parse(audioPath));
+        if (response.statusCode != 200) {
+          throw Exception('Failed to fetch audio blob: ${response.statusCode}');
+        }
+        audioBytes = response.bodyBytes;
+      } else {
+        // File path - read the file
+        final audioFile = File(audioPath);
+        if (!await audioFile.exists()) {
+          throw Exception('Audio file not found at path: $audioPath');
+        }
+        audioBytes = await audioFile.readAsBytes();
+      }
+
+      final audioBase64 = base64Encode(audioBytes);
+
+      // Call the audio-based story generation endpoint
+      final response = await http.post(
+        Uri.parse('$baseUrl/generate-story-from-audio/'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'kid_id': kidId,
+          'audio_data': audioBase64,
+          'language': userLanguage,
+          'preferences': null,
+        }),
+      );
+
+      _logger.i('Story generation response status: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        String storyId = responseData['story_id'];
+        _logger.i('Story generation initiated: $storyId');
+
+        // Poll for story completion (same logic as text/image)
+        Story? story;
+        int attempts = 0;
+        const maxAttempts = 30; // 30 attempts with 2-second delays = 1 minute max
+
+        _logger.d('Polling for story completion...');
+        while (attempts < maxAttempts) {
+          await Future.delayed(const Duration(seconds: 2));
+
+          story = await getStory(storyId);
+          _logger.d('Attempt ${attempts + 1}: Story status = ${story?.status}');
+
+          if (story != null && (story.status == StoryStatus.approved || story.status == StoryStatus.pending)) {
+            _logger.i('Story generation completed: ${story.id}');
+            return story;
+          }
+
+          if (story != null && story.status == StoryStatus.rejected) {
+            throw Exception('Story generation failed on server');
+          }
+
+          attempts++;
+        }
+
+        throw Exception('Story generation timed out after ${maxAttempts * 2} seconds');
+      } else {
+        final errorData = jsonDecode(response.body);
+        throw Exception('Failed to generate story: ${errorData['detail'] ?? 'Unknown error'}');
+      }
+    } catch (e) {
+      _logger.e('Story generation from audio failed', error: e);
+      rethrow;
     }
   }
 

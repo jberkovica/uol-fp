@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:record/record.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:async';
+import 'dart:io';
 import '../../constants/app_colors.dart';
-import '../../constants/app_assets.dart';
 import '../../constants/app_theme.dart';
 import '../../models/input_format.dart';
-import '../../widgets/responsive_wrapper.dart';
 import '../../services/ai_story_service.dart';
 import '../../services/auth_service.dart';
+import '../../services/logging_service.dart';
 import '../../models/story.dart';
 import '../../models/kid.dart';
 import './processing_screen.dart';
@@ -66,8 +68,15 @@ class _UploadScreenState extends State<UploadScreen> {
   final TextEditingController _textController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
   final AIStoryService _aiService = AIStoryService();
+  final AudioRecorder _audioRecorder = AudioRecorder();
+  final _logger = LoggingService.getLogger('UploadScreen');
   Kid? _selectedKid;
   bool _isProcessing = false;
+  bool _isRecording = false;
+  String? _recordingPath;
+  Duration _recordingDuration = Duration.zero;
+  Timer? _recordingTimer;
+  bool _showSubmitButton = false;
 
   @override
   void initState() {
@@ -87,6 +96,8 @@ class _UploadScreenState extends State<UploadScreen> {
   @override
   void dispose() {
     _textController.dispose();
+    _audioRecorder.dispose();
+    _recordingTimer?.cancel();
     super.dispose();
   }
 
@@ -258,16 +269,82 @@ class _UploadScreenState extends State<UploadScreen> {
   }
   
   Widget _buildDictateButton() {
-    return FilledButton(
-      onPressed: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.audioRecordingComingSoon),
-            backgroundColor: AppColors.primary,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Recording indicator with timer
+        if (_isRecording)
+          Container(
+            width: 200,
+            height: 80,
+            decoration: BoxDecoration(
+              color: Colors.red.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.red, width: 2),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.mic,
+                      color: Colors.red,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      AppLocalizations.of(context)!.recording,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _formatDuration(_recordingDuration),
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
           ),
-        );
-      },
-      child: Text(AppLocalizations.of(context)!.dictate),
+        
+        const SizedBox(height: 20),
+        
+        // Record/Stop button
+        if (!_showSubmitButton)
+          FilledButton(
+            onPressed: _isProcessing ? null : (_isRecording ? _stopRecording : _startRecording),
+            style: FilledButton.styleFrom(
+              backgroundColor: _isRecording ? Colors.red : AppColors.primary,
+            ),
+            child: Text(_isRecording ? AppLocalizations.of(context)!.stopRecording : AppLocalizations.of(context)!.dictate),
+          ),
+        
+        // Submit button (shown after recording stops)
+        if (_showSubmitButton && !_isProcessing)
+          FilledButton(
+            onPressed: _submitAudioStory,
+            child: Text(AppLocalizations.of(context)!.submit),
+          ),
+        
+        // Processing indicator
+        if (_isProcessing)
+          const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+            ),
+          ),
+      ],
     );
   }
   
@@ -611,6 +688,202 @@ class _UploadScreenState extends State<UploadScreen> {
         );
       }
     }
+  }
+
+  /// Start audio recording with timer
+  Future<void> _startRecording() async {
+    try {
+      // Request microphone permission
+      final status = await Permission.microphone.request();
+      if (!status.isGranted) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)!.microphonePermissionRequired),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
+        return;
+      }
+
+      // Check if encoder is supported
+      if (!await _audioRecorder.hasPermission()) {
+        _logger.w('Audio recording permission not granted');
+        return;
+      }
+
+      // Start recording
+      const config = RecordConfig(
+        encoder: AudioEncoder.aacLc,
+        bitRate: 128000,
+        sampleRate: 44100,
+      );
+
+      await _audioRecorder.start(config, path: 'story_audio.m4a');
+      
+      // Start timer
+      _recordingTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+        setState(() {
+          _recordingDuration = Duration(seconds: timer.tick);
+        });
+      });
+      
+      setState(() {
+        _isRecording = true;
+        _recordingDuration = Duration.zero;
+        _showSubmitButton = false;
+      });
+
+      _logger.i('Audio recording started');
+    } catch (e) {
+      _logger.e('Failed to start recording', error: e);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${AppLocalizations.of(context)!.failedToStartRecording}: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
+  }
+
+  /// Stop audio recording and show submit button
+  Future<void> _stopRecording() async {
+    try {
+      final path = await _audioRecorder.stop();
+      _recordingTimer?.cancel();
+      
+      setState(() {
+        _isRecording = false;
+        _recordingPath = path;
+        _showSubmitButton = true;
+      });
+
+      _logger.i('Audio recording stopped, path: $path');
+    } catch (e) {
+      _logger.e('Failed to stop recording', error: e);
+      _recordingTimer?.cancel();
+      setState(() {
+        _isRecording = false;
+        _showSubmitButton = false;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${AppLocalizations.of(context)!.failedToStopRecording}: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
+  }
+
+  /// Submit audio for story generation
+  Future<void> _submitAudioStory() async {
+    if (_recordingPath == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.noRecordingAvailable),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+    
+    setState(() {
+      _isProcessing = true;
+      _showSubmitButton = false;
+    });
+    
+    await _generateStoryFromAudio(_recordingPath!);
+  }
+
+  /// Generate story from audio recording
+  Future<void> _generateStoryFromAudio(String audioPath) async {
+    if (_selectedKid == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.pleaseSelectChild),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isProcessing = true;
+    });
+
+    try {
+      // Generate story from audio file
+      final story = await _aiService.generateStoryFromAudio(audioPath, _selectedKid!.id);
+      
+      setState(() {
+        _isProcessing = false;
+      });
+
+      if (mounted) {
+        // Get current user's approval mode
+        final approvalModeString = AuthService.instance.getUserApprovalMode();
+        ApprovalMode approvalMode;
+        switch (approvalModeString) {
+          case 'app':
+            approvalMode = ApprovalMode.app;
+            break;
+          case 'email':
+            approvalMode = ApprovalMode.email;
+            break;
+          default:
+            approvalMode = ApprovalMode.auto;
+            break;
+        }
+        
+        // Navigate to story ready screen
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => 
+              StoryReadyScreen(
+                story: story,
+                approvalMode: approvalMode,
+              ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: animation.drive(Tween(begin: const Offset(1.0, 0.0), end: Offset.zero)),
+                child: child,
+              );
+            },
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isProcessing = false;
+      });
+
+      _logger.e('Failed to generate story from audio', error: e);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to generate story: ${e.toString()}'),
+            backgroundColor: AppColors.error,
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    }
+  }
+
+  /// Format duration for display (mm:ss)
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String minutes = twoDigits(duration.inMinutes);
+    String seconds = twoDigits(duration.inSeconds.remainder(60));
+    return '$minutes:$seconds';
   }
 
 }
