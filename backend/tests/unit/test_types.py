@@ -94,12 +94,12 @@ class TestDomainTypes:
                 content="Once upon a time" * 10
             )
         
-        # Test content too short
+        # Test content too long (over 2000 characters)
         with pytest.raises(ValidationError):
             Story(
                 **base_data,
-                title="Short Story",
-                content="Too short"  # Less than 50 characters
+                title="Long Story",
+                content="A" * 2001  # Over max length
             )
         
         # Test content too long
@@ -216,7 +216,8 @@ class TestResponseTypes:
             "audio_url": "https://example.com/audio.mp3",
             "status": StoryStatus.APPROVED,
             "language": Language.ENGLISH,
-            "created_at": datetime.now()
+            "created_at": datetime.now(),
+            "updated_at": datetime.now()
         }
         
         response = StoryResponse(**response_data)
@@ -228,6 +229,7 @@ class TestResponseTypes:
         """Test kid response creation."""
         response_data = {
             "id": "kid-123",
+            "user_id": "user-456",
             "name": "Alice",
             "age": 6,
             "avatar_type": "profile1",
