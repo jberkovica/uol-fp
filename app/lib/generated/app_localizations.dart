@@ -922,7 +922,7 @@ abstract class AppLocalizations {
   /// No description provided for @noPendingStories.
   ///
   /// In en, this message translates to:
-  /// **'No Pending Stories'**
+  /// **'No pending stories for review'**
   String get noPendingStories;
 
   /// No description provided for @allStoriesReviewed.

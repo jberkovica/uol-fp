@@ -177,8 +177,8 @@ class AppTheme {
       ),
       labelLarge: TextStyle(
         fontFamily: _fontFamily,
-        fontSize: 16, // Same as bodyMedium but medium weight
-        fontWeight: FontWeight.w500,
+        fontSize: 16, // Same size as bodyMedium but with medium weight
+        fontWeight: FontWeight.w500, // Medium weight to distinguish from body text
         color: AppColors.textDark,
       ),
       labelMedium: TextStyle(

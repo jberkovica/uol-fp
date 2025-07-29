@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../constants/kid_profile_constants.dart';
@@ -276,7 +277,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 child: Column(
                   children: [
                     // Spacer to push white container down with parallax effect
-                    SizedBox(height: (220 + (-_scrollOffset * 0.5)).clamp(120, 220)),
+                    SizedBox(height: (140 + (-_scrollOffset * 0.5)).clamp(80, 140)),
                     
                     // White content container
                     _buildContent(),
@@ -313,7 +314,6 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
   }
 
   Widget _buildHeader() {
-    final totalStories = _kidStories.values.fold<int>(0, (sum, stories) => sum + stories.length);
     final horizontalPadding = ResponsiveBreakpoints.getResponsivePadding(context);
     
     return Center(
@@ -327,36 +327,9 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           // Title
           Text(
             AppLocalizations.of(context)!.parentDashboard,
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
               color: AppColors.white,
-              letterSpacing: -0.5,
             ),
-          ),
-          
-          const SizedBox(height: 32),
-          
-          // Overview Stats on Purple Background
-          Row(
-            children: [
-              Expanded(
-                child: _buildHeaderStatCard(
-                  value: '${_kids.length}',
-                  label: AppLocalizations.of(context)!.kidsProfiles,
-                ),
-              ),
-              SizedBox(width: ResponsiveBreakpoints.getResponsivePadding(
-                context,
-                mobile: 16.0,
-                tablet: 20.0,
-                desktop: 24.0,
-              )),
-              Expanded(
-                child: _buildHeaderStatCard(
-                  value: '$totalStories',
-                  label: AppLocalizations.of(context)!.totalStories,
-                ),
-              ),
-            ],
           ),
         ],
         ),
@@ -401,48 +374,24 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                       AppTheme.getGlobalPadding(context),
                       AppTheme.getGlobalPadding(context),
                       AppTheme.getGlobalPadding(context),
-                      120, // Extra bottom padding for nav
+                      80, // Extra bottom padding for nav
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 16),
-                        _buildKidsSection(),
-                        const SizedBox(height: 32),
                         _buildPendingStoriesSection(),
                         const SizedBox(height: 32),
+                        _buildKidsSection(),
+                        const SizedBox(height: 32),
                         _buildControlsSection(),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 16),
                       ],
                     ),
                   ),
                 ),
               ),
             ),
-    );
-  }
-
-  Widget _buildHeaderStatCard({
-    required String value,
-    required String label,
-  }) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: Colors.white.withValues(alpha: 0.9),
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
     );
   }
 
@@ -509,10 +458,10 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
     final storyCount = _kidStories[kid.id]?.length ?? 0;
     
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: AppTheme.flatWhiteCard,
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Row(
           children: [
             // Profile Avatar
@@ -638,17 +587,6 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                   );
                 },
               ),
-              _buildControlTile(
-                icon: Icons.download,
-                title: AppLocalizations.of(context)!.exportData,
-                subtitle: AppLocalizations.of(context)!.downloadAllStoriesAndData,
-                onTap: () {
-                  // TODO: Export functionality
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(AppLocalizations.of(context)!.exportDataComingSoon)),
-                  );
-                },
-              ),
             ],
           ),
         ),
@@ -743,29 +681,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
             width: double.infinity,
             padding: const EdgeInsets.all(32),
             decoration: AppTheme.flatWhiteCard,
-            child: Column(
-              children: [
-                Icon(
-                  Icons.check_circle_outline,
-                  size: 48,
-                  color: AppColors.success,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  AppLocalizations.of(context)!.noPendingStories,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: AppColors.success,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  AppLocalizations.of(context)!.allStoriesReviewed,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textGrey,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+            child: Text(
+              AppLocalizations.of(context)!.noPendingStories,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: AppColors.mediumGrey,
+              ),
+              textAlign: TextAlign.center,
             ),
           )
         else

@@ -50,6 +50,7 @@ class AppColors {
 
   // NEUTRAL COLORS - softer palette
   static const Color grey = Color(0xFFB8B8B8);
+  static const Color mediumGrey = Color(0xFF7A7A7A); // Medium grey between textGrey and grey
   static const Color lightGrey = Color(0xFFF5F5F5);
   static const Color white = Colors.white;
   static const Color black = Color(0xFF2D2D2D);

@@ -404,7 +404,7 @@
   "cancel": "Cancel",
   
   "pendingStories": "Pending Stories",
-  "noPendingStories": "No Pending Stories",
+  "noPendingStories": "No pending stories for review",
   "allStoriesReviewed": "All stories have been reviewed",
   "forChild": "For {childName}",
   "@forChild": {

@@ -463,7 +463,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pendingStories => 'Pending Stories';
 
   @override
-  String get noPendingStories => 'No Pending Stories';
+  String get noPendingStories => 'No pending stories for review';
 
   @override
   String get allStoriesReviewed => 'All stories have been reviewed';
