@@ -72,6 +72,7 @@ dependencies:
     # Local storage for app state
     shared_preferences: ^2.2.2
     
+    
     # Logging
     logger: ^2.0.2+1
     
@@ -91,8 +92,10 @@ dev_dependencies:
     flutter_lints: ^5.0.0
     
     # Testing utilities
-    mockito: ^5.4.4
+    # mockito: ^5.4.4  # Temporarily disabled due to version conflicts
     build_runner: ^2.4.13
+    
+    
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

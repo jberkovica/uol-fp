@@ -255,7 +255,7 @@ class AppTheme {
     surfaceTintColor: Colors.transparent,
     textStyle: TextStyle(
         fontFamily: _fontFamily, 
-        fontSize: 20, 
+        fontSize: 16, 
         fontWeight: FontWeight.w500,
     ),
     minimumSize: const Size(double.infinity, 48),

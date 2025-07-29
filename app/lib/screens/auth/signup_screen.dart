@@ -6,6 +6,8 @@ import '../../constants/app_theme.dart';
 import '../../services/auth_service.dart';
 import '../../utils/page_transitions.dart';
 import 'login_screen.dart';
+import 'otp_verification_screen.dart';
+import 'pin_setup_screen.dart';
 import '../../generated/app_localizations.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -40,6 +42,8 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() => _isLoading = true);
 
     try {
+      print('DEBUG: Starting signup for email: ${_emailController.text.trim()}');
+      
       final response = await AuthService.instance.signUpWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text,
@@ -48,26 +52,25 @@ class _SignupScreenState extends State<SignupScreen> {
             : _nameController.text.trim(),
       );
 
-      if (response.user != null) {
-        if (mounted) {
-          // Show success message
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(AppLocalizations.of(context)!.accountCreatedSuccessfully),
-              backgroundColor: AppColors.success,
-            ),
-          );
-          
-          // Navigate to login screen
-          Navigator.pushReplacement(
+      print('DEBUG: OTP sent successfully, navigating to verification screen');
+      
+      // OTP signup always requires verification, so navigate to OTP screen
+      if (mounted) {
+        Navigator.pushReplacement(
           context,
-          NoAnimationRoute(page: const LoginScreen()),
+          MaterialPageRoute(
+            builder: (context) => OTPVerificationScreen(
+              email: _emailController.text.trim(),
+              password: _passwordController.text,
+              fullName: _nameController.text.trim().isEmpty 
+                  ? null 
+                  : _nameController.text.trim(),
+            ),
+          ),
         );
-        }
-      } else {
-        _showError('Sign up failed. Please try again.');
       }
     } catch (e) {
+      print('DEBUG: Signup error: ${e.toString()}');
       _showError('Sign up failed: ${e.toString()}');
     } finally {
       setState(() => _isLoading = false);

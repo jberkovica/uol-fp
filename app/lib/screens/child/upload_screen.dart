@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:record/record.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
@@ -172,8 +173,8 @@ class _UploadScreenState extends State<UploadScreen> {
           const SizedBox(), // Empty center
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const FaIcon(
-              FontAwesomeIcons.xmark,
+            icon: const Icon(
+              LucideIcons.x,
               color: AppColors.textDark,
               size: 24,
             ),

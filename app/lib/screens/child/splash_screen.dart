@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../services/auth_service.dart';
-import '../../services/app_state_service.dart';
 
 // Custom clipper for angled ellipse curve
 class AngledEllipseClipper extends CustomClipper<Path> {
@@ -49,21 +48,19 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    // Auto navigate after delay
-    Future.delayed(const Duration(seconds: 3), () {
+    // Auto navigate after delay with simple auth check
+    Future.delayed(const Duration(seconds: 2), () async {
       if (!context.mounted) return;
       
-      // Check if user is authenticated
-      if (AuthService.instance.isAuthenticated) {
-        // Check if there's a saved kid selection
-        final savedKid = AppStateService.getSelectedKid();
-        if (savedKid != null) {
-          // Navigate directly to child home with saved kid
-          Navigator.pushReplacementNamed(context, '/child-home', arguments: savedKid);
-        } else {
-          // No saved kid, go to profile selection
-          Navigator.pushReplacementNamed(context, '/profile-select');
-        }
+      // Wait briefly for Supabase to restore auth state after page reload
+      await Future.delayed(const Duration(milliseconds: 100));
+      
+      if (!context.mounted) return;
+      
+      // Simple routing: authenticated → profile select, not authenticated → login
+      final authService = AuthService.instance;
+      if (authService.isAuthenticated) {
+        Navigator.pushReplacementNamed(context, '/profile-select');
       } else {
         Navigator.pushReplacementNamed(context, '/login');
       }

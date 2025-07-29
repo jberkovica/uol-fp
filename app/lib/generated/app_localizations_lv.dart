@@ -309,6 +309,33 @@ class AppLocalizationsLv extends AppLocalizations {
   String get updateParentDashboardPin => 'Atjaunināt vecāku paneļa PIN';
 
   @override
+  String get currentPin => 'Pašreizējais PIN';
+
+  @override
+  String get newPin => 'Jaunais PIN';
+
+  @override
+  String get confirmPin => 'Apstiprināt PIN';
+
+  @override
+  String get enterCurrentPin => 'Ievadiet pašreizējo PIN';
+
+  @override
+  String get enterNewPin => 'Ievadiet jauno PIN';
+
+  @override
+  String get confirmNewPin => 'Apstipriniet jauno PIN';
+
+  @override
+  String get pinsDoNotMatch => 'PIN kodi nesakrīt';
+
+  @override
+  String get pinChangedSuccessfully => 'PIN veiksmīgi nomainīts';
+
+  @override
+  String get incorrectCurrentPin => 'Nepareizs pašreizējais PIN';
+
+  @override
   String get storySettings => 'Stāstu iestatījumi';
 
   @override
@@ -651,4 +678,22 @@ class AppLocalizationsLv extends AppLocalizations {
   String failedToUpdateProfile(String error) {
     return 'Neizdevās atjaunināt profilu: $error';
   }
+
+  @override
+  String get setYourParentPin => 'Iestatīt vecāku PIN';
+
+  @override
+  String get createFourDigitPinAccess => 'Izveidojiet 4 ciparu PIN, lai piekļūtu\nvecāku vadības panelim un iestatījumiem';
+
+  @override
+  String get settingUpYourPin => 'Iestata jūsu PIN...';
+
+  @override
+  String get thisWillBeUsedForAccess => 'Šis PIN tiks izmantots, lai piekļūtu vecāku iestatījumiem un apstiprinātu stāstus jūsu bērniem.';
+
+  @override
+  String get pleaseEnterAllFourDigits => 'Lūdzu, ievadiet visus 4 ciparus';
+
+  @override
+  String get failedToSetPin => 'Neizdevās iestatīt PIN. Lūdzu, mēģiniet vēlreiz.';
 }

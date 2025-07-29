@@ -297,7 +297,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
               child: IconButton(
                 onPressed: () => Navigator.of(context).pop(),
                 icon: const Icon(
-                  Icons.arrow_back_ios,
+                  LucideIcons.arrowLeft,
                   color: AppColors.white,
                   size: 24,
                 ),
@@ -570,10 +570,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 title: AppLocalizations.of(context)!.changePin,
                 subtitle: AppLocalizations.of(context)!.updateParentDashboardPin,
                 onTap: () {
-                  // TODO: Navigate to change PIN
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(AppLocalizations.of(context)!.changePinComingSoon)),
-                  );
+                  Navigator.pushNamed(context, '/change-pin');
                 },
               ),
               _buildControlTile(
@@ -822,7 +819,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         style: Theme.of(context).textTheme.labelSmall,
       ),
       trailing: const Icon(
-        Icons.arrow_forward_ios,
+        LucideIcons.arrowRight,
         color: AppColors.grey,
         size: 16,
       ),

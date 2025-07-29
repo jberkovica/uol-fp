@@ -7,6 +7,14 @@ import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'logging_service.dart';
 
+/// Registration completion status
+enum RegistrationStatus {
+  notLoggedIn,
+  emailNotVerified,
+  pinNotSet,
+  complete,
+}
+
 /// Authentication service using Supabase
 class AuthService {
   static AuthService? _instance;
@@ -33,16 +41,6 @@ class AuthService {
   }
   */
 
-  /// Initialize OAuth listener for Supabase redirects
-  void initializeOAuthListener() {
-    _supabase.auth.onAuthStateChange.listen((data) {
-      // Handle auth state changes for OAuth flows
-      if (data.event == AuthChangeEvent.signedIn) {
-        // OAuth sign-in successful
-        _logger.i('OAuth sign-in successful'); // User email not logged for privacy
-      }
-    });
-  }
 
   /// Get current user
   User? get currentUser => _supabase.auth.currentUser;
@@ -65,18 +63,62 @@ class AuthService {
     return response;
   }
 
-  /// Sign up with email and password
+  /// Sign up with email and password (sends OTP for verification)
   Future<AuthResponse> signUpWithEmailAndPassword({
     required String email,
     required String password,
     String? fullName,
   }) async {
-    final response = await _supabase.auth.signUp(
+    _logger.i('Attempting OTP-based signup');
+    
+    // Use signInWithOtp for proper OTP flow during signup
+    // Note: Email template must be configured to use {{ .Token }} instead of {{ .ConfirmationURL }}
+    await _supabase.auth.signInWithOtp(
       email: email,
-      password: password,
-      data: fullName != null ? {'full_name': fullName} : null,
+      shouldCreateUser: true,
+      data: fullName != null ? {'full_name': fullName, 'password': password} : {'password': password},
+    );
+    
+    _logger.i('OTP sent for email verification during signup');
+    
+    // Return empty response - actual user creation happens during OTP verification
+    return AuthResponse(
+      user: null,
+      session: null,
+    );
+  }
+
+  /// Verify email with OTP code
+  Future<AuthResponse> verifyEmailOTP({
+    required String email,
+    required String token,
+  }) async {
+    final response = await _supabase.auth.verifyOTP(
+      email: email,
+      token: token,
+      type: OtpType.email, // Use 'email' type for signInWithOtp verification
     );
     return response;
+  }
+
+  /// Resend OTP code for email verification
+  Future<void> resendEmailOTP({
+    required String email,
+  }) async {
+    // Resend using signInWithOtp again
+    // Note: For existing signup flows, we still need shouldCreateUser: true
+    // because the user might not be fully created yet during OTP verification
+    await _supabase.auth.signInWithOtp(
+      email: email,
+      shouldCreateUser: true,
+    );
+  }
+
+  /// Update user's password after OTP verification
+  Future<void> updatePassword(String newPassword) async {
+    await _supabase.auth.updateUser(
+      UserAttributes(password: newPassword),
+    );
   }
 
   /// Sign in with Google OAuth
@@ -282,6 +324,71 @@ class AuthService {
       return response.user != null;
     } catch (e) {
       _logger.e('Error updating user approval mode', error: e);
+      return false;
+    }
+  }
+
+  /// Get user's parent PIN from metadata
+  String? getParentPin() {
+    final user = currentUser;
+    if (user?.userMetadata != null) {
+      return user!.userMetadata!['parent_pin'] as String?;
+    }
+    return null;
+  }
+
+  /// Check if user has set a parent PIN
+  bool hasParentPin() {
+    return getParentPin() != null;
+  }
+
+  /// Get the user's registration completion status
+  /// Returns the next step needed to complete registration
+  RegistrationStatus getRegistrationStatus() {
+    if (!isAuthenticated) {
+      return RegistrationStatus.notLoggedIn;
+    }
+    
+    final user = currentUser;
+    
+    // Check if email is confirmed
+    if (user?.emailConfirmedAt == null) {
+      return RegistrationStatus.emailNotVerified;
+    }
+    
+    // Check if PIN is set up
+    if (!hasParentPin()) {
+      return RegistrationStatus.pinNotSet;
+    }
+    
+    return RegistrationStatus.complete;
+  }
+
+  /// Update user's parent PIN in metadata
+  Future<bool> updateParentPin(String newPin) async {
+    try {
+      final user = currentUser;
+      if (user == null) return false;
+
+      // Basic PIN validation (4 digits)
+      if (newPin.length != 4 || !RegExp(r'^\d{4}$').hasMatch(newPin)) {
+        _logger.w('Invalid PIN format: must be 4 digits');
+        return false;
+      }
+
+      // Update user metadata with parent PIN
+      final response = await _supabase.auth.updateUser(
+        UserAttributes(
+          data: {
+            ...?user.userMetadata,
+            'parent_pin': newPin,
+          },
+        ),
+      );
+
+      return response.user != null;
+    } catch (e) {
+      _logger.e('Error updating parent PIN', error: e);
       return false;
     }
   }

@@ -97,6 +97,15 @@
   "language": "Язык",
   "changePin": "Изменить PIN",
   "updateParentDashboardPin": "Обновить PIN родительской панели",
+  "currentPin": "Текущий PIN",
+  "newPin": "Новый PIN", 
+  "confirmPin": "Подтвердить PIN",
+  "enterCurrentPin": "Введите текущий PIN",
+  "enterNewPin": "Введите новый PIN",
+  "confirmNewPin": "Подтвердите новый PIN",
+  "pinsDoNotMatch": "PIN-коды не совпадают",
+  "pinChangedSuccessfully": "PIN успешно изменен",
+  "incorrectCurrentPin": "Неверный текущий PIN",
   "storySettings": "Настройки сказок",
   "configureStoryGenerationPreferences": "Настроить параметры генерации сказок",
   "exportData": "Экспорт данных",
@@ -218,5 +227,12 @@
   "addSpecialNotesFor": "Добавьте любые особые заметки о {childName}...",
   "saveChanges": "Сохранить изменения",
   "creating": "Создание...",
-  "failedToUpdateProfile": "Не удалось обновить профиль: {error}"
+  "failedToUpdateProfile": "Не удалось обновить профиль: {error}",
+
+  "setYourParentPin": "Установите родительский PIN",
+  "createFourDigitPinAccess": "Создайте 4-значный PIN для доступа\nк родительской панели и настройкам",
+  "settingUpYourPin": "Установка вашего PIN...",
+  "thisWillBeUsedForAccess": "Этот PIN будет использоваться для доступа к родительским настройкам и одобрения историй для ваших детей.",
+  "pleaseEnterAllFourDigits": "Пожалуйста, введите все 4 цифры",
+  "failedToSetPin": "Не удалось установить PIN. Пожалуйста, попробуйте еще раз."
 }

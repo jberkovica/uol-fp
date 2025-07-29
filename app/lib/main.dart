@@ -20,9 +20,12 @@ import 'screens/child/processing_screen.dart';
 import 'screens/child/story_display_screen.dart';
 import 'screens/parent/pin_entry_screen.dart';
 import 'screens/parent/parent_dashboard.dart';
+import 'screens/parent/change_pin_screen.dart';
 import 'screens/parent/story_preview_screen.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
+import 'screens/auth/otp_verification_screen.dart';
+import 'screens/auth/pin_setup_screen.dart';
 import 'services/ai_story_service.dart';
 import 'services/app_state_service.dart';
 import 'services/language_service.dart';
@@ -79,9 +82,6 @@ void main() async {
   
   // Logging is now automatically initialized when first used
   
-  // Initialize OAuth listener for social authentication
-  AuthService.instance.initializeOAuthListener();
-  
   final logger = LoggingService.getLogger('main');
   logger.i('Starting Mira Storyteller app');
   
@@ -101,16 +101,22 @@ class _MiraStorytellerAppState extends State<MiraStorytellerApp> {
   @override
   void initState() {
     super.initState();
-    // Monitor auth state changes to sync language from server
+    // Monitor auth state changes for OAuth logging and language sync
     _authSubscription = AuthService.instance.authStateChanges.listen((authState) {
+      final logger = LoggingService.getLogger('AuthStateListener');
+      
       if (authState.event == AuthChangeEvent.signedIn) {
-        // User signed in - sync language from server after a brief delay
+        // OAuth/email sign-in successful
+        logger.i('User signed in successfully'); // User email not logged for privacy
+        
+        // Sync language from server after a brief delay
         Future.delayed(const Duration(milliseconds: 500), () {
           LanguageService.instance.syncFromServer();
         });
       } else if (authState.event == AuthChangeEvent.signedOut) {
         // User signed out - could optionally reset to system language
         // For now, keep the last selected language
+        logger.i('User signed out');
       }
     });
   }
@@ -162,6 +168,15 @@ class _MiraStorytellerAppState extends State<MiraStorytellerApp> {
             '/splash': (context) => const SplashScreen(),
             '/login': (context) => const LoginScreen(),
             '/signup': (context) => const SignupScreen(),
+            '/otp-verification': (context) {
+              final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+              return OTPVerificationScreen(
+                email: args?['email'] ?? '',
+                password: args?['password'] ?? '',
+                fullName: args?['fullName'],
+              );
+            },
+            '/pin-setup': (context) => const PinSetupScreen(),
             '/profile-select': (context) => const ProfileSelectScreen(),
             '/child-home': (context) => const ChildHomeScreen(),
             '/profile': (context) => const ProfileScreen(),
@@ -170,8 +185,8 @@ class _MiraStorytellerAppState extends State<MiraStorytellerApp> {
             '/story-display': (context) => const StoryDisplayScreen(),
             '/parent-dashboard': (context) => const PinEntryScreen(),
             '/parent-dashboard-main': (context) => const ParentDashboardMain(),
+            '/change-pin': (context) => const ChangePinScreen(),
             '/story-preview': (context) => const StoryPreviewScreen(),
-            '/test-processing': (context) => const ProcessingScreen(),
           },
         );
       },

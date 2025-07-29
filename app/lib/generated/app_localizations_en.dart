@@ -309,6 +309,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get updateParentDashboardPin => 'Update your parent dashboard PIN';
 
   @override
+  String get currentPin => 'Current PIN';
+
+  @override
+  String get newPin => 'New PIN';
+
+  @override
+  String get confirmPin => 'Confirm PIN';
+
+  @override
+  String get enterCurrentPin => 'Enter your current PIN';
+
+  @override
+  String get enterNewPin => 'Enter your new PIN';
+
+  @override
+  String get confirmNewPin => 'Confirm your new PIN';
+
+  @override
+  String get pinsDoNotMatch => 'PINs do not match';
+
+  @override
+  String get pinChangedSuccessfully => 'PIN changed successfully';
+
+  @override
+  String get incorrectCurrentPin => 'Incorrect current PIN';
+
+  @override
   String get storySettings => 'Story Settings';
 
   @override
@@ -651,4 +678,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String failedToUpdateProfile(String error) {
     return 'Failed to update profile: $error';
   }
+
+  @override
+  String get setYourParentPin => 'Set Your Parent PIN';
+
+  @override
+  String get createFourDigitPinAccess => 'Create a 4-digit PIN to access\nparent dashboard and settings';
+
+  @override
+  String get settingUpYourPin => 'Setting up your PIN...';
+
+  @override
+  String get thisWillBeUsedForAccess => 'This PIN will be used to access parent settings and approve stories for your children.';
+
+  @override
+  String get pleaseEnterAllFourDigits => 'Please enter all 4 digits';
+
+  @override
+  String get failedToSetPin => 'Failed to set PIN. Please try again.';
 }

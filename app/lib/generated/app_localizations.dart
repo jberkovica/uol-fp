@@ -649,6 +649,60 @@ abstract class AppLocalizations {
   /// **'Update your parent dashboard PIN'**
   String get updateParentDashboardPin;
 
+  /// No description provided for @currentPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Current PIN'**
+  String get currentPin;
+
+  /// No description provided for @newPin.
+  ///
+  /// In en, this message translates to:
+  /// **'New PIN'**
+  String get newPin;
+
+  /// No description provided for @confirmPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm PIN'**
+  String get confirmPin;
+
+  /// No description provided for @enterCurrentPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current PIN'**
+  String get enterCurrentPin;
+
+  /// No description provided for @enterNewPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your new PIN'**
+  String get enterNewPin;
+
+  /// No description provided for @confirmNewPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm your new PIN'**
+  String get confirmNewPin;
+
+  /// No description provided for @pinsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'PINs do not match'**
+  String get pinsDoNotMatch;
+
+  /// No description provided for @pinChangedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN changed successfully'**
+  String get pinChangedSuccessfully;
+
+  /// No description provided for @incorrectCurrentPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect current PIN'**
+  String get incorrectCurrentPin;
+
   /// No description provided for @storySettings.
   ///
   /// In en, this message translates to:
@@ -1278,6 +1332,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to update profile: {error}'**
   String failedToUpdateProfile(String error);
+
+  /// No description provided for @setYourParentPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Set Your Parent PIN'**
+  String get setYourParentPin;
+
+  /// No description provided for @createFourDigitPinAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a 4-digit PIN to access\nparent dashboard and settings'**
+  String get createFourDigitPinAccess;
+
+  /// No description provided for @settingUpYourPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting up your PIN...'**
+  String get settingUpYourPin;
+
+  /// No description provided for @thisWillBeUsedForAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'This PIN will be used to access parent settings and approve stories for your children.'**
+  String get thisWillBeUsedForAccess;
+
+  /// No description provided for @pleaseEnterAllFourDigits.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter all 4 digits'**
+  String get pleaseEnterAllFourDigits;
+
+  /// No description provided for @failedToSetPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to set PIN. Please try again.'**
+  String get failedToSetPin;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -4,15 +4,19 @@ import '../../constants/app_colors.dart';
 import '../../generated/app_localizations.dart';
 import '../../services/auth_service.dart';
 
-class PinEntryScreen extends StatefulWidget {
-  const PinEntryScreen({super.key});
+enum PinStep { current, newPin, confirm }
+
+class ChangePinScreen extends StatefulWidget {
+  const ChangePinScreen({super.key});
 
   @override
-  State<PinEntryScreen> createState() => _PinEntryScreenState();
+  State<ChangePinScreen> createState() => _ChangePinScreenState();
 }
 
-class _PinEntryScreenState extends State<PinEntryScreen> {
+class _ChangePinScreenState extends State<ChangePinScreen> {
+  PinStep _currentStep = PinStep.current;
   String _enteredPin = '';
+  String _newPin = '';
   bool _isError = false;
 
   void _onNumberTap(String number) {
@@ -23,7 +27,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
       });
 
       if (_enteredPin.length == 4) {
-        _validatePin();
+        _validateCurrentStep();
       }
     }
   }
@@ -37,34 +41,110 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
     }
   }
 
-  void _validatePin() {
+  void _validateCurrentStep() {
+    switch (_currentStep) {
+      case PinStep.current:
+        _validateCurrentPin();
+        break;
+      case PinStep.newPin:
+        _saveNewPin();
+        break;
+      case PinStep.confirm:
+        _confirmAndSavePin();
+        break;
+    }
+  }
+
+  void _validateCurrentPin() {
     final correctPin = AuthService.instance.getParentPin();
     
-    // If no PIN is set, redirect to PIN setup (shouldn't happen with existing users)
-    if (correctPin == null) {
-      Navigator.pushReplacementNamed(context, '/pin-setup');
-      return;
-    }
-    
     if (_enteredPin == correctPin) {
-      Navigator.pushReplacementNamed(context, '/parent-dashboard-main');
-    } else {
+      // Move to new PIN step
       setState(() {
-        _isError = true;
+        _currentStep = PinStep.newPin;
         _enteredPin = '';
       });
-      
-      // Show error message
+    } else {
+      _showError(AppLocalizations.of(context)!.incorrectCurrentPin);
+    }
+  }
+
+  void _saveNewPin() {
+    _newPin = _enteredPin;
+    setState(() {
+      _currentStep = PinStep.confirm;
+      _enteredPin = '';
+    });
+  }
+
+  void _confirmAndSavePin() {
+    if (_enteredPin == _newPin) {
+      _updatePin();
+    } else {
+      _showError(AppLocalizations.of(context)!.pinsDoNotMatch);
+    }
+  }
+
+  Future<void> _updatePin() async {
+    final success = await AuthService.instance.updateParentPin(_newPin);
+    
+    if (success && mounted) {
+      // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.incorrectPin),
-          backgroundColor: AppColors.error,
+          content: Text(AppLocalizations.of(context)!.pinChangedSuccessfully),
+          backgroundColor: AppColors.primary,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
       );
+      
+      // Go back to parent dashboard
+      Navigator.of(context).pop();
+    } else if (mounted) {
+      _showError('Failed to update PIN. Please try again.');
+    }
+  }
+
+  void _showError(String message) {
+    setState(() {
+      _isError = true;
+      _enteredPin = '';
+    });
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: AppColors.error,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+  }
+
+  String _getStepTitle() {
+    switch (_currentStep) {
+      case PinStep.current:
+        return AppLocalizations.of(context)!.currentPin;
+      case PinStep.newPin:
+        return AppLocalizations.of(context)!.newPin;
+      case PinStep.confirm:
+        return AppLocalizations.of(context)!.confirmPin;
+    }
+  }
+
+  String _getStepSubtitle() {
+    switch (_currentStep) {
+      case PinStep.current:
+        return AppLocalizations.of(context)!.enterCurrentPin;
+      case PinStep.newPin:
+        return AppLocalizations.of(context)!.enterNewPin;
+      case PinStep.confirm:
+        return AppLocalizations.of(context)!.confirmNewPin;
     }
   }
 
@@ -77,19 +157,26 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Top back button - positioned at top corner
+            // Top back button and step indicator
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Row(
+              child: Column(
                 children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(
-                      LucideIcons.arrowLeft,
-                      color: AppColors.white,
-                      size: 24,
-                    ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(
+                          LucideIcons.arrowLeft,
+                          color: AppColors.white,
+                          size: 24,
+                        ),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 20),
+                  // Minimalistic step indicator bar
+                  _buildMinimalisticStepIndicator(),
                 ],
               ),
             ),
@@ -107,27 +194,18 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
                       children: [
                         // Title
                         Text(
-                          AppLocalizations.of(context)!.parentDashboard,
+                          _getStepTitle(),
                           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                             color: AppColors.textLight,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-
-                        // Subtitle
-                        Text(
-                          AppLocalizations.of(context)!.enterPin,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.textLight.withValues(alpha: 0.9),
+                            fontWeight: FontWeight.w600,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 48),
+                        const SizedBox(height: 40),
 
                         // PIN dots
                         _buildPinDots(),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 60),
 
                         // Number pad
                         _buildNumberPad(),
@@ -140,6 +218,47 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildMinimalisticStepIndicator() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        // Step 1
+        Container(
+          width: 80,
+          height: 4,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(width: 8),
+        // Step 2
+        Container(
+          width: 80,
+          height: 4,
+          decoration: BoxDecoration(
+            color: _currentStep.index >= PinStep.newPin.index 
+                ? AppColors.white 
+                : AppColors.white.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(width: 8),
+        // Step 3
+        Container(
+          width: 80,
+          height: 4,
+          decoration: BoxDecoration(
+            color: _currentStep.index >= PinStep.confirm.index 
+                ? AppColors.white 
+                : AppColors.white.withValues(alpha: 0.3),
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+      ],
     );
   }
 

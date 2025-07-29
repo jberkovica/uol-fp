@@ -306,6 +306,15 @@
   "language": "Language",
   "changePin": "Change PIN",
   "updateParentDashboardPin": "Update your parent dashboard PIN",
+  "currentPin": "Current PIN",
+  "newPin": "New PIN", 
+  "confirmPin": "Confirm PIN",
+  "enterCurrentPin": "Enter your current PIN",
+  "enterNewPin": "Enter your new PIN",
+  "confirmNewPin": "Confirm your new PIN",
+  "pinsDoNotMatch": "PINs do not match",
+  "pinChangedSuccessfully": "PIN changed successfully",
+  "incorrectCurrentPin": "Incorrect current PIN",
   "storySettings": "Story Settings",
   "configureStoryGenerationPreferences": "Configure story generation preferences",
   "exportData": "Export Data",
@@ -506,5 +515,12 @@
         "type": "String"
       }
     }
-  }
+  },
+
+  "setYourParentPin": "Set Your Parent PIN",
+  "createFourDigitPinAccess": "Create a 4-digit PIN to access\nparent dashboard and settings",
+  "settingUpYourPin": "Setting up your PIN...",
+  "thisWillBeUsedForAccess": "This PIN will be used to access parent settings and approve stories for your children.",
+  "pleaseEnterAllFourDigits": "Please enter all 4 digits",
+  "failedToSetPin": "Failed to set PIN. Please try again."
 }

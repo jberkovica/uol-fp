@@ -309,6 +309,33 @@ class AppLocalizationsRu extends AppLocalizations {
   String get updateParentDashboardPin => 'Обновить PIN родительской панели';
 
   @override
+  String get currentPin => 'Текущий PIN';
+
+  @override
+  String get newPin => 'Новый PIN';
+
+  @override
+  String get confirmPin => 'Подтвердить PIN';
+
+  @override
+  String get enterCurrentPin => 'Введите текущий PIN';
+
+  @override
+  String get enterNewPin => 'Введите новый PIN';
+
+  @override
+  String get confirmNewPin => 'Подтвердите новый PIN';
+
+  @override
+  String get pinsDoNotMatch => 'PIN-коды не совпадают';
+
+  @override
+  String get pinChangedSuccessfully => 'PIN успешно изменен';
+
+  @override
+  String get incorrectCurrentPin => 'Неверный текущий PIN';
+
+  @override
   String get storySettings => 'Настройки сказок';
 
   @override
@@ -652,4 +679,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String failedToUpdateProfile(String error) {
     return 'Не удалось обновить профиль: $error';
   }
+
+  @override
+  String get setYourParentPin => 'Установите родительский PIN';
+
+  @override
+  String get createFourDigitPinAccess => 'Создайте 4-значный PIN для доступа\nк родительской панели и настройкам';
+
+  @override
+  String get settingUpYourPin => 'Установка вашего PIN...';
+
+  @override
+  String get thisWillBeUsedForAccess => 'Этот PIN будет использоваться для доступа к родительским настройкам и одобрения историй для ваших детей.';
+
+  @override
+  String get pleaseEnterAllFourDigits => 'Пожалуйста, введите все 4 цифры';
+
+  @override
+  String get failedToSetPin => 'Не удалось установить PIN. Пожалуйста, попробуйте еще раз.';
 }

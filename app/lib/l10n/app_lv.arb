@@ -97,6 +97,15 @@
   "language": "Valoda",
   "changePin": "Mainīt PIN",
   "updateParentDashboardPin": "Atjaunināt vecāku paneļa PIN",
+  "currentPin": "Pašreizējais PIN",
+  "newPin": "Jaunais PIN", 
+  "confirmPin": "Apstiprināt PIN",
+  "enterCurrentPin": "Ievadiet pašreizējo PIN",
+  "enterNewPin": "Ievadiet jauno PIN",
+  "confirmNewPin": "Apstipriniet jauno PIN",
+  "pinsDoNotMatch": "PIN kodi nesakrīt",
+  "pinChangedSuccessfully": "PIN veiksmīgi nomainīts",
+  "incorrectCurrentPin": "Nepareizs pašreizējais PIN",
   "storySettings": "Stāstu iestatījumi",
   "configureStoryGenerationPreferences": "Konfigurēt stāstu ģenerēšanas preferences",
   "exportData": "Eksportēt datus",
@@ -218,5 +227,12 @@
   "addSpecialNotesFor": "Pievienojiet jebkādas īpašas piezīmes par {childName}...",
   "saveChanges": "Saglabāt izmaiņas",
   "creating": "Veido...",
-  "failedToUpdateProfile": "Neizdevās atjaunināt profilu: {error}"
+  "failedToUpdateProfile": "Neizdevās atjaunināt profilu: {error}",
+
+  "setYourParentPin": "Iestatīt vecāku PIN",
+  "createFourDigitPinAccess": "Izveidojiet 4 ciparu PIN, lai piekļūtu\nvecāku vadības panelim un iestatījumiem",
+  "settingUpYourPin": "Iestata jūsu PIN...",
+  "thisWillBeUsedForAccess": "Šis PIN tiks izmantots, lai piekļūtu vecāku iestatījumiem un apstiprinātu stāstus jūsu bērniem.",
+  "pleaseEnterAllFourDigits": "Lūdzu, ievadiet visus 4 ciparus",
+  "failedToSetPin": "Neizdevās iestatīt PIN. Lūdzu, mēģiniet vēlreiz."
 }

@@ -187,7 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: IconButton(
               onPressed: () => Navigator.pop(context),
               icon: const Icon(
-                Icons.arrow_forward_ios,
+                LucideIcons.arrowRight,
                 color: AppColors.textDark,
                 size: 28,
               ),
@@ -214,7 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: IconButton(
               onPressed: () => Navigator.pop(context),
               icon: const Icon(
-                Icons.arrow_forward_ios,
+                LucideIcons.arrowRight,
                 color: AppColors.textDark,
                 size: 28,
               ),

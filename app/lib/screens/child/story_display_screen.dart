@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../models/story.dart';
@@ -188,7 +189,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
                   children: [
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back, color: AppColors.textDark),
+                      icon: const Icon(LucideIcons.arrowLeft, color: AppColors.textDark),
                       style: IconButton.styleFrom(
                         backgroundColor: AppColors.white,
                         shape: RoundedRectangleBorder(
