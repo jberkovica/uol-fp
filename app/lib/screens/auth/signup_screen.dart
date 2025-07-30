@@ -185,16 +185,11 @@ class _SignupScreenState extends State<SignupScreen> {
                   imagePath,
                   width: 32,
                   height: 32,
-                  colorFilter: onPressed == null 
-                      ? ColorFilter.mode(Colors.grey[400]!, BlendMode.srcIn)
-                      : null,
                 )
               : Image.asset(
                   imagePath,
                   width: 32,
                   height: 32,
-                  color: onPressed == null ? Colors.grey[400] : null,
-                  colorBlendMode: onPressed == null ? BlendMode.saturation : null,
                 ),
         ),
         splashRadius: 32,
