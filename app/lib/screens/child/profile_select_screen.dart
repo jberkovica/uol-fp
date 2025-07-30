@@ -150,21 +150,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                                   width: 2,
                                 ),
                               ),
-                              child: Center(
-                                child: selectedAge == null
-                                    ? SvgPicture.asset(
-                                        'assets/icons/copy-check.svg',
-                                        width: 20,
-                                        height: 20,
-                                        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                                      )
-                                    : SvgPicture.asset(
-                                        'assets/icons/x.svg',
-                                        width: 16,
-                                        height: 16,
-                                        colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
-                                      ),
-                              ),
+                              child: const SizedBox.shrink(),
                             ),
                           ),
                           // Age options
@@ -662,19 +648,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                 width: 3,
               ),
             ),
-            child: selectedColor == null
-                ? SvgPicture.asset(
-                    'assets/icons/copy-check.svg',
-                    width: 20,
-                    height: 20,
-                    colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                  )
-                : SvgPicture.asset(
-                    'assets/icons/x.svg',
-                    width: 16,
-                    height: 16,
-                    colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
-                  ),
+            child: const SizedBox.shrink(),
           ),
         ),
         // Color options
@@ -703,14 +677,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                   ),
                 ],
               ),
-              child: isSelected
-                  ? SvgPicture.asset(
-                      'assets/icons/copy-check.svg',
-                      width: 20,
-                      height: 20,
-                      colorFilter: ColorFilter.mode(_getContrastColor(color), BlendMode.srcIn),
-                    )
-                  : null,
+              child: const SizedBox.shrink(),
             ),
           );
         }),

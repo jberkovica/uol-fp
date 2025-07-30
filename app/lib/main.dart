@@ -22,6 +22,8 @@ import 'screens/parent/pin_entry_screen.dart';
 import 'screens/parent/parent_dashboard.dart';
 import 'screens/parent/change_pin_screen.dart';
 import 'screens/parent/story_preview_screen.dart';
+import 'screens/child/story_ready_screen.dart';
+import 'models/story.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/signup_screen.dart';
 import 'screens/auth/otp_verification_screen.dart';

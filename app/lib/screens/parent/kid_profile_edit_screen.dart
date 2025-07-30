@@ -633,19 +633,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
                 width: 3,
               ),
             ),
-            child: selectedColor == null
-                ? SvgPicture.asset(
-                    'assets/icons/copy-check.svg',
-                    width: 24,
-                    height: 24,
-                    colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                  )
-                : SvgPicture.asset(
-                    'assets/icons/x.svg',
-                    width: 20,
-                    height: 20,
-                    colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
-                  ),
+            child: const SizedBox.shrink(),
           ),
         ),
         // Color options
@@ -674,14 +662,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
                   ),
                 ],
               ),
-              child: isSelected
-                  ? SvgPicture.asset(
-                      'assets/icons/copy-check.svg',
-                      width: 24,
-                      height: 24,
-                      colorFilter: ColorFilter.mode(_getContrastColor(color), BlendMode.srcIn),
-                    )
-                  : null,
+              child: const SizedBox.shrink(),
             ),
           );
         }),

@@ -25,6 +25,8 @@ class StoryReadyScreen extends StatefulWidget {
 class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProviderStateMixin {
   late AnimationController _mascotSlideController;
   late Animation<double> _mascotSlideAnimation;
+  late AnimationController _mascotBounceController;
+  late Animation<double> _mascotBounceAnimation;
   
   @override
   void initState() {
@@ -37,30 +39,46 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
     );
     _mascotSlideAnimation = Tween<double>(
       begin: 0.23, // Original position from ProcessingScreen
-      end: 0.35,   // Lower position to make room for text and buttons
+      end: 0.38,   // Even lower position
     ).animate(CurvedAnimation(
       parent: _mascotSlideController,
       curve: Curves.easeInOut,
     ));
     
-    // Start the slide animation
-    _mascotSlideController.forward();
+    // Mascot bounce animation (excited bouncing)
+    _mascotBounceController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    );
+    _mascotBounceAnimation = Tween<double>(
+      begin: 0.0,
+      end: 8.0, // Small amplitude bounce
+    ).animate(CurvedAnimation(
+      parent: _mascotBounceController,
+      curve: Curves.easeInOut,
+    ));
+    
+    // Start the slide animation, then start bouncing
+    _mascotSlideController.forward().then((_) {
+      _mascotBounceController.repeat(reverse: true);
+    });
   }
 
   @override
   void dispose() {
     _mascotSlideController.dispose();
+    _mascotBounceController.dispose();
     super.dispose();
   }
 
   String get _titleText {
     switch (widget.approvalMode) {
       case ApprovalMode.auto:
-        return AppLocalizations.of(context)!.yourStoryIsReady;
+        return 'Your story is ready!';
       case ApprovalMode.app:
-        return AppLocalizations.of(context)!.parentReviewPending;
+        return 'Parent review pending';
       case ApprovalMode.email:
-        return AppLocalizations.of(context)!.parentReviewPending;
+        return 'Parent review pending';
     }
   }
 
@@ -99,10 +117,10 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
         child: SafeArea(
           child: Stack(
             children: [
-              // Static clouds (no animation for this screen)
-              _buildStaticClouds(screenSize),
+              // Yellow and violet clouds (bottom layer)
+              _buildBackgroundClouds(screenSize),
               
-              // Main content with animation
+              // Main content with animation (middle layer)
               AnimatedBuilder(
                 animation: _mascotSlideAnimation,
                 builder: (context, child) {
@@ -149,32 +167,40 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
                         
                         const SizedBox(height: 60),
                         
-                        // Mascot - positioned lower
-                        SizedBox(
-                          width: screenSize.width * 0.588,
-                          height: screenSize.width * 0.588,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              // Mascot body
-                              SvgPicture.asset(
-                                'assets/images/mascot-body-1.svg',
+                        // Mascot - positioned lower with bounce animation
+                        AnimatedBuilder(
+                          animation: _mascotBounceAnimation,
+                          builder: (context, child) {
+                            return Transform.translate(
+                              offset: Offset(0, -_mascotBounceAnimation.value),
+                              child: SizedBox(
                                 width: screenSize.width * 0.588,
                                 height: screenSize.width * 0.588,
-                                fit: BoxFit.contain,
-                              ),
-                              // Face on top - different expression based on mode
-                              Positioned(
-                                top: screenSize.width * 0.1176,
-                                child: SvgPicture.asset(
-                                  _mascotFace,
-                                  width: screenSize.width * 0.144,
-                                  height: screenSize.width * 0.072,
-                                  fit: BoxFit.contain,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    // Mascot body
+                                    SvgPicture.asset(
+                                      'assets/images/mascot-body-1.svg',
+                                      width: screenSize.width * 0.588,
+                                      height: screenSize.width * 0.588,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    // Face on top - different expression based on mode
+                                    Positioned(
+                                      top: screenSize.width * 0.1176,
+                                      child: SvgPicture.asset(
+                                        _mascotFace,
+                                        width: screenSize.width * 0.144,
+                                        height: screenSize.width * 0.072,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -182,7 +208,10 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
                 },
               ),
               
-              // Close button (X) at top right for app and email modes
+              // White cloud (on top of mascot)
+              _buildWhiteCloud(screenSize),
+              
+              // Close button (X) at top right for app and email modes (top layer)
               if (widget.approvalMode != ApprovalMode.auto)
                 Positioned(
                   top: 20,
@@ -206,12 +235,12 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
     );
   }
 
-  Widget _buildStaticClouds(Size screenSize) {
+  Widget _buildBackgroundClouds(Size screenSize) {
     return Stack(
       children: [
         // Biggest yellow cloud - static
         Positioned(
-          top: screenSize.height * 0.35,
+          top: screenSize.height * 0.50,
           left: screenSize.width * -0.4,
           child: SvgPicture.asset(
             'assets/images/cloud-1.svg',
@@ -225,9 +254,9 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
           ),
         ),
         
-        // Pink cloud - static
+        // Pink cloud - static (much lower)
         Positioned(
-          top: screenSize.height * 0.42,
+          top: screenSize.height * 0.65,
           left: screenSize.width * 0.15,
           child: SvgPicture.asset(
             'assets/images/cloud-1.svg',
@@ -240,33 +269,34 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
             ),
           ),
         ),
-        
-        // White cloud - static
-        Positioned(
-          top: screenSize.height * _getWhiteCloudPosition(screenSize),
-          left: screenSize.width * 0.125,
-          child: SvgPicture.asset(
-            'assets/images/cloud-1.svg',
-            width: screenSize.width * 0.77,
-            height: screenSize.width * 0.385,
-            fit: BoxFit.contain,
-            colorFilter: const ColorFilter.mode(
-              Colors.white,
-              BlendMode.srcIn,
-            ),
-          ),
-        ),
       ],
+    );
+  }
+
+  Widget _buildWhiteCloud(Size screenSize) {
+    return Positioned(
+      top: screenSize.height * (_getWhiteCloudPosition(screenSize) + 0.05),
+      left: screenSize.width * 0.1,
+      child: SvgPicture.asset(
+        'assets/images/cloud-1.svg',
+        width: screenSize.width * 0.9, // Bigger
+        height: screenSize.width * 0.45, // Bigger
+        fit: BoxFit.contain,
+        colorFilter: const ColorFilter.mode(
+          Colors.white,
+          BlendMode.srcIn,
+        ),
+      ),
     );
   }
 
   double _getWhiteCloudPosition(Size screenSize) {
     if (screenSize.width < 600) {
-      return 0.70; // Mobile: moved down more
+      return 0.75; // Mobile: moved down even more
     } else if (screenSize.width < 1200) {
-      return 0.75; // Tablet: moved down more
+      return 0.80; // Tablet: moved down even more
     } else {
-      return 0.80; // Desktop: moved down more
+      return 0.85; // Desktop: moved down even more
     }
   }
 
@@ -282,39 +312,25 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
   }
 
   Widget _buildAutoApproveButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 56,
+    return Center(
       child: ElevatedButton(
         onPressed: () => _openStory(),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
           foregroundColor: AppColors.textDark,
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(25),
           ),
           elevation: 4,
           shadowColor: Colors.black.withValues(alpha: 64),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/icons/book-filled.svg',
-              width: 24,
-              height: 24,
-              colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
-            ),
-            const SizedBox(width: 12),
-            Text(
-              AppLocalizations.of(context)!.openStory,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: AppColors.textDark,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ],
+        child: Text(
+          'open',
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: AppColors.textDark,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );
