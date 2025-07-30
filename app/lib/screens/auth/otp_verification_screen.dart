@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 import '../../constants/app_colors.dart';
 import '../../services/auth_service.dart';
@@ -196,10 +196,11 @@ class _OTPVerificationScreenState extends State<OTPVerificationScreen> {
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(
-                      LucideIcons.arrowLeft,
-                      color: AppColors.white,
-                      size: 24,
+                    icon: SvgPicture.asset(
+                      'assets/icons/arrow-left.svg',
+                      width: 24,
+                      height: 24,
+                      colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
                     ),
                   ),
                 ],

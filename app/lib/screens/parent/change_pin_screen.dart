@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../generated/app_localizations.dart';
 import '../../services/auth_service.dart';
@@ -166,10 +166,11 @@ class _ChangePinScreenState extends State<ChangePinScreen> {
                     children: [
                       IconButton(
                         onPressed: () => Navigator.pop(context),
-                        icon: const Icon(
-                          LucideIcons.arrowLeft,
-                          color: AppColors.white,
-                          size: 24,
+                        icon: SvgPicture.asset(
+                          'assets/icons/arrow-left.svg',
+                          width: 24,
+                          height: 24,
+                          colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
                         ),
                       ),
                     ],
@@ -371,11 +372,12 @@ class _ChangePinScreenState extends State<ChangePinScreen> {
         child: InkWell(
           onTap: _onDeleteTap,
           borderRadius: BorderRadius.circular(40),
-          child: const Center(
-            child: Icon(
-              LucideIcons.delete,
-              color: Colors.white,
-              size: 26,
+          child: Center(
+            child: SvgPicture.asset(
+              'assets/icons/x.svg',
+              width: 26,
+              height: 26,
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
           ),
         ),

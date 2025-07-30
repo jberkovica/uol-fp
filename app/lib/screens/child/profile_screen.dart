@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../models/input_format.dart';
@@ -186,10 +186,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             right: 20,
             child: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: const Icon(
-                LucideIcons.arrowRight,
-                color: AppColors.textDark,
-                size: 28,
+              icon: SvgPicture.asset(
+                'assets/icons/arrow-right.svg',
+                width: 28,
+                height: 28,
+                colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
               ),
             ),
           ),
@@ -213,10 +214,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             right: 20,
             child: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: const Icon(
-                LucideIcons.arrowRight,
-                color: AppColors.textDark,
-                size: 28,
+              icon: SvgPicture.asset(
+                'assets/icons/arrow-right.svg',
+                width: 28,
+                height: 28,
+                colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
               ),
             ),
           ),
@@ -312,13 +314,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _buildSimpleStat(
-          icon: LucideIcons.bookOpen,
+          icon: 'assets/icons/book.svg',
           value: '${_stories.length}',
           label: AppLocalizations.of(context)!.storiesCreated,
           color: AppColors.primary,
         ),
         _buildSimpleStat(
-          icon: LucideIcons.penTool,
+          icon: 'assets/icons/pencil-plus.svg',
           value: '$totalWords',
           label: AppLocalizations.of(context)!.wordsWritten,
           color: AppColors.orange,
@@ -328,17 +330,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildSimpleStat({
-    required IconData icon,
+    required String icon,
     required String value,
     required String label,
     required Color color,
   }) {
     return Column(
       children: [
-        Icon(
+        SvgPicture.asset(
           icon,
-          color: color,
-          size: 32,
+          width: 32,
+          height: 32,
+          colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
         ),
         const SizedBox(height: 12),
         Text(
@@ -404,7 +407,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             children: [
               _buildOptionTile(
-                icon: Icons.edit,
+                icon: 'assets/icons/pencil-plus.svg',
                 title: AppLocalizations.of(context)!.editProfile,
                 subtitle: AppLocalizations.of(context)!.changeNameAgeAvatar,
                 onTap: () {
@@ -415,7 +418,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               _buildOptionTile(
-                icon: Icons.switch_account,
+                icon: 'assets/icons/user.svg',
                 title: AppLocalizations.of(context)!.switchProfile,
                 subtitle: AppLocalizations.of(context)!.changeToDifferentProfile,
                 onTap: () {
@@ -423,7 +426,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               _buildOptionTile(
-                icon: Icons.favorite,
+                icon: 'assets/icons/heart.svg',
                 title: AppLocalizations.of(context)!.favoriteStories,
                 subtitle: AppLocalizations.of(context)!.viewYourMostLovedTales,
                 onTap: () {
@@ -441,16 +444,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildOptionTile({
-    required IconData icon,
+    required String icon,
     required String title,
     required String subtitle,
     required VoidCallback onTap,
   }) {
     return ListTile(
-      leading: Icon(
+      leading: SvgPicture.asset(
         icon,
-        color: AppColors.primary,
-        size: 24,
+        width: 24,
+        height: 24,
+        colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
       ),
       title: Text(
         title,
@@ -460,10 +464,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         subtitle,
         style: Theme.of(context).textTheme.labelSmall,
       ),
-      trailing: const Icon(
-        Icons.arrow_forward_ios,
-        color: AppColors.grey,
-        size: 16,
+      trailing: SvgPicture.asset(
+        'assets/icons/arrow-right.svg',
+        width: 16,
+        height: 16,
+        colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
       ),
       onTap: onTap,
     );

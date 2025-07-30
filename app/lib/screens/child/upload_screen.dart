@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:record/record.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
-import 'dart:io';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../models/input_format.dart';
@@ -173,10 +170,11 @@ class _UploadScreenState extends State<UploadScreen> {
           const SizedBox(), // Empty center
           IconButton(
             onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              LucideIcons.x,
-              color: AppColors.textDark,
-              size: 24,
+            icon: SvgPicture.asset(
+              'assets/icons/x.svg',
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
             ),
           ),
         ],
@@ -188,23 +186,43 @@ class _UploadScreenState extends State<UploadScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildTopIcon(FontAwesomeIcons.image, InputFormat.image),
-        const SizedBox(width: 40),
-        _buildTopIcon(FontAwesomeIcons.microphone, InputFormat.audio),
-        const SizedBox(width: 40),
-        _buildTopIcon(FontAwesomeIcons.penToSquare, InputFormat.text),
+        _buildTopIcon(
+          strokeIcon: 'assets/icons/photo.svg',
+          solidIcon: 'assets/icons/photo-filled.svg',
+          format: InputFormat.image,
+        ),
+        const SizedBox(width: 30),
+        _buildTopIcon(
+          strokeIcon: 'assets/icons/microphone.svg',
+          solidIcon: 'assets/icons/microphone-filled.svg',
+          format: InputFormat.audio,
+        ),
+        const SizedBox(width: 30),
+        _buildTopIcon(
+          strokeIcon: 'assets/icons/file-description.svg',
+          solidIcon: 'assets/icons/file-description-filled.svg',
+          format: InputFormat.text,
+        ),
       ],
     );
   }
   
-  Widget _buildTopIcon(IconData icon, InputFormat format) {
+  Widget _buildTopIcon({
+    required String strokeIcon,
+    required String solidIcon,
+    required InputFormat format,
+  }) {
     final isSelected = _currentFormat == format;
+    final color = isSelected ? AppColors.primary : Colors.black54;
+    final iconPath = isSelected ? solidIcon : strokeIcon;
+    
     return GestureDetector(
       onTap: () => setState(() => _currentFormat = format),
-      child: FaIcon(
-        icon,
-        size: 24,
-        color: isSelected ? AppColors.primary : Colors.black54,
+      child: SvgPicture.asset(
+        iconPath,
+        width: 24,
+        height: 24,
+        colorFilter: ColorFilter.mode(color, BlendMode.srcIn),
       ),
     );
   }
@@ -289,10 +307,11 @@ class _UploadScreenState extends State<UploadScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.mic,
-                      color: Colors.red,
-                      size: 24,
+                    SvgPicture.asset(
+                      'assets/icons/microphone.svg',
+                      width: 24.0,
+                      height: 24.0,
+                      colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -441,7 +460,7 @@ class _UploadScreenState extends State<UploadScreen> {
 
               // Camera option
               _buildSourceButton(
-                icon: FontAwesomeIcons.camera,
+                iconPath: 'assets/icons/photo.svg', // Using camera icon from your SVG set
                 label: 'Take Photo',
                 onPressed: () {
                   Navigator.pop(context);
@@ -453,7 +472,7 @@ class _UploadScreenState extends State<UploadScreen> {
 
               // Gallery option
               _buildSourceButton(
-                icon: FontAwesomeIcons.image,
+                iconPath: 'assets/icons/photo.svg',
                 label: 'Choose from Gallery',
                 onPressed: () {
                   Navigator.pop(context);
@@ -477,7 +496,7 @@ class _UploadScreenState extends State<UploadScreen> {
   }
 
   Widget _buildSourceButton({
-    required IconData icon,
+    required String iconPath,
     required String label,
     required VoidCallback onPressed,
   }) {
@@ -489,7 +508,11 @@ class _UploadScreenState extends State<UploadScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 24),
+            SvgPicture.asset(
+              iconPath,
+              width: 24,
+              height: 24,
+            ),
             const SizedBox(width: 12),
             Text(label),
           ],

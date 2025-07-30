@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../models/story.dart';
@@ -143,11 +143,12 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
                       color: AppColors.lightGrey,
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.image,
-                        color: AppColors.grey,
-                        size: 48,
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'assets/icons/photo.svg',
+                        width: 48,
+                        height: 48,
+                        colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
                       ),
                     ),
                   );
@@ -189,7 +190,12 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
                   children: [
                     IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(LucideIcons.arrowLeft, color: AppColors.textDark),
+                      icon: SvgPicture.asset(
+                        'assets/icons/arrow-left.svg',
+                        width: 24,
+                        height: 24,
+                        colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
+                      ),
                       style: IconButton.styleFrom(
                         backgroundColor: AppColors.white,
                         shape: RoundedRectangleBorder(
@@ -386,10 +392,11 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
                   strokeWidth: 2,
                 ),
               )
-            : Icon(
-                _isPlaying ? Icons.pause : Icons.play_arrow,
-                color: AppColors.white,
-                size: 32,
+            : SvgPicture.asset(
+                _isPlaying ? 'assets/icons/player-pause.svg' : 'assets/icons/player-play.svg',
+                width: 32,
+                height: 32,
+                colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
               ),
         ),
       ),
@@ -406,10 +413,11 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
           color: AppColors.lightGrey,
           borderRadius: BorderRadius.circular(24),
         ),
-        child: const Icon(
-          Icons.text_fields,
-          color: AppColors.textDark,
-          size: 24,
+        child: SvgPicture.asset(
+          'assets/icons/text-size.svg',
+          width: 24,
+          height: 24,
+          colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
         ),
       ),
     );
@@ -425,10 +433,11 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
           color: AppColors.lightGrey,
           borderRadius: BorderRadius.circular(24),
         ),
-        child: const Icon(
-          Icons.more_vert,
-          color: AppColors.textDark,
-          size: 24,
+        child: SvgPicture.asset(
+          'assets/icons/adjustments-horizontal.svg',
+          width: 24,
+          height: 24,
+          colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
         ),
       ),
     );
@@ -486,7 +495,12 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
             ),
             const SizedBox(height: 24),
             ListTile(
-              leading: const Icon(Icons.text_fields),
+              leading: SvgPicture.asset(
+                'assets/icons/text-size.svg',
+                width: 24,
+                height: 24,
+                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
+              ),
               title: Text(AppLocalizations.of(context)!.textSize),
               subtitle: Text(AppLocalizations.of(context)!.currentFontSize([16, 20, 24][_fontSizeIndex])),
               onTap: () {
@@ -495,7 +509,12 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
               },
             ),
             ListTile(
-              leading: Icon(_backgroundMusicEnabled ? Icons.music_note : Icons.music_off),
+              leading: SvgPicture.asset(
+                _backgroundMusicEnabled ? 'assets/icons/player-play.svg' : 'assets/icons/player-pause.svg',
+                width: 24,
+                height: 24,
+                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
+              ),
               title: Text(AppLocalizations.of(context)!.backgroundMusic),
               subtitle: Text(_backgroundMusicEnabled ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled),
               onTap: () {
@@ -504,7 +523,12 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.add),
+              leading: SvgPicture.asset(
+                'assets/icons/plus.svg',
+                width: 24,
+                height: 24,
+                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
+              ),
               title: Text(AppLocalizations.of(context)!.createAnotherStory),
               onTap: () {
                 Navigator.pop(context);

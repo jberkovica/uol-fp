@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:local_auth/local_auth.dart';
 import '../../constants/app_colors.dart';
 import '../../generated/app_localizations.dart';
@@ -143,10 +143,11 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(
-                      LucideIcons.arrowLeft,
-                      color: AppColors.white,
-                      size: 24,
+                    icon: SvgPicture.asset(
+                      'assets/icons/arrow-left.svg',
+                      width: 24,
+                      height: 24,
+                      colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
                     ),
                   ),
                 ],
@@ -319,11 +320,12 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
         child: InkWell(
           onTap: _onDeleteTap,
           borderRadius: BorderRadius.circular(40),
-          child: const Center(
-            child: Icon(
-              LucideIcons.delete,
-              color: Colors.white,
-              size: 26,
+          child: Center(
+            child: SvgPicture.asset(
+              'assets/icons/x.svg',
+              width: 26,
+              height: 26,
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
             ),
           ),
         ),
@@ -333,20 +335,20 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
 
   Widget _buildBiometricButton() {
     // Get the appropriate icon for the biometric type
-    IconData biometricIcon;
+    String biometricIcon;
     String biometricText;
     
     switch (_primaryBiometric) {
       case BiometricType.face:
-        biometricIcon = LucideIcons.scan;
+        biometricIcon = 'assets/icons/eye.svg';
         biometricText = 'Face ID';
         break;
       case BiometricType.fingerprint:
-        biometricIcon = LucideIcons.fingerprint;
+        biometricIcon = 'assets/icons/fingerprint.svg';
         biometricText = 'Fingerprint';
         break;
       default:
-        biometricIcon = LucideIcons.shield;
+        biometricIcon = 'assets/icons/shield-check.svg';
         biometricText = 'Biometric';
     }
 
@@ -375,10 +377,11 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
                           valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
-                    : Icon(
+                    : SvgPicture.asset(
                         biometricIcon,
-                        color: Colors.white,
-                        size: 24,
+                        width: 24,
+                        height: 24,
+                        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                       ),
               ),
             ),

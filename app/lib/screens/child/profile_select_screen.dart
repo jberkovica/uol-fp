@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../constants/kid_profile_constants.dart';
@@ -102,7 +102,15 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                             hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                               color: AppColors.textGrey,
                             ),
-                            prefixIcon: Icon(LucideIcons.user, color: AppColors.textGrey, size: 20),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: SvgPicture.asset(
+                                'assets/icons/user-filled.svg',
+                                width: 20,
+                                height: 20,
+                                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
+                              ),
+                            ),
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.all(16),
                           ),
@@ -144,8 +152,18 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                               ),
                               child: Center(
                                 child: selectedAge == null
-                                    ? Icon(LucideIcons.check, size: 20, color: Colors.white)
-                                    : Icon(LucideIcons.x, size: 16, color: AppColors.grey),
+                                    ? SvgPicture.asset(
+                                        'assets/icons/copy-check.svg',
+                                        width: 20,
+                                        height: 20,
+                                        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                                      )
+                                    : SvgPicture.asset(
+                                        'assets/icons/x.svg',
+                                        width: 16,
+                                        height: 16,
+                                        colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                                      ),
                               ),
                             ),
                           ),
@@ -431,10 +449,11 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
               onTap: () {
                 Navigator.pushNamed(context, '/parent-dashboard');
               },
-              child: const Icon(
-                LucideIcons.settings,
-                color: AppColors.textDark,
-                size: 24,
+              child: SvgPicture.asset(
+                'assets/icons/settings.svg',
+                width: 24,
+                height: 24,
+                colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
               ),
             ),
           ),
@@ -598,10 +617,14 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                 color: AppColors.orange.withValues(alpha: 0.3), // Light orange like in your design
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                LucideIcons.plus,
-                size: 32,
-                color: AppColors.textDark,
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/icons/plus.svg',
+                  width: 32,
+                  height: 32,
+                  fit: BoxFit.contain,
+                  colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
+                ),
               ),
             ),
             const SizedBox(height: 12),
@@ -640,8 +663,18 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
               ),
             ),
             child: selectedColor == null
-                ? Icon(LucideIcons.check, size: 20, color: AppColors.primary)
-                : Icon(LucideIcons.x, size: 16, color: AppColors.grey),
+                ? SvgPicture.asset(
+                    'assets/icons/copy-check.svg',
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                  )
+                : SvgPicture.asset(
+                    'assets/icons/x.svg',
+                    width: 16,
+                    height: 16,
+                    colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                  ),
           ),
         ),
         // Color options
@@ -671,10 +704,11 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                 ],
               ),
               child: isSelected
-                  ? Icon(
-                      LucideIcons.check,
-                      size: 20,
-                      color: _getContrastColor(color),
+                  ? SvgPicture.asset(
+                      'assets/icons/copy-check.svg',
+                      width: 20,
+                      height: 20,
+                      colorFilter: ColorFilter.mode(_getContrastColor(color), BlendMode.srcIn),
                     )
                   : null,
             ),

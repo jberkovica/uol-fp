@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../models/story.dart';
@@ -252,7 +252,12 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(LucideIcons.arrowLeft, color: Colors.white),
+            icon: SvgPicture.asset(
+              'assets/icons/arrow-left.svg',
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            ),
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
@@ -294,7 +299,12 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(LucideIcons.arrowLeft, color: Colors.white, size: 24),
+                    icon: SvgPicture.asset(
+                      'assets/icons/arrow-left.svg',
+                      width: 24,
+                      height: 24,
+                      colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                    ),
                     onPressed: () => Navigator.pop(context),
                   ),
                   const SizedBox(width: 8),
@@ -417,10 +427,11 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            LucideIcons.image,
-                            size: 48,
-                            color: AppColors.grey,
+                          SvgPicture.asset(
+                            'assets/icons/photo.svg',
+                            width: 48,
+                            height: 48,
+                            colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
                           ),
                           const SizedBox(height: 8),
                           Text(
@@ -438,10 +449,11 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        LucideIcons.image,
-                        size: 48,
-                        color: AppColors.grey,
+                      SvgPicture.asset(
+                        'assets/icons/photo.svg',
+                        width: 48,
+                        height: 48,
+                        colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -470,7 +482,7 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
         children: [
           // Restart button
           _buildAudioButton(
-            icon: LucideIcons.rotateCcw,
+            iconPath: 'assets/icons/arrow-left.svg',
             onPressed: () {
               // TODO: Implement restart audio
             },
@@ -489,10 +501,11 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
                   // TODO: Implement play/pause audio
                 });
               },
-              icon: Icon(
-                _isPlaying ? LucideIcons.pause : LucideIcons.play,
-                color: Colors.white,
-                size: 32,
+              icon: SvgPicture.asset(
+                _isPlaying ? 'assets/icons/player-pause.svg' : 'assets/icons/player-play.svg',
+                width: 32,
+                height: 32,
+                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               ),
               iconSize: 56,
             ),
@@ -500,7 +513,7 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
           
           // Download button
           _buildAudioButton(
-            icon: LucideIcons.download,
+            iconPath: 'assets/icons/arrow-down.svg',
             onPressed: () {
               // TODO: Implement download audio
             },
@@ -510,7 +523,7 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
     );
   }
 
-  Widget _buildAudioButton({required IconData icon, required VoidCallback onPressed}) {
+  Widget _buildAudioButton({required String iconPath, required VoidCallback onPressed}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -525,10 +538,11 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
       ),
       child: IconButton(
         onPressed: onPressed,
-        icon: Icon(
-          icon,
-          color: AppColors.primary,
-          size: 24,
+        icon: SvgPicture.asset(
+          iconPath,
+          width: 24,
+          height: 24,
+          colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
         iconSize: 48,
       ),
@@ -597,7 +611,12 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(LucideIcons.check, color: Colors.white, size: 24),
+                      SvgPicture.asset(
+                        'assets/icons/copy-check.svg',
+                        width: 24,
+                        height: 24,
+                        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                      ),
                       const SizedBox(width: 12),
                       Text(
                         AppLocalizations.of(context)!.approve,
@@ -632,7 +651,12 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(LucideIcons.edit, color: AppColors.secondary, size: 20),
+                      SvgPicture.asset(
+                        'assets/icons/pencil-plus.svg',
+                        width: 20,
+                        height: 20,
+                        colorFilter: const ColorFilter.mode(AppColors.secondary, BlendMode.srcIn),
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         AppLocalizations.of(context)!.suggestEdits,
@@ -664,7 +688,12 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(LucideIcons.x, color: AppColors.error, size: 20),
+                      SvgPicture.asset(
+                        'assets/icons/x.svg',
+                        width: 20,
+                        height: 20,
+                        colorFilter: const ColorFilter.mode(AppColors.error, BlendMode.srcIn),
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         AppLocalizations.of(context)!.decline,

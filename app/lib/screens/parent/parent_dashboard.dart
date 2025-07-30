@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../constants/kid_profile_constants.dart';
@@ -296,10 +296,11 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
               ),
               child: IconButton(
                 onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(
-                  LucideIcons.arrowLeft,
-                  color: AppColors.white,
-                  size: 24,
+                icon: SvgPicture.asset(
+                  'assets/icons/arrow-left.svg',
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
                 ),
               ),
             ),
@@ -411,7 +412,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
               onPressed: () {
                 Navigator.pushNamed(context, '/profile-select');
               },
-              icon: const Icon(Icons.add, size: 18),
+              icon: SvgPicture.asset(
+                'assets/icons/plus.svg',
+                width: 18,
+                height: 18,
+                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+              ),
               label: Text(AppLocalizations.of(context)!.addKid),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.primary,
@@ -498,10 +504,11 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
             
             // Menu Button
             PopupMenuButton<String>(
-              icon: Icon(
-                Icons.more_vert,
-                color: AppColors.textGrey,
-                size: 20,
+              icon: SvgPicture.asset(
+                'assets/icons/adjustments-horizontal.svg',
+                width: 24,
+                height: 24,
+                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
               ),
               onSelected: (value) {
                 switch (value) {
@@ -554,19 +561,19 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           child: Column(
             children: [
               _buildControlTile(
-                icon: Icons.language,
+                icon: 'assets/icons/world.svg',
                 title: AppLocalizations.of(context)!.language,
                 subtitle: _getLanguageDisplayName(LanguageService.instance.currentLocale.languageCode),
                 onTap: _showLanguageSelector,
               ),
               _buildControlTile(
-                icon: Icons.admin_panel_settings,
+                icon: 'assets/icons/shield-check.svg',
                 title: AppLocalizations.of(context)!.approvalMethod,
                 subtitle: _getApprovalModeDisplayName(_currentApprovalMode),
                 onTap: _showApprovalModeSelector,
               ),
               _buildControlTile(
-                icon: Icons.security,
+                icon: 'assets/icons/shield-lock.svg',
                 title: AppLocalizations.of(context)!.changePin,
                 subtitle: AppLocalizations.of(context)!.updateParentDashboardPin,
                 onTap: () {
@@ -574,7 +581,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 },
               ),
               _buildControlTile(
-                icon: Icons.tune,
+                icon: 'assets/icons/adjustments-horizontal.svg',
                 title: AppLocalizations.of(context)!.storySettings,
                 subtitle: AppLocalizations.of(context)!.configureStoryGenerationPreferences,
                 onTap: () {
@@ -615,10 +622,11 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 }
               }
             },
-            icon: const Icon(
-              Icons.logout,
-              color: AppColors.error,
-              size: 20,
+            icon: SvgPicture.asset(
+              'assets/icons/logout.svg',
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(AppColors.error, BlendMode.srcIn),
             ),
             label: Text(
               AppLocalizations.of(context)!.logout,
@@ -711,10 +719,11 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
               child: Stack(
                 children: [
                   Center(
-                    child: Icon(
-                      Icons.auto_stories,
-                      color: AppColors.primary,
-                      size: 28,
+                    child: SvgPicture.asset(
+                      'assets/icons/book.svg',
+                      width: 24,
+                      height: 24,
+                      colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                     ),
                   ),
                   Positioned(
@@ -799,16 +808,17 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
   }
 
   Widget _buildControlTile({
-    required IconData icon,
+    required String icon,
     required String title,
     required String subtitle,
     required VoidCallback onTap,
   }) {
     return ListTile(
-      leading: Icon(
+      leading: SvgPicture.asset(
         icon,
-        color: AppColors.primary,
-        size: 24,
+        width: 24,
+        height: 24,
+        colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
       ),
       title: Text(
         title,
@@ -818,10 +828,11 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         subtitle,
         style: Theme.of(context).textTheme.labelSmall,
       ),
-      trailing: const Icon(
-        LucideIcons.arrowRight,
-        color: AppColors.grey,
-        size: 16,
+      trailing: SvgPicture.asset(
+        'assets/icons/arrow-right.svg',
+        width: 24,
+        height: 24,
+        colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
       ),
       onTap: onTap,
     );
@@ -853,7 +864,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
               ),
             ),
             ListTile(
-              leading: const Icon(Icons.logout, color: AppColors.error),
+              leading: SvgPicture.asset(
+                'assets/icons/arrow-left.svg',
+                width: 24,
+                height: 24,
+                colorFilter: const ColorFilter.mode(AppColors.error, BlendMode.srcIn),
+              ),
               title: Text(AppLocalizations.of(context)!.exitParentMode),
               onTap: () {
                 Navigator.pop(context);
@@ -1302,7 +1318,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         ),
       ),
       trailing: isSelected 
-        ? const Icon(Icons.check, color: AppColors.primary)
+        ? SvgPicture.asset(
+            'assets/icons/circle-dashed-check.svg',
+            width: 24,
+            height: 24,
+            colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+          )
         : null,
       onTap: () async {
         Navigator.pop(context);
@@ -1422,7 +1443,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         ),
       ),
       trailing: isSelected 
-        ? const Icon(Icons.check, color: AppColors.primary)
+        ? SvgPicture.asset(
+            'assets/icons/circle-dashed-check.svg',
+            width: 24,
+            height: 24,
+            colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+          )
         : null,
       onTap: () async {
         Navigator.pop(context);
@@ -1494,8 +1520,18 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
               ),
             ),
             child: selectedColor == null
-                ? const Icon(Icons.check, size: 16, color: AppColors.primary)
-                : const Icon(Icons.close, size: 12, color: AppColors.grey),
+                ? SvgPicture.asset(
+                    'assets/icons/circle-dashed-check.svg',
+                    width: 16,
+                    height: 16,
+                    colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                  )
+                : SvgPicture.asset(
+                    'assets/icons/x.svg',
+                    width: 12,
+                    height: 12,
+                    colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                  ),
           ),
         ),
         // Color options
@@ -1518,9 +1554,10 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                 ),
               ),
               child: isSelected
-                  ? Icon(
-                      Icons.check,
-                      size: 16,
+                  ? SvgPicture.asset(
+                      'assets/icons/circle-dashed-check.svg',
+                      width: 16,
+                      height: 16,
                       color: _getContrastColor(color),
                     )
                   : null,

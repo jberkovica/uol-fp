@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../constants/app_colors.dart';
 import '../generated/app_localizations.dart';
 
@@ -34,29 +35,29 @@ class BottomNav extends StatelessWidget {
               _buildNavItem(
                 context: context,
                 index: 0,
-                icon: Icons.person_outline,
-                activeIcon: Icons.person,
+                strokeIcon: 'assets/icons/user.svg',
+                filledIcon: 'assets/icons/user-filled.svg',
                 label: AppLocalizations.of(context)!.profile,
               ),
               _buildNavItem(
                 context: context,
                 index: 1,
-                icon: Icons.home_outlined,
-                activeIcon: Icons.home,
+                strokeIcon: 'assets/icons/home.svg',
+                filledIcon: 'assets/icons/home-filled.svg',
                 label: AppLocalizations.of(context)!.home,
               ),
               _buildNavItem(
                 context: context,
                 index: 2,
-                icon: Icons.add_circle_outline,
-                activeIcon: Icons.add_circle,
+                strokeIcon: 'assets/icons/circle-plus.svg',
+                filledIcon: 'assets/icons/circle-plus-filled.svg',
                 label: AppLocalizations.of(context)!.create,
               ),
               _buildNavItem(
                 context: context,
                 index: 3,
-                icon: Icons.settings_outlined,
-                activeIcon: Icons.settings,
+                strokeIcon: 'assets/icons/settings.svg',
+                filledIcon: 'assets/icons/settings-filled.svg',
                 label: AppLocalizations.of(context)!.settings,
               ),
             ],
@@ -69,8 +70,8 @@ class BottomNav extends StatelessWidget {
   Widget _buildNavItem({
     required BuildContext context,
     required int index,
-    required IconData icon,
-    required IconData activeIcon,
+    required String strokeIcon,
+    required String filledIcon,
     required String label,
   }) {
     final bool isActive = currentIndex == index;
@@ -93,11 +94,15 @@ class BottomNav extends StatelessWidget {
           children: [
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
-              child: Icon(
-                isActive ? activeIcon : icon,
+              child: SvgPicture.asset(
+                isActive ? filledIcon : strokeIcon,
                 key: ValueKey(isActive),
-                color: isActive ? AppColors.primary : AppColors.textGrey,
-                size: 24,
+                width: 24,
+                height: 24,
+                colorFilter: ColorFilter.mode(
+                  isActive ? AppColors.primary : AppColors.textGrey, 
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             const SizedBox(height: 4),

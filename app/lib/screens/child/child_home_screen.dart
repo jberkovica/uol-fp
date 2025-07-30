@@ -480,11 +480,12 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                           errorBuilder: (context, error, stackTrace) {
                             return Container(
                               color: AppColors.lightGrey,
-                              child: const Center(
-                                child: Icon(
-                                  Icons.image,
-                                  color: AppColors.grey,
-                                  size: 24,
+                              child: Center(
+                                child: SvgPicture.asset(
+                                  'assets/icons/photo.svg',
+                                  width: 24,
+                                  height: 24,
+                                  colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
                                 ),
                               ),
                             );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../models/kid.dart';
 import '../../services/kid_service.dart';
 import '../../constants/kid_profile_constants.dart';
@@ -193,10 +193,11 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
               ),
               child: IconButton(
                 onPressed: () => Navigator.of(context).pop(),
-                icon: const Icon(
-                  LucideIcons.arrowLeft,
-                  color: AppColors.white,
-                  size: 24,
+                icon: SvgPicture.asset(
+                  'assets/icons/arrow-left.svg',
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
                 ),
               ),
             ),
@@ -222,7 +223,12 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
                           valueColor: AlwaysStoppedAnimation<Color>(AppColors.textDark),
                         ),
                       )
-                    : Icon(LucideIcons.save),
+                    : SvgPicture.asset(
+                        'assets/icons/copy-check.svg',
+                        width: 24,
+                        height: 24,
+                        colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
+                      ),
                 label: Text(
                   AppLocalizations.of(context)!.saveChanges,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -327,7 +333,15 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
               hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.textGrey,
               ),
-              prefixIcon: Icon(LucideIcons.user, color: AppColors.textGrey, size: 20),
+              prefixIcon: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SvgPicture.asset(
+                  'assets/icons/user-filled.svg',
+                  width: 20,
+                  height: 20,
+                  colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
+                ),
+              ),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.all(20),
             ),
@@ -620,8 +634,18 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
               ),
             ),
             child: selectedColor == null
-                ? Icon(LucideIcons.check, size: 24, color: AppColors.primary)
-                : Icon(LucideIcons.x, size: 20, color: AppColors.grey),
+                ? SvgPicture.asset(
+                    'assets/icons/copy-check.svg',
+                    width: 24,
+                    height: 24,
+                    colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                  )
+                : SvgPicture.asset(
+                    'assets/icons/x.svg',
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                  ),
           ),
         ),
         // Color options
@@ -651,10 +675,11 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
                 ],
               ),
               child: isSelected
-                  ? Icon(
-                      LucideIcons.check,
-                      size: 24,
-                      color: _getContrastColor(color),
+                  ? SvgPicture.asset(
+                      'assets/icons/copy-check.svg',
+                      width: 24,
+                      height: 24,
+                      colorFilter: ColorFilter.mode(_getContrastColor(color), BlendMode.srcIn),
                     )
                   : null,
             ),

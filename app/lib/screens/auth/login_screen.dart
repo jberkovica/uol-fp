@@ -283,10 +283,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             child: Row(
                               children: [
-                                Icon(
-                                  Icons.error_outline,
-                                  color: AppColors.error,
-                                  size: 20,
+                                SvgPicture.asset(
+                                  'assets/icons/circle-dashed-check.svg',
+                                  width: 20,
+                                  height: 20,
+                                  colorFilter: const ColorFilter.mode(AppColors.error, BlendMode.srcIn),
                                 ),
                                 const SizedBox(width: 8),
                                 Expanded(
@@ -307,7 +308,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: Theme.of(context).textTheme.bodyMedium,
                           decoration: InputDecoration(
                             labelText: AppLocalizations.of(context)!.email,
-                            prefixIcon: const Icon(Icons.email),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: SvgPicture.asset(
+                                'assets/icons/mail-filled.svg',
+                                width: 20,
+                                height: 20,
+                                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
+                              ),
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -329,12 +338,23 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: Theme.of(context).textTheme.bodyMedium,
                           decoration: InputDecoration(
                             labelText: AppLocalizations.of(context)!.password,
-                            prefixIcon: const Icon(Icons.lock),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: SvgPicture.asset(
+                                'assets/icons/lock-filled.svg',
+                                width: 20,
+                                height: 20,
+                                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
+                              ),
+                            ),
                             suffixIcon: IconButton(
-                              icon: Icon(
+                              icon: SvgPicture.asset(
                                 _obscurePassword
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                    ? 'assets/icons/eye.svg'
+                                    : 'assets/icons/eye-filled.svg',
+                                width: 20,
+                                height: 20,
+                                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
                               ),
                               onPressed: () {
                                 setState(() {

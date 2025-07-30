@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import '../../constants/app_colors.dart';
 import '../../generated/app_localizations.dart';
 
@@ -230,10 +229,11 @@ class _ProcessingScreenState extends State<ProcessingScreen> with TickerProvider
                   child: SafeArea(
                     child: IconButton(
                       onPressed: widget.onClose ?? () => Navigator.of(context).pop(),
-                      icon: const Icon(
-                        LucideIcons.x,
-                        color: AppColors.textDark,
-                        size: 24,
+                      icon: SvgPicture.asset(
+                        'assets/icons/x.svg',
+                        width: 24,
+                        height: 24,
+                        colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
                       ),
                     ),
                   ),

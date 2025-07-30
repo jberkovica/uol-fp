@@ -12,7 +12,7 @@ app:
 [x] blurry images 
 [x] menu
 [] google auth
-[] check if all icons are lucide 
+[x] check if all icons are lucide 
 [] check for unused screens
 [] fix all flutter analyse errors?
 [] screens to fill data about kids 
@@ -21,7 +21,7 @@ app:
 [] change all icons to fontawesome or 
 [] home page alligh title wit profile
 [] remove print to console
-[] all icons same style
+[x] all icons same style
 [x] animation on home page when scroll down
 [] gallery view "see all" for more then 10?
 [] home page sections
@@ -164,3 +164,13 @@ story generation:
 - words timestamps -> whisper 
 - image generation -> open ai
 
+
+----
+
+priororities:
+[] write diploma part on implementation
+[] evaluation part plan and some parts
+[] landing page for karto
+[] fix story is ready screen
+[] fix button on home screen
+[] 

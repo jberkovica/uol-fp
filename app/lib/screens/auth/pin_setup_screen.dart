@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../generated/app_localizations.dart';
 import '../../services/auth_service.dart';
@@ -301,10 +301,11 @@ class _PinSetupScreenState extends State<PinSetupScreen> {
           onTap: _isSettingPin ? null : _onDeleteTap,
           borderRadius: BorderRadius.circular(40),
           child: Center(
-            child: Icon(
-              LucideIcons.delete,
-              color: AppColors.textLight,
-              size: 24,
+            child: SvgPicture.asset(
+              'assets/icons/x.svg',
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(AppColors.textLight, BlendMode.srcIn),
             ),
           ),
         ),

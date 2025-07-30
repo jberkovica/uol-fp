@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../models/story.dart';
@@ -191,10 +190,11 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
                   child: SafeArea(
                     child: IconButton(
                       onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
-                      icon: const FaIcon(
-                        FontAwesomeIcons.xmark,
-                        color: AppColors.textDark,
-                        size: 24,
+                      icon: SvgPicture.asset(
+                        'assets/icons/x.svg',
+                        width: 24,
+                        height: 24,
+                        colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
                       ),
                     ),
                   ),
@@ -299,7 +299,12 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.auto_stories, size: 24),
+            SvgPicture.asset(
+              'assets/icons/book-filled.svg',
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
+            ),
             const SizedBox(width: 12),
             Text(
               AppLocalizations.of(context)!.openStory,
@@ -333,7 +338,12 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.admin_panel_settings, size: 24),
+            SvgPicture.asset(
+              'assets/icons/shield-check-filled.svg',
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            ),
             const SizedBox(width: 12),
             Text(
               AppLocalizations.of(context)!.review,
