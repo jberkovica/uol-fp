@@ -290,4 +290,109 @@ Cleaner, more maintainable codebase without unnecessary complexity. Filename han
 
 ---
 
-_Last updated: 2025-07-28_
+### OTP-Based Registration System Implementation
+
+#### Overview
+Replaced email link-based verification with professional OTP (One-Time Password) system for better mobile UX and implemented comprehensive registration recovery mechanism to handle interrupted signup flows.
+
+#### Problem Solved
+- **Email link friction**: Users had to leave app to check email and click links
+- **Mobile UX issues**: Email links often opened in wrong browser/app context
+- **Interrupted registration**: No recovery mechanism if users closed app during signup
+
+#### Architecture Changes
+
+##### 1. Authentication Flow Redesign
+**Before**: Email/Password → Email link verification → Login
+**After**: Email/Password → OTP code verification → PIN setup → Profile selection
+
+##### 2. OTP Implementation Details
+- **Supabase OTP flow**: Using `signInWithOtp()` with `shouldCreateUser: true`
+- **Email template configuration**: Modified Supabase templates to send `{{ .Token }}` instead of `{{ .ConfirmationURL }}`
+- **6-digit verification**: Clean UI with individual input boxes and auto-focus
+- **Resend mechanism**: 60-second countdown with proper rate limiting
+
+##### 3. Registration State Management
+**RegistrationStatus enum**:
+```dart
+enum RegistrationStatus {
+  notLoggedIn,        // No authentication
+  emailNotVerified,   // Logged in but email unconfirmed
+  pinNotSet,          // Email verified but no parent PIN
+  complete,           // Full registration complete
+}
+```
+
+**State detection logic**:
+```dart
+RegistrationStatus getRegistrationStatus() {
+  if (!isAuthenticated) return RegistrationStatus.notLoggedIn;
+  if (currentUser?.emailConfirmedAt == null) return RegistrationStatus.emailNotVerified;
+  if (!hasParentPin()) return RegistrationStatus.pinNotSet;
+  return RegistrationStatus.complete;
+}
+```
+
+#### Key Features Implemented
+
+##### 1. OTP Verification Screen
+- **Design consistency**: Matches parent dashboard purple theme
+- **User experience**: 6 individual input boxes with auto-focus and auto-submit
+- **Error handling**: Clear error messages with retry functionality
+- **Resend logic**: Countdown timer preventing spam
+
+##### 2. PIN Setup Screen
+- **Parent security**: Required 4-digit PIN for parent dashboard access
+- **Professional UI**: Number pad interface matching existing parent screens
+- **Validation**: Proper PIN format validation and error handling
+- **Navigation**: Direct flow to profile selection after setup
+
+##### 3. Registration Recovery System
+- **Splash screen detection**: Automatically detects incomplete registration state
+- **Smart routing**: Routes users to appropriate step based on current state
+- **Context preservation**: Maintains user session through recovery process
+- **Graceful handling**: Works even if user closes app mid-registration
+
+#### Technical Implementation
+
+##### Frontend Changes
+- **OTPVerificationScreen**: Complete 6-digit input with professional UX
+- **PinSetupScreen**: Secure PIN creation with number pad interface
+- **AuthService**: Enhanced with OTP methods and registration state detection
+- **Splash screen**: Added recovery mechanism with state-based routing
+
+##### Backend Integration
+- **Supabase configuration**: OTP email templates with token-based verification
+- **User metadata**: Storing parent PIN in encrypted user metadata
+- **Session management**: Proper handling of unverified vs verified users
+
+##### Route Management
+Updated main.dart with proper argument passing for OTP screen:
+```dart
+'/otp-verification': (context) {
+  final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+  return OTPVerificationScreen(
+    email: args?['email'] ?? '',
+    password: args?['password'] ?? '',
+    fullName: args?['fullName'],
+  );
+},
+```
+
+#### Security Improvements
+- **PIN-based access**: Parent dashboard protected by 4-digit PIN
+- **Metadata encryption**: Parent PIN stored securely in Supabase user metadata
+- **Session validation**: Proper authentication state checking throughout app
+- **Recovery protection**: Safe state detection without exposing sensitive data
+
+#### User Experience Benefits
+- **Mobile-first**: No need to leave app for email verification
+- **Professional flow**: Smooth OTP → PIN → Profile progression
+- **Interruption recovery**: Users can complete registration even after app closure
+- **Clear feedback**: Visual indicators and error messages throughout process
+
+**Result**: Professional, secure, and mobile-optimized registration system with comprehensive recovery mechanisms, eliminating email link friction while maintaining security through PIN-based parent access control.
+
+---
+
+_Last updated: 2025-07-29_

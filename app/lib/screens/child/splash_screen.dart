@@ -59,6 +59,9 @@ class SplashScreen extends StatelessWidget {
       
       // Simple routing: authenticated → profile select, not authenticated → login
       final authService = AuthService.instance;
+      
+      // On mobile apps, users stay logged in indefinitely
+      // On web, session expires after 7 days of inactivity for security
       if (authService.isAuthenticated) {
         Navigator.pushReplacementNamed(context, '/profile-select');
       } else {

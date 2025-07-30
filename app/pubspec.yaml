@@ -72,6 +72,8 @@ dependencies:
     # Local storage for app state
     shared_preferences: ^2.2.2
     
+    # Security and biometrics  
+    local_auth: ^2.3.0
     
     # Logging
     logger: ^2.0.2+1
@@ -94,6 +96,7 @@ dev_dependencies:
     # Testing utilities
     # mockito: ^5.4.4  # Temporarily disabled due to version conflicts
     build_runner: ^2.4.13
+    
     
     
 

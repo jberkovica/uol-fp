@@ -21,6 +21,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   bool _obscurePassword = true;
+  String? _errorMessage;
+  int _loginAttempts = 0;
+  DateTime? _lastFailedAttempt;
 
   @override
   void dispose() {
@@ -32,7 +35,16 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _signInWithEmail() async {
     if (!_formKey.currentState!.validate()) return;
 
-    setState(() => _isLoading = true);
+    // Check rate limiting
+    if (_isRateLimited()) {
+      _setError('Too many failed attempts. Please wait before trying again.');
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
 
     try {
       final response = await AuthService.instance.signInWithEmailAndPassword(
@@ -41,14 +53,18 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (response.user != null) {
+        // Reset failed attempts on success
+        _loginAttempts = 0;
+        _lastFailedAttempt = null;
+        
         if (mounted) {
           Navigator.pushReplacementNamed(context, '/profile-select');
         }
       } else {
-        _showError('Login failed. Please check your credentials.');
+        _handleLoginFailure('Invalid email or password. Please check your credentials.');
       }
     } catch (e) {
-      _showError('Login failed: ${e.toString()}');
+      _handleLoginFailure(_getErrorMessage(e));
     } finally {
       setState(() => _isLoading = false);
     }
@@ -129,6 +145,42 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!kIsWeb) {
         setState(() => _isLoading = false);
       }
+    }
+  }
+
+  void _handleLoginFailure(String message) {
+    _loginAttempts++;
+    _lastFailedAttempt = DateTime.now();
+    _setError(message);
+  }
+
+  void _setError(String message) {
+    setState(() {
+      _errorMessage = message;
+    });
+  }
+
+  bool _isRateLimited() {
+    if (_loginAttempts >= 3 && _lastFailedAttempt != null) {
+      final timeSinceLastAttempt = DateTime.now().difference(_lastFailedAttempt!);
+      return timeSinceLastAttempt.inMinutes < 5; // 5 minute lockout
+    }
+    return false;
+  }
+
+  String _getErrorMessage(dynamic error) {
+    final errorString = error.toString().toLowerCase();
+    
+    if (errorString.contains('invalid_credentials') || errorString.contains('invalid login')) {
+      return 'Invalid email or password. Please check your credentials.';
+    } else if (errorString.contains('email_not_confirmed')) {
+      return 'Please verify your email address before signing in.';
+    } else if (errorString.contains('too_many_requests')) {
+      return 'Too many login attempts. Please try again later.';
+    } else if (errorString.contains('network')) {
+      return 'Network error. Please check your internet connection.';
+    } else {
+      return 'An unexpected error occurred. Please try again.';
     }
   }
 
@@ -221,6 +273,38 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        // Error message display
+                        if (_errorMessage != null)
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 16),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: AppColors.error.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: AppColors.error.withValues(alpha: 0.3),
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.error_outline,
+                                  color: AppColors.error,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    _errorMessage!,
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: AppColors.error,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         // Email field
                         TextFormField(
                           controller: _emailController,

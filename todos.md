@@ -62,6 +62,7 @@ Priority:
 [x] input as audio or text (whisper for audio)
 [] kids profile info
 [] analytics - posthog
+[] storage bucket is public?
 
 
 [] empty fields in stories table

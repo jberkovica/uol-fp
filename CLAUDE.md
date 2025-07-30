@@ -2,6 +2,12 @@
 
 ## CRITICAL RULES FOR CLAUDE - MUST FOLLOW
 
+### SECURITY RULES (ABSOLUTELY CRITICAL)
+- **NEVER READ .env FILES** - This is a critical security violation
+- **NEVER ACCESS FILES CONTAINING SECRETS, KEYS, OR PASSWORDS**
+- If you need to check environment variables, ask the user to verify them manually
+- Always protect user credentials and sensitive information
+
 ### Git Commit Messages
 - **NEVER mention Claude, Claude Code, or any AI signature in commit messages**  
 - **NO Co-Authored-By: Claude lines**

@@ -25,6 +25,11 @@ class AuthService {
 
   /// Get the current Supabase client
   final SupabaseClient _supabase = Supabase.instance.client;
+  
+  // Session management - only for web
+  DateTime? _lastActivity;
+  static const Duration _sessionTimeout = Duration(days: 7); // 7 days for web only
+  bool _isSessionExpired = false;
 
   // TODO: Complete Google Sign-In setup for web
   // 1. Add Google OAuth client ID to web/index.html: <meta name="google-signin-client_id" content="YOUR_CLIENT_ID" />
@@ -46,7 +51,13 @@ class AuthService {
   User? get currentUser => _supabase.auth.currentUser;
 
   /// Check if user is authenticated
-  bool get isAuthenticated => currentUser != null;
+  bool get isAuthenticated => currentUser != null && !_isSessionExpired;
+  
+  /// Get current session
+  Session? get currentSession => _supabase.auth.currentSession;
+  
+  /// Check if session is expired
+  bool get isSessionExpired => _isSessionExpired;
 
   /// Stream of authentication state changes
   Stream<AuthState> get authStateChanges => _supabase.auth.onAuthStateChange;
@@ -255,7 +266,71 @@ class AuthService {
 
   /// Sign out
   Future<void> signOut() async {
-    await _supabase.auth.signOut();
+    try {
+      await _supabase.auth.signOut();
+      _clearSessionData();
+      _logger.i('User signed out successfully');
+    } catch (e, stackTrace) {
+      _logger.e('Sign out error', error: e, stackTrace: stackTrace);
+      rethrow;
+    }
+  }
+  
+  /// Update last activity timestamp
+  void updateActivity() {
+    _lastActivity = DateTime.now();
+    _isSessionExpired = false;
+  }
+  
+  /// Validate current session
+  Future<bool> validateSession() async {
+    if (currentUser == null) {
+      _isSessionExpired = true;
+      return false;
+    }
+    
+    // Only check session timeout on web platform
+    if (kIsWeb && _lastActivity != null) {
+      final timeSinceActivity = DateTime.now().difference(_lastActivity!);
+      if (timeSinceActivity > _sessionTimeout) {
+        _logger.w('Web session expired due to inactivity (7 days)');
+        _isSessionExpired = true;
+        await signOut();
+        return false;
+      }
+    }
+    
+    // Check if session is still valid with Supabase
+    try {
+      final session = currentSession;
+      if (session != null) {
+        // Refresh session if it's close to expiring
+        final expiresAt = DateTime.fromMillisecondsSinceEpoch(session.expiresAt! * 1000);
+        final timeUntilExpiry = expiresAt.difference(DateTime.now());
+        
+        if (timeUntilExpiry.inMinutes < 30) {
+          _logger.i('Refreshing session token');
+          await _supabase.auth.refreshSession();
+        }
+        
+        updateActivity();
+        return true;
+      } else {
+        _isSessionExpired = true;
+        return false;
+      }
+    } catch (e, stackTrace) {
+      _logger.e('Session validation failed', error: e, stackTrace: stackTrace);
+      _isSessionExpired = true;
+      await signOut();
+      return false;
+    }
+  }
+  
+  /// Clear session data
+  void _clearSessionData() {
+    _lastActivity = null;
+    _isSessionExpired = false;
   }
 
   /// Get user's language preference from metadata
