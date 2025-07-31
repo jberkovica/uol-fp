@@ -199,7 +199,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
             color: AppColors.secondary,
           ),
           
-          // Layer 2: Fixed elements on yellow background (cloud, mascot, header, button)
+          // Layer 2: Fixed elements on yellow background (cloud, mascot, header, button) - UNDER white container
           // Cloud - fixed position
           Positioned(
             top: 120,
@@ -238,7 +238,62 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
             ),
           ),
           
-          // Layer 3: Single unified scroll with parallax effect
+          // Header with title and profile - positioned UNDER white container
+          Positioned(
+            top: AppTheme.screenHeaderTopPadding,
+            left: AppTheme.getGlobalPadding(context),
+            right: AppTheme.getGlobalPadding(context),
+            child: SafeArea(
+              bottom: false,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.myTales,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/profile-select');
+                    },
+                    child: Column(
+                      children: [
+                        ProfileAvatar(
+                          radius: 25,
+                          profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          _selectedKid?.name ?? 'Kid',
+                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: AppColors.textDark,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          
+          // Create button - positioned UNDER white container
+          Positioned(
+            top: 140,
+            right: AppTheme.getGlobalPadding(context),
+            child: SafeArea(
+              child: FilledButton(
+                onPressed: _openUploadScreen,
+                style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                  minimumSize: const Size(120, 60),
+                ),
+                child: Text(AppLocalizations.of(context)!.create),
+              ),
+            ),
+          ),
+          
+          // Layer 3: Scrollable white content with parallax effect (on top of Layer 2)
           NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification notification) {
               if (notification is ScrollUpdateNotification) {
@@ -304,62 +359,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                     ),
                   ),
                 ],
-              ),
-            ),
-          ),
-          
-          // Layer 4: Clickable elements (on top for clicks)
-          // Header with title and profile - moved to top layer
-          Positioned(
-            top: AppTheme.screenHeaderTopPadding,
-            left: AppTheme.getGlobalPadding(context),
-            right: AppTheme.getGlobalPadding(context),
-            child: SafeArea(
-              bottom: false,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.myTales,
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/profile-select');
-                    },
-                    child: Column(
-                      children: [
-                        ProfileAvatar(
-                          radius: 25,
-                          profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _selectedKid?.name ?? 'Kid',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.textDark,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          
-          // Create button - moved to top layer
-          Positioned(
-            top: 140,
-            right: AppTheme.getGlobalPadding(context),
-            child: SafeArea(
-              child: FilledButton(
-                onPressed: _openUploadScreen,
-                style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                  minimumSize: const Size(120, 60),
-                ),
-                child: Text(AppLocalizations.of(context)!.create),
               ),
             ),
           ),
