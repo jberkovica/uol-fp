@@ -112,6 +112,28 @@ class SplashScreen extends StatelessWidget {
                 ),
               ),
             ),
+            
+            // Face smile - positioned in the purple curved area like upload screen
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: screenSize.height * 0.5, // Same height as purple area
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: screenSize.height * 0.05),
+                    child: SvgPicture.asset(
+                      'assets/images/face-1.svg',
+                      width: 100,
+                      height: 50,
+                      fit: BoxFit.contain,
+                      colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

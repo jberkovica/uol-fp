@@ -200,17 +200,17 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
           ),
           
           // Layer 2: Fixed elements on yellow background (cloud, mascot, header, button) - UNDER white container
-          // Cloud - fixed position
+          // Cloud - scaled position with size cap for large screens
           Positioned(
-            top: 120,
-            left: _getResponsiveCloudPosition(context),
+            top: 130, // Moved down 10 pixels
+            left: (MediaQuery.of(context).size.width * -0.4 - 40).clamp(-350, -190), // Keep cloud visible on large screens
             child: SvgPicture.asset(
               'assets/images/cloud-1.svg',
-              width: MediaQuery.of(context).size.width * 1.8,
-              height: MediaQuery.of(context).size.width * 0.9,
+              width: (MediaQuery.of(context).size.width * 1.2).clamp(300, 600), // Back to bigger size
+              height: (MediaQuery.of(context).size.width * 0.6).clamp(150, 300), // Back to bigger size
               fit: BoxFit.contain,
               colorFilter: const ColorFilter.mode(
-                Color(0xFFDFBBC6),
+                Color(0xFFFFCF6A),
                 BlendMode.srcIn,
               ),
             ),
@@ -238,62 +238,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
             ),
           ),
           
-          // Header with title and profile - positioned UNDER white container
-          Positioned(
-            top: AppTheme.screenHeaderTopPadding,
-            left: AppTheme.getGlobalPadding(context),
-            right: AppTheme.getGlobalPadding(context),
-            child: SafeArea(
-              bottom: false,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.myTales,
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/profile-select');
-                    },
-                    child: Column(
-                      children: [
-                        ProfileAvatar(
-                          radius: 25,
-                          profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _selectedKid?.name ?? 'Kid',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.textDark,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          
-          // Create button - positioned UNDER white container
-          Positioned(
-            top: 140,
-            right: AppTheme.getGlobalPadding(context),
-            child: SafeArea(
-              child: FilledButton(
-                onPressed: _openUploadScreen,
-                style: FilledButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                  minimumSize: const Size(120, 60),
-                ),
-                child: Text(AppLocalizations.of(context)!.create),
-              ),
-            ),
-          ),
-          
-          // Layer 3: Scrollable white content with parallax effect (on top of Layer 2)
+          // Layer 3: Scrollable white content with parallax effect (on top of everything)
           NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification notification) {
               if (notification is ScrollUpdateNotification) {
@@ -308,12 +253,71 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
             },
             child: SingleChildScrollView(
               child: Column(
-                children: [
-                  // Spacer to push white container down with parallax effect
-                  SizedBox(height: (260 + (-_scrollOffset * 0.5)).clamp(160, 260)),
-                  
-                  // White container with stories
-                  Container(
+                  children: [
+                    // Spacer that contains header elements
+                    Container(
+                      height: (250 + (-_scrollOffset * 0.5)).clamp(150, 250),
+                      child: Stack(
+                        children: [
+                          // Header with title and profile
+                          Positioned(
+                            top: AppTheme.screenHeaderTopPadding,
+                            left: AppTheme.getGlobalPadding(context),
+                            right: AppTheme.getGlobalPadding(context),
+                            child: SafeArea(
+                              bottom: false,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.myTales,
+                                    style: Theme.of(context).textTheme.headlineLarge,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(context, '/profile-select');
+                                    },
+                                    child: Column(
+                                      children: [
+                                        ProfileAvatar(
+                                          radius: 25,
+                                          profileType: ProfileAvatar.fromString(_selectedKid?.avatarType ?? 'profile1'),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          _selectedKid?.name ?? 'Kid',
+                                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                            color: AppColors.textDark,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // Create button
+                          Positioned(
+                            top: 140,
+                            right: AppTheme.getGlobalPadding(context),
+                            child: SafeArea(
+                              child: FilledButton(
+                                onPressed: _openUploadScreen,
+                                style: FilledButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                                  minimumSize: const Size(120, 60),
+                                ),
+                                child: Text(AppLocalizations.of(context)!.create),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    
+                    // White container with stories
+                    Container(
                     width: double.infinity,
                     constraints: BoxConstraints(
                       minHeight: MediaQuery.of(context).size.height - 160,
@@ -358,10 +362,11 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                       ),
                     ),
                   ),
-                ],
-              ),
+                  ],
+                ),
             ),
           ),
+          
         ],
       ),
       bottomNavigationBar: BottomNav(
@@ -512,21 +517,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
     );
   }
 
-  /// Get responsive cloud position to ensure it looks consistent across screen sizes
-  double _getResponsiveCloudPosition(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    
-    if (screenWidth < 600) {
-      // Mobile: position cloud further left, mostly off-screen
-      return -200;
-    } else if (screenWidth < 1200) {
-      // Tablet: move cloud much further left to maintain proportion
-      return -500;
-    } else {
-      // Desktop: move cloud very far left for much larger screens
-      return -800;
-    }
-  }
 
 
 }
