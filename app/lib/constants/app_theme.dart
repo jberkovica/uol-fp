@@ -297,7 +297,7 @@ class AppTheme {
 
   /// Yellow modal action button style - for image upload widget
   static ButtonStyle get yellowActionButtonStyle => ElevatedButton.styleFrom(
-    backgroundColor: AppColors.buttonYellow,
+    backgroundColor: AppColors.buttonSecondary,
     foregroundColor: AppColors.textDark,
     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 18),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
