@@ -173,4 +173,32 @@ priororities:
 [] landing page for karto
 [] fix story is ready screen
 [] fix button on home screen
-[] 
+[]  when I press "back" on story preview I want to always be redirected to home page
+[] is "open" button when story is ready correct text size?
+
+
+
+[] localisation missing: story is ready, add image
+
+[] video animation for "cooking" image
+
+
+[] onborading screens
+[] subscription screens
+[] help
+
+
+
+
+
+☐ Write backend API tests for transcription endpoints
+☐ Write integration tests for end-to-end transcription flow
+☐ Write frontend widget tests for audio transcription UI
+☐ Write error handling tests for transcription failures
+☐ Add cleanup job for abandoned stories after 24 hours
+☐ Add rate limiting for OTP attempts
+☐ Create comprehensive route protection system (PLAN DOCUMENTED)
+☐ Add proper loading states and error boundaries
+☐ Create robust navigation flow with deep linking support
+☐ Add security measures and session management
+☐ Implement comprehensive testing for auth flows

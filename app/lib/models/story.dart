@@ -25,7 +25,7 @@ class Story {
   /// Create Story from JSON response
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
-      id: json['story_id'] as String,
+      id: json['id'] as String? ?? json['story_id'] as String? ?? '',
       title: json['title'] as String? ?? 'Untitled Story',
       content: json['content'] as String? ?? '',
       imageUrl: json['image_url'] as String?,

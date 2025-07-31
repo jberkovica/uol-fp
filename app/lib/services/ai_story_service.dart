@@ -164,7 +164,152 @@ class AIStoryService {
     }
   }
 
-  /// Generate story from audio recording
+  /// Initiate a new voice story in transcribing state
+  Future<String> initiateVoiceStory(String kidId) async {
+    try {
+      _logger.i('Initiating voice story for kid: $kidId');
+      
+      // Get user's language preference
+      String userLanguage = LanguageService.instance.currentLanguageCode;
+      
+      final response = await http.post(
+        Uri.parse('$baseUrl/stories/initiate-voice'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'kid_id': kidId,
+          'language': userLanguage,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final storyId = responseData['story_id'] as String;
+        _logger.i('Story initiated successfully: $storyId');
+        return storyId;
+      } else {
+        throw Exception('Failed to initiate voice story: ${response.statusCode}');
+      }
+    } catch (e) {
+      _logger.e('Error initiating voice story', error: e);
+      throw Exception('Failed to initiate voice story: $e');
+    }
+  }
+
+  /// Transcribe audio for a story
+  Future<String> transcribeAudio(String storyId, String audioPath) async {
+    try {
+      _logger.i('Transcribing audio for story: $storyId');
+      
+      // Handle different audio path formats (file path vs blob URL)
+      Uint8List audioBytes;
+      
+      if (audioPath.startsWith('blob:')) {
+        // Web blob URL - need to fetch the blob data
+        final response = await http.get(Uri.parse(audioPath));
+        if (response.statusCode != 200) {
+          throw Exception('Failed to fetch audio blob: ${response.statusCode}');
+        }
+        audioBytes = response.bodyBytes;
+      } else {
+        // File path - read the file
+        final file = File(audioPath);
+        if (!await file.exists()) {
+          throw Exception('Audio file not found: $audioPath');
+        }
+        audioBytes = await file.readAsBytes();
+      }
+
+      // Convert to base64
+      final base64Audio = base64Encode(audioBytes);
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/stories/transcribe'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'story_id': storyId,
+          'audio_data': base64Audio,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final transcribedText = responseData['transcribed_text'] as String;
+        _logger.i('Audio transcribed successfully: ${transcribedText.length} characters');
+        return transcribedText;
+      } else {
+        throw Exception('Failed to transcribe audio: ${response.statusCode}');
+      }
+    } catch (e) {
+      _logger.e('Error transcribing audio', error: e);
+      throw Exception('Failed to transcribe audio: $e');
+    }
+  }
+
+  /// Submit final text for story generation
+  Future<Story> submitStoryText(String storyId, String text) async {
+    try {
+      _logger.i('Submitting story text for generation: $storyId');
+      
+      final response = await http.post(
+        Uri.parse('$baseUrl/stories/submit-text'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'story_id': storyId,
+          'text': text,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        _logger.i('Story text submitted successfully');
+        
+        // Poll for story completion
+        Story? story;
+        int attempts = 0;
+        const maxAttempts = 30; // 30 attempts with 2-second delays = 1 minute max
+
+        _logger.d('Polling for story completion...');
+        while (attempts < maxAttempts) {
+          await Future.delayed(const Duration(seconds: 2));
+
+          story = await getStory(storyId);
+          _logger.d('Attempt ${attempts + 1}: Story status is ${story.status}');
+
+          if (story.status == StoryStatus.approved || story.status == StoryStatus.pending) {
+            // Story generation completed! 
+            // - approved: Ready for playback
+            // - pending: Ready but needs parent approval
+            _logger.i('Story generation completed! Status: ${story.status}');
+            break;
+          } else if (story.status == StoryStatus.rejected) {
+            throw Exception('Story generation failed on backend');
+          }
+
+          attempts++;
+        }
+
+        if (story == null || (story.status != StoryStatus.approved && story.status != StoryStatus.pending)) {
+          throw Exception(
+              'Story generation timed out or failed after ${attempts} attempts');
+        }
+
+        return story;
+      } else {
+        throw Exception('Failed to submit story text: ${response.statusCode}');
+      }
+    } catch (e) {
+      _logger.e('Error submitting story text', error: e);
+      throw Exception('Failed to submit story text: $e');
+    }
+  }
+
+  /// Generate story from audio recording (DEPRECATED - use new flow)
   Future<Story> generateStoryFromAudio(String audioPath, String kidId) async {
     try {
       _logger.i('Starting story generation from audio recording');
@@ -324,7 +469,7 @@ class AIStoryService {
   /// Get story details from backend
   Future<Story> getStory(String storyId) async {
     try {
-      final uri = Uri.parse('$baseUrl/story/$storyId');
+      final uri = Uri.parse('$baseUrl/stories/$storyId');
       final response = await http.get(uri);
 
       if (response.statusCode == 200) {

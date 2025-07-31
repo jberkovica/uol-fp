@@ -601,6 +601,12 @@ abstract class AppLocalizations {
   /// **'Enter any feedback or request changes...'**
   String get enterFeedbackOrChanges;
 
+  /// No description provided for @transcribingAudio.
+  ///
+  /// In en, this message translates to:
+  /// **'Transcribing audio...'**
+  String get transcribingAudio;
+
   /// No description provided for @changeNameAgeAvatar.
   ///
   /// In en, this message translates to:
@@ -1066,13 +1072,13 @@ abstract class AppLocalizations {
   /// No description provided for @yourStoryIsReady.
   ///
   /// In en, this message translates to:
-  /// **'Your story is ready! 🎉'**
+  /// **'Your story is ready!'**
   String get yourStoryIsReady;
 
   /// No description provided for @parentReviewPending.
   ///
   /// In en, this message translates to:
-  /// **'Parent review pending 👨‍👩‍👧‍👦'**
+  /// **'Parent review pending'**
   String get parentReviewPending;
 
   /// No description provided for @tapReviewToApprove.
@@ -1090,7 +1096,7 @@ abstract class AppLocalizations {
   /// No description provided for @openStory.
   ///
   /// In en, this message translates to:
-  /// **'Open Story'**
+  /// **'open'**
   String get openStory;
 
   /// No description provided for @pleaseEnterText.

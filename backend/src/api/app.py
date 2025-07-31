@@ -373,7 +373,7 @@ async def process_story_generation_background(
         
         # Upload audio to storage
         filename = f"{story_id}.mp3"
-        audio_url = await supabase.upload_audio(audio_data, filename)
+        audio_filename = await supabase.upload_audio(audio_data, filename)
         
         # Get kid and user approval mode to determine final status
         kid = await supabase.get_kid(kid_id)
@@ -387,7 +387,7 @@ async def process_story_generation_background(
         updates = {
             "title": story_result["title"],
             "content": story_result["content"],
-            "audio_filename": audio_url,
+            "audio_filename": audio_filename,
             "status": final_status
         }
         
@@ -513,7 +513,7 @@ async def process_text_story_generation_background(
         
         # Upload audio to storage
         filename = f"{story_id}.mp3"
-        audio_url = await supabase.upload_audio(audio_data, filename)
+        audio_filename = await supabase.upload_audio(audio_data, filename)
         
         # Get kid and user approval mode to determine final status
         kid = await supabase.get_kid(kid_id)
@@ -527,7 +527,7 @@ async def process_text_story_generation_background(
         updates = {
             "title": story_result["title"],
             "content": story_result["content"],
-            "audio_filename": audio_url,
+            "audio_filename": audio_filename,
             "status": final_status
         }
         
@@ -702,7 +702,7 @@ async def process_audio_story_generation_background(
         
         # Upload audio to storage
         filename = f"{story_id}.mp3"
-        audio_url = await supabase.upload_audio(audio_data, filename)
+        audio_filename = await supabase.upload_audio(audio_data, filename)
         
         # Get kid and user approval mode to determine final status
         kid = await supabase.get_kid(kid_id)
@@ -716,7 +716,7 @@ async def process_audio_story_generation_background(
         updates = {
             "title": story_result["title"],
             "content": story_result["content"],
-            "audio_filename": audio_url,
+            "audio_filename": audio_filename,
             "status": final_status
         }
         

@@ -285,6 +285,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get enterFeedbackOrChanges => 'Enter any feedback or request changes...';
 
   @override
+  String get transcribingAudio => 'Transcribing audio...';
+
+  @override
   String get changeNameAgeAvatar => 'Change name, age, or avatar';
 
   @override
@@ -541,10 +544,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get yourStoryIsReady => 'Your story is ready! 🎉';
+  String get yourStoryIsReady => 'Your story is ready!';
 
   @override
-  String get parentReviewPending => 'Parent review pending 👨‍👩‍👧‍👦';
+  String get parentReviewPending => 'Parent review pending';
 
   @override
   String get tapReviewToApprove => 'Tap Review to ask parent for approval';
@@ -553,7 +556,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weWillNotifyWhenReady => 'We\'ll let you know when your story is ready!';
 
   @override
-  String get openStory => 'Open Story';
+  String get openStory => 'open';
 
   @override
   String get pleaseEnterText => 'Please enter some text to create your story';

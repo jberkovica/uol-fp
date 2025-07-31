@@ -285,6 +285,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get enterFeedbackOrChanges => 'Введите отзыв или запросите изменения...';
 
   @override
+  String get transcribingAudio => 'Транскрипция аудио...';
+
+  @override
   String get changeNameAgeAvatar => 'Изменить имя, возраст или аватар';
 
   @override
@@ -542,10 +545,10 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get yourStoryIsReady => 'Ваша история готова! 🎉';
+  String get yourStoryIsReady => 'Ваша история готова!';
 
   @override
-  String get parentReviewPending => 'Ожидает одобрения родителей 👨‍👩‍👧‍👦';
+  String get parentReviewPending => 'Ожидает одобрения родителей';
 
   @override
   String get tapReviewToApprove => 'Нажмите Проверить, чтобы попросить родителей одобрить';
@@ -554,7 +557,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get weWillNotifyWhenReady => 'Мы сообщим, когда ваша история будет готова!';
 
   @override
-  String get openStory => 'Открыть историю';
+  String get openStory => 'открыть';
 
   @override
   String get pleaseEnterText => 'Пожалуйста, введите текст для создания истории';

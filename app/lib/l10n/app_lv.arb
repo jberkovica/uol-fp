@@ -88,6 +88,7 @@
   "enterChildName": "Ievadiet bērna vārdu",
   "writeYourIdeaHere": "rakstiet savu ideju šeit...",
   "enterFeedbackOrChanges": "Ievadiet atsauksmes vai pieprasiet izmaiņas...",
+  "transcribingAudio": "Transkripcija notiek...",
   
   "changeNameAgeAvatar": "Mainīt vārdu, vecumu vai avatāru",
   "switchProfile": "Mainīt profilu",
@@ -177,11 +178,11 @@
   "failedToUpdateApprovalMethod": "Neizdevās nomainīt apstiprinājuma veidu",
   "errorUpdatingApprovalMethod": "Kļūda mainot apstiprinājuma veidu: {error}",
   
-  "yourStoryIsReady": "Tavs stāsts ir gatavs! 🎉",
-  "parentReviewPending": "Gaida vecāku apstiprinājumu 👨‍👩‍👧‍👦",
+  "yourStoryIsReady": "Tavs stāsts ir gatavs!",
+  "parentReviewPending": "Gaida vecāku apstiprinājumu",
   "tapReviewToApprove": "Nospied Pārskatīt, lai lūgtu vecāku apstiprinājumu",
   "weWillNotifyWhenReady": "Mēs paziņosim, kad tavs stāsts būs gatavs!",
-  "openStory": "Atvērt stāstu",
+  "openStory": "atvērt",
   
   "pleaseEnterText": "Lūdzu, ievadiet tekstu, lai izveidotu stāstu",
   "textTooShort": "Lūdzu, uzrakstiet vismaz 10 simbolus savas stāsta idejas aprakstam",

@@ -477,4 +477,158 @@ Unlike the initial comprehensive Phase 2 attempt that tried to rebuild with auto
 
 ---
 
-_Last updated: 2025-07-30_
+### Advanced Audio Transcription System Implementation
+
+#### Overview
+Completed comprehensive audio transcription system with professional waveform visualization, real-time monitoring, and seamless text input integration. This represents a major UX upgrade from basic audio recording to a sophisticated transcription workflow.
+
+#### System Architecture
+
+##### 1. New Audio Transcription Flow
+**Previous Flow**: Record → Submit → Generate Story
+**New Flow**: Record → Stop → Review Audio → Transcribe → Edit Text → Generate Story
+
+##### 2. Backend Infrastructure
+- **New story statuses**: Added `TRANSCRIBING`, `DRAFT`, `ABANDONED` to StoryStatus enum
+- **Initiate voice story endpoint**: `/stories/initiate-voice` creates story in transcribing state
+- **Transcription endpoint**: `/stories/transcribe` processes audio and updates to draft state
+- **Text submission endpoint**: `/stories/submit-text` handles final text with comparison to original transcription
+- **Story inputs tracking**: Complete audit trail of transcription vs final text in `story_inputs` table
+
+##### 3. Professional Waveform Visualization System
+
+**Real-time Recording Visualization**:
+```dart
+// Amplitude monitoring with exponential smoothing
+_smoothedAmplitude = (_amplitudeSmoothingFactor * normalizedAmplitude) + 
+                   ((1 - _amplitudeSmoothingFactor) * _smoothedAmplitude);
+
+// dBFS normalization for professional audio
+double normalizedAmplitude = math.max(0.0, (amplitude.current + 96.0) / 96.0);
+```
+
+**Static Waveform Generation**:
+```dart
+// RMS calculation for accurate audio representation
+final rms = sqrt(sectionAmplitudes.map((a) => a * a).reduce((a, b) => a + b) / sectionAmplitudes.length);
+```
+
+**Playback Progress Visualization**:
+- Visual indication of played vs unplayed audio sections
+- Real-time progress tracking synchronized with audio playback
+- Color-coded waveform bars (played: darker, unplayed: lighter)
+
+#### Key Technical Features
+
+##### 1. Real-time Audio Monitoring
+- **50ms update frequency**: Reduced from 100ms for smoother visualization
+- **Amplitude smoothing**: Exponential moving average prevents jittery visualization
+- **dBFS normalization**: Professional audio measurement (-96 to 0 dBFS range)
+- **Optimized setState**: Only updates UI when amplitude changes significantly (threshold-based)
+
+##### 2. Audio File Analysis
+- **Temporary file processing**: Analyzes recorded audio to generate accurate static waveform
+- **Multi-platform support**: Handles both file paths (mobile) and blob URLs (web)
+- **Memory management**: Proper cleanup of temporary audio files after processing
+
+##### 3. Advanced Playback Controls
+- **Play/pause functionality**: Review recorded audio before submission
+- **Progress tracking**: Visual indication of current playback position
+- **Restart recording**: Option to re-record if unsatisfied with result
+- **Professional audio controls**: Industry-standard play/pause/restart interface
+
+#### User Experience Enhancements
+
+##### 1. Seamless Text Integration
+- **Transcription review**: Users can see and edit transcribed text before submission
+- **Mode switching**: Transcribed text automatically transfers to regular text input mode
+- **No dead ends**: Users never get stuck in audio-only mode
+- **Edit freedom**: Full text editing capabilities after transcription
+
+##### 2. Professional Audio Interface
+- **Loading states**: Clear feedback during transcription process with localized messages
+- **Error handling**: Graceful handling of transcription failures with retry options
+- **Visual hierarchy**: Proper icon sizing (28px for audio controls, 24px for navigation)
+- **Layout optimization**: Fixed overflow issues and proper responsive design
+
+#### Localization & UI Polish
+
+##### 1. Multilingual Support
+Added transcription-related strings in all languages:
+- English: "Transcribing audio..."
+- Russian: "Транскрипция аудио..."
+- Latvian: "Transkripcija notiek..."
+
+##### 2. Design System Compliance
+- **Icon consistency**: Standardized sizes (24px navigation, 28px audio controls)
+- **No emojis**: Clean, professional text without decorative elements
+- **Button casing**: Consistent lowercase button labels ("open", not "Open Story")
+- **Color scheme**: Proper use of centralized AppColors and themes
+
+#### Technical Implementation Details
+
+##### Backend Changes (`backend/src/api/routes/stories.py`):
+```python
+# New transcription endpoint
+@router.post("/transcribe", response_model=TranscriptionResponse)
+async def transcribe_audio(request: TranscribeAudioRequest):
+    # Whisper API integration with proper language handling
+    transcript_response = client.audio.transcriptions.create(
+        model="whisper-1",
+        file=audio_file,
+        language=story.language.value  # No forced English fallback
+    )
+```
+
+##### Frontend Changes (`lib/screens/child/upload_screen.dart`):
+```dart
+// Professional waveform visualization
+Widget _buildWaveformBar(int index, double normalizedHeight) {
+  final isPlayed = _isPlayingAudio && 
+                   index < (_currentPlaybackPosition.inMilliseconds / 
+                           (_totalAudioDuration.inMilliseconds / _amplitudeHistory.length));
+  
+  return Container(
+    width: 2,
+    height: normalizedHeight,
+    decoration: BoxDecoration(
+      color: isPlayed ? Colors.white70 : Colors.white.withValues(alpha: 0.4),
+      borderRadius: BorderRadius.circular(1),
+    ),
+  );
+}
+```
+
+#### Quality Improvements
+
+##### 1. Audio Processing Optimization
+- **Efficient amplitude monitoring**: Reduced CPU usage with smart update thresholds
+- **Memory management**: Proper cleanup of audio files and resources
+- **Platform compatibility**: Web blob URL support and mobile file system handling
+
+##### 2. Error Handling & Recovery
+- **Transcription failure recovery**: Users can retry or switch to text mode
+- **File cleanup errors**: Graceful handling of web platform limitations
+- **Loading state management**: Proper UI states for all transcription phases
+
+##### 3. Performance Enhancements
+- **Reduced debug logging**: Eliminated console spam from amplitude monitoring
+- **Layout optimization**: Fixed overflow issues causing rendering errors
+- **Responsive design**: Proper constraints and flex handling for all screen sizes
+
+#### Security & Privacy
+- **No permanent audio storage**: User recordings are not permanently stored on server
+- **Temporary file cleanup**: Automatic cleanup of temporary audio files after processing
+- **Audit trail**: Complete tracking of transcription vs final text changes in database
+
+#### Testing & Quality Assurance
+- **Cross-platform testing**: Verified on web, iOS, and Android
+- **Error condition testing**: Transcription failures, permission denials, network issues
+- **Performance testing**: Amplitude monitoring overhead, memory usage, UI responsiveness
+- **Localization testing**: All languages properly display transcription states
+
+**Result**: Professional-grade audio transcription system with sophisticated waveform visualization, seamless text integration, and comprehensive error handling. Users can now dictate story ideas with confidence, review their audio visually, edit transcribed text, and generate stories through a polished, professional interface that matches modern audio application standards.
+
+---
+
+_Last updated: 2025-07-31_

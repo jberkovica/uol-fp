@@ -2,10 +2,19 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends
 from typing import List, Optional
 from datetime import datetime
+import base64
+import tempfile
+import os
 
-from ...types.requests import GenerateStoryRequest, ReviewStoryRequest
-from ...types.responses import StoryResponse, StoryListResponse, GenerateStoryResponse
-from ...types.domain import StoryStatus
+from ...types.requests import (
+    GenerateStoryRequest, ReviewStoryRequest, InitiateVoiceStoryRequest,
+    TranscribeAudioRequest, SubmitStoryTextRequest
+)
+from ...types.responses import (
+    StoryResponse, StoryListResponse, GenerateStoryResponse,
+    InitiateStoryResponse, TranscriptionResponse
+)
+from ...types.domain import StoryStatus, InputFormat
 from ...services.supabase import get_supabase_service
 from ...core.story_processor import get_story_processor
 from ...core.validators import validate_base64_image, validate_uuid, validate_story_content
@@ -18,9 +27,9 @@ router = APIRouter(prefix="/stories", tags=["stories"])
 
 
 def get_agents_config():
-    """Load agents configuration from config.yaml."""
-    with open("config.yaml", 'r') as f:
-        config = yaml.safe_load(f)
+    """Load agents configuration from config.yaml with environment variable substitution."""
+    from ...utils.config import load_config
+    config = load_config()
     return config["agents"]
 
 
@@ -279,6 +288,191 @@ async def delete_story(story_id: str):
     except Exception as e:
         logger.error(f"Failed to delete story: {e}")
         raise HTTPException(status_code=500, detail="Failed to delete story")
+
+
+@router.post("/initiate-voice", response_model=InitiateStoryResponse)
+async def initiate_voice_story(request: InitiateVoiceStoryRequest) -> InitiateStoryResponse:
+    """Create a new story in transcribing state for voice input."""
+    try:
+        # Validate kid exists
+        supabase = get_supabase_service()
+        kid = await supabase.get_kid(request.kid_id)
+        if not kid:
+            raise NotFoundError("Kid profile", request.kid_id)
+        
+        initial_status = StoryStatus.TRANSCRIBING
+        
+        # Create story record (input_format stored in story_inputs table instead)
+        story_data = {
+            "kid_id": request.kid_id,
+            "title": "New Story",
+            "content": "",
+            "language": request.language.value,
+            "status": initial_status.value
+        }
+        story = await supabase.create_story(story_data)
+        
+        return InitiateStoryResponse(
+            story_id=story.id,
+            status=initial_status,
+            message=f"Story created in {initial_status.value} state"
+        )
+        
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Failed to initiate story: {e}")
+        raise HTTPException(status_code=500, detail="Failed to initiate story")
+
+
+@router.post("/transcribe", response_model=TranscriptionResponse)
+async def transcribe_audio(request: TranscribeAudioRequest) -> TranscriptionResponse:
+    """Transcribe audio for a story."""
+    try:
+        # Validate story exists and is in correct state
+        supabase = get_supabase_service()
+        story = await supabase.get_story(request.story_id)
+        if not story:
+            raise NotFoundError("Story", request.story_id)
+            
+        if story.status != StoryStatus.TRANSCRIBING:
+            raise ValidationError(f"Story is not in transcribing state: {story.status}")
+        
+        # Decode base64 audio
+        audio_bytes = base64.b64decode(request.audio_data)
+        
+        # Create temporary file for audio
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.webm') as temp_audio:
+            temp_audio.write(audio_bytes)
+            temp_audio_path = temp_audio.name
+        
+        try:
+            # Get Whisper config
+            agents_config = get_agents_config()
+            whisper_config = agents_config.get("whisper", {})
+            api_key = whisper_config.get("api_key")
+            
+            if not api_key:
+                raise ValueError("OpenAI API key not found in configuration")
+            
+            # Import OpenAI client
+            import openai
+            client = openai.OpenAI(api_key=api_key)
+            
+            # Transcribe audio
+            with open(temp_audio_path, 'rb') as audio_file:
+                transcript_response = client.audio.transcriptions.create(
+                    model="whisper-1",
+                    file=audio_file,
+                    language=story.language.value  # Use story's language in ISO format
+                )
+            
+            transcribed_text = transcript_response.text.strip()
+            logger.info(f"Audio transcribed: {len(transcribed_text)} characters")
+            
+            # Update story status only (no permanent audio storage for user recordings)
+            updates = {
+                "status": StoryStatus.DRAFT.value
+            }
+            await supabase.update_story(request.story_id, updates)
+            
+            # Store in story_inputs table
+            story_input_data = {
+                "story_id": request.story_id,
+                "input_type": "audio_transcription",
+                "input_value": transcribed_text,
+                "metadata": {
+                    "whisper_model": "whisper-1",
+                    "transcription_language": story.language
+                }
+            }
+            await supabase.create_story_input(story_input_data)
+            
+            return TranscriptionResponse(
+                story_id=request.story_id,
+                transcribed_text=transcribed_text,
+                status=StoryStatus.DRAFT
+            )
+            
+        finally:
+            # Clean up temporary file
+            if os.path.exists(temp_audio_path):
+                os.unlink(temp_audio_path)
+                
+    except (NotFoundError, ValidationError) as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Failed to transcribe audio: {e}")
+        raise HTTPException(status_code=500, detail="Failed to transcribe audio")
+
+
+@router.post("/submit-text", response_model=GenerateStoryResponse)
+async def submit_story_text(
+    request: SubmitStoryTextRequest,
+    background_tasks: BackgroundTasks
+) -> GenerateStoryResponse:
+    """Submit final text for story generation."""
+    try:
+        # Validate story exists and is in draft state
+        supabase = get_supabase_service()
+        story = await supabase.get_story(request.story_id)
+        if not story:
+            raise NotFoundError("Story", request.story_id)
+            
+        if story.status != StoryStatus.DRAFT:
+            raise ValidationError(f"Story is not in draft state: {story.status}")
+        
+        # Validate text
+        text = request.text.strip()
+        if len(text) < 10:
+            raise ValidationError("Text too short (minimum 10 characters)")
+        if len(text) > 500:
+            raise ValidationError("Text too long (maximum 500 characters)")
+        
+        # Update story status to processing
+        updates = {
+            "status": StoryStatus.PROCESSING.value
+        }
+        await supabase.update_story(request.story_id, updates)
+        
+        # Get original transcription from story_inputs to compare
+        original_transcription_input = await supabase.get_story_input_by_type(request.story_id, "audio_transcription")
+        original_transcription = original_transcription_input.get("input_value", "") if original_transcription_input else ""
+        
+        # Store final text in story_inputs
+        story_input_data = {
+            "story_id": request.story_id,
+            "input_type": "text_final",
+            "input_value": text,
+            "metadata": {
+                "original_transcription": original_transcription,
+                "text_edited": original_transcription != text
+            }
+        }
+        await supabase.create_story_input(story_input_data)
+        
+        # Process story in background
+        agents_config = get_agents_config()
+        processor = get_story_processor(agents_config)
+        background_tasks.add_task(
+            processor.process_text_to_story,
+            request.story_id,
+            text,
+            story.kid_id,
+            story.language
+        )
+        
+        return GenerateStoryResponse(
+            story_id=request.story_id,
+            status=StoryStatus.PROCESSING,
+            message="Story generation started"
+        )
+        
+    except (NotFoundError, ValidationError) as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Failed to submit story text: {e}")
+        raise HTTPException(status_code=500, detail="Failed to submit story text")
 
 
 @router.post("/review-story/")

@@ -74,11 +74,11 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
   String get _titleText {
     switch (widget.approvalMode) {
       case ApprovalMode.auto:
-        return 'Your story is ready!';
+        return AppLocalizations.of(context)!.yourStoryIsReady;
       case ApprovalMode.app:
-        return 'Parent review pending';
+        return AppLocalizations.of(context)!.parentReviewPending;
       case ApprovalMode.email:
-        return 'Parent review pending';
+        return AppLocalizations.of(context)!.parentReviewPending;
     }
   }
 
@@ -326,7 +326,7 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
           shadowColor: Colors.black.withValues(alpha: 64),
         ),
         child: Text(
-          'open',
+          AppLocalizations.of(context)!.openStory,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
             color: AppColors.textDark,
             fontWeight: FontWeight.w500,

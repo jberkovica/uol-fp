@@ -94,7 +94,12 @@ class SupabaseService:
         """Get a story by ID."""
         result = self.client.table("stories").select("*").eq("id", story_id).execute()
         if result.data:
-            return Story(**result.data[0])
+            story_data = result.data[0]
+            # Convert audio_filename to audio_url
+            audio_filename = story_data.get("audio_filename")
+            if audio_filename:
+                story_data["audio_url"] = self.build_audio_url(audio_filename)
+            return Story(**story_data)
         return None
     
     async def get_stories_for_kid(self, kid_id: str, limit: int = 20, offset: int = 0) -> List[Story]:
@@ -109,7 +114,14 @@ class SupabaseService:
             .offset(offset)
             .execute()
         )
-        return [Story(**story) for story in result.data]
+        # Convert audio_filename to audio_url for each story
+        stories = []
+        for story_data in result.data:
+            audio_filename = story_data.get("audio_filename")
+            if audio_filename:
+                story_data["audio_url"] = self.build_audio_url(audio_filename)
+            stories.append(Story(**story_data))
+        return stories
     
     async def get_all_stories_for_kid(self, kid_id: str, limit: int = 20, offset: int = 0) -> List[Story]:
         """Get ALL stories for a kid (for parent dashboard - includes pending/rejected)."""
@@ -122,7 +134,14 @@ class SupabaseService:
             .offset(offset)
             .execute()
         )
-        return [Story(**story) for story in result.data]
+        # Convert audio_filename to audio_url for each story
+        stories = []
+        for story_data in result.data:
+            audio_filename = story_data.get("audio_filename")
+            if audio_filename:
+                story_data["audio_url"] = self.build_audio_url(audio_filename)
+            stories.append(Story(**story_data))
+        return stories
     
     async def update_story(self, story_id: str, update_data: Dict[str, Any]) -> Optional[Story]:
         """Update a story."""
@@ -130,7 +149,12 @@ class SupabaseService:
         
         result = self.client.table("stories").update(update_data).eq("id", story_id).execute()
         if result.data:
-            return Story(**result.data[0])
+            story_data = result.data[0]
+            # Convert audio_filename to audio_url
+            audio_filename = story_data.get("audio_filename")
+            if audio_filename:
+                story_data["audio_url"] = self.build_audio_url(audio_filename)
+            return Story(**story_data)
         return None
     
     async def update_story_status(self, story_id: str, status: StoryStatus) -> Optional[Story]:
@@ -155,6 +179,11 @@ class SupabaseService:
         result = self.client.table("story_inputs").select("*").eq("story_id", story_id).execute()
         return result.data[0] if result.data else None
     
+    async def get_story_input_by_type(self, story_id: str, input_type: str) -> Optional[Dict[str, Any]]:
+        """Get story input data for a story by input type."""
+        result = self.client.table("story_inputs").select("*").eq("story_id", story_id).eq("input_type", input_type).execute()
+        return result.data[0] if result.data else None
+    
     async def get_pending_stories(self) -> List[Story]:
         """Get all pending stories for parent review."""
         try:
@@ -165,9 +194,7 @@ class SupabaseService:
             for item in result.data:
                 # Handle optional fields properly
                 audio_filename = item.get("audio_filename")
-                audio_url = None
-                if audio_filename:
-                    audio_url = f"{self.storage_bucket}/{audio_filename}"
+                audio_url = self.build_audio_url(audio_filename) if audio_filename else None
                 
                 # Get caption from story_inputs
                 caption = ""
@@ -214,9 +241,14 @@ class SupabaseService:
             file_options={"content-type": "audio/mpeg"}
         )
         
-        # Get public URL
-        public_url = self.client.storage.from_(bucket).get_public_url(filename)
-        return public_url
+        # Return just the filename - API response builder will create full URL
+        return filename
+    
+    def build_audio_url(self, audio_filename: str) -> str:
+        """Convert audio filename to full public URL."""
+        if not audio_filename:
+            return None
+        return self.client.storage.from_(self.storage_bucket).get_public_url(audio_filename)
     
     async def delete_audio(self, filename: str) -> bool:
         """Delete audio file from storage."""

@@ -285,6 +285,9 @@ class AppLocalizationsLv extends AppLocalizations {
   String get enterFeedbackOrChanges => 'Ievadiet atsauksmes vai pieprasiet izmaiņas...';
 
   @override
+  String get transcribingAudio => 'Transkripcija notiek...';
+
+  @override
   String get changeNameAgeAvatar => 'Mainīt vārdu, vecumu vai avatāru';
 
   @override
@@ -541,10 +544,10 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get yourStoryIsReady => 'Tavs stāsts ir gatavs! 🎉';
+  String get yourStoryIsReady => 'Tavs stāsts ir gatavs!';
 
   @override
-  String get parentReviewPending => 'Gaida vecāku apstiprinājumu 👨‍👩‍👧‍👦';
+  String get parentReviewPending => 'Gaida vecāku apstiprinājumu';
 
   @override
   String get tapReviewToApprove => 'Nospied Pārskatīt, lai lūgtu vecāku apstiprinājumu';
@@ -553,7 +556,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get weWillNotifyWhenReady => 'Mēs paziņosim, kad tavs stāsts būs gatavs!';
 
   @override
-  String get openStory => 'Atvērt stāstu';
+  String get openStory => 'atvērt';
 
   @override
   String get pleaseEnterText => 'Lūdzu, ievadiet tekstu, lai izveidotu stāstu';

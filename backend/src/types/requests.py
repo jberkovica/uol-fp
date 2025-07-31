@@ -68,3 +68,21 @@ class VoiceToStoryRequest(BaseModel):
     audio_data: str = Field(..., description="Base64 encoded audio data")
     kid_id: str = Field(..., description="ID of the kid profile")
     language: Language = Field(default=Language.ENGLISH)
+
+
+class InitiateVoiceStoryRequest(BaseModel):
+    """Request to create a story in transcribing state for voice input."""
+    kid_id: str = Field(..., description="ID of the kid profile")
+    language: Language = Field(default=Language.ENGLISH)
+
+
+class TranscribeAudioRequest(BaseModel):
+    """Request to transcribe audio for a story."""
+    story_id: str = Field(..., description="ID of the story being transcribed")
+    audio_data: str = Field(..., description="Base64 encoded audio data")
+    
+
+class SubmitStoryTextRequest(BaseModel):
+    """Request to submit final text for story generation."""
+    story_id: str = Field(..., description="ID of the story")
+    text: str = Field(..., min_length=10, max_length=500, description="Final text for story generation")

@@ -77,3 +77,18 @@ class ErrorResponse(BaseModel):
     detail: Optional[str] = None
     code: Optional[str] = None
     timestamp: datetime = Field(default_factory=datetime.utcnow)
+
+
+class InitiateStoryResponse(BaseModel):
+    """Response for story initiation."""
+    story_id: str
+    status: StoryStatus
+    message: str = "Story created in draft state"
+
+
+class TranscriptionResponse(BaseModel):
+    """Response for audio transcription."""
+    story_id: str
+    transcribed_text: str
+    status: StoryStatus = StoryStatus.DRAFT
+    message: str = "Audio transcribed successfully"

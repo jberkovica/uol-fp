@@ -12,6 +12,9 @@ class StoryStatus(str, Enum):
     APPROVED = "approved"
     REJECTED = "rejected"
     ERROR = "error"
+    TRANSCRIBING = "transcribing"  # Audio being transcribed
+    DRAFT = "draft"  # Transcription complete, user editing
+    ABANDONED = "abandoned"  # User left without submitting
 
 
 class InputFormat(str, Enum):
@@ -59,7 +62,6 @@ class Story(BaseModel):
     image_description: Optional[str] = Field(None, description="AI-generated image description")
     audio_filename: Optional[str] = Field(None, description="Generated audio filename/URL")
     audio_url: Optional[str] = Field(default=None, description="Full audio URL (computed)")
-    input_format: InputFormat = Field(default=InputFormat.IMAGE)
     language: Language = Field(default=Language.ENGLISH)
     status: StoryStatus = Field(default=StoryStatus.PENDING)
     created_at: datetime

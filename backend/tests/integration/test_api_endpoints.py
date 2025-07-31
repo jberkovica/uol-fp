@@ -2,6 +2,7 @@
 import pytest
 from unittest.mock import AsyncMock, patch
 from httpx import AsyncClient
+import base64
 from src.types.domain import Kid, Story, StoryStatus, Language
 from src.types.requests import CreateKidRequest, GenerateStoryRequest
 

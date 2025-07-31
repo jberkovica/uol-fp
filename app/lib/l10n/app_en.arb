@@ -297,6 +297,7 @@
   "enterChildName": "Enter child's name",
   "writeYourIdeaHere": "write your idea here...",
   "enterFeedbackOrChanges": "Enter any feedback or request changes...",
+  "transcribingAudio": "Transcribing audio...",
   
   "changeNameAgeAvatar": "Change name, age, or avatar",
   "switchProfile": "Switch Profile",
@@ -451,11 +452,11 @@
     }
   },
   
-  "yourStoryIsReady": "Your story is ready! 🎉",
-  "parentReviewPending": "Parent review pending 👨‍👩‍👧‍👦",
+  "yourStoryIsReady": "Your story is ready!",
+  "parentReviewPending": "Parent review pending",
   "tapReviewToApprove": "Tap Review to ask parent for approval",
   "weWillNotifyWhenReady": "We'll let you know when your story is ready!",
-  "openStory": "Open Story",
+  "openStory": "open",
   
   "pleaseEnterText": "Please enter some text to create your story",
   "textTooShort": "Please write at least 10 characters for your story idea",
