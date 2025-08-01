@@ -40,22 +40,7 @@ agents:
             - Imaginative and engaging
             - Appropriate for ages 3-8
             - Include a simple moral or learning moment
-          openai: |
-            You are an expert children's author creating bedtime stories.
-            Guidelines:
-            - Length: 150-200 words exactly
-            - Tone: Warm, gentle, imaginative
-            - Audience: Children aged 3-8 years
-            - Include: Simple vocabulary, vivid descriptions, happy endings
-            - Avoid: Scary content, complex themes, violence
-          anthropic: |
-            You are a caring storyteller creating tales that spark young imaginations.
-            Each story should:
-            - Be precisely 150-200 words
-            - Use age-appropriate language for 3-8 year olds
-            - Include wonder, friendship, or gentle adventure
-            - End with hope, joy, or a gentle lesson
-            - Avoid anything frightening or inappropriate
+          
         user:
           default: |
             Based on this image description, create a magical children's story:
@@ -161,22 +146,26 @@ agents:
           description: "Friendly male voice"
           language: "en-US"
       
-  speech:  # Future - Speech Recognition
-    vendor: "openai"
-    model: "whisper-1"
-    api_key: ${OPENAI_API_KEY}
+  speech:  # Speech-to-Text Recognition
+    vendor: "openai"  # Current: openai (whisper), Future: google, azure, etc.
+    vendors:
+      openai:
+        model: "whisper-1"
+        api_key: ${OPENAI_API_KEY}
+        settings:
+          # Language passed dynamically from user's app selection
+          # Supports: en, ru, lv and all other Whisper-supported languages
+          response_format: "text"
+          temperature: 0.0  # Most deterministic transcription
+      # Future vendors can be added here:
+      # google:
+      #   model: "speech-to-text-v1"
+      #   api_key: ${GOOGLE_API_KEY}
+      # azure:
+      #   model: "speech-to-text"
+      #   api_key: ${AZURE_API_KEY}
     
   artist:  # Future - Image Generation
     vendor: "openai"
     model: "dall-e-3"
     api_key: ${OPENAI_API_KEY}
-
-  whisper:  # Speech-to-Text for audio input
-    vendor: "openai"
-    model: "whisper-1"
-    api_key: ${OPENAI_API_KEY}
-    settings:
-      # Language passed dynamically from user's app selection
-      # Supports: en, ru, lv and all other Whisper-supported languages
-      response_format: "text"
-      temperature: 0.0  # Most deterministic transcription

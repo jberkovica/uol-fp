@@ -401,22 +401,25 @@ async def transcribe_audio(request: TranscribeAudioRequest) -> TranscriptionResp
             temp_audio_path = temp_audio.name
         
         try:
-            # Get Whisper config
+            # Get Speech (Whisper) config
             agents_config = get_agents_config()
-            whisper_config = agents_config.get("whisper", {})
-            api_key = whisper_config.get("api_key")
+            speech_config = agents_config.get("speech", {})
+            current_vendor = speech_config.get("vendor", "openai")
+            vendor_config = speech_config.get("vendors", {}).get(current_vendor, {})
+            api_key = vendor_config.get("api_key")
             
             if not api_key:
-                raise ValueError("OpenAI API key not found in configuration")
+                raise ValueError(f"API key not found for speech vendor: {current_vendor}")
             
             # Import OpenAI client
             import openai
             client = openai.OpenAI(api_key=api_key)
             
             # Transcribe audio
+            model = vendor_config.get("model", "whisper-1")
             with open(temp_audio_path, 'rb') as audio_file:
                 transcript_response = client.audio.transcriptions.create(
-                    model="whisper-1",
+                    model=model,
                     file=audio_file,
                     language=story.language.value  # Use story's language in ISO format
                 )
@@ -436,7 +439,8 @@ async def transcribe_audio(request: TranscribeAudioRequest) -> TranscriptionResp
                 "input_type": "audio_transcription",
                 "input_value": transcribed_text,
                 "metadata": {
-                    "whisper_model": "whisper-1",
+                    "speech_vendor": current_vendor,
+                    "speech_model": model,
                     "transcription_language": story.language
                 }
             }

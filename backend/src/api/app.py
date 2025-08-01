@@ -643,7 +643,7 @@ async def process_audio_story_generation_background(
     kid_id: str,
     language
 ):
-    """Background task for audio-based story generation with Whisper transcription."""
+    """Background task for audio-based story generation with speech-to-text transcription."""
     try:
         # Import required types, services and logger
         from ..types.domain import StoryStatus, Language
@@ -683,18 +683,20 @@ async def process_audio_story_generation_background(
             temp_audio_path = temp_audio.name
         
         try:
-            # Call OpenAI Whisper API for transcription
+            # Call Speech-to-Text API for transcription
             import openai
             
-            # Get OpenAI API key from config
-            whisper_config = config["agents"]["whisper"]
-            api_key = whisper_config.get("api_key")
+            # Get Speech API config
+            speech_config = config["agents"]["speech"]
+            current_vendor = speech_config.get("vendor", "openai")
+            vendor_config = speech_config.get("vendors", {}).get(current_vendor, {})
+            api_key = vendor_config.get("api_key")
             
-            logger.debug(f"Whisper config: {whisper_config}")
+            logger.debug(f"Speech config - vendor: {current_vendor}, config: {vendor_config}")
             logger.debug(f"API key type: {type(api_key)}, value: {api_key}")
             
             if not api_key:
-                raise Exception("OpenAI API key not found in configuration")
+                raise Exception(f"API key not found for speech vendor: {current_vendor}")
             
             # Ensure api_key is a string
             api_key = str(api_key)
@@ -702,9 +704,10 @@ async def process_audio_story_generation_background(
             client = openai.OpenAI(api_key=api_key)
             
             # Transcribe audio file using user's selected language
+            model = vendor_config.get("model", "whisper-1")
             with open(temp_audio_path, 'rb') as audio_file:
                 transcript_response = client.audio.transcriptions.create(
-                    model="whisper-1",
+                    model=model,
                     file=audio_file,
                     language=language.value  # Use app's selected language directly
                 )
@@ -756,8 +759,8 @@ async def process_audio_story_generation_background(
             "input_type": "audio",
             "input_value": transcribed_text,
             "metadata": {
-                "whisper_model": config["agents"]["whisper"]["model"],
-                "whisper_provider": config["agents"]["whisper"]["vendor"],
+                "speech_model": model,
+                "speech_vendor": current_vendor,
                 "transcription_language": language.value,
                 "transcription_length": len(transcribed_text),
                 "processing_timestamp": datetime.utcnow().isoformat()
