@@ -28,7 +28,7 @@ class BottomNav extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -75,14 +75,17 @@ class BottomNav extends StatelessWidget {
     required String label,
   }) {
     final bool isActive = currentIndex == index;
+    final screenWidth = MediaQuery.of(context).size.width;
+    // Adaptive padding based on screen width
+    final double horizontalPadding = screenWidth < 400 ? 8 : 16;
     
     return GestureDetector(
       onTap: () => onTap(index),
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
+        padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding,
           vertical: 8,
         ),
         decoration: BoxDecoration(
@@ -112,6 +115,8 @@ class BottomNav extends StatelessWidget {
                 color: isActive ? AppColors.primary : AppColors.textGrey,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
               ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ],
         ),
