@@ -27,7 +27,6 @@ class KidService {
     _lastCacheUpdate = null;
   }
 
-  // Cache warming method removed - replaced with real-time subscriptions
 
   /// Get all kids for a specific user
   static Future<List<Kid>> getKidsForUser(String userId) async {
@@ -200,18 +199,13 @@ class KidService {
 
   /// Get all stories for a specific kid
   static Future<List<Story>> getStoriesForKid(String kidId, {bool forceRefresh = false}) async {
-    _logger.d('getStoriesForKid called - kidId: $kidId, forceRefresh: $forceRefresh');
-    
     // Check cache first (only if not forcing refresh and cache is recent)
     if (!forceRefresh && 
         _storiesCache.containsKey(kidId) && 
         _lastCacheUpdate != null && 
         DateTime.now().difference(_lastCacheUpdate!).inMinutes < 5) {
-      _logger.d('Returning cached stories for kid $kidId: ${_storiesCache[kidId]!.length} stories');
       return _storiesCache[kidId]!;
     }
-
-    _logger.d('Cache miss or force refresh - fetching from API for kid: $kidId');
 
     try {
       final uri = Uri.parse('$baseUrl/kids/$kidId/stories');
@@ -221,14 +215,9 @@ class KidService {
         final List<dynamic> data = jsonDecode(response.body);
         final stories = data.map((item) => Story.fromJson(item)).toList();
         
-        _logger.d('Fetched ${stories.length} stories from API for kid: $kidId');
-        _logger.d('Story IDs: ${stories.map((s) => s.id).toList()}');
-        
         // Update cache
         _storiesCache[kidId] = stories;
         _lastCacheUpdate = DateTime.now();
-        
-        _logger.d('Cache updated for kid $kidId with ${stories.length} stories');
         
         return stories;
       } else if (response.statusCode == 404) {

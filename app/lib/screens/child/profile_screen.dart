@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
@@ -5,7 +6,7 @@ import '../../constants/app_theme.dart';
 import '../../models/input_format.dart';
 import '../../models/kid.dart';
 import '../../models/story.dart';
-import '../../services/kid_service.dart';
+import '../../services/story_cache_service.dart';
 import '../../services/app_state_service.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
@@ -29,6 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   
   // Parallax scroll variables
   double _scrollOffset = 0.0;
+  
+  // Real-time story subscription
+  StreamSubscription<List<Story>>? _storiesSubscription;
 
   @override
   void initState() {
@@ -38,7 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _kid = widget.kid;
       // Save to local storage for persistence
       AppStateService.saveSelectedKid(widget.kid!);
-      _loadStories();
+      _setupStoriesStream();
     } else {
       // Try route arguments or local storage
       _initializeKid();
@@ -49,7 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // Try to load from local storage first
     _kid = AppStateService.getSelectedKid();
     if (_kid != null) {
-      _loadStories();
+      _setupStoriesStream();
     }
   }
   
@@ -63,22 +67,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _kid = kid;
         // Save to local storage for persistence
         AppStateService.saveSelectedKid(kid);
-        _loadStories();
+        _setupStoriesStream();
       }
     }
   }
 
-  Future<void> _loadStories() async {
+  /// Setup real-time stories stream
+  void _setupStoriesStream() {
     if (_kid == null) return;
-
-    try {
-      final stories = await KidService.getStoriesForKid(_kid!.id);
-      setState(() {
-        _stories = stories;
-      });
-    } catch (e) {
-      // Handle error silently for now
-    }
+    
+    // Cancel existing subscription
+    _storiesSubscription?.cancel();
+    
+    // Setup new real-time subscription
+    _storiesSubscription = StoryCacheService.getStoriesStream(_kid!.id).listen(
+      (stories) {
+        setState(() {
+          _stories = stories;
+        });
+      },
+      onError: (error) {
+        // Handle error silently for now
+      },
+    );
   }
 
   void _onNavTap(int index) {
@@ -107,8 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           setState(() {
             _currentNavIndex = 0;
           });
-          // Refresh stories after creating new one
-          _loadStories();
+          // Real-time subscription will automatically update stories
         });
         break;
       case 3:
@@ -123,6 +133,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
         break;
     }
+  }
+
+  @override
+  void dispose() {
+    _storiesSubscription?.cancel();
+    if (_kid != null) {
+      StoryCacheService.dispose(_kid!.id);
+    }
+    super.dispose();
   }
 
   @override

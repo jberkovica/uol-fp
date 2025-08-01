@@ -13,7 +13,7 @@ class StoryCacheService {
   
   /// Get stories for a kid with real-time updates
   static Stream<List<Story>> getStoriesStream(String kidId) {
-    _logger.d('Creating stories stream for kid: $kidId');
+    _logger.i('Creating stories stream for kid: $kidId');
     
     // Create controller if it doesn't exist
     if (!_controllers.containsKey(kidId)) {
@@ -42,8 +42,6 @@ class StoryCacheService {
           .stream(primaryKey: ['id'])
           .eq('kid_id', kidId)
           .listen((data) {
-            _logger.d('Real-time update received for kid $kidId: ${data.length} stories');
-            
             // Convert to Story objects
             final stories = data.map((item) => Story.fromJson(item)).toList()
               ..sort((a, b) => b.createdAt.compareTo(a.createdAt)); // Sort by newest first
@@ -52,8 +50,7 @@ class StoryCacheService {
             _cache[kidId] = stories;
             _lastCacheUpdate = DateTime.now();
             
-            _logger.d('Cache updated with ${stories.length} stories for kid: $kidId');
-            _logger.d('Story statuses: ${stories.map((s) => '${s.id.substring(0, 8)}:${s.status}').join(', ')}');
+            _logger.i('Real-time update: ${stories.length} stories for kid: $kidId');
             
             // Notify listeners
             if (_controllers.containsKey(kidId)) {
@@ -77,8 +74,6 @@ class StoryCacheService {
   /// Load initial data from API
   static Future<void> _loadInitialData(String kidId) async {
     try {
-      _logger.d('Loading initial stories data for kid: $kidId');
-      
       final response = await Supabase.instance.client
           .from('stories')
           .select()
@@ -92,7 +87,9 @@ class StoryCacheService {
       _cache[kidId] = stories;
       _lastCacheUpdate = DateTime.now();
       
-      _logger.i('Loaded ${stories.length} initial stories for kid: $kidId');
+      if (stories.isNotEmpty) {
+        _logger.i('Loaded ${stories.length} stories for kid: $kidId');
+      }
       
       // Notify listeners
       if (_controllers.containsKey(kidId)) {
@@ -119,7 +116,6 @@ class StoryCacheService {
         return;
       }
       
-      _logger.d('Polling fallback refresh for kid: $kidId');
       _loadInitialData(kidId);
     });
   }
@@ -131,8 +127,6 @@ class StoryCacheService {
   
   /// Dispose resources for a specific kid
   static void dispose(String kidId) {
-    _logger.d('Disposing resources for kid: $kidId');
-    
     _subscriptions[kidId]?.cancel();
     _subscriptions.remove(kidId);
     
@@ -155,11 +149,6 @@ class StoryCacheService {
     _cache.clear();
   }
   
-  /// Force refresh for a specific kid (useful for error recovery)
-  static Future<void> forceRefresh(String kidId) async {
-    _logger.d('Force refresh requested for kid: $kidId');
-    await _loadInitialData(kidId);
-  }
   
   /// Get cache statistics for debugging
   static Map<String, dynamic> getCacheStats() {

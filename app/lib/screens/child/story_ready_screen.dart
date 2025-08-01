@@ -406,7 +406,6 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
             value: _currentStory.id,
           ),
           callback: (payload) {
-            _logger.d('Real-time story update received: ${payload.toString()}');
             _handleStoryUpdate(payload);
           },
         )

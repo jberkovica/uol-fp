@@ -109,8 +109,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
     // Setup new real-time subscription
     _storiesSubscription = StoryCacheService.getStoriesStream(_selectedKid!.id).listen(
       (stories) {
-        _logger.d('Received real-time stories update: ${stories.length} stories');
-        
         // Only show approved stories on home screen
         final approvedStories = stories.where((story) => story.status == StoryStatus.approved).toList();
         
@@ -121,7 +119,9 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
           _latestStories = approvedStories.take(3).toList();
         });
         
-        _logger.d('UI updated with ${approvedStories.length} approved stories (${stories.length} total)');
+        if (approvedStories.length != stories.length) {
+          _logger.i('Showing ${approvedStories.length} approved stories (${stories.length} total)');
+        }
       },
       onError: (error) {
         _logger.e('Stories stream error: $error');
