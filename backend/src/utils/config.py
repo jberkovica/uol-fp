@@ -1,4 +1,4 @@
-"""Configuration utilities for loading and accessing config.yaml."""
+"""Configuration utilities for loading and merging app.yaml and agents.yaml."""
 import os
 import re
 import yaml
@@ -8,34 +8,43 @@ _config_cache: Dict[str, Any] = {}
 
 
 def load_config() -> Dict[str, Any]:
-    """Load configuration from config.yaml with environment variable expansion."""
+    """Load and merge configuration from app.yaml and agents.yaml with environment variable expansion."""
     global _config_cache
     
     if _config_cache:
         return _config_cache
     
-    # Look for config.yaml in the backend directory
-    backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    config_path = os.path.join(backend_dir, "config.yaml")
+    # Look for config files in src/config directory
+    config_dir = os.path.join(os.path.dirname(__file__), '..', 'config')
+    app_config_path = os.path.join(config_dir, "app.yaml")
+    agents_config_path = os.path.join(config_dir, "agents.yaml")
     
-    with open(config_path, 'r') as f:
-        content = f.read()
+    def load_yaml_with_env_expansion(file_path: str) -> Dict[str, Any]:
+        """Load YAML file and expand environment variables."""
+        with open(file_path, 'r') as f:
+            content = f.read()
+        
+        # Replace ${VAR} and ${VAR:default} with environment variables
+        def replace_env_var(match):
+            var_expr = match.group(1)
+            if ':' in var_expr:
+                var_name, default_value = var_expr.split(':', 1)
+                return os.getenv(var_name, default_value)
+            else:
+                return os.getenv(var_expr, '')
+        
+        # Pattern to match ${VAR} or ${VAR:default}
+        pattern = r'\$\{([^}]+)\}'
+        expanded_content = re.sub(pattern, replace_env_var, content)
+        
+        return yaml.safe_load(expanded_content)
     
-    # Replace ${VAR} and ${VAR:default} with environment variables
-    def replace_env_var(match):
-        var_expr = match.group(1)
-        if ':' in var_expr:
-            var_name, default_value = var_expr.split(':', 1)
-            return os.getenv(var_name, default_value)
-        else:
-            return os.getenv(var_expr, '')
+    # Load both configuration files
+    app_config = load_yaml_with_env_expansion(app_config_path)
+    agents_config = load_yaml_with_env_expansion(agents_config_path)
     
-    # Pattern to match ${VAR} or ${VAR:default}
-    pattern = r'\$\{([^}]+)\}'
-    expanded_content = re.sub(pattern, replace_env_var, content)
-    
-    # Parse YAML
-    config = yaml.safe_load(expanded_content)
+    # Merge configurations
+    config = {**app_config, **agents_config}
     _config_cache = config
     return config
 

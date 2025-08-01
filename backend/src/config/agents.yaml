@@ -1,17 +1,4 @@
-# Mira Storyteller Backend Configuration
-app:
-  name: "Mira Storyteller"
-  version: "2.0.0"
-  environment: ${ENVIRONMENT:development}
-  
-api:
-  host: "0.0.0.0"
-  port: 8000
-  cors:
-    allowed_origins: ["*"]
-    allowed_methods: ["GET", "POST", "PUT", "DELETE"]
-    allowed_headers: ["*"]
-    
+# Mira Storyteller AI Agents Configuration
 agents:
   vision:
     vendor: "google"  # Options: google, openai, anthropic
@@ -193,20 +180,3 @@ agents:
       # Supports: en, ru, lv and all other Whisper-supported languages
       response_format: "text"
       temperature: 0.0  # Most deterministic transcription
-
-supabase:
-  url: ${SUPABASE_URL}
-  key: ${SUPABASE_SERVICE_KEY}
-  storage:
-    bucket: "audio-files"
-    public_url_base: ${SUPABASE_URL}/storage/v1/object/public/
-    
-logging:
-  level: ${LOG_LEVEL:INFO}
-  format: "json"
-  
-# Rate limiting
-rate_limit:
-  enabled: true
-  requests_per_minute: 60
-  requests_per_hour: 1000

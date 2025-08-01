@@ -28,7 +28,7 @@ router = APIRouter(prefix="/stories", tags=["stories"])
 
 
 def get_agents_config():
-    """Load agents configuration from config.yaml with environment variable substitution."""
+    """Load agents configuration from agents.yaml with environment variable substitution."""
     from ...utils.config import load_config
     config = load_config()
     return config["agents"]
