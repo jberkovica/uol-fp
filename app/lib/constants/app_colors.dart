@@ -39,8 +39,8 @@ class AppColors {
   static const Color characterViolet = Color(0xFFA56AFF); // For character_avatar.dart
   static const Color characterCloud = Color(0xFFE5E7EB); // For character_avatar.dart
 
-  // STATUS COLORS - softer versions
-  static const Color success = Color(0xFF4AE54A);
+  // STATUS COLORS - matching app theme (no green!)
+  static const Color success = Color(0xFFAB72FF); // Use primary violet instead of green
   static const Color error = Color(0xFFFF6B6B);
   static const Color warning = Color(0xFFFFB84D);
 

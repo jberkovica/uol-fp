@@ -13,6 +13,9 @@ email-validator==2.0.0
 # Image processing and validation
 pillow==10.0.0
 
+# Audio metadata extraction
+mutagen==1.47.0
+
 # Database (Supabase only - removed SQLAlchemy)
 supabase==2.8.1
 gotrue==2.8.1

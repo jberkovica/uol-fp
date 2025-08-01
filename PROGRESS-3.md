@@ -631,4 +631,166 @@ Widget _buildWaveformBar(int index, double normalizedHeight) {
 
 ---
 
-_Last updated: 2025-07-31_
+### Dynamic Timeline Control for Story Playback Audio
+
+#### Overview
+Implemented sophisticated timeline-based audio coordination system to fix misleading play button behavior. Replaced complex staging logic with clean, configurable timeline control that makes the play button reflect when users actually hear audio, while maintaining full flexibility for experimentation.
+
+#### Problem Analysis
+**Previous Issue**: Play button showed "loading" for 3 seconds while users already heard background music, creating UX disconnect between button state and audio reality.
+
+**Root Cause**: Complex dual-audio system (background music + narration) with different start times and multiple boolean state flags that could get out of sync.
+
+#### Solution Architecture
+
+##### 1. AudioTimeline Configuration System
+```dart
+class AudioTimeline {
+  final Duration introLength;   // Background music alone (default: 3s)
+  final Duration outroLength;   // Graceful ending fade (default: 2s)
+  final Duration fadeLength;    // Background volume fade (default: 10s)
+}
+
+// Configurable presets for easy experimentation:
+AudioTimeline.quick      // 1s intro, 1s outro, 5s fade
+AudioTimeline.standard   // 3s intro, 2s outro, 10s fade  
+AudioTimeline.cinematic  // 5s intro, 4s outro, 15s fade
+```
+
+##### 2. Simplified PlaybackState Management
+**Before**: `stopped`, `loading`, `staging`, `playing`, `paused` (5 complex states)
+**After**: `stopped`, `playing`, `paused` (3 clear states)
+
+**Key Improvement**: Play button shows "playing" immediately when background music starts (when user first hears audio), not when narration begins.
+
+##### 3. Timeline-Based Audio Coordination
+```dart
+Future<void> _startUnifiedPlayback(String audioUrl) async {
+  // User sees "playing" state immediately
+  setState(() => _playbackState = PlaybackState.playing);
+  
+  // Background music starts NOW (user hears audio!)
+  await _startBackgroundMusic(_backgroundVolumeIntro);
+  
+  // Schedule narration after configurable intro period
+  _narrationStartTimer = Timer(_timeline.introLength, () async {
+    await _audioPlayer.resume(); // Start narration
+    _hasStartedNarration = true;
+  });
+}
+```
+
+#### Technical Implementation
+
+##### 1. Smart Timer Management
+- **Native Timer coordination**: Uses dart:async Timer for precise scheduling
+- **Proper cleanup**: All timers cancelled in dispose() and on state changes
+- **Interruption handling**: Graceful handling if user pauses during intro period
+- **Memory safety**: No timer leaks or orphaned callbacks
+
+##### 2. Unified Volume Control
+```dart
+// Generic fade system with configurable parameters
+void _smoothVolumeFade({
+  required double from,
+  required double to, 
+  required Duration duration,
+  bool stopAfterFade = false,
+}) {
+  // Smooth transitions using timeline configuration
+}
+```
+
+##### 3. Enhanced User Experience
+- **Immediate visual feedback**: Button state changes instantly on press
+- **Smooth fade out**: 500ms fade when opening music selection (no jarring stops)
+- **Mobile-optimized music titles**: Changed from `bodyLarge` to `bodyMedium` with ellipsis
+- **Better error handling**: Proper state reset on failures
+
+#### Audio Flow Comparison
+
+**Before (Complex Staging)**:
+1. Press play → Shows "loading" for 3 seconds
+2. Background music starts (user hears audio but button shows loading)
+3. After 3s → Button shows "playing" when narration starts
+4. Multiple boolean flags could get out of sync
+
+**After (Timeline Control)**:
+1. Press play → Shows "playing" immediately
+2. Background music starts (user hears audio, button matches reality)
+3. After configurable intro → Narration starts seamlessly
+4. Single PlaybackState enum prevents sync issues
+
+#### Flexibility & Configuration
+
+##### Easy Experimentation
+```dart
+// Quick testing (1s intro)
+AudioTimeline _timeline = AudioTimeline.quick;
+
+// Cinematic experience (5s intro) 
+AudioTimeline _timeline = AudioTimeline.cinematic;
+
+// Custom configuration
+AudioTimeline _timeline = AudioTimeline(
+  introLength: Duration(seconds: 2),
+  outroLength: Duration(seconds: 4),
+  fadeLength: Duration(seconds: 12),
+);
+```
+
+##### No File Modification Required
+- **Zero processing overhead**: No audio file preprocessing
+- **Instant playback**: No wait times for file modification
+- **Original files preserved**: Timeline controls coordination, not file content
+- **Full configuration flexibility**: Easy to adjust timing without regenerating content
+
+#### Code Quality Improvements
+
+##### 1. Clean Architecture
+- **Single responsibility**: Each method has clear, focused purpose
+- **Configurable design**: Timeline settings separated from playback logic
+- **Resource management**: Proper timer cleanup prevents memory leaks
+- **Error resilience**: Graceful fallbacks for all audio operations
+
+##### 2. Maintainable Codebase
+- **Removed complex staging logic**: 50+ lines of timing code eliminated
+- **Consolidated audio methods**: Multiple background music methods unified
+- **Clear state management**: Single source of truth prevents sync issues
+- **Intuitive naming**: Methods clearly describe their purpose
+
+##### 3. Robust Design
+- **Thread safety**: All setState() calls properly guarded with mounted checks
+- **Memory safety**: Timers cancelled properly, no resource leaks
+- **Extensibility**: Easy to add new timeline configurations or audio features
+- **Platform compatibility**: Works consistently across web, iOS, and Android
+
+#### Performance Benefits
+
+- **Reduced complexity**: Eliminated multiple boolean state variables
+- **Efficient timer usage**: Native OS timers with minimal overhead
+- **Smooth animations**: No blocking operations during audio start
+- **Lower memory footprint**: Fewer state variables and simpler coordination
+
+#### User Experience Results
+
+**Before**: Confusing 3-second delay where button didn't match audio reality
+**After**: 
+- ✅ Play button reflects when user first hears audio
+- ✅ Immediate visual feedback on all button presses
+- ✅ Smooth fade transitions for professional feel
+- ✅ Configurable timing for different story experiences
+- ✅ Mobile-optimized music selection interface
+
+#### Quality Assurance
+- **Cross-platform testing**: Verified on web, iOS, and Android
+- **State transition testing**: All play/pause/stop scenarios tested
+- **Timer coordination testing**: Verified proper cleanup and scheduling
+- **Error condition testing**: Graceful handling of audio failures
+- **Performance testing**: No memory leaks or timer issues
+
+**Result**: Professional audio playback system with intuitive play button behavior that matches user expectations. The timeline-based approach provides perfect UX while maintaining full flexibility for timing experimentation, all with cleaner, more maintainable code architecture.
+
+---
+
+_Last updated: 2025-08-01_

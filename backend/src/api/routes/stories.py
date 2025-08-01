@@ -91,6 +91,42 @@ async def generate_story(
         raise HTTPException(status_code=500, detail="Failed to start story generation")
 
 
+@router.get("/background-music", response_model=dict)
+async def get_background_music_tracks() -> dict:
+    """Get all available background music tracks with album art."""
+    try:
+        supabase = get_supabase_service()
+        tracks = background_music_service.get_all_tracks()
+        bucket_name = background_music_service.get_bucket_name()
+        
+        # Build track list with URLs and metadata
+        track_list = []
+        for filename in tracks:
+            # Extract display name from filename (remove .mp3 and clean up)
+            display_name = filename.replace('.mp3', '').replace(' v1', '').replace(' v2', '').replace(' v3', '').replace(' v4', '')
+            
+            # Generate asset path for local album cover
+            cover_filename = filename.replace('.mp3', '.jpg')
+            
+            track_info = {
+                "filename": filename,
+                "display_name": display_name,
+                "url": supabase.client.storage.from_(bucket_name).get_public_url(filename),
+                "cover_image": f"assets/audio-covers/{cover_filename}"  # Local asset path
+            }
+            track_list.append(track_info)
+        
+        return {
+            "tracks": track_list,
+            "total": len(track_list)
+        }
+        
+    except Exception as e:
+        logger.error(f"Failed to get background music tracks: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get background music tracks")
+
+
+
 @router.get("/pending", response_model=StoryListResponse)
 async def get_pending_stories() -> StoryListResponse:
     """Get all pending stories for parent review."""
@@ -487,6 +523,56 @@ async def submit_story_text(
     except Exception as e:
         logger.error(f"Failed to submit story text: {e}")
         raise HTTPException(status_code=500, detail="Failed to submit story text")
+
+
+@router.put("/{story_id}/background-music", response_model=StoryResponse)
+async def update_story_background_music(
+    story_id: str,
+    request: dict
+) -> StoryResponse:
+    """Update background music for a story."""
+    try:
+        validate_uuid(story_id, "story_id")
+        
+        background_music_filename = request.get("background_music_filename")
+        if not background_music_filename:
+            raise ValidationError("background_music_filename is required")
+        
+        # Verify the track exists in our configuration
+        if not background_music_service.track_exists(background_music_filename):
+            raise ValidationError(f"Background music track not found: {background_music_filename}")
+        
+        supabase = get_supabase_service()
+        
+        # Update story with new background music
+        update_data = {
+            "background_music_filename": background_music_filename
+        }
+        story = await supabase.update_story(story_id, update_data)
+        
+        if not story:
+            raise NotFoundError("Story", story_id)
+        
+        return StoryResponse(
+            id=story.id,
+            kid_id=story.kid_id,
+            title=story.title,
+            content=story.content,
+            audio_url=story.audio_url,
+            background_music_url=story.background_music_url,
+            status=story.status,
+            language=story.language,
+            created_at=story.created_at,
+            updated_at=story.updated_at
+        )
+        
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Failed to update story background music: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update story background music")
 
 
 @router.post("/review-story/")

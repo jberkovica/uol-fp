@@ -230,6 +230,7 @@ async def get_kid_stories(kid_id: str):
                 "content": story.content,
                 "caption": story.image_description,
                 "audio_url": supabase.build_audio_url(story.audio_filename) if story.audio_filename else None,
+                "background_music_url": story.background_music_url,
                 "status": story.status.value,
                 "created_at": story.created_at.isoformat(),
                 "child_name": kid.name
