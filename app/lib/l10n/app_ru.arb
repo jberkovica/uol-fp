@@ -235,5 +235,20 @@
   "settingUpYourPin": "Установка вашего PIN...",
   "thisWillBeUsedForAccess": "Этот PIN будет использоваться для доступа к родительским настройкам и одобрения историй для ваших детей.",
   "pleaseEnterAllFourDigits": "Пожалуйста, введите все 4 цифры",
-  "failedToSetPin": "Не удалось установить PIN. Пожалуйста, попробуйте еще раз."
+  "failedToSetPin": "Не удалось установить PIN. Пожалуйста, попробуйте еще раз.",
+
+  "tapToStartRecording": "Нажмите, чтобы начать запись",
+  "pauseRecording": "Приостановить запись",
+  "startOver": "Начать заново",
+  "playAudio": "Воспроизвести аудио",
+  "pauseAudio": "Приостановить аудио",
+  "submitForTranscription": "Отправить на транскрипцию",
+  "dictateAgain": "Диктовать снова",
+  "editAsText": "Редактировать как текст",
+  "selectImageSource": "Выберите источник изображения",
+  "takePhoto": "Сделать фото",
+  "chooseFromGallery": "Выбрать из галереи",
+  "switchToText": "Переключиться на текст",
+  "camera": "камера",
+  "gallery": "галерея"
 }

@@ -243,8 +243,8 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         _buildTopIcon(
-          strokeIcon: 'assets/icons/photo.svg',
-          solidIcon: 'assets/icons/photo-filled.svg',
+          strokeIcon: 'assets/icons/camera.svg',
+          solidIcon: 'assets/icons/camera-filled.svg',
           format: InputFormat.image,
         ),
         const SizedBox(width: 30),
@@ -255,8 +255,8 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
         ),
         const SizedBox(width: 30),
         _buildTopIcon(
-          strokeIcon: 'assets/icons/file-description.svg',
-          solidIcon: 'assets/icons/file-description-filled.svg',
+          strokeIcon: 'assets/icons/align-justified.svg',
+          solidIcon: 'assets/icons/align-justified.svg',
           format: InputFormat.text,
         ),
       ],
@@ -338,7 +338,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
   
   Widget _buildUploadButton() {
     return FilledButton(
-      onPressed: _showImageSourceOptions,
+      onPressed: _pickImageDirectly,
       child: Text(AppLocalizations.of(context)!.upload),
     );
   }
@@ -383,7 +383,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
         children: [
           // Microphone icon hint
           Text(
-            'Tap to start recording',
+            AppLocalizations.of(context)!.tapToStartRecording,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppColors.white.withValues(alpha: 0.8),
             ),
@@ -467,7 +467,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
                 height: 28,
                 colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               ),
-              tooltip: 'Pause recording',
+              tooltip: AppLocalizations.of(context)!.pauseRecording,
             ),
           ],
         ),
@@ -545,7 +545,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
                       height: 28,
                       colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
-                    tooltip: 'Start over',
+                    tooltip: AppLocalizations.of(context)!.startOver,
                   ),
                   
                   const SizedBox(width: 20),
@@ -554,12 +554,12 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
                   IconButton(
                     onPressed: _toggleAudioPlayback,
                     icon: SvgPicture.asset(
-                      _isPlayingAudio ? 'assets/icons/player-pause.svg' : 'assets/icons/player-play.svg',
+                      _isPlayingAudio ? 'assets/icons/player-pause-filled.svg' : 'assets/icons/player-play-filled.svg',
                       width: 28,
                       height: 28,
                       colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
-                    tooltip: _isPlayingAudio ? 'Pause audio' : 'Play audio',
+                    tooltip: _isPlayingAudio ? AppLocalizations.of(context)!.pauseAudio : AppLocalizations.of(context)!.playAudio,
                   ),
                   
                   const SizedBox(width: 20),
@@ -573,7 +573,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
                       height: 28,
                       colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
-                    tooltip: 'Submit for transcription',
+                    tooltip: AppLocalizations.of(context)!.submitForTranscription,
                   ),
                 ],
               ),
@@ -641,7 +641,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
                 height: 18,
                 colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
               ),
-              label: const Text('Dictate Again'),
+              label: Text(AppLocalizations.of(context)!.dictateAgain),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.primary,
               ),
@@ -658,7 +658,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
                 height: 18,
                 colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
               ),
-              label: const Text('Edit as Text'),
+              label: Text(AppLocalizations.of(context)!.editAsText),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.primary,
               ),
@@ -737,7 +737,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
             height: barHeight,
             margin: const EdgeInsets.symmetric(horizontal: 1.5),
             decoration: BoxDecoration(
-              color: AppColors.white.withValues(alpha: 0.9),
+              color: AppColors.white.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(1.5),
             ),
           );
@@ -800,103 +800,32 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
     );
   }
 
-  void _showImageSourceOptions() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.all(24),
-          decoration: const BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(24),
-              topRight: Radius.circular(24),
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Handle bar
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 24),
-                decoration: BoxDecoration(
-                  color: AppColors.textGrey,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
+  Future<void> _pickImageDirectly() async {
+    try {
+      // Open native image picker with gallery as default, but camera will be available
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery, // This opens the native picker with both options
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
 
-              // Title
-              Text(
-                'Select Image Source',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-
-              const SizedBox(height: 24),
-
-              // Camera option
-              _buildSourceButton(
-                iconPath: 'assets/icons/photo.svg', // Using camera icon from your SVG set
-                label: 'Take Photo',
-                onPressed: () {
-                  Navigator.pop(context);
-                  _pickImage(ImageSource.camera);
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // Gallery option
-              _buildSourceButton(
-                iconPath: 'assets/icons/photo.svg',
-                label: 'Choose from Gallery',
-                onPressed: () {
-                  Navigator.pop(context);
-                  _pickImage(ImageSource.gallery);
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // Cancel button
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: AppTheme.cancelButtonStyle,
-                child: Text(AppLocalizations.of(context)!.cancel),
-              ),
-            ],
+      if (image != null) {
+        setState(() {
+          _isProcessing = true;
+        });
+        await _generateStory(image);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.failedToPickImage(e.toString())),
+            backgroundColor: AppColors.error,
           ),
         );
-      },
-    );
-  }
-
-  Widget _buildSourceButton({
-    required String iconPath,
-    required String label,
-    required VoidCallback onPressed,
-  }) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: AppTheme.modalActionButtonStyle,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              iconPath,
-              width: 24,
-              height: 24,
-            ),
-            const SizedBox(width: 12),
-            Text(label),
-          ],
-        ),
-      ),
-    );
+      }
+    }
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -933,8 +862,13 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
         throw Exception('No kid profile selected');
       }
 
+      _logger.i('Starting story generation from image for kid: ${_selectedKid!.id}');
+      
       // Generate story using AI service with kid ID
       final Story story = await _aiService.generateStoryFromImageFile(imageFile, _selectedKid!.id);
+      _logger.i('Story generated successfully from image: ${story.id}');
+
+      // Real-time subscription will automatically update stories
 
       setState(() {
         _isProcessing = false;
@@ -1007,7 +941,12 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       });
       
       try {
+        _logger.i('Submitting story text for story ID: $_currentStoryId, kid: ${_selectedKid!.id}');
+        
         final story = await _aiService.submitStoryText(_currentStoryId!, textInput);
+        _logger.i('Story text submitted successfully: ${story.id}');
+        
+        // Real-time subscription will automatically update stories
         
         setState(() {
           _isProcessing = false;
@@ -1030,7 +969,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
           }
           
           // Navigate to story ready screen
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) => 
@@ -1093,8 +1032,13 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
     });
 
     try {
+      _logger.i('Starting story generation from text for kid: ${_selectedKid!.id}');
+      
       // Generate story from text
       final story = await _aiService.generateStoryFromText(textInput, _selectedKid!.id);
+      _logger.i('Story generated successfully: ${story.id}');
+      
+      // Real-time subscription will automatically update stories
       
       setState(() {
         _isProcessing = false;
@@ -1117,7 +1061,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
         }
         
         // Navigate to story ready screen
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) => 
@@ -1527,7 +1471,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
             backgroundColor: AppColors.error,
             duration: const Duration(seconds: 4),
             action: SnackBarAction(
-              label: 'Switch to Text',
+              label: AppLocalizations.of(context)!.switchToText,
               textColor: Colors.white,
               onPressed: () {
                 setState(() {
@@ -1596,7 +1540,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
           }
           
           // Navigate to story ready screen
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) => 
@@ -1693,7 +1637,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
         }
         
         // Navigate to story ready screen
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) => 

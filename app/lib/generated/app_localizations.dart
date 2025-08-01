@@ -1374,6 +1374,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to set PIN. Please try again.'**
   String get failedToSetPin;
+
+  /// Hint text for dictation recording button
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to start recording'**
+  String get tapToStartRecording;
+
+  /// Tooltip for pause recording button
+  ///
+  /// In en, this message translates to:
+  /// **'Pause recording'**
+  String get pauseRecording;
+
+  /// Tooltip for start over button
+  ///
+  /// In en, this message translates to:
+  /// **'Start over'**
+  String get startOver;
+
+  /// Tooltip for play audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Play audio'**
+  String get playAudio;
+
+  /// Tooltip for pause audio button
+  ///
+  /// In en, this message translates to:
+  /// **'Pause audio'**
+  String get pauseAudio;
+
+  /// Tooltip for submit transcription button
+  ///
+  /// In en, this message translates to:
+  /// **'Submit for transcription'**
+  String get submitForTranscription;
+
+  /// Button to dictate again
+  ///
+  /// In en, this message translates to:
+  /// **'Dictate Again'**
+  String get dictateAgain;
+
+  /// Button to edit as text
+  ///
+  /// In en, this message translates to:
+  /// **'Edit as Text'**
+  String get editAsText;
+
+  /// Title for image source selection dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Select Image Source'**
+  String get selectImageSource;
+
+  /// Button to take photo with camera
+  ///
+  /// In en, this message translates to:
+  /// **'Take Photo'**
+  String get takePhoto;
+
+  /// Button to choose photo from gallery
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from Gallery'**
+  String get chooseFromGallery;
+
+  /// Button to switch to text input mode
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to Text'**
+  String get switchToText;
+
+  /// Short camera button label
+  ///
+  /// In en, this message translates to:
+  /// **'camera'**
+  String get camera;
+
+  /// Short gallery button label
+  ///
+  /// In en, this message translates to:
+  /// **'gallery'**
+  String get gallery;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

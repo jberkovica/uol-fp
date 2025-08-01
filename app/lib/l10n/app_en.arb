@@ -523,5 +523,75 @@
   "settingUpYourPin": "Setting up your PIN...",
   "thisWillBeUsedForAccess": "This PIN will be used to access parent settings and approve stories for your children.",
   "pleaseEnterAllFourDigits": "Please enter all 4 digits",
-  "failedToSetPin": "Failed to set PIN. Please try again."
+  "failedToSetPin": "Failed to set PIN. Please try again.",
+
+  "tapToStartRecording": "Tap to start recording",
+  "@tapToStartRecording": {
+    "description": "Hint text for dictation recording button"
+  },
+
+  "pauseRecording": "Pause recording",
+  "@pauseRecording": {
+    "description": "Tooltip for pause recording button"
+  },
+
+  "startOver": "Start over",
+  "@startOver": {
+    "description": "Tooltip for start over button"
+  },
+
+  "playAudio": "Play audio",
+  "@playAudio": {
+    "description": "Tooltip for play audio button"
+  },
+
+  "pauseAudio": "Pause audio",
+  "@pauseAudio": {
+    "description": "Tooltip for pause audio button"
+  },
+
+  "submitForTranscription": "Submit for transcription",
+  "@submitForTranscription": {
+    "description": "Tooltip for submit transcription button"
+  },
+
+  "dictateAgain": "Dictate Again",
+  "@dictateAgain": {
+    "description": "Button to dictate again"
+  },
+
+  "editAsText": "Edit as Text",
+  "@editAsText": {
+    "description": "Button to edit as text"
+  },
+
+  "selectImageSource": "Select Image Source",
+  "@selectImageSource": {
+    "description": "Title for image source selection dialog"
+  },
+
+  "takePhoto": "Take Photo",
+  "@takePhoto": {
+    "description": "Button to take photo with camera"
+  },
+
+  "chooseFromGallery": "Choose from Gallery",
+  "@chooseFromGallery": {
+    "description": "Button to choose photo from gallery"
+  },
+
+  "switchToText": "Switch to Text",
+  "@switchToText": {
+    "description": "Button to switch to text input mode"
+  },
+
+  "camera": "camera",
+  "@camera": {
+    "description": "Short camera button label"
+  },
+
+  "gallery": "gallery",
+  "@gallery": {
+    "description": "Short gallery button label"
+  }
 }

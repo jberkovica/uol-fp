@@ -187,8 +187,8 @@ class _ProcessingScreenState extends State<ProcessingScreen> with TickerProvider
                             top: screenSize.width * 0.1176, // Adjusted for bigger mascot but same face size
                             child: SvgPicture.asset(
                               'assets/images/face-2.svg',
-                              width: screenSize.width * 0.144, // Keep face same size
-                              height: screenSize.width * 0.072,
+                              width: screenSize.width * 0.100, // Balanced face size
+                              height: screenSize.width * 0.050,
                               fit: BoxFit.contain,
                             ),
                           ),

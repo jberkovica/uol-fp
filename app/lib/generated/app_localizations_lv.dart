@@ -699,4 +699,46 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get failedToSetPin => 'Neizdevās iestatīt PIN. Lūdzu, mēģiniet vēlreiz.';
+
+  @override
+  String get tapToStartRecording => 'Pieskarieties, lai sāktu ierakstīšanu';
+
+  @override
+  String get pauseRecording => 'Pauzēt ierakstīšanu';
+
+  @override
+  String get startOver => 'Sākt no jauna';
+
+  @override
+  String get playAudio => 'Atskaņot audio';
+
+  @override
+  String get pauseAudio => 'Pauzēt audio';
+
+  @override
+  String get submitForTranscription => 'Iesniegt transkripciju';
+
+  @override
+  String get dictateAgain => 'Diktēt vēlreiz';
+
+  @override
+  String get editAsText => 'Rediģēt kā tekstu';
+
+  @override
+  String get selectImageSource => 'Izvēlieties attēla avotu';
+
+  @override
+  String get takePhoto => 'Uzņemt fotoattēlu';
+
+  @override
+  String get chooseFromGallery => 'Izvēlēties no galerijas';
+
+  @override
+  String get switchToText => 'Pārslēgties uz tekstu';
+
+  @override
+  String get camera => 'kamera';
+
+  @override
+  String get gallery => 'galerija';
 }

@@ -699,4 +699,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedToSetPin => 'Failed to set PIN. Please try again.';
+
+  @override
+  String get tapToStartRecording => 'Tap to start recording';
+
+  @override
+  String get pauseRecording => 'Pause recording';
+
+  @override
+  String get startOver => 'Start over';
+
+  @override
+  String get playAudio => 'Play audio';
+
+  @override
+  String get pauseAudio => 'Pause audio';
+
+  @override
+  String get submitForTranscription => 'Submit for transcription';
+
+  @override
+  String get dictateAgain => 'Dictate Again';
+
+  @override
+  String get editAsText => 'Edit as Text';
+
+  @override
+  String get selectImageSource => 'Select Image Source';
+
+  @override
+  String get takePhoto => 'Take Photo';
+
+  @override
+  String get chooseFromGallery => 'Choose from Gallery';
+
+  @override
+  String get switchToText => 'Switch to Text';
+
+  @override
+  String get camera => 'camera';
+
+  @override
+  String get gallery => 'gallery';
 }

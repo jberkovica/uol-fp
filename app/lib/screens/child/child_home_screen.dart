@@ -1,10 +1,12 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../generated/app_localizations.dart';
-import '../../services/kid_service.dart';
 import '../../services/app_state_service.dart';
+import '../../services/story_cache_service.dart';
+import '../../services/logging_service.dart';
 import '../../models/story.dart';
 import '../../models/kid.dart';
 import '../../widgets/bottom_nav.dart';
@@ -27,16 +29,20 @@ class ChildHomeScreen extends StatefulWidget {
 
 
 class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderStateMixin {
+  static final _logger = LoggingService.getLogger('ChildHomeScreen');
+  
   Kid? _selectedKid;
   List<Story> _stories = [];
   List<Story> _favouriteStories = [];
   List<Story> _latestStories = [];
-  bool _isLoadingStories = false;
   int _currentNavIndex = 1; // Home tab is default (middle)
   late AnimationController _animationController;
   
   // Parallax scroll variables
   double _scrollOffset = 0.0;
+  
+  // Real-time story subscription
+  StreamSubscription<List<Story>>? _storiesSubscription;
 
   @override
   void initState() {
@@ -54,12 +60,12 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
       _selectedKid = widget.kid;
       // Save to local storage for persistence
       AppStateService.saveSelectedKid(widget.kid!);
-      _loadStories();
+      _setupStoriesStream();
     } else {
       // Try to load from local storage
       _selectedKid = AppStateService.getSelectedKid();
       if (_selectedKid != null) {
-        _loadStories();
+        _setupStoriesStream();
       }
     }
   }
@@ -67,6 +73,10 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
   @override
   void dispose() {
     _animationController.dispose();
+    _storiesSubscription?.cancel();
+    if (_selectedKid != null) {
+      StoryCacheService.dispose(_selectedKid!.id);
+    }
     super.dispose();
   }
 
@@ -80,40 +90,53 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
         _selectedKid = kid;
         // Save to local storage for persistence
         AppStateService.saveSelectedKid(kid);
-        _loadStories();
+        _setupStoriesStream();
       }
     }
   }
 
-  Future<void> _loadStories({bool forceRefresh = false}) async {
+
+  /// Setup real-time stories stream with automatic updates
+  void _setupStoriesStream() {
     if (_selectedKid == null) return;
     
-    setState(() {
-      _isLoadingStories = true;
-    });
-
-    try {
-      final stories = await KidService.getStoriesForKid(_selectedKid!.id, forceRefresh: forceRefresh);
-      setState(() {
-        _stories = stories;
-        // Filter favorites and latest stories
-        _favouriteStories = stories.where((story) => story.isFavourite).take(3).toList();
-        _latestStories = stories.take(3).toList();
-        _isLoadingStories = false;
-      });
-    } catch (e) {
-      setState(() {
-        _isLoadingStories = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to load stories: $e'),
-            backgroundColor: AppColors.error,
-          ),
-        );
-      }
-    }
+    _logger.i('Setting up real-time stories stream for kid: ${_selectedKid!.id}');
+    
+    
+    // Cancel existing subscription
+    _storiesSubscription?.cancel();
+    
+    // Setup new real-time subscription
+    _storiesSubscription = StoryCacheService.getStoriesStream(_selectedKid!.id).listen(
+      (stories) {
+        _logger.d('Received real-time stories update: ${stories.length} stories');
+        
+        // Only show approved stories on home screen
+        final approvedStories = stories.where((story) => story.status == StoryStatus.approved).toList();
+        
+        setState(() {
+          _stories = approvedStories;
+          // Filter favorites and latest stories from approved stories only
+          _favouriteStories = approvedStories.where((story) => story.isFavourite).take(3).toList();
+          _latestStories = approvedStories.take(3).toList();
+        });
+        
+        _logger.d('UI updated with ${approvedStories.length} approved stories (${stories.length} total)');
+      },
+      onError: (error) {
+        _logger.e('Stories stream error: $error');
+        
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to load stories: $error'),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
+      },
+    );
   }
 
   void _onNavTap(int index) {
@@ -390,10 +413,8 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
       arguments: {
         'kid': _selectedKid,
       },
-    ).then((_) {
-      // Refresh stories when returning from upload screen
-      _loadStories();
-    });
+    );
+    // Real-time subscription will automatically update stories when returning
   }
 
 
@@ -457,10 +478,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                 settings: RouteSettings(arguments: story),
               ),
             );
-            // Refresh stories when returning from story display
-            if (mounted) {
-              _loadStories(forceRefresh: true);
-            }
+            // Real-time subscription will automatically update stories if needed
           } : null,
           borderRadius: BorderRadius.circular(16),
           child: Column(

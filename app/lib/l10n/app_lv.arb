@@ -235,5 +235,20 @@
   "settingUpYourPin": "Iestata jūsu PIN...",
   "thisWillBeUsedForAccess": "Šis PIN tiks izmantots, lai piekļūtu vecāku iestatījumiem un apstiprinātu stāstus jūsu bērniem.",
   "pleaseEnterAllFourDigits": "Lūdzu, ievadiet visus 4 ciparus",
-  "failedToSetPin": "Neizdevās iestatīt PIN. Lūdzu, mēģiniet vēlreiz."
+  "failedToSetPin": "Neizdevās iestatīt PIN. Lūdzu, mēģiniet vēlreiz.",
+
+  "tapToStartRecording": "Pieskarieties, lai sāktu ierakstīšanu",
+  "pauseRecording": "Pauzēt ierakstīšanu",
+  "startOver": "Sākt no jauna",
+  "playAudio": "Atskaņot audio",
+  "pauseAudio": "Pauzēt audio",
+  "submitForTranscription": "Iesniegt transkripciju",
+  "dictateAgain": "Diktēt vēlreiz",
+  "editAsText": "Rediģēt kā tekstu",
+  "selectImageSource": "Izvēlieties attēla avotu",
+  "takePhoto": "Uzņemt fotoattēlu",
+  "chooseFromGallery": "Izvēlēties no galerijas",
+  "switchToText": "Pārslēgties uz tekstu",
+  "camera": "kamera",
+  "gallery": "galerija"
 }

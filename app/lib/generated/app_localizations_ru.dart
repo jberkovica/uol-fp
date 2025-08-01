@@ -700,4 +700,46 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get failedToSetPin => 'Не удалось установить PIN. Пожалуйста, попробуйте еще раз.';
+
+  @override
+  String get tapToStartRecording => 'Нажмите, чтобы начать запись';
+
+  @override
+  String get pauseRecording => 'Приостановить запись';
+
+  @override
+  String get startOver => 'Начать заново';
+
+  @override
+  String get playAudio => 'Воспроизвести аудио';
+
+  @override
+  String get pauseAudio => 'Приостановить аудио';
+
+  @override
+  String get submitForTranscription => 'Отправить на транскрипцию';
+
+  @override
+  String get dictateAgain => 'Диктовать снова';
+
+  @override
+  String get editAsText => 'Редактировать как текст';
+
+  @override
+  String get selectImageSource => 'Выберите источник изображения';
+
+  @override
+  String get takePhoto => 'Сделать фото';
+
+  @override
+  String get chooseFromGallery => 'Выбрать из галереи';
+
+  @override
+  String get switchToText => 'Переключиться на текст';
+
+  @override
+  String get camera => 'камера';
+
+  @override
+  String get gallery => 'галерея';
 }

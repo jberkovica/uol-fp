@@ -12,6 +12,8 @@ import '../../generated/app_localizations.dart';
 import '../../services/logging_service.dart';
 import '../../services/background_music_service.dart';
 import '../../services/story_service.dart';
+import '../../services/kid_service.dart';
+import '../../services/app_state_service.dart';
 
 /// Enum for simplified playback state management
 enum PlaybackState {
@@ -1124,6 +1126,8 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
         story.id,
         !story.isFavourite,
       );
+      
+      // Real-time subscriptions will automatically update home screen with favorite status changes
       
       // Update local state
       setState(() {

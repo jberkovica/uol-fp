@@ -1342,6 +1342,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           SnackBar(
             content: Text(AppLocalizations.of(context)!.languageUpdatedTo(_getLanguageDisplayName(languageCode))),
             backgroundColor: AppColors.primary,
+            duration: const Duration(seconds: 2),
+            action: SnackBarAction(
+              label: '✕',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
           ),
         );
         
@@ -1471,6 +1477,12 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
           SnackBar(
             content: Text(AppLocalizations.of(context)!.approvalMethodUpdated(_getApprovalModeDisplayName(approvalMode))),
             backgroundColor: AppColors.primary,
+            duration: const Duration(seconds: 2),
+            action: SnackBarAction(
+              label: '✕',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
           ),
         );
         

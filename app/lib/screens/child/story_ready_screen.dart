@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../constants/app_colors.dart';
-import '../../constants/app_theme.dart';
 import '../../models/story.dart';
-import '../../services/auth_service.dart';
+import '../../services/logging_service.dart';
 import '../../generated/app_localizations.dart';
 
 enum ApprovalMode { auto, app, email }
@@ -23,10 +23,17 @@ class StoryReadyScreen extends StatefulWidget {
 }
 
 class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProviderStateMixin {
+  static final _logger = LoggingService.getLogger('StoryReadyScreen');
+  
   late AnimationController _mascotSlideController;
   late Animation<double> _mascotSlideAnimation;
   late AnimationController _mascotBounceController;
   late Animation<double> _mascotBounceAnimation;
+  
+  // Real-time subscription state
+  RealtimeChannel? _storySubscription;
+  late ApprovalMode _currentApprovalMode;
+  late Story _currentStory;
   
   @override
   void initState() {
@@ -58,21 +65,29 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
       curve: Curves.easeInOut,
     ));
     
+    // Initialize state
+    _currentApprovalMode = widget.approvalMode;
+    _currentStory = widget.story;
+    
     // Start the slide animation, then start bouncing
     _mascotSlideController.forward().then((_) {
       _mascotBounceController.repeat(reverse: true);
     });
+    
+    // Start real-time subscription for approval modes that require it
+    _setupStorySubscription();
   }
 
   @override
   void dispose() {
     _mascotSlideController.dispose();
     _mascotBounceController.dispose();
+    _storySubscription?.unsubscribe();
     super.dispose();
   }
 
   String get _titleText {
-    switch (widget.approvalMode) {
+    switch (_currentApprovalMode) {
       case ApprovalMode.auto:
         return AppLocalizations.of(context)!.yourStoryIsReady;
       case ApprovalMode.app:
@@ -83,18 +98,18 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
   }
 
   String? get _subtitleText {
-    switch (widget.approvalMode) {
+    switch (_currentApprovalMode) {
       case ApprovalMode.auto:
         return null;
       case ApprovalMode.app:
-        return AppLocalizations.of(context)!.tapReviewToApprove;
+        return null; // Removed redundant subtitle
       case ApprovalMode.email:
-        return AppLocalizations.of(context)!.weWillNotifyWhenReady;
+        return null; // Removed redundant subtitle
     }
   }
 
   String get _mascotFace {
-    switch (widget.approvalMode) {
+    switch (_currentApprovalMode) {
       case ApprovalMode.auto:
         return 'assets/images/face-1.svg'; // Happy face
       case ApprovalMode.app:
@@ -138,9 +153,8 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
                               // Title
                               Text(
                                 _titleText,
-                                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                                style: Theme.of(context).textTheme.displayLarge?.copyWith(
                                   color: AppColors.textDark,
-                                  fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -165,7 +179,7 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
                           ),
                         ),
                         
-                        const SizedBox(height: 60),
+                        const SizedBox(height: 120), // Match ProcessingScreen spacing
                         
                         // Mascot - positioned lower with bounce animation
                         AnimatedBuilder(
@@ -191,8 +205,8 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
                                       top: screenSize.width * 0.1176,
                                       child: SvgPicture.asset(
                                         _mascotFace,
-                                        width: screenSize.width * 0.144,
-                                        height: screenSize.width * 0.072,
+                                        width: screenSize.width * 0.100, // Balanced face size
+                                        height: screenSize.width * 0.050,
                                         fit: BoxFit.contain,
                                       ),
                                     ),
@@ -212,7 +226,7 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
               _buildWhiteCloud(screenSize),
               
               // Close button (X) at top right for app and email modes (top layer)
-              if (widget.approvalMode != ApprovalMode.auto)
+              if (_currentApprovalMode != ApprovalMode.auto)
                 Positioned(
                   top: 20,
                   right: 20,
@@ -301,7 +315,7 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
   }
 
   Widget _buildActionButtons() {
-    switch (widget.approvalMode) {
+    switch (_currentApprovalMode) {
       case ApprovalMode.auto:
         return _buildAutoApproveButton();
       case ApprovalMode.app:
@@ -337,53 +351,96 @@ class _StoryReadyScreenState extends State<StoryReadyScreen> with TickerProvider
   }
 
   Widget _buildAppReviewButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 56,
+    return Center(
       child: ElevatedButton(
         onPressed: () => _openParentReview(),
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
+          backgroundColor: Colors.white,
+          foregroundColor: AppColors.textDark,
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(25),
           ),
           elevation: 4,
           shadowColor: Colors.black.withValues(alpha: 64),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/icons/shield-check-filled.svg',
-              width: 24,
-              height: 24,
-              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-            ),
-            const SizedBox(width: 12),
-            Text(
-              AppLocalizations.of(context)!.review,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-          ],
+        child: Text(
+          AppLocalizations.of(context)!.review,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: AppColors.textDark,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );
   }
 
   void _openStory() {
-    Navigator.of(context).pushReplacementNamed(
+    Navigator.of(context).pushNamedAndRemoveUntil(
       '/story-display',
-      arguments: widget.story,
+      (route) => route.settings.name == '/child-home',
+      arguments: _currentStory,
     );
   }
 
   void _openParentReview() {
     // Navigate to parent dashboard (which includes PIN screen)
     Navigator.of(context).pushNamed('/parent-dashboard');
+  }
+
+  /// Setup real-time subscription for story status updates
+  void _setupStorySubscription() {
+    // Only subscribe if we're in approval modes that require it
+    if (_currentApprovalMode == ApprovalMode.app || _currentApprovalMode == ApprovalMode.email) {
+      _logger.i('Setting up real-time subscription for story: ${_currentStory.id}');
+      
+      _storySubscription = Supabase.instance.client
+        .channel('story_${_currentStory.id}')
+        .onPostgresChanges(
+          event: PostgresChangeEvent.update,
+          schema: 'public',
+          table: 'stories',
+          filter: PostgresChangeFilter(
+            type: PostgresChangeFilterType.eq,
+            column: 'id',
+            value: _currentStory.id,
+          ),
+          callback: (payload) {
+            _logger.d('Real-time story update received: ${payload.toString()}');
+            _handleStoryUpdate(payload);
+          },
+        )
+        .subscribe();
+        
+      _logger.i('Real-time subscription active for story: ${_currentStory.id}');
+    }
+  }
+
+  /// Handle real-time story updates
+  void _handleStoryUpdate(PostgresChangePayload payload) {
+    try {
+      final newRecord = payload.newRecord;
+      final updatedStory = Story.fromJson(newRecord);
+        
+      _logger.d('Story status updated: ${updatedStory.status}');
+      
+      // If story status changed to approved, update the state to show open button
+      if (updatedStory.status == StoryStatus.approved && _currentApprovalMode != ApprovalMode.auto) {
+        _logger.i('Story approved! Updating UI to show open button');
+        
+        // Unsubscribe since we no longer need updates
+        _storySubscription?.unsubscribe();
+        _storySubscription = null;
+        
+        if (mounted) {
+          setState(() {
+            _currentStory = updatedStory;
+            _currentApprovalMode = ApprovalMode.auto;
+          });
+        }
+      }
+    } catch (e) {
+      _logger.e('Error handling real-time story update: $e');
+    }
   }
 }
