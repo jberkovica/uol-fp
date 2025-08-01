@@ -200,14 +200,19 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
           ),
           
           // Layer 2: Fixed elements on yellow background (cloud, mascot, header, button) - UNDER white container
-          // Cloud - scaled position with size cap for large screens
+          // Cloud - center aligned with responsive padding system
           Positioned(
-            top: 130, // Moved down 10 pixels
-            left: (MediaQuery.of(context).size.width * -0.4 - 40).clamp(-350, -190), // Keep cloud visible on large screens
+            top: 130,
+            left: () {
+              final cloudWidth = (MediaQuery.of(context).size.width * 1.2).clamp(300.0, 600.0);
+              final paddingAlignment = AppTheme.getGlobalPadding(context);
+              // Center the cloud relative to the padding alignment point
+              return paddingAlignment - (cloudWidth * 0.4); // Offset for visual balance
+            }(),
             child: SvgPicture.asset(
               'assets/images/cloud-1.svg',
-              width: (MediaQuery.of(context).size.width * 1.2).clamp(300, 600), // Back to bigger size
-              height: (MediaQuery.of(context).size.width * 0.6).clamp(150, 300), // Back to bigger size
+              width: (MediaQuery.of(context).size.width * 1.2).clamp(300, 600),
+              height: (MediaQuery.of(context).size.width * 0.6).clamp(150, 300),
               fit: BoxFit.contain,
               colorFilter: const ColorFilter.mode(
                 Color(0xFFFFCF6A),
@@ -215,10 +220,10 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
               ),
             ),
           ),
-          // Mascot - fixed position
+          // Mascot - aligned with responsive padding
           Positioned(
             top: 180,
-            left: 20,
+            left: AppTheme.getGlobalPadding(context),
             child: SvgPicture.asset(
               'assets/images/mascot-body-1.svg',
               width: 160,
@@ -226,10 +231,10 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
               fit: BoxFit.contain,
             ),
           ),
-          // Mascot face - fixed position
+          // Mascot face - aligned relative to mascot body
           Positioned(
             top: 210,
-            left: 90,
+            left: AppTheme.getGlobalPadding(context) + 70, // 70px offset from mascot body left edge
             child: SvgPicture.asset(
               'assets/images/face-1.svg',
               width: 40,
