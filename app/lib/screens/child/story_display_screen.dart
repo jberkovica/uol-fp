@@ -15,7 +15,7 @@ class StoryDisplayScreen extends StatefulWidget {
   State<StoryDisplayScreen> createState() => _StoryDisplayScreenState();
 }
 
-class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
+class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProviderStateMixin {
   static final _logger = LoggingService.getLogger('StoryDisplayScreen');
   final AudioPlayer _audioPlayer = AudioPlayer(); // Story narration
   final AudioPlayer _backgroundPlayer = AudioPlayer(); // Background music
@@ -31,12 +31,21 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
   int _fadeDurationSeconds = 10; // Duration for smooth volume fade
   Duration _currentPosition = Duration.zero;
   Duration _totalDuration = Duration.zero;
+  
+  // Animation controller for gradient
+  late AnimationController _gradientController;
 
   @override
   void initState() {
     super.initState();
     _setupAudioListeners();
     _setupBackgroundMusic();
+    
+    // Initialize gradient animation
+    _gradientController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat(reverse: true);
   }
 
   void _setupAudioListeners() {
@@ -93,6 +102,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
   void dispose() {
     _audioPlayer.dispose();
     _backgroundPlayer.dispose();
+    _gradientController.dispose();
     super.dispose();
   }
 
@@ -146,8 +156,8 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
                     child: Center(
                       child: SvgPicture.asset(
                         'assets/icons/photo.svg',
-                        width: 48,
-                        height: 48,
+                        width: 24,
+                        height: 24,
                         colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
                       ),
                     ),
@@ -175,101 +185,99 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Clean top app bar
-            Container(
-              width: double.infinity,
-              child: Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
-                  constraints: const BoxConstraints(maxWidth: 1200),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
-                    vertical: 16,
-                  ),
-                  child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: SvgPicture.asset(
-                        'assets/icons/arrow-left.svg',
-                        width: 24,
-                        height: 24,
-                        colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
-                      ),
-                      style: IconButton.styleFrom(
-                        backgroundColor: AppColors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 0,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Text(
-                        story.title.isNotEmpty ? story.title : 'Your Story',
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          color: AppColors.textDark,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                  ),
-                ),
-              ),
-            ),
-
-            // Story content area
+            // Story content area with scrollable header and fade effect
             Expanded(
-              child: Container(
-                width: double.infinity,
-                child: Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
-                    constraints: const BoxConstraints(maxWidth: 1200),
-                    margin: EdgeInsets.symmetric(
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
                       horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
+                      vertical: 8,
                     ),
-                    padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                    child: SingleChildScrollView(
-                      child: _buildStoryContentWithImage(story),
+                    child: Center(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
+                        constraints: const BoxConstraints(maxWidth: 1200),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Header - now scrollable
+                              Row(
+                                children: [
+                                  IconButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    icon: SvgPicture.asset(
+                                      'assets/icons/arrow-left.svg',
+                                      width: 24,
+                                      height: 24,
+                                      colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
+                                    ),
+                                    style: IconButton.styleFrom(
+                                      backgroundColor: AppColors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      elevation: 0,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Text(
+                                      story.title.isNotEmpty ? story.title : 'Your Story',
+                                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                        color: AppColors.textDark,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 24),
+                              // Story content
+                              _buildStoryContentWithImage(story),
+                              const SizedBox(height: 100), // Space for floating controls
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  // Gradient fade effect at bottom
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            AppTheme.whiteScreenBackground.withValues(alpha: 0.0),
+                            AppTheme.whiteScreenBackground.withValues(alpha: 0.1),
+                            AppTheme.whiteScreenBackground.withValues(alpha: 0.4),
+                            AppTheme.whiteScreenBackground.withValues(alpha: 0.8),
+                            AppTheme.whiteScreenBackground,
+                          ],
+                          stops: const [0.0, 0.2, 0.5, 0.8, 1.0],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
             // Bottom controls bar
             Container(
               width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width > 1200 ? 1200 : double.infinity,
-                  constraints: const BoxConstraints(maxWidth: 1200),
-                  margin: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ResponsiveBreakpoints.getResponsivePadding(context),
-                    vertical: 16,
-                  ),
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primary.withOpacity(0.1),
-                      blurRadius: 20,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                  child: _buildBottomControls(story),
-                ),
+                child: _buildBottomControls(story),
               ),
             ),
           ],
@@ -279,201 +287,294 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
   }
 
   Widget _buildBottomControls(Story story) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Audio progress bar (if audio available)
-        if (story.audioUrl != null && _totalDuration.inSeconds > 0) ...[
-          _buildProgressBar(),
-          const SizedBox(height: 16),
-        ],
-        
-        
-        // Main controls row
-        Row(
-          children: [
-            // Text size control
-            _buildTextSizeButton(),
-            const SizedBox(width: 16),
-            
-            // Play/pause button (center)
-            Expanded(
-              child: _buildPlayButton(story),
-            ),
-            
-            const SizedBox(width: 16),
-            
-            // Additional controls
-            _buildMenuButton(),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProgressBar() {
-    final progress = _totalDuration.inMilliseconds > 0 
-        ? _currentPosition.inMilliseconds / _totalDuration.inMilliseconds 
-        : 0.0;
-        
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              _formatDuration(_currentPosition),
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-            Text(
-              _formatDuration(_totalDuration),
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            trackHeight: 4,
-            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
-            overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
-            activeTrackColor: AppColors.primary,
-            inactiveTrackColor: AppColors.lightGrey,
-            thumbColor: AppColors.primary,
-          ),
-          child: Slider(
-            value: progress.clamp(0.0, 1.0),
-            onChanged: (value) async {
-              final position = Duration(
-                milliseconds: (value * _totalDuration.inMilliseconds).round(),
-              );
-              await _audioPlayer.seek(position);
+    return Center(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Music icon (left) - yellow-violet gradient icon
+          _buildGradientMusicIcon(
+            'assets/icons/music-heart.svg',
+            onPressed: () {
+              // Will implement music functionality later
             },
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPlayButton(Story story) {
-    if (story.audioUrl == null) {
-      return Container(
-        height: 56,
-        decoration: BoxDecoration(
-          color: AppColors.lightGrey,
-          borderRadius: BorderRadius.circular(28),
-        ),
-        child: Center(
-          child: Text(
-            'No audio available',
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.textGrey,
+          const SizedBox(width: 8), // Slightly more space between elements
+          
+          // Main audio controls in violet container (center)
+          Container(
+            height: 56,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(28),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.1),
+                  offset: const Offset(0, 5),
+                  blurRadius: 10,
+                  spreadRadius: 0,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Skip backward (-10s) - Material icon, white
+                _buildWhiteMaterialIconButton(
+                  Icons.replay_10,
+                  onPressed: story.audioUrl != null ? () => _skipBackward() : null,
+                ),
+                const SizedBox(width: 4),
+                
+                // Play/pause button (slightly larger)
+                _buildWhiteIconButton(
+                  _isPlaying ? 'assets/icons/player-pause-filled.svg' : 'assets/icons/player-play-filled.svg',
+                  onPressed: story.audioUrl != null ? () => _toggleAudio(story.audioUrl!) : null,
+                  isLoading: _isLoading,
+                  size: 52,
+                ),
+                const SizedBox(width: 4),
+                
+                // Skip forward (+10s) - Material icon, white
+                _buildWhiteMaterialIconButton(
+                  Icons.forward_10,
+                  onPressed: story.audioUrl != null ? () => _skipForward() : null,
+                ),
+              ],
             ),
           ),
-        ),
-      );
-    }
+          
+          const SizedBox(width: 8), // Slightly more space between elements
+          // Controls/Settings icon (right)
+          _buildGreyIconButton(
+            'assets/icons/settings.svg',
+            onPressed: _showOptionsMenu,
+          ),
+        ],
+      ),
+    );
+  }
 
-    return GestureDetector(
-      onTap: () => _toggleAudio(story.audioUrl!),
-      child: Container(
-        height: 56,
-        decoration: BoxDecoration(
-          color: AppColors.primary,
-          borderRadius: BorderRadius.circular(28),
-        ),
-        child: Center(
-          child: _isLoading 
-            ? const SizedBox(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator(
-                  color: AppColors.white,
-                  strokeWidth: 2,
-                ),
-              )
-            : SvgPicture.asset(
-                _isPlaying ? 'assets/icons/player-pause.svg' : 'assets/icons/player-play.svg',
-                width: 32,
-                height: 32,
-                colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+
+  // Primary button (purple background for play/pause)
+  Widget _buildPrimaryIconButton(
+    String iconPath, {
+    VoidCallback? onPressed,
+    bool isLoading = false,
+  }) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: isLoading
+          ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                color: AppColors.white,
+                strokeWidth: 2,
               ),
-        ),
+            )
+          : SvgPicture.asset(
+              iconPath,
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+            ),
+      style: IconButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.white,
+        minimumSize: const Size(52, 52), // Slightly larger for primary action
+        maximumSize: const Size(52, 52),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        shape: const CircleBorder(),
       ),
     );
   }
 
-  Widget _buildTextSizeButton() {
-    return GestureDetector(
-      onTap: _toggleTextSize,
-      child: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: AppColors.lightGrey,
-          borderRadius: BorderRadius.circular(24),
+  // Grey icon buttons (no background, just grey icons)
+  Widget _buildGreyIconButton(
+    String iconPath, {
+    VoidCallback? onPressed,
+  }) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: SvgPicture.asset(
+        iconPath,
+        width: 24,
+        height: 24,
+        colorFilter: ColorFilter.mode(
+          onPressed != null ? AppColors.grey600 : AppColors.grey400,
+          BlendMode.srcIn,
         ),
-        child: SvgPicture.asset(
-          'assets/icons/text-size.svg',
-          width: 24,
-          height: 24,
-          colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
-        ),
+      ),
+      style: IconButton.styleFrom(
+        foregroundColor: AppColors.grey600,
+        minimumSize: const Size(48, 48),
+        maximumSize: const Size(48, 48),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
     );
   }
 
-  Widget _buildMenuButton() {
-    return GestureDetector(
-      onTap: _showOptionsMenu,
-      child: Container(
-        width: 48,
-        height: 48,
-        decoration: BoxDecoration(
-          color: AppColors.lightGrey,
-          borderRadius: BorderRadius.circular(24),
+  // Dark grey icon buttons (no background, just dark grey icons)
+  Widget _buildDarkGreyIconButton(
+    String iconPath, {
+    VoidCallback? onPressed,
+  }) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: SvgPicture.asset(
+        iconPath,
+        width: 24,
+        height: 24,
+        colorFilter: ColorFilter.mode(
+          onPressed != null ? AppColors.grey700 : AppColors.grey400,
+          BlendMode.srcIn,
         ),
-        child: SvgPicture.asset(
-          'assets/icons/adjustments-horizontal.svg',
-          width: 24,
-          height: 24,
-          colorFilter: const ColorFilter.mode(AppColors.textDark, BlendMode.srcIn),
-        ),
+      ),
+      style: IconButton.styleFrom(
+        foregroundColor: AppColors.grey700,
+        minimumSize: const Size(48, 48),
+        maximumSize: const Size(48, 48),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
     );
   }
+
+  // White Material icon buttons for inside violet container
+  Widget _buildWhiteMaterialIconButton(
+    IconData icon, {
+    VoidCallback? onPressed,
+  }) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: Icon(
+        icon,
+        size: 24,
+        color: AppColors.white,
+      ),
+      style: IconButton.styleFrom(
+        foregroundColor: AppColors.white,
+        minimumSize: const Size(48, 48),
+        maximumSize: const Size(48, 48),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+    );
+  }
+
+  // White icon buttons for inside violet container (SVG icons)
+  Widget _buildWhiteIconButton(
+    String iconPath, {
+    VoidCallback? onPressed,
+    bool isLoading = false,
+    double size = 48,
+  }) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: isLoading
+          ? SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                color: AppColors.white,
+                strokeWidth: 2,
+              ),
+            )
+          : SvgPicture.asset(
+              iconPath,
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+            ),
+      style: IconButton.styleFrom(
+        foregroundColor: AppColors.white,
+        minimumSize: Size(size, size),
+        maximumSize: Size(size, size),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+    );
+  }
+
+  // Violet icon buttons (violet circle background with white icons)
+  Widget _buildVioletIconButton(
+    String iconPath, {
+    VoidCallback? onPressed,
+    bool isLoading = false,
+  }) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: isLoading
+          ? SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                color: AppColors.white,
+                strokeWidth: 2,
+              ),
+            )
+          : SvgPicture.asset(
+              iconPath,
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+            ),
+      style: IconButton.styleFrom(
+        backgroundColor: AppColors.primary,
+        foregroundColor: AppColors.white,
+        minimumSize: const Size(48, 48),
+        maximumSize: const Size(48, 48),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        shape: const CircleBorder(),
+      ),
+    );
+  }
+
+  // Animated gradient music icon (no background, just animated gradient-colored icon)
+  Widget _buildGradientMusicIcon(
+    String iconPath, {
+    VoidCallback? onPressed,
+  }) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: AnimatedBuilder(
+        animation: _gradientController,
+        builder: (context, child) {
+          return ShaderMask(
+            shaderCallback: (bounds) => LinearGradient(
+              colors: [AppColors.secondary, AppColors.primary], // Yellow to violet
+              begin: Alignment.lerp(
+                Alignment.topLeft,
+                Alignment.bottomLeft,
+                _gradientController.value,
+              )!,
+              end: Alignment.lerp(
+                Alignment.bottomRight,
+                Alignment.topRight,
+                _gradientController.value,
+              )!,
+            ).createShader(bounds),
+            child: SvgPicture.asset(
+              iconPath,
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            ),
+          );
+        },
+      ),
+      style: IconButton.styleFrom(
+        foregroundColor: AppColors.primary,
+        minimumSize: const Size(48, 48),
+        maximumSize: const Size(48, 48),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+    );
+  }
+
 
   void _toggleTextSize() {
     setState(() {
       _fontSizeIndex = (_fontSizeIndex + 1) % 3;
     });
-  }
-
-  TextStyle _getStoryTextStyle(BuildContext context) {
-    switch (_fontSizeIndex) {
-      case 0:
-        return Theme.of(context).textTheme.bodyMedium!.copyWith(
-          height: 1.8,
-          color: AppColors.textDark,
-        );
-      case 1:
-        return Theme.of(context).textTheme.headlineMedium!.copyWith(
-          height: 1.8,
-          color: AppColors.textDark,
-          fontWeight: FontWeight.normal, // Override bold for reading
-        );
-      case 2:
-        return Theme.of(context).textTheme.headlineLarge!.copyWith(
-          height: 1.8,
-          color: AppColors.textDark,
-          fontWeight: FontWeight.normal, // Override bold for reading
-        );
-      default:
-        return Theme.of(context).textTheme.bodyMedium!.copyWith(
-          height: 1.8,
-          color: AppColors.textDark,
-        );
-    }
   }
 
   void _showOptionsMenu() {
@@ -490,7 +591,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Story Options',
+              'Story Settings',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(height: 24),
@@ -501,39 +602,27 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
                 height: 24,
                 colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
               ),
-              title: Text(AppLocalizations.of(context)!.textSize),
-              subtitle: Text(AppLocalizations.of(context)!.currentFontSize([16, 20, 24][_fontSizeIndex])),
-              onTap: () {
-                Navigator.pop(context);
-                _toggleTextSize();
-              },
-            ),
-            ListTile(
-              leading: SvgPicture.asset(
-                _backgroundMusicEnabled ? 'assets/icons/player-play.svg' : 'assets/icons/player-pause.svg',
-                width: 24,
-                height: 24,
-                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
+              title: const Text('Text Size'),
+              subtitle: DropdownButton<int>(
+                value: _fontSizeIndex,
+                underline: Container(),
+                items: const [
+                  DropdownMenuItem(value: 0, child: Text('Small (16px)')),
+                  DropdownMenuItem(value: 1, child: Text('Medium (20px)')),
+                  DropdownMenuItem(value: 2, child: Text('Large (24px)')),
+                ],
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      _fontSizeIndex = value;
+                    });
+                  }
+                },
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textGrey,
+                ),
+                dropdownColor: AppColors.white,
               ),
-              title: Text(AppLocalizations.of(context)!.backgroundMusic),
-              subtitle: Text(_backgroundMusicEnabled ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled),
-              onTap: () {
-                Navigator.pop(context);
-                _toggleBackgroundMusic();
-              },
-            ),
-            ListTile(
-              leading: SvgPicture.asset(
-                'assets/icons/plus.svg',
-                width: 24,
-                height: 24,
-                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
-              ),
-              title: Text(AppLocalizations.of(context)!.createAnotherStory),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-              },
             ),
           ],
         ),
@@ -541,12 +630,46 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
     );
   }
 
-  String _formatDuration(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final minutes = twoDigits(duration.inMinutes);
-    final seconds = twoDigits(duration.inSeconds.remainder(60));
-    return '$minutes:$seconds';
+  void _toggleBackgroundMusic() {
+    setState(() {
+      _backgroundMusicEnabled = !_backgroundMusicEnabled;
+    });
+    
+    if (_backgroundMusicEnabled && _isPlaying) {
+      _startBackgroundMusic();
+    } else {
+      _backgroundPlayer.stop();
+    }
   }
+
+  TextStyle _getStoryTextStyle(BuildContext context) {
+    switch (_fontSizeIndex) {
+      case 0:
+        return Theme.of(context).textTheme.bodyMedium!.copyWith(
+          height: 1.5,
+          color: AppColors.textDark,
+        );
+      case 1:
+        return Theme.of(context).textTheme.headlineMedium!.copyWith(
+          height: 1.5,
+          color: AppColors.textDark,
+          fontWeight: FontWeight.normal, // Override bold for reading
+        );
+      case 2:
+        return Theme.of(context).textTheme.headlineLarge!.copyWith(
+          height: 1.5,
+          color: AppColors.textDark,
+          fontWeight: FontWeight.normal, // Override bold for reading
+        );
+      default:
+        return Theme.of(context).textTheme.bodyMedium!.copyWith(
+          height: 1.5,
+          color: AppColors.textDark,
+        );
+    }
+  }
+
+
 
   Future<void> _toggleAudio(String audioUrl) async {
     try {
@@ -617,6 +740,8 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
     await _audioPlayer.resume();
     _hasStartedNarration = true;
     
+    // Duration will be detected via _tryGetDuration during position updates
+    
     // Gradually fade to very low volume over time
     _fadeBackgroundMusic();
   }
@@ -663,17 +788,29 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> {
     }
   }
 
-  Future<void> _toggleBackgroundMusic() async {
-    setState(() {
-      _backgroundMusicEnabled = !_backgroundMusicEnabled;
-    });
-
-    if (_backgroundMusicEnabled && _isPlaying) {
-      // Start background music if story is playing
-      await _startBackgroundMusic();
-    } else if (!_backgroundMusicEnabled && _isBackgroundPlaying) {
-      // Stop background music
-      await _backgroundPlayer.stop();
+  Future<void> _restartAudio(String audioUrl) async {
+    try {
+      await _audioPlayer.stop();
+      await _audioPlayer.setSource(UrlSource(audioUrl));
+      setState(() {
+        _currentPosition = Duration.zero;
+        _isPlaying = false;
+      });
+    } catch (e) {
+      _logger.e('Error restarting audio', error: e);
     }
   }
+
+  Future<void> _skipForward() async {
+    final newPosition = _currentPosition + const Duration(seconds: 10);
+    await _audioPlayer.seek(newPosition);
+  }
+
+  Future<void> _skipBackward() async {
+    final newPosition = _currentPosition - const Duration(seconds: 10);
+    // Ensure we don't go below 0
+    final clampedPosition = newPosition.isNegative ? Duration.zero : newPosition;
+    await _audioPlayer.seek(clampedPosition);
+  }
+
 }
