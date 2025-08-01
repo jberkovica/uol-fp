@@ -10,6 +10,7 @@ class Story {
   final DateTime createdAt;
   final String childName;
   final StoryStatus status;
+  final bool isFavourite;
 
   Story({
     required this.id,
@@ -22,6 +23,7 @@ class Story {
     required this.createdAt,
     required this.childName,
     this.status = StoryStatus.pending,
+    this.isFavourite = false,
   });
 
   /// Create Story from JSON response
@@ -37,6 +39,7 @@ class Story {
       createdAt: DateTime.tryParse(json['created_at'] as String? ?? '') ?? DateTime.now(),
       childName: json['child_name'] as String? ?? '',
       status: _parseStatus(json['status'] as String?),
+      isFavourite: json['is_favourite'] as bool? ?? false,
     );
   }
 
@@ -53,6 +56,7 @@ class Story {
       'created_at': createdAt.toIso8601String(),
       'child_name': childName,
       'status': status.toString().split('.').last,
+      'is_favourite': isFavourite,
     };
   }
 
@@ -81,6 +85,7 @@ class Story {
     DateTime? createdAt,
     String? childName,
     StoryStatus? status,
+    bool? isFavourite,
   }) {
     return Story(
       id: id ?? this.id,
@@ -93,6 +98,7 @@ class Story {
       createdAt: createdAt ?? this.createdAt,
       childName: childName ?? this.childName,
       status: status ?? this.status,
+      isFavourite: isFavourite ?? this.isFavourite,
     );
   }
 }

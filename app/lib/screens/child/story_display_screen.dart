@@ -11,6 +11,7 @@ import '../../widgets/responsive_wrapper.dart';
 import '../../generated/app_localizations.dart';
 import '../../services/logging_service.dart';
 import '../../services/background_music_service.dart';
+import '../../services/story_service.dart';
 
 /// Enum for simplified playback state management
 enum PlaybackState {
@@ -337,6 +338,27 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
                                       ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  // Favorite heart icon
+                                  IconButton(
+                                    onPressed: () => _toggleFavourite(story),
+                                    icon: SvgPicture.asset(
+                                      story.isFavourite ? 'assets/icons/heart-filled.svg' : 'assets/icons/heart.svg',
+                                      width: 24,
+                                      height: 24,
+                                      colorFilter: ColorFilter.mode(
+                                        story.isFavourite ? AppColors.error : AppColors.textDark,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                    style: IconButton.styleFrom(
+                                      backgroundColor: AppColors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      elevation: 0,
                                     ),
                                   ),
                                 ],
@@ -1090,6 +1112,37 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
       _logger.w('Fade out failed, stopping immediately', error: e);
       await _audioPlayer.stop();
       await _backgroundPlayer.stop();
+    }
+  }
+
+  /// Toggle favourite status for the current story
+  Future<void> _toggleFavourite(Story story) async {
+    try {
+      _logger.d('Toggling favourite status for story: ${story.id}');
+      
+      final updatedStory = await StoryService.toggleStoryFavourite(
+        story.id,
+        !story.isFavourite,
+      );
+      
+      // Update local state
+      setState(() {
+        _updatedStory = updatedStory;
+      });
+      
+      _logger.d('Successfully toggled story favourite status to: ${updatedStory.isFavourite}');
+      
+    } catch (e) {
+      _logger.e('Failed to toggle favourite status', error: e);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to update favorite: ${e.toString()}'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
     }
   }
 

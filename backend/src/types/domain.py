@@ -66,6 +66,7 @@ class Story(BaseModel):
     background_music_url: Optional[str] = Field(default=None, description="Full background music URL (computed)")
     language: Language = Field(default=Language.ENGLISH)
     status: StoryStatus = Field(default=StoryStatus.PENDING)
+    is_favourite: bool = Field(default=False, description="Whether story is marked as favourite")
     created_at: datetime
     updated_at: Optional[datetime] = None
     metadata: Optional[dict] = Field(default_factory=dict)

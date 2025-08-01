@@ -16,6 +16,7 @@ class StoryResponse(BaseModel):
     background_music_url: Optional[str]
     status: StoryStatus
     language: Language
+    is_favourite: bool = False
     created_at: datetime
     updated_at: Optional[datetime]
     

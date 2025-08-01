@@ -150,6 +150,7 @@ async def get_pending_stories() -> StoryListResponse:
                 background_music_url=story.background_music_url,
                 status=story.status,
                 language=story.language,
+                is_favourite=story.is_favourite,
                 created_at=story.created_at,
                 updated_at=story.updated_at
             )
@@ -189,6 +190,7 @@ async def get_story(story_id: str) -> StoryResponse:
             background_music_url=story.background_music_url,
             status=story.status,
             language=story.language,
+            is_favourite=story.is_favourite,
             created_at=story.created_at,
             updated_at=story.updated_at
         )
@@ -233,6 +235,7 @@ async def get_stories_for_kid(
                 background_music_url=story.background_music_url,
                 status=story.status,
                 language=story.language,
+                is_favourite=story.is_favourite,
                 created_at=story.created_at,
                 updated_at=story.updated_at
             )
@@ -294,6 +297,7 @@ async def review_story(
             background_music_url=story.background_music_url,
             status=story.status,
             language=story.language,
+            is_favourite=story.is_favourite,
             created_at=story.created_at,
             updated_at=story.updated_at
         )
@@ -562,6 +566,7 @@ async def update_story_background_music(
             background_music_url=story.background_music_url,
             status=story.status,
             language=story.language,
+            is_favourite=story.is_favourite,
             created_at=story.created_at,
             updated_at=story.updated_at
         )
@@ -573,6 +578,55 @@ async def update_story_background_music(
     except Exception as e:
         logger.error(f"Failed to update story background music: {e}")
         raise HTTPException(status_code=500, detail="Failed to update story background music")
+
+
+@router.put("/{story_id}/favourite", response_model=StoryResponse)
+async def toggle_story_favourite(
+    story_id: str,
+    request: dict
+) -> StoryResponse:
+    """Toggle favourite status for a story."""
+    try:
+        validate_uuid(story_id, "story_id")
+        
+        is_favourite = request.get("is_favourite")
+        if is_favourite is None:
+            raise ValidationError("is_favourite field is required")
+        
+        supabase = get_supabase_service()
+        
+        # Update story favourite status
+        update_data = {
+            "is_favourite": bool(is_favourite)
+        }
+        story = await supabase.update_story(story_id, update_data)
+        
+        if not story:
+            raise NotFoundError("Story", story_id)
+        
+        logger.info(f"Story {story_id} favourite status updated to: {is_favourite}")
+        
+        return StoryResponse(
+            id=story.id,
+            kid_id=story.kid_id,
+            title=story.title,
+            content=story.content,
+            audio_url=story.audio_url,
+            background_music_url=story.background_music_url,
+            status=story.status,
+            language=story.language,
+            is_favourite=story.is_favourite,
+            created_at=story.created_at,
+            updated_at=story.updated_at
+        )
+        
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Failed to update story favourite status: {e}")
+        raise HTTPException(status_code=500, detail="Failed to update story favourite status")
 
 
 @router.post("/review-story/")

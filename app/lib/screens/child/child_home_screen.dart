@@ -12,6 +12,7 @@ import '../../widgets/profile_avatar.dart';
 import '../../widgets/responsive_wrapper.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
+import '../child/story_display_screen.dart';
 import '../parent/pin_entry_screen.dart';
 
 
@@ -84,7 +85,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
     }
   }
 
-  Future<void> _loadStories() async {
+  Future<void> _loadStories({bool forceRefresh = false}) async {
     if (_selectedKid == null) return;
     
     setState(() {
@@ -92,12 +93,11 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
     });
 
     try {
-      final stories = await KidService.getStoriesForKid(_selectedKid!.id);
+      final stories = await KidService.getStoriesForKid(_selectedKid!.id, forceRefresh: forceRefresh);
       setState(() {
         _stories = stories;
-        // For now, split stories into favourites and latest
-        // In the future, you could add favourite marking functionality
-        _favouriteStories = stories.take(3).toList();
+        // Filter favorites and latest stories
+        _favouriteStories = stories.where((story) => story.isFavourite).take(3).toList();
         _latestStories = stories.take(3).toList();
         _isLoadingStories = false;
       });
@@ -449,57 +449,89 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: story.status == StoryStatus.approved ? () {
-            Navigator.pushNamed(
+          onTap: story.status == StoryStatus.approved ? () async {
+            await Navigator.push(
               context,
-              '/story-display',
-              arguments: story,
+              MaterialPageRoute(
+                builder: (context) => const StoryDisplayScreen(),
+                settings: RouteSettings(arguments: story),
+              ),
             );
+            // Refresh stories when returning from story display
+            if (mounted) {
+              _loadStories(forceRefresh: true);
+            }
           } : null,
           borderRadius: BorderRadius.circular(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Story cover image
+              // Story cover image with favorite indicator
               Container(
                 width: double.infinity,
                 height: 120,
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(16)),
                 ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(16)),
-                  child: story.status == StoryStatus.pending
-                      ? Container(
-                          color: AppColors.secondary.withValues(alpha: 0.3),
-                          child: const Center(
-                            child: SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                          ),
-                        )
-                      : Image.asset(
-                          'assets/images/stories/default-cover.png',
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              color: AppColors.lightGrey,
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  'assets/icons/photo.svg',
-                                  width: 24,
-                                  height: 24,
-                                  colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(16)),
+                      child: story.status == StoryStatus.pending
+                          ? Container(
+                              color: AppColors.secondary.withValues(alpha: 0.3),
+                              child: const Center(
+                                child: SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: AppColors.primary,
+                                  ),
                                 ),
                               ),
-                            );
-                          },
+                            )
+                          : Image.asset(
+                              'assets/images/stories/default-cover.png',
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: AppColors.lightGrey,
+                                  child: Center(
+                                    child: SvgPicture.asset(
+                                      'assets/icons/photo.svg',
+                                      width: 24,
+                                      height: 24,
+                                      colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                    ),
+                    // Favorite heart indicator
+                    if (story.isFavourite)
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.9),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Center(
+                            child: SvgPicture.asset(
+                              'assets/icons/heart-filled.svg',
+                              width: 14,
+                              height: 14,
+                              colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                            ),
+                          ),
                         ),
+                      ),
+                  ],
                 ),
               ),
               

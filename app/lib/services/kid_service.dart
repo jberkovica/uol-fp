@@ -184,9 +184,10 @@ class KidService {
   }
 
   /// Get all stories for a specific kid
-  static Future<List<Story>> getStoriesForKid(String kidId) async {
-    // Check cache first (cache for 2 minutes for stories)
-    if (_storiesCache.containsKey(kidId) && 
+  static Future<List<Story>> getStoriesForKid(String kidId, {bool forceRefresh = false}) async {
+    // Check cache first (only if not forcing refresh and cache is recent)
+    if (!forceRefresh && 
+        _storiesCache.containsKey(kidId) && 
         _lastCacheUpdate != null && 
         DateTime.now().difference(_lastCacheUpdate!).inMinutes < 2) {
       return _storiesCache[kidId]!;

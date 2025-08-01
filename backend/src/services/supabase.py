@@ -224,6 +224,7 @@ class SupabaseService:
                     audio_url=audio_url,
                     status=StoryStatus(item.get("status", "pending")),
                     language=Language(item.get("language", "english")),
+                    is_favourite=item.get("is_favourite", False),
                     created_at=datetime.fromisoformat(item["created_at"].replace('Z', '+00:00')),
                     updated_at=datetime.fromisoformat(item["updated_at"].replace('Z', '+00:00')) if item.get("updated_at") else None,
                     image_description=caption,  # Use input_value from story_inputs

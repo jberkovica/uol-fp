@@ -181,6 +181,7 @@ priororities:
 
 [] localisation missing: story is ready, add image
 [] review process and screens order
+[] fix story text input - not saved, not updated
 
 [] video animation for "cooking" image
 
