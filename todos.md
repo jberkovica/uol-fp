@@ -175,10 +175,12 @@ priororities:
 [] fix button on home screen
 []  when I press "back" on story preview I want to always be redirected to home page
 [] is "open" button when story is ready correct text size?
+[] dictate screen not localised - tap to start recording
 
 
 
 [] localisation missing: story is ready, add image
+[] review process and screens order
 
 [] video animation for "cooking" image
 
@@ -187,6 +189,9 @@ priororities:
 [] subscription screens
 [] help
 
+
+
+[] public buckets - imporve secutriy?
 
 
 

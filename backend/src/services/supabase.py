@@ -99,6 +99,10 @@ class SupabaseService:
             audio_filename = story_data.get("audio_filename")
             if audio_filename:
                 story_data["audio_url"] = self.build_audio_url(audio_filename)
+            # Convert background_music_filename to background_music_url
+            background_music_filename = story_data.get("background_music_filename")
+            if background_music_filename:
+                story_data["background_music_url"] = self.build_background_music_url(background_music_filename)
             return Story(**story_data)
         return None
     
@@ -114,12 +118,15 @@ class SupabaseService:
             .offset(offset)
             .execute()
         )
-        # Convert audio_filename to audio_url for each story
+        # Convert filenames to URLs for each story
         stories = []
         for story_data in result.data:
             audio_filename = story_data.get("audio_filename")
             if audio_filename:
                 story_data["audio_url"] = self.build_audio_url(audio_filename)
+            background_music_filename = story_data.get("background_music_filename")
+            if background_music_filename:
+                story_data["background_music_url"] = self.build_background_music_url(background_music_filename)
             stories.append(Story(**story_data))
         return stories
     
@@ -134,12 +141,15 @@ class SupabaseService:
             .offset(offset)
             .execute()
         )
-        # Convert audio_filename to audio_url for each story
+        # Convert filenames to URLs for each story
         stories = []
         for story_data in result.data:
             audio_filename = story_data.get("audio_filename")
             if audio_filename:
                 story_data["audio_url"] = self.build_audio_url(audio_filename)
+            background_music_filename = story_data.get("background_music_filename")
+            if background_music_filename:
+                story_data["background_music_url"] = self.build_background_music_url(background_music_filename)
             stories.append(Story(**story_data))
         return stories
     
@@ -154,6 +164,10 @@ class SupabaseService:
             audio_filename = story_data.get("audio_filename")
             if audio_filename:
                 story_data["audio_url"] = self.build_audio_url(audio_filename)
+            # Convert background_music_filename to background_music_url
+            background_music_filename = story_data.get("background_music_filename")
+            if background_music_filename:
+                story_data["background_music_url"] = self.build_background_music_url(background_music_filename)
             return Story(**story_data)
         return None
     
@@ -249,6 +263,14 @@ class SupabaseService:
         if not audio_filename:
             return None
         return self.client.storage.from_(self.storage_bucket).get_public_url(audio_filename)
+    
+    def build_background_music_url(self, music_filename: str) -> str:
+        """Convert background music filename to full public URL."""
+        if not music_filename:
+            return None
+        from .background_music_service import background_music_service
+        bucket_name = background_music_service.get_bucket_name()
+        return self.client.storage.from_(bucket_name).get_public_url(music_filename)
     
     async def delete_audio(self, filename: str) -> bool:
         """Delete audio file from storage."""

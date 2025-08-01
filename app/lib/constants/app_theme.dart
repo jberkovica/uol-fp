@@ -28,6 +28,7 @@ class ResponsivePaddingConfig {
 /// 3. EXACT BRAND COLORS: Purple #9F60FF, Yellow #FFD560
 /// 4. 8px grid spacing system
 /// 5. CHILD-FRIENDLY, clean interface
+/// 6. CONSISTENT ICON SIZING: 24x24px standard, no background containers
 /// 6. CONSISTENT across all screens
 ///
 /// USAGE:
@@ -424,11 +425,18 @@ class AppTheme {
   static const double avatarLarge = 80.0;
   static const double avatarXLarge = 120.0;
 
-  // ICONS
-  static const double iconSmall = 16.0;
-  static const double iconMedium = 24.0;
-  static const double iconLarge = 32.0;
-  static const double iconXLarge = 48.0;
+  // ICONS - CONSISTENT SIZING GUIDE
+  static const double iconSmall = 16.0;   // Rarely used
+  static const double iconMedium = 24.0;  // STANDARD - Use for all UI icons
+  static const double iconLarge = 32.0;   // AVOID - Too big for UI
+  static const double iconXLarge = 48.0;  // AVOID - Way too big
+  
+  /// ICON USAGE RULES:
+  /// USE: 24x24px (iconMedium) for ALL interface icons
+  /// USE: IconButton WITHOUT background containers
+  /// USE: Apply colorFilter for theming
+  /// AVOID: Put icons in Container backgrounds
+  /// AVOID: Use sizes other than 24px unless absolutely necessary
 
   // MASCOT/ILLUSTRATIONS
   static const double mascotMedium = 140.0;

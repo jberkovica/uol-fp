@@ -16,6 +16,7 @@ from ...types.responses import (
 )
 from ...types.domain import StoryStatus, InputFormat
 from ...services.supabase import get_supabase_service
+from ...services.background_music_service import background_music_service
 from ...core.story_processor import get_story_processor
 from ...core.validators import validate_base64_image, validate_uuid, validate_story_content
 from ...core.exceptions import NotFoundError, ValidationError, AgentError
@@ -50,13 +51,21 @@ async def generate_story(
         if not kid:
             raise NotFoundError("Kid profile", request.kid_id)
         
+        # Select random background music
+        background_music_filename = background_music_service.get_random_track()
+        if background_music_filename:
+            logger.info(f"Selected background music: {background_music_filename}")
+        else:
+            logger.warning("No background music tracks available")
+        
         # Create story record
         story_data = {
             "kid_id": request.kid_id,
             "title": "New Story",
             "content": "",
             "language": request.language.value,
-            "status": StoryStatus.PENDING.value
+            "status": StoryStatus.PENDING.value,
+            "background_music_filename": background_music_filename
         }
         story = await supabase.create_story(story_data)
         
@@ -65,7 +74,8 @@ async def generate_story(
         processor = get_story_processor(agents_config)
         background_tasks.add_task(
             processor.process_image_to_story,
-            request
+            request,
+            story.id
         )
         
         return GenerateStoryResponse(
@@ -101,6 +111,7 @@ async def get_pending_stories() -> StoryListResponse:
                 title=story.title,
                 content=story.content,
                 audio_url=story.audio_url,
+                background_music_url=story.background_music_url,
                 status=story.status,
                 language=story.language,
                 created_at=story.created_at,
@@ -139,6 +150,7 @@ async def get_story(story_id: str) -> StoryResponse:
             title=story.title,
             content=story.content,
             audio_url=story.audio_url,
+            background_music_url=story.background_music_url,
             status=story.status,
             language=story.language,
             created_at=story.created_at,
@@ -182,6 +194,7 @@ async def get_stories_for_kid(
                 title=story.title,
                 content=story.content,
                 audio_url=story.audio_url,
+                background_music_url=story.background_music_url,
                 status=story.status,
                 language=story.language,
                 created_at=story.created_at,
@@ -242,6 +255,7 @@ async def review_story(
             title=story.title,
             content=story.content,
             audio_url=story.audio_url,
+            background_music_url=story.background_music_url,
             status=story.status,
             language=story.language,
             created_at=story.created_at,

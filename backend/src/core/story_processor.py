@@ -24,30 +24,21 @@ class StoryProcessor:
         self.voice_agent = create_voice_agent(agents_config["voice"])
         self.supabase = get_supabase_service()
         
-    async def process_image_to_story(self, request: GenerateStoryRequest) -> Story:
+    async def process_image_to_story(self, request: GenerateStoryRequest, story_id: str) -> Story:
         """
         Process an image through the full pipeline to generate a story.
         
         Steps:
-        1. Create story record with pending status
+        1. Update story status to processing
         2. Analyze image to get description
         3. Generate story from description
         4. Generate audio from story
         5. Update story with results
+        
+        Args:
+            request: The story generation request
+            story_id: ID of the existing story record to update
         """
-        story_id = str(uuid.uuid4())
-        
-        # Create initial story record
-        story_data = {
-            "id": story_id,
-            "kid_id": request.kid_id,
-            "title": "New Story",
-            "content": "",
-            "language": request.language.value,
-            "status": StoryStatus.PENDING.value,
-        }
-        
-        story = await self.supabase.create_story(story_data)
         
         try:
             # Update status to processing

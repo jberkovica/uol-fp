@@ -13,6 +13,7 @@ class StoryResponse(BaseModel):
     title: str
     content: str
     audio_url: Optional[str]
+    background_music_url: Optional[str]
     status: StoryStatus
     language: Language
     created_at: datetime

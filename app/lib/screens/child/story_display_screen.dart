@@ -771,8 +771,14 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
 
   Future<void> _startBackgroundMusic() async {
     try {
-      await _backgroundPlayer.setVolume(_backgroundVolumeNarration);
-      await _backgroundPlayer.play(AssetSource('audio/Enchanted Forest Loop.mp3'));
+      final Story story = ModalRoute.of(context)!.settings.arguments as Story;
+      if (story.backgroundMusicUrl != null) {
+        await _backgroundPlayer.setVolume(_backgroundVolumeNarration);
+        await _backgroundPlayer.play(UrlSource(story.backgroundMusicUrl!));
+        _logger.d('Playing background music: ${story.backgroundMusicUrl}');
+      } else {
+        _logger.w('No background music URL available for story');
+      }
     } catch (e) {
       _logger.e('Error playing background music', error: e);
     }
@@ -780,9 +786,14 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
 
   Future<void> _startBackgroundMusicIntro() async {
     try {
-      _logger.d('Starting background music at volume $_backgroundVolume');
-      await _backgroundPlayer.setVolume(_backgroundVolume);
-      await _backgroundPlayer.play(AssetSource('audio/Enchanted Forest Loop.mp3'));
+      final Story story = ModalRoute.of(context)!.settings.arguments as Story;
+      if (story.backgroundMusicUrl != null) {
+        _logger.d('Starting background music at volume $_backgroundVolume: ${story.backgroundMusicUrl}');
+        await _backgroundPlayer.setVolume(_backgroundVolume);
+        await _backgroundPlayer.play(UrlSource(story.backgroundMusicUrl!));
+      } else {
+        _logger.w('No background music URL available for story intro');
+      }
     } catch (e) {
       _logger.e('Error playing background music intro', error: e);
     }

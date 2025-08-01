@@ -62,6 +62,8 @@ class Story(BaseModel):
     image_description: Optional[str] = Field(None, description="AI-generated image description")
     audio_filename: Optional[str] = Field(None, description="Generated audio filename/URL")
     audio_url: Optional[str] = Field(default=None, description="Full audio URL (computed)")
+    background_music_filename: Optional[str] = Field(None, description="Background music filename")
+    background_music_url: Optional[str] = Field(default=None, description="Full background music URL (computed)")
     language: Language = Field(default=Language.ENGLISH)
     status: StoryStatus = Field(default=StoryStatus.PENDING)
     created_at: datetime

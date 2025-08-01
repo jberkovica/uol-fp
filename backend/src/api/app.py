@@ -95,6 +95,14 @@ def add_main_endpoints(app: FastAPI):
             if not kid:
                 raise NotFoundError("Kid profile", request.kid_id)
             
+            # Select random background music
+            from ..services.background_music_service import background_music_service
+            background_music_filename = background_music_service.get_random_track()
+            if background_music_filename:
+                logger.info(f"Selected background music: {background_music_filename}")
+            else:
+                logger.warning("No background music tracks available")
+            
             # Create story record (matching old backend format)
             story_data = {
                 "kid_id": request.kid_id,
@@ -102,7 +110,8 @@ def add_main_endpoints(app: FastAPI):
                 "title": "New Story",
                 "content": "",
                 "language": request.language.value,
-                "status": StoryStatus.PENDING.value
+                "status": StoryStatus.PENDING.value,
+                "background_music_filename": background_music_filename
             }
             story = await supabase.create_story(story_data)
             
@@ -156,6 +165,14 @@ def add_main_endpoints(app: FastAPI):
             if not kid:
                 raise NotFoundError("Kid profile", kid_id)
             
+            # Select random background music
+            from ..services.background_music_service import background_music_service
+            background_music_filename = background_music_service.get_random_track()
+            if background_music_filename:
+                logger.info(f"Selected background music: {background_music_filename}")
+            else:
+                logger.warning("No background music tracks available")
+            
             # Create story record
             story_data = {
                 "kid_id": kid_id,
@@ -163,7 +180,8 @@ def add_main_endpoints(app: FastAPI):
                 "title": "New Story",
                 "content": "",
                 "language": language,
-                "status": StoryStatus.PENDING.value
+                "status": StoryStatus.PENDING.value,
+                "background_music_filename": background_music_filename
             }
             story = await supabase.create_story(story_data)
             
@@ -213,6 +231,14 @@ def add_main_endpoints(app: FastAPI):
             if not kid:
                 raise NotFoundError("Kid profile", kid_id)
             
+            # Select random background music
+            from ..services.background_music_service import background_music_service
+            background_music_filename = background_music_service.get_random_track()
+            if background_music_filename:
+                logger.info(f"Selected background music: {background_music_filename}")
+            else:
+                logger.warning("No background music tracks available")
+            
             # Create story record
             story_data = {
                 "kid_id": kid_id,
@@ -220,7 +246,8 @@ def add_main_endpoints(app: FastAPI):
                 "title": "New Story",
                 "content": "",
                 "language": language,
-                "status": StoryStatus.PENDING.value
+                "status": StoryStatus.PENDING.value,
+                "background_music_filename": background_music_filename
             }
             story = await supabase.create_story(story_data)
             
@@ -269,7 +296,8 @@ def add_main_endpoints(app: FastAPI):
                 "title": story.title,
                 "content": story.content,
                 "caption": caption,  # Include caption from story_inputs
-                "audio_url": story.audio_filename,  # Database stores as audio_filename
+                "audio_url": story.audio_url,  # Use computed URL, not filename
+                "background_music_url": story.background_music_url,  # Include background music URL
                 "status": story.status.value,
                 "language": story.language.value,
                 "created_at": story.created_at.isoformat(),

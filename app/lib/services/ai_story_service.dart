@@ -56,6 +56,7 @@ class AIStoryService {
     }
   }
 
+
   /// Initialize the service
   void initialize() {
     _updateStreams();
@@ -474,7 +475,6 @@ class AIStoryService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-
         return Story.fromJson(data);
       } else {
         throw Exception('HTTP ${response.statusCode}: Failed to get story');
@@ -533,9 +533,7 @@ class AIStoryService {
                   content: item['content'] ?? '',
                   caption: item['caption'],
                   imageUrl: '',
-                  audioUrl: item['audio_url'] != null
-                      ? '$baseUrl${item['audio_url']}'
-                      : null,
+                  audioUrl: item['audio_url'],
                   status: _mapStatus(item['status']),
                   createdAt:
                       DateTime.tryParse(item['created_at']) ?? DateTime.now(),
