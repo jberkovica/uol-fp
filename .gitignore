@@ -73,3 +73,5 @@ ehthumbs.db
 Thumbs.db
 
 # TODO: update for Flutter
+
+.env
