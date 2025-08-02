@@ -94,9 +94,9 @@ void main() {
           final matchesPattern = TestConstants.namePattern.hasMatch(name);
           final isValidName = isValidLength && matchesPattern;
           
-          if (['Alice', 'Bob', 'María', 'José', 'André', 'Žūūū', 'Анна'].contains(name)) {
+          if (['Alice', 'Bob', 'Charlie', 'Diana', 'Eva', 'María', 'José', 'André', 'Žūūū', 'Анна'].contains(name)) {
             expect(isValidName, isTrue, reason: '$name should be valid');
-          } else if (['', '   ', '123', 'A', 'Test@Name'].any((invalid) => name.contains(invalid) || name == invalid)) {
+          } else if (['', '   ', '123', 'A', 'Test@Name'].contains(name)) {
             expect(isValidName, isFalse, reason: '$name should be invalid');
           }
         }

@@ -144,7 +144,8 @@ void main() {
           expect(story.childName, equals(name));
           
           // Property: story should always have valid creation time
-          expect(story.createdAt, lessThanOrEqualTo(DateTime.now().add(const Duration(seconds: 1))));
+          expect(story.createdAt.isBefore(DateTime.now().add(const Duration(seconds: 1))) || 
+                 story.createdAt.isAtSameMomentAs(DateTime.now().add(const Duration(seconds: 1))), isTrue);
         }
       });
 

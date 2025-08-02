@@ -8,6 +8,33 @@ class StoryService {
   static final _logger = LoggingService.getLogger('StoryService');
   static const String baseUrl = ApiConstants.baseUrl;
 
+  /// Get a single story by ID
+  static Future<Story> getStoryById(String storyId) async {
+    try {
+      _logger.d('Fetching story by ID: $storyId');
+      
+      final response = await http.get(
+        Uri.parse('$baseUrl/stories/$storyId'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      _logger.d('Get story response status: ${response.statusCode}');
+
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
+        _logger.d('Successfully fetched story: $storyId');
+        
+        return Story.fromJson(responseData);
+      } else {
+        final errorData = json.decode(response.body);
+        throw Exception('Failed to get story: ${errorData['detail'] ?? response.reasonPhrase}');
+      }
+    } catch (e) {
+      _logger.e('Error fetching story', error: e);
+      throw Exception('Failed to get story: $e');
+    }
+  }
+
   /// Toggle favourite status for a story
   static Future<Story> toggleStoryFavourite(String storyId, bool isFavourite) async {
     try {

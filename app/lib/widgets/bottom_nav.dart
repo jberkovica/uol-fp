@@ -28,37 +28,47 @@ class BottomNav extends StatelessWidget {
       ),
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width < 350 ? 4 : 12, 
+            vertical: 8
+          ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildNavItem(
-                context: context,
-                index: 0,
-                strokeIcon: 'assets/icons/user.svg',
-                filledIcon: 'assets/icons/user-filled.svg',
-                label: AppLocalizations.of(context)!.profile,
+              Expanded(
+                child: _buildNavItem(
+                  context: context,
+                  index: 0,
+                  strokeIcon: 'assets/icons/user.svg',
+                  filledIcon: 'assets/icons/user-filled.svg',
+                  label: AppLocalizations.of(context)!.profile,
+                ),
               ),
-              _buildNavItem(
-                context: context,
-                index: 1,
-                strokeIcon: 'assets/icons/home.svg',
-                filledIcon: 'assets/icons/home-filled.svg',
-                label: AppLocalizations.of(context)!.home,
+              Expanded(
+                child: _buildNavItem(
+                  context: context,
+                  index: 1,
+                  strokeIcon: 'assets/icons/home.svg',
+                  filledIcon: 'assets/icons/home-filled.svg',
+                  label: AppLocalizations.of(context)!.home,
+                ),
               ),
-              _buildNavItem(
-                context: context,
-                index: 2,
-                strokeIcon: 'assets/icons/circle-plus.svg',
-                filledIcon: 'assets/icons/circle-plus-filled.svg',
-                label: AppLocalizations.of(context)!.create,
+              Expanded(
+                child: _buildNavItem(
+                  context: context,
+                  index: 2,
+                  strokeIcon: 'assets/icons/circle-plus.svg',
+                  filledIcon: 'assets/icons/circle-plus-filled.svg',
+                  label: AppLocalizations.of(context)!.create,
+                ),
               ),
-              _buildNavItem(
-                context: context,
-                index: 3,
-                strokeIcon: 'assets/icons/settings.svg',
-                filledIcon: 'assets/icons/settings-filled.svg',
-                label: AppLocalizations.of(context)!.settings,
+              Expanded(
+                child: _buildNavItem(
+                  context: context,
+                  index: 3,
+                  strokeIcon: 'assets/icons/settings.svg',
+                  filledIcon: 'assets/icons/settings-filled.svg',
+                  label: AppLocalizations.of(context)!.settings,
+                ),
               ),
             ],
           ),
@@ -76,47 +86,47 @@ class BottomNav extends StatelessWidget {
   }) {
     final bool isActive = currentIndex == index;
     final screenWidth = MediaQuery.of(context).size.width;
-    // Adaptive padding based on screen width
-    final double horizontalPadding = screenWidth < 400 ? 8 : 16;
+    
+    // More aggressive responsive adjustments
+    final double iconSize = screenWidth < 350 ? 20 : 24;
+    final double fontSize = screenWidth < 350 ? 10 : 12;
     
     return GestureDetector(
       onTap: () => onTap(index),
       behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
+      child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: horizontalPadding,
+          horizontal: screenWidth < 350 ? 2 : 4,
           vertical: 8,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
               child: SvgPicture.asset(
                 isActive ? filledIcon : strokeIcon,
                 key: ValueKey(isActive),
-                width: 24,
-                height: 24,
+                width: iconSize,
+                height: iconSize,
                 colorFilter: ColorFilter.mode(
                   isActive ? AppColors.primary : AppColors.textGrey, 
                   BlendMode.srcIn,
                 ),
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: screenWidth < 350 ? 2 : 4),
             Text(
               label,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: isActive ? AppColors.primary : AppColors.textGrey,
                 fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+                fontSize: fontSize,
               ),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
+              textAlign: TextAlign.center,
             ),
           ],
         ),

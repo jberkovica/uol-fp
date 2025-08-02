@@ -50,7 +50,7 @@ class StoryCacheService {
             _cache[kidId] = stories;
             _lastCacheUpdate = DateTime.now();
             
-            _logger.i('Real-time update: ${stories.length} stories for kid: $kidId');
+            _logger.d('Real-time update: ${stories.length} stories for kid: $kidId');
             
             // Notify listeners
             if (_controllers.containsKey(kidId)) {
@@ -88,7 +88,7 @@ class StoryCacheService {
       _lastCacheUpdate = DateTime.now();
       
       if (stories.isNotEmpty) {
-        _logger.i('Loaded ${stories.length} stories for kid: $kidId');
+        _logger.d('Loaded ${stories.length} stories for kid: $kidId');
       }
       
       // Notify listeners

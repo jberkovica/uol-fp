@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
@@ -98,6 +99,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
   // Background music selection state
   String? _currentTrackFilename;
   Story? _updatedStory; // Store updated story data
+  bool _hasRefreshedData = false; // Prevent multiple refreshes
 
   @override
   void initState() {
@@ -113,6 +115,42 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
     )..repeat(reverse: true);
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Safe to access context here - refresh story data after widget tree is built
+    if (!_hasRefreshedData) {
+      _hasRefreshedData = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _refreshStoryData();
+      });
+    }
+  }
+
+  /// Refresh story data from backend to ensure we have latest audio URL
+  Future<void> _refreshStoryData() async {
+    try {
+      final Story originalStory = ModalRoute.of(context)!.settings.arguments as Story;
+      _logger.d('Refreshing story data for: ${originalStory.id}');
+      
+      // Get fresh story data from backend
+      final freshStory = await StoryService.getStoryById(originalStory.id);
+      
+      if (mounted) {
+        setState(() {
+          _updatedStory = freshStory;
+        });
+        if (freshStory.audioUrl != null) {
+          _logger.d('Story data refreshed with audio URL');
+        } else {
+          _logger.w('Story data refreshed but still missing audio URL');
+        }
+      }
+    } catch (e) {
+      _logger.e('Failed to refresh story data', error: e);
+    }
+  }
+
   void _loadCurrentTrackFilename() {
     // We'll load this later when we have access to the story from the route
   }
@@ -121,7 +159,6 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
     // Main audio (narration) listeners
     _audioPlayer.onPlayerStateChanged.listen((PlayerState state) {
       if (mounted) {
-        _logger.d('Audio player state changed: $state (current playback state: $_playbackState)');
         setState(() {
           // Update playback state based on actual audio player state
           // Only update if the state change makes sense in our current context
@@ -173,9 +210,11 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
       }
     });
 
-    // Background music listeners for debugging
+    // Background music listeners for debugging (only log important state changes)
     _backgroundPlayer.onPlayerStateChanged.listen((PlayerState state) {
-      _logger.d('Background music state changed: $state');
+      if (state == PlayerState.stopped || state == PlayerState.completed) {
+        _logger.d('Background music: $state');
+      }
     });
   }
 
@@ -280,6 +319,11 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
     final Story originalStory = ModalRoute.of(context)!.settings.arguments as Story;
     // Use updated story if available, otherwise use original
     final Story story = _updatedStory ?? originalStory;
+    
+    // Debug: Basic story info (only log if audio is missing)
+    if (story.audioUrl == null) {
+      _logger.w('Story ${story.id} missing audio URL - title: ${story.title}');
+    }
     
     // Always update current track filename from story data to ensure we have latest
     if (story.backgroundMusicUrl != null) {
@@ -457,7 +501,12 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
                 // Play/pause button (slightly larger)
                 _buildWhiteIconButton(
                   _getPlayButtonIcon(),
-                  onPressed: story.audioUrl != null ? () => _toggleAudio(story.audioUrl!) : null,
+                  onPressed: story.audioUrl != null ? () {
+                    _toggleAudio(story.audioUrl!);
+                  } : () {
+                    _logger.w('Play button tapped but no audio URL available');
+                    _showNoAudioDialog(story);
+                  },
                   isLoading: false, // No loading state needed with timeline approach
                   size: 52,
                 ),
@@ -617,7 +666,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
         foregroundColor: AppColors.white,
         minimumSize: Size(size, size),
         maximumSize: Size(size, size),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        tapTargetSize: MaterialTapTargetSize.padded, // Changed from shrinkWrap to padded for better touch area
       ),
     );
   }
@@ -813,6 +862,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
   }
 
   Future<void> _toggleAudio(String audioUrl) async {
+    _logger.d('Play button pressed, state: $_playbackState');
     try {
       if (_playbackState == PlaybackState.playing) {
         // Pause both audio streams
@@ -843,7 +893,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
 
   /// Start unified playback with timeline coordination
   Future<void> _startUnifiedPlayback(String audioUrl) async {
-    _logger.d('Starting unified playback with timeline: intro=${_timeline.introLength.inSeconds}s, outro=${_timeline.outroLength.inSeconds}s');
+    _logger.d('Starting audio playback with background music');
     
     // Immediately show playing state (user will hear background music)
     setState(() {
@@ -864,7 +914,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
         return; // User paused or stopped during intro
       }
       
-      _logger.d('Starting narration after ${_timeline.introLength.inSeconds}s intro');
+      _logger.d('Starting narration after intro');
       
       // Lower background volume for narration
       if (_backgroundMusicEnabled) {
@@ -884,7 +934,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
       final fadeStartTime = _totalDuration - _timeline.outroLength;
       _outroFadeTimer = Timer(fadeStartTime, () {
         if (mounted && _playbackState == PlaybackState.playing) {
-          _logger.d('Starting outro fade after ${fadeStartTime.inSeconds}s');
+          _logger.d('Starting outro fade');
           _fadeOutGracefully();
         }
       });
@@ -1148,6 +1198,30 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
         );
       }
     }
+  }
+
+  /// Show dialog when story has no audio URL
+  void _showNoAudioDialog(Story story) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Audio Not Available'),
+        content: Text('This story doesn\'t have audio yet. Would you like to refresh and try again?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await _refreshStoryData();
+            },
+            child: Text('Refresh'),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<void> _showMusicSelectionSheet(Story story) async {

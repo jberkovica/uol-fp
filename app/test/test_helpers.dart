@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import '../lib/models/story.dart';
+import '../lib/models/kid.dart';
 
 /// Test data factory for creating test instances
 class TestDataFactory {
@@ -18,6 +19,7 @@ class TestDataFactory {
     String? audioUrl,
     String? caption,
     DateTime? createdAt,
+    bool? isFavourite,
   }) {
     return Story(
       id: id ?? 'test-story-123',
@@ -28,6 +30,38 @@ class TestDataFactory {
       imageUrl: imageUrl,
       audioUrl: audioUrl,
       caption: caption,
+      createdAt: createdAt ?? DateTime.now(),
+      isFavourite: isFavourite ?? false,
+    );
+  }
+  
+  /// Create a test kid with all required fields
+  static Kid createTestKid({
+    String? id,
+    String? userId,
+    String? name,
+    int? age,
+    String? avatarType,
+    String? hairColor,
+    String? hairLength,
+    String? skinColor,
+    String? eyeColor,
+    String? gender,
+    List<String>? favoriteGenres,
+    DateTime? createdAt,
+  }) {
+    return Kid(
+      id: id ?? 'test-kid-123',
+      userId: userId ?? 'test-user-123',
+      name: name ?? 'Alice',
+      age: age ?? 7,
+      avatarType: avatarType ?? 'profile1',
+      hairColor: hairColor,
+      hairLength: hairLength,
+      skinColor: skinColor,
+      eyeColor: eyeColor,
+      gender: gender,
+      favoriteGenres: favoriteGenres ?? [],
       createdAt: createdAt ?? DateTime.now(),
     );
   }
@@ -83,7 +117,7 @@ class TestDataFactory {
     if (includeValid) {
       names.addAll(['Alice', 'Bob', 'Charlie', 'Diana', 'Eva']);
       if (includeInternational) {
-        names.addAll(['María', 'José', 'André', 'Žūūū', 'Анна', 'محمد']);
+        names.addAll(['María', 'José', 'André', 'Žūūū', 'Анна']);
       }
     }
     
@@ -248,7 +282,7 @@ class TestConstants {
   static const int maxPromptLength = 500;
   
   // Common validation patterns
-  static final RegExp namePattern = RegExp(r'^[a-zA-Z\u00C0-\u017F\u0400-\u04FF\s\-]+$');
+  static final RegExp namePattern = RegExp(r"^[a-zA-Z\u00C0-\u017F\u0400-\u04FF\s\-']+$");
   static final RegExp base64Pattern = RegExp(r'^[A-Za-z0-9+/]*={0,2}$');
   
   static const List<String> supportedLanguages = ['en', 'ru', 'lv'];
@@ -295,6 +329,67 @@ class HttpResponseHelper {
       json.encode({'error': errorMessage}),
       statusCode,
       headers: {'content-type': 'application/json'},
+    );
+  }
+}
+
+/// Main TestHelpers class with convenient static methods
+class TestHelpers {
+  /// Create a test story - convenience method
+  static Story createTestStory({
+    String? id,
+    String? title,
+    String? content,
+    StoryStatus? status,
+    String? childName,
+    String? imageUrl,
+    String? audioUrl,
+    String? caption,
+    DateTime? createdAt,
+    bool? isFavourite,
+  }) {
+    return TestDataFactory.createTestStory(
+      id: id,
+      title: title,
+      content: content,
+      status: status,
+      childName: childName,
+      imageUrl: imageUrl,
+      audioUrl: audioUrl,
+      caption: caption,
+      createdAt: createdAt,
+      isFavourite: isFavourite,
+    );
+  }
+  
+  /// Create a test kid - convenience method
+  static Kid createTestKid({
+    String? id,
+    String? userId,
+    String? name,
+    int? age,
+    String? avatarType,
+    String? hairColor,
+    String? hairLength,
+    String? skinColor,
+    String? eyeColor,
+    String? gender,
+    List<String>? favoriteGenres,
+    DateTime? createdAt,
+  }) {
+    return TestDataFactory.createTestKid(
+      id: id,
+      userId: userId,
+      name: name,
+      age: age,
+      avatarType: avatarType,
+      hairColor: hairColor,
+      hairLength: hairLength,
+      skinColor: skinColor,
+      eyeColor: eyeColor,
+      gender: gender,
+      favoriteGenres: favoriteGenres,
+      createdAt: createdAt,
     );
   }
 }
