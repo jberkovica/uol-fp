@@ -33,6 +33,7 @@ import 'services/app_state_service.dart';
 import 'services/language_service.dart';
 import 'services/auth_service.dart';
 import 'services/logging_service.dart';
+import 'services/analytics_service.dart';
 
 void main() async {
   // Ensure that Flutter binding is initialized
@@ -73,6 +74,9 @@ void main() async {
   
   // Initialize language service
   await LanguageService.instance.initialize();
+  
+  // Initialize analytics service
+  await AnalyticsService.initialize();
   
   // Logging is now automatically initialized when first used
   

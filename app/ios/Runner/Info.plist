@@ -46,6 +46,10 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	
+	<!-- PostHog Configuration -->
+	<key>com.posthog.posthog.AUTO_INIT</key>
+	<false/>
+	
 	<!-- URL schemes for OAuth callbacks -->
 	<key>CFBundleURLTypes</key>
 	<array>

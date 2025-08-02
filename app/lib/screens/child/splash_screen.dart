@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../services/auth_service.dart';
+import '../../services/analytics_service.dart';
 
 // Custom clipper for angled ellipse curve
 class AngledEllipseClipper extends CustomClipper<Path> {
@@ -47,6 +49,14 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+
+    // Track app launch (analytics disabled)
+    AnalyticsService.trackAppLaunched();
+    AnalyticsService.trackScreen('/splash');
+    AnalyticsService.trackSessionStarted(
+      entryPoint: 'direct',
+      platform: kIsWeb ? 'web' : 'mobile',
+    );
 
     // Auto navigate after delay with simple auth check
     Future.delayed(const Duration(seconds: 2), () async {
