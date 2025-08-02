@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "281144496918",
+    "project_id": "lunimuni-6a19d",
+    "storage_bucket": "lunimuni-6a19d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:281144496918:android:10b9d345d4f8be58fa3637",
+        "android_client_info": {
+          "package_name": "dev.karto.lunimuni"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiNJcVzuWFVPCs0w-wJZcTFq35_AX6MIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
