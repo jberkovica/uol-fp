@@ -1,0 +1,1024 @@
+image_file,image_type,image_caption,story_model,generated_story,execution_time,cost,word_count,quality_score,meets_length_req,has_title,contains_dialogue,positive_tone,story_structure,age_appropriate,bedtime_suitable
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gpt-4o,"Title: The Adventures of Rosie the Doll
+
+Once upon a time, in a cozy little living room, sat Rosie, a doll with curly blonde hair and a bright red jumpsuit. She was nestled on a soft, plush couch, surrounded by colorful pillows. Rosie loved to listen to the stories that her family would read aloud every night.
+
+One evening, as the sun set and the room filled with a warm golden glow, Rosie heard little Lily’s voice. ""Tonight, I'm going to tell you a story, Rosie,"" Lily said with a giggle. She sat beside Rosie, gently holding her tiny hand.
+
+Lily's story was about a brave little bird who learned to fly with the help of its friends. Rosie listened intently, imagining herself soaring through the sky. As Lily finished the tale, she whispered, ""The bird learned that with a little courage and help from friends, anything is possible.""
+
+Rosie felt a sense of warmth and happiness. She knew that she was never alone, and with the love of her family, she could face any adventure. As Lily tucked Rosie in, she whispered, ""Goodnight, brave Rosie."" With her heart full of joy, Rosie drifted into a peaceful, happy dreamland, ready for tomorrow's adventures.",6.38,0.004670,203,26.25,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gpt-4o-mini,"Title: Bella's Cozy Adventure
+
+Once upon a time, in a sunny little house, there lived a doll named Bella. Bella had curly blonde hair and wore a bright red jumpsuit that sparkled in the light. She loved to sit on the soft, cozy couch, watching the world around her.
+
+One evening, as the sun began to set, Bella decided it was time for an adventure. “I want to explore the magic in my home!” she declared. With a gentle hop, she jumped off the couch and began her quest.
+
+Bella discovered a hidden treasure under the cushions—a shiny button! Next, she found a fluffy blanket that felt like a warm hug. Each little find made her giggle with joy. 
+
+At last, Bella snuggled back on the couch, feeling happy and content. She realized that adventures could be found anywhere, even at home, and that sometimes, the coziest places held the greatest treasures.
+
+With a heart full of warmth, Bella whispered, “Home is where love and laughter are.” And as the stars twinkled outside, she drifted off to sleep, dreaming of her next cozy adventure.",4.80,0.000165,184,23.88,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.0-flash,"Title: Rosie's Cozy Corner
+
+Rosie the doll, with her bouncy blonde curls and bright red jumpsuit, loved her cozy corner on the big blue couch. Tonight, the house was quiet, and the moon peeked through the window, casting a soft glow.
+
+Rosie wasn't sleepy, though. She felt a little bit lonely. Usually, Lily, her little girl, would be reading her a story or tucking her in. But Lily was at Grandma's house.
+
+Suddenly, Rosie heard a tiny squeak. A small, grey mouse peeked out from behind the cushion. He looked just as lonely as Rosie felt.
+
+""Hello,"" Rosie whispered. ""Are you lonely too?""
+
+The mouse nodded.
+
+Rosie smiled. ""We can be lonely together! Sometimes, even when people aren't around, we can still find comfort in simple things, like a friend or a quiet moment.""
+
+She scooted closer to the mouse, and he snuggled next to her jumpsuit. The moon shone brighter, and Rosie felt a warm glow spreading through her. It wasn't quite the same as Lily, but it was nice. Soon, both Rosie and the little mouse drifted off to sleep, cozy and content in their quiet corner.",2.52,0.000346,189,24.50,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.0-flash-lite,"Title: Rosie's Cozy Couch
+
+Rosie the doll, with her bouncy blonde curls and bright red jumpsuit, loved her couch. It was the softest, fluffiest couch in the whole wide world! Every evening, after a day of playing, Rosie would snuggle onto the cushions. Sometimes, Lily, the little girl who owned her, would join.
+
+Lily would tell Rosie all about her day – the fun she had at the park, the yummy cookies she ate, and sometimes, even her little worries. Rosie always listened carefully. She couldn't talk, of course, but she knew how to comfort. She’d offer a silent hug with her button eyes, a gentle reminder that everything would be alright.
+
+One night, Lily was sad because she missed her grandma. Rosie, nestled beside her, knew just what to do. She thought of Grandma's warm hugs and whispered, ""Think of all the happy times. Those memories are like a warm blanket."" Lily smiled, and soon, both were fast asleep, dreaming sweet dreams on their cozy couch. Remember, even when things feel hard, happy memories keep us warm.",2.35,0.000418,178,23.12,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-1.5-pro,"Title: Lily's Cozy Couch Adventure
+
+Lily, a doll with bouncy blonde curls and a bright red jumpsuit, loved her cozy couch.  It was a special, miniature couch, just her size, made of soft, velvety material. Every evening, after a busy day of tea parties and imaginary adventures, Lily would settle onto her couch with a tiny, well-loved book.
+
+Tonight's story was about a brave little firefly.  As Lily read, she imagined herself soaring through the night sky, spreading light and kindness wherever she went.  She closed her eyes and pictured the firefly’s gentle glow.  
+
+Suddenly, Lily felt a soft pat on her head. It was her human, Emily.  “Time for bed, Lily,” Emily whispered, carefully tucking her doll under a warm, patchwork quilt.
+
+Lily snuggled deep into the blankets, still thinking about the brave firefly. She realized that even small acts of kindness, like a comforting hug or a bedtime story, could bring joy and warmth to the world, just like a firefly's tiny light. With a happy sigh, Lily drifted off to sleep, dreaming of starry nights and cozy couches.  She knew that even in her dreams, she could spread kindness and light, just like the little firefly.",5.94,0.004277,199,25.75,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-1.5-flash,"Title: Poppy's Cozy Couch
+
+Poppy the doll, with her bouncy blonde curls and bright red jumpsuit, sat on the plush, comfy couch.  She loved this couch! It was soft and snuggly, just like her favorite blanket.  Tonight, Poppy wasn't playing games or going on adventures.  She was feeling a little tired.
+
+Sometimes, even dolls get tired, you know.  Poppy had spent the whole day playing hide-and-seek with her best friend, Teddy.  They'd laughed and tumbled, and had so much fun! But all that playing made Poppy sleepy.
+
+She snuggled deeper into the cushions, her red jumpsuit a splash of color against the soft grey fabric.  She closed her eyes, thinking about all the fun she'd had.  It made her heart feel warm and happy.  
+
+Poppy learned that even the busiest days need quiet endings.  It's okay to rest and recharge, so you can be ready for more adventures tomorrow.  She drifted off to sleep, dreaming of sunny days and playful games, a tiny smile on her face.  Sweet dreams, Poppy!",1.87,0.000328,170,22.12,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,deepseek-chat,"Title: **Rosie’s Cozy Day**  
+
+Rosie the doll loved her red jumpsuit—it was soft, bright, and perfect for snuggling. One rainy afternoon, she sat on the big couch, watching droplets race down the window. Her curly blonde hair bounced as she turned to her stuffed animal friends. ""Let’s have a cozy day!"" she cheered.  
+
+Bear brought a blanket, Rabbit fluffed the pillows, and Mouse found a storybook. They nestled together, listening to the rain tap a gentle rhythm. Rosie sighed happily. ""Even rainy days can be warm and fun when we’re together.""  
+
+As the story unfolded, they giggled at the silly parts and gasped at the exciting ones. Outside, the storm rumbled, but inside, the couch felt like a safe, happy nest.  
+
+When the rain stopped, a rainbow stretched across the sky. Rosie smiled. ""Every day is special if we share it with friends.""  
+
+That night, as the moon rose, Rosie and her pals drifted off to sleep, still cuddled on the couch—warm, content, and ready for tomorrow’s adventures.",15.12,0.000292,168,21.88,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,deepseek-reasoner,"Title: Rosie's Cozy Wait
+
+Rosie the doll sat on the big, soft couch. She had bright yellow curls and wore a snappy red jumpsuit. The afternoon sun warmed her spot, making the room feel extra cozy.
+
+Rosie watched the clock tick slowly. Her best friend, Lily, had gone to the park with her family. ""They'll be back soon,"" Rosie whispered to herself, remembering",24.37,0.000262,63,8.62,False,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gpt-4o,"Title: Benny the Brave Bunny
+
+Once upon a time, in a cozy little room, there sat a fabric bunny named Benny. Benny wore a cheerful striped outfit and made his home on a coral-colored chair. Every day, Benny watched the world with his button eyes, feeling snug and happy.
+
+One sunny afternoon, the wind outside began to blow fiercely, and Benny noticed that the curtains were swaying wildly. He imagined they were dancing in a magical wind ballet. Benny thought of all the things he could do if he were brave enough to explore the world beyond his chair.
+
+Then, a little girl named Lily came into the room. She picked up Benny and hugged him tight. ""Let's pretend we're on an adventure!"" she said with a giggle. Together, they pretended to sail on a pirate ship and search for treasure. Benny felt brave and adventurous, knowing that Lily was by his side.
+
+As the day ended, Lily placed Benny back on his coral chair. ""Goodnight, Benny,"" she whispered. Benny felt grateful for his new friend and learned that adventures are even better when shared.
+
+And so, Benny the Brave Bunny drifted into dreams, feeling loved and ready for more adventures tomorrow.",7.34,0.004465,202,26.12,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gpt-4o-mini,"Title: Benny’s Cozy Night
+
+Once upon a time, in a sunny little room, there lived a soft fabric bunny named Benny. Benny wore a cheerful striped outfit that made him feel bright and happy. Every evening, he would sit on a coral chair, waiting for his best friend, Lucy, to come home from school.
+
+One day, Lucy arrived with a frown. She had a tough day and felt sad. Benny, with his big floppy ears, wanted to help. So, he hopped off the chair and said, “Lucy, whenever you feel down, remember the sunshine in your heart!”
+
+Lucy smiled, her frown fading away. She snuggled Benny close. “You always know how to cheer me up!” she said. They sat together on the coral chair, sharing stories and laughter until the stars twinkled outside.
+
+As bedtime approached, Lucy whispered, “Thank you, Benny. You remind me that even on hard days, there’s always something to smile about.” 
+
+With a warm hug, they both drifted off to sleep, knowing that love and friendship would always light their way. And in their dreams, they danced under the stars, together forever.",7.65,0.000169,186,24.00,True,True,False,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.0-flash,"Title: Barnaby's Big Daydream
+
+Barnaby the bunny, dressed in his favorite striped overalls, sat on his coral chair. He wasn't just sitting, though; he was daydreaming! Barnaby imagined he was a brave explorer, sailing on a marshmallow cloud across a sea of strawberry milk.
+
+Suddenly, Barnaby's tummy rumbled. His adventure was interrupted by a gentle voice. ""Barnaby, dear, are you hungry?"" It was Mama Bunny, offering him a carrot.
+
+Barnaby hopped off his chair. Even grand adventures couldn't beat Mama's carrots! As he munched, he realized that even ordinary days could be filled with wonder. A coral chair could become a ship, and a simple carrot could taste like the finest treasure.
+
+Mama Bunny smiled. ""Sometimes,"" she said, ""the best adventures are the ones you find right here, with the people you love."" Barnaby snuggled close, his heart full. He knew she was right. With a happy sigh, Barnaby finished his carrot, ready for sweet dreams.",2.02,0.000308,156,20.25,True,True,True,True,False,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.0-flash-lite,"Title: Barnaby's Big Day
+
+Barnaby was a fluffy bunny made of softest cotton. He wore a bright striped outfit and loved sitting on his coral chair. One sunny morning, Barnaby felt a little…wobbly. He worried he wasn’t brave enough to play hide-and-seek with Lily and Tom, the children who loved him.
+
+""What if they can't find me?"" he fretted, his button eyes wide.
+
+His friend, a wise old teddy bear, chuckled. ""Barnaby, being found isn’t the most important thing. It's the fun of playing, the joy of trying, and the love you share that matters.""
+
+Barnaby thought about that. He took a deep breath and joined the game. He giggled as Lily and Tom searched everywhere! Even when he wasn't found first, he had the best time. He learned that it's okay to be a little wobbly, and that trying, even when it's hard, is always worth it.
+
+Later, nestled on his coral chair, Barnaby felt happy and content. He snuggled down, ready for sweet dreams.",2.05,0.000418,166,21.62,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-1.5-pro,"Title: Barnaby's Coral Chair
+
+Barnaby Bunny loved his coral chair.  It was soft and squishy, just the right size for a little fabric bunny.  He wore his favorite striped outfit, blue and yellow like sunshine and the sky. Every evening, Barnaby would hop onto his chair and watch the fireflies blink outside his window.
+
+One evening, a little moth fluttered against the glass, looking lost and scared. Barnaby hopped down and opened the window just a crack.  ""Come in,"" he whispered. The moth flew in and landed on Barnaby's coral chair.
+
+Barnaby watched the moth for a while.  He knew how it felt to be a little scared sometimes. He remembered when he was brand new and everything felt big and unfamiliar.  Taking a deep breath, Barnaby hopped back onto his chair, careful not to disturb the moth.
+
+They sat together, the little bunny and the little moth, watching the fireflies dance in the night.  Barnaby realized that even though they were different, they both liked the same quiet, peaceful things.  Sometimes, all you need is a comfy chair and a friend, even a quiet, fluttery one.  Soon, the moth flew back out the window, and Barnaby settled into his coral chair, feeling cozy and happy.  It was a good night for quiet friends.",6.35,0.004438,214,27.62,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-1.5-flash,"Title: Barnaby Bunny's Coral Chair
+
+Barnaby Bunny was a very special bunny. He wasn't made of fluffy fur, but soft, striped fabric.  He lived in a little girl named Lily's room, on a coral-colored chair.  His favorite thing was watching Lily play.  Sometimes, Lily would be a little grumpy, banging her blocks and sighing. Barnaby would just sit patiently, his button eyes watching her.
+
+One day, Lily was very upset because she couldn't build the tower she wanted.  Tears welled up in her eyes.  Barnaby hopped down from his chair (as much as a fabric bunny can hop!) and nudged her hand with his soft nose.  Lily looked at him, and his calm little face seemed to say, ""It's okay.""
+
+She took a deep breath and tried again, this time, slowly and carefully.  Soon, a beautiful block tower stood tall.  Lily giggled, hugging Barnaby tightly.  Even when things are hard, she realized, it's always good to take a deep breath and try again.  That night, Barnaby sat on his coral chair, watching Lily sleep, feeling very happy and content.  He knew everything would be alright.",2.04,0.000349,185,24.00,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,deepseek-chat,"**Title: Benny the Brave Bunny**  
+
+Benny the bunny sat proudly on his coral chair, his striped outfit as bright as his smile. Every night, he watched over the children’s room, standing guard against shadows and silly fears.  
+
+One evening, little Mia couldn’t sleep. ""What if the closet makes noises?"" she whispered. Benny hopped down (well, *almost*—he was a stuffed bunny, after all) and said, ""Sometimes things seem scary in the dark, but they’re just everyday things having their own little adventures!""  
+
+Together, they listened. The closet’s creak? Just a sleepy sweater shifting. The rustle outside? A friendly breeze dancing with the leaves. Mia giggled. ""You’re right, Benny. It’s just the world saying goodnight!""  
+
+Benny settled back onto his chair, his heart full. ""Bravery isn’t about not being afraid,"" he said softly. ""It’s about finding the happy explanations.""  
+
+Mia yawned, snuggling under her blankets. As the moon shone through the window, Benny kept watch, knowing that even the bravest bunnies—and kids—need rest. And so, with a room full of gentle sounds and a heart full of courage, everyone drifted into peaceful dreams.",17.33,0.000328,181,23.38,True,True,True,True,True,False,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,deepseek-reasoner,"**Title: Bunny's Cozy Wait**
+
+Bunny, soft and stuffed with fluff, sat snugly on",24.65,0.000127,13,2.12,False,True,True,False,False,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gpt-4o,"Title: The Little Plush Friend
+
+Once upon a time, in a cozy little town, there lived a white plush toy named Sunny. Sunny had soft yellow hair and a bright blue bow that shimmered like the morning sky. Sunny was no ordinary toy; he loved bringing smiles to those who held him.
+
+One sunny afternoon, a kind-hearted boy named Alex found Sunny tucked away in a toy shop. Alex's eyes lit up as he gently picked up the plush toy. ""You'll be my new best friend,"" he whispered. From that day on, Sunny joined Alex on every adventure, from backyard picnics to bedtime stories.
+
+Sunny taught Alex the magic of kindness. Whenever Alex felt sad or lonely, he'd hug Sunny and remember the happy moments they'd shared. Soon, Alex started sharing Sunny's warmth with others, offering hugs to friends who needed them.
+
+One evening, as the stars twinkled brightly, Alex cuddled Sunny and closed his eyes. ""Thank you for teaching me to be kind,"" he murmured. Sunny's soft fabric glowed with happiness, knowing he had helped Alex spread joy.
+
+And so, Sunny and Alex drifted into a peaceful sleep, dreaming of new adventures and the endless warmth of friendship. 
+
+The end.",7.86,0.004595,201,26.00,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gpt-4o-mini,"Title: Benny the Brave Plush
+
+Once upon a time, in a cozy little house, there lived a soft, white plush toy named Benny. Benny had bright yellow hair and a lovely blue bow that sparkled in the sunlight. He sat on a shelf, waiting for his special friend, Mia.
+
+One rainy afternoon, Mia picked Benny up and hugged him tightly. “You’re my best friend, Benny!” she smiled. But Benny noticed that Mia looked a bit sad. 
+
+“Why do you look so gloomy?” he asked gently. 
+
+“I’m worried about the storm,” she replied, her voice soft. 
+
+Benny, with his brave heart, said, “Don’t worry, Mia! Storms may roar, but they always pass. Just like clouds, worries float away.” 
+
+Mia listened carefully, and with Benny’s warm words, she felt a little lighter. Together, they watched the rain dance against the window, imagining the adventures they would have when the sun returned.
+
+As the storm faded and a rainbow appeared, Mia hugged Benny tightly again. “Thank you for making me brave,” she whispered. 
+
+From that day on, Mia learned that even the stormiest days can end beautifully. And with Benny by her side, she felt ready for anything.",5.41,0.000180,195,25.12,True,True,False,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-2.0-flash,"Title: Barnaby's Bedtime Bow
+
+Lily snuggled Barnaby, her fluffy white lamb with sunshine-yellow hair. Barnaby wore a bright blue bow, a gift from Grandma. Tonight, Barnaby looked a little worried. ""What's wrong, Barnaby?"" Lily whispered.
+
+""I'm scared of the dark,"" Barnaby mumbled, his plush wool tickling Lily's nose.
+
+Lily smiled. ""The dark isn't scary, Barnaby. It's just quiet and cozy."" She held Barnaby close. ""See your blue bow? It still looks bright, even in the dim light.""
+
+Lily pointed to the moon shining through the window. ""The moon is like a big, gentle nightlight. And the stars are twinkling just for you."" She hummed a soft lullaby, rocking Barnaby gently.
+
+Barnaby yawned. ""You're right, Lily. The dark isn't so bad. It's just…sleepy."" He snuggled closer, his soft wool comforting Lily.
+
+Lily kissed Barnaby's fluffy head. ""Exactly. Now close your eyes and dream sweet dreams, Barnaby."" And together, under the watchful moon, Lily and Barnaby drifted off to sleep, safe and sound in the quiet, cozy dark.",2.23,0.000358,166,21.38,True,True,True,True,False,False,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-2.0-flash-lite,"Title: Barnaby's Best Day
+
+Barnaby, a fluffy white bunny with sunshine-yellow hair and a bright blue bow, snuggled in Lily's hand. Lily was tiny, just learning to walk, and Barnaby was her very best friend. Today was a special day. Lily's Grandma was visiting!
+
+Grandma loved stories and gave the best hugs. Lily toddled over to Grandma, Barnaby waving gently. ""Look!"" Lily squealed, her little finger pointing. Grandma smiled, her eyes crinkling. ""He's beautiful, dear.""
+
+That afternoon, snuggled on the sofa, Grandma read a story about kindness. Barnaby listened carefully. The story reminded him that even small things, like a gentle squeeze or a shared smile, could make someone happy.
+
+As the day ended, Lily, sleepy-eyed, held Barnaby tight. Grandma tucked them both in. ""Remember, Lily,"" she whispered, ""Being kind makes everyone feel warm inside."" Lily yawned, snuggling Barnaby. Barnaby felt warm and loved. The blue bow felt extra special that night. He knew, deep down, that tomorrow would be another beautiful day.",2.32,0.000426,163,21.25,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-1.5-pro,"Title: Lily and the Lost Star
+
+Lily loved her little lamb, Woolly. Woolly was soft and white with fluffy yellow hair and a bright blue bow. One night, Lily noticed Woolly’s bow was missing! “Oh no!” she cried. “Woolly’s lost her star!”  Lily knew Woolly loved her blue bow; it reminded her of a twinkling star.
+
+Lily searched everywhere. Under the bed, behind the curtains, even inside her toy box. No blue bow. Lily felt a tear roll down her cheek.  Suddenly, she remembered something.  Mommy always said, ""When you lose something, try looking in the last place you saw it.""
+
+Lily thought hard.  She remembered cuddling Woolly while reading on the porch swing.  She raced outside and there it was! The blue bow, caught on the edge of the swing, glittered in the moonlight.  “I found your star!” Lily whispered, carefully tying the bow back onto Woolly.
+
+Lily hugged Woolly tight. She learned that sometimes, the things we lose are closer than we think.  Back in her bed, Lily drifted off to sleep, Woolly snuggled beside her, her blue bow shining like the brightest star in the sky.",5.38,0.004165,189,24.38,True,True,True,True,False,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-1.5-flash,"Title: Sunny's Blue Bow
+
+Lily held Sunny, her favorite plush toy. Sunny was soft and white, with a mop of sunny yellow hair and a bright blue bow tied neatly on top.  Lily loved Sunny more than anything.  Sometimes, when Lily felt sad, she would hug Sunny tight, and Sunny seemed to make everything better.
+
+Tonight, Lily was feeling a little worried about starting kindergarten tomorrow.  She squeezed Sunny's paw.  ""What if I don't make any friends, Sunny?"" she whispered.
+
+Her mom smiled. ""Lily, Sunny is always your friend.  But you know what?  Being brave and trying new things is how we make new friends.  It's okay to feel a little scared, but remember how much fun we had at the playground today?""
+
+Lily thought about the giggling children and the sunshine. She snuggled Sunny closer.  ""You're right, Mommy,"" she said.  ""Tomorrow will be okay.  Sunny and I will be brave together.""  She drifted off to sleep, Sunny's blue bow nestled against her cheek, feeling safe and loved.  The blue bow seemed to glow softly in the moonlight, a promise of a bright new day.",2.06,0.000344,185,24.00,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,deepseek-chat,"**Title: Lulu’s Little Friend**  
+
+Lulu clutched her favorite plush toy, Sunny, tight in her hand. With yellow yarn hair and a bright blue bow, Sunny was always by her side.  
+
+One evening, Lulu noticed her baby brother, Max, crying in his crib. She remembered how Sunny made her feel safe and decided to share. Gently, she placed Sunny next to Max. His tiny fingers wrapped around the toy, and his tears turned to giggles.  
+
+“You’re so brave, Lulu,” Mom whispered, hugging her. “Sharing kindness is the best gift of all.”  
+
+That night, Lulu felt a warm glow in her heart. Even without Sunny beside her, she knew she’d done something special. The next morning, Max beamed and held Sunny out to her—his way of saying thank you.  
+
+From then on, Sunny became their shared treasure, a reminder that love grows when we give it away. And as Lulu drifted to sleep each night, she smiled, knowing kindness always finds its way back.  
+
+The end.",14.57,0.000284,164,21.25,True,True,False,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,deepseek-reasoner,,25.18,0.000078,0,0.12,False,False,False,False,False,True,False
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gpt-4o,"Title: Cozy the Hoodie Pup
+
+Once upon a time, in the corner of a sunny playroom, lived a cheerful little toy named Cozy. Cozy was a brown fabric dog toy who wore a bright pink hoodie, stitched with love by Grandma's gentle hands. Cozy was special because she always found a way to make everyone smile.
+
+Every day, Cozy joined her best friend Lily on wonderful adventures. Today, they planned a magical tea party. Lily carefully arranged tiny cups and saucers, while Cozy, perched proudly, watched with her button eyes twinkling with excitement.
+
+As the sun dipped lower, Lily's little brother, Max, toddled over, looking sad after a tumble. Lily invited him to join their tea party, placing Cozy in his lap. Max's frown turned into a giggle as Cozy’s soft fabric tickled his chin. Cozy had a way of comforting anyone who needed it, spreading warmth and joy with her simple presence.
+
+When bedtime came, Lily tucked Cozy under her arm. ""Goodnight, Cozy,"" she whispered, feeling grateful for her comforting friend. As Lily drifted into dreams, Cozy snuggled closer, reminding everyone that sharing kindness and love is the best adventure of all.
+
+And so, in the gentle glow of the moon, Cozy and Lily slept peacefully, dreaming of tomorrow's adventures.",6.51,0.004835,211,27.25,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gpt-4o-mini,"Title: Benny’s Cozy Adventure
+
+Once upon a time, in a snug little house, there lived a brown fabric dog toy named Benny. Benny wore a soft pink hoodie that made him feel warm and loved. Every evening, when the sun dipped low, Benny would embark on cozy adventures in the living room.
+
+One night, as the stars twinkled outside, Benny noticed a little stuffed rabbit named Ruby feeling sad. “What’s wrong, Ruby?” he asked gently. “I want to go on an adventure, but I feel too shy,” Ruby replied with a sigh.
+
+Benny smiled and said, “Let’s have a cozy adventure together! We can explore the blanket fort!” With a brave heart, Ruby followed Benny, and together they climbed into the fort made of pillows and blankets. 
+
+Inside, they imagined themselves sailing on a fluffy cloud or dancing with the stars. They laughed and played until they felt happy and brave.
+
+As they snuggled together, Benny whispered, “Whenever you feel shy, remember, you can always find courage in friendship.” And with that, both friends smiled, knowing that together, every adventure could be cozy and bright.",6.57,0.000165,185,23.88,True,True,False,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gemini-2.0-flash,"Title: Barnaby's Brave Hoodie
+
+Barnaby wasn't just any brown fabric dog toy. He wore a pink hoodie, which made him feel extra cozy! But Barnaby was also a little shy. He worried about playing with the other toys in Lily’s room. What if they didn’t like his pink hoodie?
+
+One sunny afternoon, Lily lined up all her toys for a pretend picnic. Barnaby hid behind a fluffy sheep. Lily noticed. “Barnaby, why aren’t you joining us?” she asked gently.
+
+Barnaby mumbled, “I don’t know if they’ll like me.”
+
+Lily smiled. “Silly Barnaby! They’ll love you! And your hoodie is adorable!” She gave him a squeeze and placed him right next to Teddy Bear.
+
+Teddy Bear winked. ""Nice hoodie!"" he boomed. The other toys chuckled kindly. Barnaby felt his worries melt away. He realized that being himself, even with a pink hoodie, was the best way to make friends. He joined the picnic, sharing stories and giggling until Lily tucked them all in for a peaceful night. Barnaby snuggled close to Teddy Bear, feeling happy and loved.",2.10,0.000334,176,22.88,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gemini-2.0-flash-lite,"Title: Barnaby's Cozy Hoodie
+
+Barnaby was a floppy brown dog toy, loved by Lily. He had a pink hoodie that was always a little too big, but Lily thought it was perfect. Every night, Lily would tuck Barnaby into bed.
+
+One night, Lily felt sad. She missed her grandma, who lived far away. Barnaby, snuggled beside her, seemed to sense her sadness. He nuzzled her cheek with his soft, fabric nose.
+
+""It's okay, Lily,"" she imagined Barnaby saying. ""Even if we're apart, love keeps us close.""
+
+Lily hugged Barnaby tightly. She remembered her grandma's words: ""Even the smallest things can bring comfort."" Barnaby's pink hoodie, a little bit of warmth and love, was enough.
+
+Lily smiled. She realized Barnaby was right. Love, like the soft fabric of his hoodie, wrapped around you, keeping you safe and warm. Soon, Lily felt sleepy and content. She drifted off to sleep, Barnaby's comforting presence beside her, dreaming of her grandma and the hug she would give when they next met.",2.08,0.000418,167,21.75,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gemini-1.5-pro,"Title: Barnaby's Cozy Hoodie
+
+Barnaby, the little brown dog toy, loved his pink hoodie.  It was soft and fluffy, and when he wore it, he felt safe and warm. One sunny afternoon, Barnaby’s owner, Lily, took him to the park.  Lily swung Barnaby high, high, high!  Suddenly, a gust of wind whooshed Barnaby right out of Lily’s hands!  He landed with a soft thump under a big oak tree.
+
+Barnaby felt a little scared, all alone in the big park.  He pulled his pink hoodie tight around him.  It reminded him of Lily’s hugs.  Remembering her hugs made Barnaby feel braver.  He looked around.  A little ladybug landed on his nose.  “Hello!” chirped Barnaby.  The ladybug tickled! Barnaby giggled.  Just then, Lily spotted him under the tree.  “Barnaby!” she cried, scooping him up.
+
+Lily hugged Barnaby tight.  Back in Lily’s arms, wrapped in his cozy hoodie, Barnaby knew everything was alright.  He learned that even when things get a little scary, remembering the feeling of being loved can make you feel brave. That night, snuggled in Lily's bed, Barnaby slept soundly, dreaming sweet dreams in his pink hoodie.",5.69,0.004508,188,24.25,True,True,True,True,True,False,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gemini-1.5-flash,"Title: Barnaby's Big Day
+
+Barnaby the brown dog toy wasn't just any dog toy; he had a pink hoodie!  His little girl, Lily, had knitted it for him.  Today was Barnaby's big day – Lily was taking him to the park.  Barnaby felt a little nervous.  He'd never been to the park before!  What if the other toys were mean?
+
+As Lily swung him gently, Barnaby saw other toys – a bright blue teddy bear, a sparkly unicorn, and a bouncy frog.  They all looked friendly.  The teddy bear even waved!  Barnaby, feeling braver in his pink hoodie, wagged his fabric tail.  He played chase with the frog and shared Lily's snacks with the unicorn.
+
+Soon, the sun began to set, painting the sky in beautiful orange and purple hues.  Lily hugged Barnaby close.  ""You were so brave today,"" she whispered.  Barnaby snuggled into his pink hoodie, feeling warm and loved.  He learned that even though being new can be scary, making friends makes everything better.  And that a pink hoodie can make even the bravest dog toy feel extra cozy.  He drifted off to sleep, happy and content in Lily's arms.",2.15,0.000361,192,24.75,True,True,True,True,True,False,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,deepseek-chat,"**Title: Rosie’s Cozy Adventure**  
+
+Rosie was a soft brown dog toy who loved her pink hoodie. It kept her warm and made her feel brave. One evening, as the moon rose, a gentle breeze carried Rosie from her cozy bed into the backyard.  
+
+At first, Rosie was nervous. The grass tickled her paws, and the shadows seemed mysterious. But then she remembered her hoodie—her reminder that even small things can feel big and brave. She took a deep breath and explored.  
+
+She met a firefly who needed help finding its way home. ""Follow my light,"" Rosie said, her pink hoodie glowing in the moonlight. Together, they weaved through the garden until the firefly’s family twinkled happily in the distance.  
+
+As dawn approached, a kind child found Rosie nestled in the flowers and brought her back inside. Snuggled safely in bed, Rosie smiled. Adventure was wonderful, but so was home.  
+
+And so, with her hoodie still snug around her, Rosie drifted off to sleep, knowing that kindness and courage always lead you back to where you belong.",15.65,0.000286,176,22.88,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,deepseek-reasoner,"**Title: Rosie's Hoodie**
+
+Rosie wasn't just any stuffed dog. She was Milo's best friend, made of soft brown fabric. What made her extra special was her bright pink hoodie, a tiny sweater Grandma had knitted.
+
+One rainy afternoon, Milo felt gloomy. He flopped onto his bed. ""Nothing's fun today, Rosie,"" he sighed.
+
+Rosie, with her kind button eyes peeking from her cozy pink hood, seemed to listen. Milo picked her up. He remembered how Grandma said Rosie's hoodie was made with love, just for her. It made Rosie unique.
+
+Suddenly, Milo had an idea.",24.77,0.000360,94,12.50,False,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gpt-4o,"Title: The Magic of Chef Willow's Kitchen
+
+In a cozy little corner of the playroom stood a wooden toy kitchen, its knobs gleaming under the soft glow of the nightlight. This was no ordinary kitchen; it belonged to Chef Willow, a young girl with a big imagination.
+
+Every evening, after her bedtime story, Willow would tiptoe to her kitchen. With a gentle twist of the knobs, the magic would begin. The toy pot simmered with pretend stew, and colorful toy vegetables danced a merry jig.
+
+One night, Willow invited her stuffed animal friends to a special feast. As she stirred her imaginary soup, she told them, ""Cooking is like making magic. When we mix things with love, we create happiness.""
+
+Her friends watched, wide-eyed, as she served each a plate filled with care. Bunny nibbled on a carrot, Bear sipped the pretend tea, and Elephant trumpeted with joy.
+
+Willow's heart swelled with warmth. She realized that sharing, even in play, could spread happiness and love. 
+
+As the moon peeked through her window, Willow tucked her friends into bed, whispering, ""Goodnight, dear friends. May your dreams be as sweet as our feast.""
+
+And with that, the room fell into peaceful slumber, wrapped in the magic of kindness.",7.26,0.004845,206,26.62,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gpt-4o-mini,"Title: The Magic of Cooking Together
+
+In a cozy little room, there stood a cheerful wooden toy kitchen. It had shiny knobs to turn, a bright red pot to stir, and an array of colorful toy food items that sparkled like gems. Every day, Mia and her little brother Leo would gather around the kitchen, ready for an adventure.
+
+One sunny afternoon, they decided to make a special meal. “Let’s cook a feast for our teddy bears!” suggested Mia. Leo nodded eagerly, selecting a fluffy toy carrot and a tiny pretend chicken. Together, they stirred, mixed, and laughed, imagining delicious smells wafting through the air.
+
+As they played, Mia said, “Cooking together is fun! It’s not just about the food; it’s about spending time with each other.” Leo grinned, realizing that the joy of cooking was in their laughter and teamwork.
+
+Finally, they set the table, placing the toy dishes in front of their teddy bears. With hearts full of happiness, they served their imaginary feast, knowing that love makes every meal special. 
+
+And as the sun began to set, the room glowed with warmth, filled with laughter and the sweet scent of togetherness.",3.78,0.000171,194,24.88,True,True,False,True,True,True,False
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gemini-2.0-flash,"Title: The Little Wooden Kitchen's Hug
+
+Lily loved her little wooden kitchen. It had clicky knobs, a bright red pot, and pretend carrots, peas, and even a tiny loaf of bread! Tonight, Lily was making supper for her teddy bear, Barnaby. She carefully placed the carrots into the red pot, stirring them with a wooden spoon.
+
+""These carrots need extra love,"" Lily whispered. She hugged the pot tight, imagining the carrots were feeling a little lonely. She added the peas, remembering how her grandma always said sharing makes everything better.
+
+Barnaby sat patiently, his button eyes twinkling. Lily served him a spoonful of carrots and peas. ""Mmm!"" she said in a deep teddy bear voice, making Barnaby giggle.
+
+After supper, Lily tucked Barnaby into his bed. She then gave her little wooden kitchen a goodnight hug. She knew, even though it was just wood, it held all the warmth and love she put into her cooking. Just like her grandma said, spreading kindness, even in pretend play, made the world a little brighter and a little cozier. Lily drifted off to sleep, dreaming of delicious pretend meals and happy, shared suppers.",2.19,0.000340,191,24.75,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gemini-2.0-flash-lite,"Title: Rosie's Tiny Kitchen
+
+Rosie loved her wooden kitchen. It was small, but perfect, with shiny red knobs that clicked and a little pot that always seemed to be bubbling with deliciousness. Today, Rosie decided to make a special dinner for her teddy bear, Barnaby.
+
+First, she chopped the pretend carrots with her plastic knife. Then, she stirred the imaginary soup, humming a little tune. ""Mmm, smells yummy!"" she said, carefully placing a pretend sausage on Barnaby's plate.
+
+Barnaby, of course, couldn’t eat, but Rosie didn't mind. She knew that the best part of cooking wasn't the food itself, but the sharing. It was the fun of making something with love and enjoying the company.
+
+As the sun began to set, casting long shadows across the room, Rosie gave Barnaby a big hug. “Dinner was delicious, Barnaby!” she whispered. Then, snuggling close to him, she closed her eyes, feeling happy and content. The day had been perfect, filled with love and laughter, just like every dinner prepared in her tiny kitchen.",1.90,0.000414,171,22.12,True,True,True,True,True,True,False
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gemini-1.5-pro,"Title: The Little Wooden Kitchen
+
+In a cozy corner of Rosie's room sat a little wooden kitchen, painted sunshine yellow.  It had shiny red knobs that clicked when you turned them and a tiny metal pot perfect for pretend soup.  Rosie loved her little kitchen. Tonight, she was making a feast for her stuffed animals.  A bright red carrot, a plump purple eggplant, and a wobbly green pepper waited on the counter.
+
+""Dinner is almost ready!"" Rosie whispered to her teddy bear, Barnaby. She stirred the pretend soup with a wooden spoon, making happy bubbling sounds.  Barnaby watched with button eyes, already dreaming of the delicious meal.  Rosie’s bunny, Floppy, hopped closer, sniffing the air with her stitched nose.
+
+Suddenly, Rosie’s little brother, Leo, toddled in. He pointed at the carrot, wanting to play too. Rosie smiled. “You can be the taste tester!” she said, handing him the carrot. Leo giggled, clutching it tightly.
+
+Sharing her kitchen made Rosie feel warm inside.  The food might be pretend, but the joy was real.  As the toys feasted, Rosie realized that the best meals are the ones we share.  Soon,  Rosie, Leo, and the stuffed animals were all snuggled together, sleepy and happy in the warm glow of the bedside lamp.",6.60,0.004470,209,27.00,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",gemini-1.5-flash,"Title: Lily's Wooden Kitchen
+
+Lily loved her wooden kitchen.  It smelled sweetly of pine, and the little knobs clicked satisfyingly when she turned them.  Today, she was making soup.  First, she carefully placed a pretend carrot and a tiny, plastic potato into the bright red pot. Then came the peas, so green and round.  She stirred with a wooden spoon, humming a little tune.
+
+""Mmm, smells delicious!"" said her teddy bear, sitting patiently at the miniature table.  Lily giggled.  It wasn't *really* soup, of course, but pretending made it fun.  She served her teddy a spoonful, and then herself.
+
+After ""eating,"" Lily carefully put everything away.  Even though the food was just pretend, she knew that tidying up was important.  It made her kitchen – and her heart – feel happy and peaceful.  Tucking her teddy into bed beside her, Lily snuggled under her covers, dreaming of more delicious pretend meals in her special wooden kitchen.  It was a perfect ending to a perfect day.",1.88,0.000315,165,21.50,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",deepseek-chat,"**Title: Lily’s Little Kitchen Adventure**  
+
+Lily loved her wooden toy kitchen. It had shiny knobs, a tiny pot, and colorful toy food. Every afternoon, she pretended to cook delicious meals for her stuffed animals.  
+
+One day, Lily decided to make a special soup. She stirred the pot, added pretend carrots, and even sprinkled imaginary salt. But when she tasted it, she frowned. ""Something’s missing,"" she said.  
+
+Her big brother, Sam, peeked in. ""What’s wrong?"" he asked.  
+
+""It doesn’t taste right,"" Lily sighed.  
+
+Sam smiled. ""Maybe it needs a secret ingredient—kindness! Pretend you’re cooking with love.""  
+
+Lily closed her eyes and stirred again, thinking of happy times. When she pretended to taste the soup, she giggled. ""It’s perfect now!""  
+
+That evening, Lily served her stuffed animals a feast. As she tucked them into bed, she whispered, ""The best recipes always have love inside.""  
+
+With a contented sigh, she curled up under her blanket, dreaming of more kitchen adventures tomorrow.",15.36,0.000289,158,20.62,True,True,True,True,True,True,True
+toy_05.jpeg,toy,"A wooden toy kitchen with knobs, a pot, and toy food items",deepseek-reasoner,"**Title: Lily's Sharing Soup**
+
+The afternoon sun turned Lily’s wooden toy kitchen golden. Its little knobs gleamed, a red pot sat waiting on the pretend stove, and colourful toy vegetables – a carrot, a potato, a broccoli floret – lay nearby.
+
+Lily carefully placed the vegetables into the pot. ""Stir, stir, yummy soup!"" she hummed.
+
+Her little brother, Ben, toddled over, eyes wide. He reached for the shiny red pot. ""Mine?""
+
+Lily paused. She *loved* that pot. But seeing Ben’",27.33,0.000334,80,10.62,False,True,True,True,True,True,False
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gpt-4o,"Title: Molly's Cozy Adventure
+
+Once upon a time, there was a tiny mouse doll named Molly. She wore a pink dress with little white polka dots and lived on a colorful patchwork bedspread beside a big, sunny window.
+
+Every night, as the moonlight danced across the room, Molly imagined herself in faraway lands. One night, she dreamed of visiting the Land of the Quilted Hills, a place where every hill was made of soft, patterned fabric like her bedspread. 
+
+Molly imagined meeting friendly patchwork animals who lived there. There were quilted rabbits jumping over hills, and a fabric fox who loved to dance. They laughed and played until the stars twinkled brighter than ever. 
+
+The next morning, as the sun peeked through the window, Molly remembered her magical adventure. She felt warm inside, knowing that even though she was just a small mouse doll, her dreams could take her anywhere.
+
+Molly's story reminds us that with a little imagination, we can find joy and friendship wherever we are. As the day ended, Molly lay back on her patterned bedding, ready for another night of dreamy adventures, snug and content.
+
+And so, under the gentle glow of the moon, Molly drifted into a peaceful sleep.",7.49,0.004660,204,26.38,True,True,True,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gpt-4o-mini,"Title: The Adventure of Mabel the Mouse
+
+Once upon a time, in a cozy little room, there lived a small fabric mouse doll named Mabel. Mabel wore a lovely pink dress and loved to snuggle on her patterned bedding, which was filled with colorful flowers and tiny butterflies.
+
+Every night, before the stars twinkled in the sky, Mabel dreamed of exciting adventures. One evening, as the moonlight danced through the window, she whispered, “Tonight, I will explore the Magical Meadow!” With a sprinkle of imagination, Mabel found herself hopping through fields of daisies and playing with friendly fireflies.
+
+Mabel met a wise old owl who shared a secret: “Kindness is the greatest adventure of all.” Inspired, Mabel helped a lost ladybug find her way home and shared her favorite flower with a shy rabbit. 
+
+As the sun began to rise, Mabel returned to her warm bed, her heart full of joy. She snuggled in, knowing that kindness made every adventure special. 
+
+And so, every night, Mabel dreamed of new journeys, reminding everyone that a little kindness can light up the world.",3.45,0.000165,181,23.38,True,True,False,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gemini-2.0-flash,"Title: Rosie's Button Heart
+
+Rosie the mouse doll lay nestled on the patchwork quilt. Her pink dress, stitched with tiny flowers, felt soft against the patterned bedding. Rosie wasn't feeling her best. Her button heart, usually bright and cheerful, felt a little wobbly.
+
+""Oh dear,"" she sighed, her voice a soft squeak. ""I feel a bit undone.""
+
+Mama quilt, a wise old blanket, rustled gently. ""Sometimes, little Rosie, we all feel a bit loose. It means we need a little mending.""
+
+Rosie thought about this. Maybe she needed a hug from Lily, the little girl who loved her. Or perhaps a snuggle with Barnaby the bear.
+
+Just then, Lily tiptoed in. ""Rosie!"" she whispered, scooping her up. ""I missed you!"" Lily hugged Rosie tight, her small hands firm and reassuring.
+
+Suddenly, Rosie's button heart felt much better. Lily’s love was the perfect thread to mend her. Snuggled in Lily's arms, Rosie drifted off to sleep, knowing that even when she felt a little wobbly, love would always hold her together.",2.76,0.000329,170,22.12,True,True,True,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gemini-2.0-flash-lite,"Title: Millie Mouse's Dream
+
+Millie Mouse, a tiny fabric doll in a pink dress, loved bedtime. Each night, she snuggled into the softest spot on Lily's patterned bedding. The sheets were covered in friendly stars and fluffy clouds, perfect for dreaming!
+
+Tonight, Millie felt a little wobbly. She'd been accidentally dropped earlier in the day. Lily had hugged her tight, but Millie still felt a bit sad. As she closed her button eyes, she wished she could be brave like Lily.
+
+Suddenly, Millie was soaring! She was a real mouse, flying amongst the stars. She wasn't scared; the stars twinkled at her, welcoming her. She realized even when she felt wobbly, she was still loved and important. The dream felt warm and safe.
+
+When Millie woke up, the first rays of sun peeked through the curtains. Lily was already awake, smiling. She picked up Millie and gave her a gentle squeeze. Millie knew then, even with a little wobble, she was loved, and that was all that mattered. It was going to be a wonderful day.",2.10,0.000423,176,22.88,True,True,True,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gemini-1.5-pro,"Title: Millie's Missing Moonbeam
+
+Millie the mouse snuggled deep in her patchwork quilt.  She wore a tiny pink dress, the same color as the fading sunset outside her window.  But Millie wasn't sleepy.  She was worried.  Her favorite moonbeam, the one that always landed right on her nose, was missing!
+
+She peeked over the edge of her bed.  The room was filled with soft shadows, but her moonbeam was nowhere to be seen.  A tiny tear rolled down Millie's cheek.  ""Where did it go?"" she whispered.
+
+Suddenly, a gentle voice spoke.  ""Looking for something, Millie?""
+
+It was Mama Mouse, holding a small, glowing nightlight.  ""Your moonbeam went to rest, dear.  It will be back tomorrow.""
+
+Mama Mouse placed the nightlight on Millie's bedside table.  It cast a warm, comforting glow.  ""Sometimes,"" she said, tucking Millie in, ""things disappear for a little while.  But that doesn't mean they're gone forever.  Just like the moonbeam, they always come back.""
+
+Millie smiled, feeling safe and warm.  The nightlight wasn't the same as her moonbeam, but it was just as lovely.  She closed her eyes, knowing that even when things seem lost, there's always a little light to guide you through the night.",5.97,0.004609,199,25.62,True,True,True,True,False,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,gemini-1.5-flash,"Title: Pip the Pink Mouse's Dream
+
+Pip the pink mouse was a tiny doll, all soft fabric and a frilly pink dress.  She lay nestled on a bed of bright blue and yellow flowers, printed on the softest bedding.  Tonight, Pip wasn't just lying there; she was dreaming!
+
+She dreamt of chasing bumblebees through fields of sunflowers, their pollen dusting her pink dress gold. She dreamt of sharing berries with a kind hedgehog and building a cozy house out of acorn cups.  In her dream, Pip wasn't just a doll; she was a brave adventurer!
+
+She woke with a little sigh, the sun peeking through the window.  The bright light reminded her of the sunny fields from her dream.  Even though she was just a small doll, Pip knew that even the smallest creature can have the biggest adventures – all in their own special way.  She was happy to be safe and sound in her little bed, ready for another day of imaginative play. Pip smiled, snuggled deeper into the flowery bedding, and drifted off into a peaceful sleep.",1.91,0.000318,180,23.25,True,True,True,True,False,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,deepseek-chat,"**Title: Lulu’s Cozy Nap**  
+
+Lulu the little mouse doll loved her soft pink dress and her spot on the patterned quilt. Every afternoon, when the sun painted golden stripes across the bedding, she’d snuggle into the folds for a nap.  
+
+One day, a breeze fluttered the curtains, and Lulu tumbled off the bed! She landed softly on the rug below, but now she was far from her cozy spot. “Oh dear,” she whispered. Just then, a friendly sock puppet named Pip peeked out from the laundry basket. “Need help?” he asked.  
+
+Together, they climbed the bedpost, giggling as they went. When Lulu reached the quilt again, she sighed happily. “Thank you, Pip! Even adventures are better with a friend.”  
+
+That night, as the moon rose, Lulu and Pip curled up side by side. The quilt wrapped them in warmth, and the stars twinkled outside the window. Lulu learned that even little mishaps could lead to new friendships—and that home was always the coziest place to be.  
+
+With a contented smile, she closed her eyes, ready for sweet dreams.",17.95,0.000305,178,23.00,True,True,False,True,True,True,True
+toy_06.jpeg,toy,A small fabric mouse doll in a pink dress lying on patterned bedding,deepseek-reasoner,"**Title: Rosie's Cozy Corner**
+
+Rosie the little mouse doll, dressed in her best pink dress, lay nestled among the soft folds of Lily’s patterned quilt. The room was quiet",24.83,0.000165,29,4.12,False,True,True,False,False,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gpt-4o,"Title: The Cozy LEGO Village
+
+In the heart of the colorful LEGO world, nestled on a green baseplate, stood a charming little village. A cheerful red-brick house sat snugly among vibrant trees, while a gentle breeze rustled the leaves. Not far away, a friendly yellow dog wagged its tail, and a wise old owl perched high in a tree, watching over everyone with kind eyes.
+
+Every morning, the LEGO villagers started their day with smiles. The playful kittens chased butterflies, and the little LEGO children giggled as they played hide-and-seek among the bushes. Grandpa Brick loved to tell stories about the adventures he had when he was a young block.
+
+One day, the villagers decided to build a playground, bringing them all closer together. Everyone lent a hand; even the owl helped by keeping watch from above. As the sun set, the villagers admired their work—a colorful swing set and a twisty slide.
+
+“Working together makes our village a happier place,” said Grandpa Brick with a wink.
+
+As night fell, the village glowed warmly under the starry sky. The animals snuggled in, the children yawned, and peace wrapped around the cozy LEGO village like a soft blanket. Everyone drifted into dreams, knowing they were part of something special.",7.72,0.004755,208,26.75,True,True,False,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gpt-4o-mini,"Title: The LEGO Village of Friendship
+
+Once upon a time, in a colorful LEGO village, a cozy little house sat beneath a tall, green tree. This cheerful home was filled with laughter, as friendly animals gathered around to play. There was Benny the bear, Lucy the rabbit, and Timmy the turtle. Each day, they built new adventures together!
+
+One sunny morning, they decided to host a picnic. Benny brought honey, Lucy brought fresh carrots, and Timmy carried juicy berries. As they shared their treats, they noticed a tiny bird looking sad on a branch. 
+
+“Why are you sad?” asked Lucy. 
+
+“I’ve lost my way home,” chirped the little bird. 
+
+Without hesitation, Benny, Lucy, and Timmy decided to help. Together, they built a small LEGO path leading to the bird’s nest high in the tree. 
+
+With teamwork and kindness, they guided their new friend home. The bird sang a happy song, and the friends felt warm inside. 
+
+As the sun set, they returned to their cozy house, knowing that friendship and helping others made their village a truly special place. And so, they fell asleep, dreaming of new adventures together.",4.71,0.000170,189,24.38,True,True,False,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gemini-2.0-flash,"Title: The Little LEGO Lighthouse
+
+Barnaby Bear blinked sleepily from his bright yellow LEGO house. Outside, the green baseplate stretched like a soft meadow. Chirping birds, built of red and blue bricks, sang morning songs from LEGO trees. But Barnaby felt a little sad. ""I wish I could help someone,"" he mumbled.
+
+Suddenly, a tiny LEGO sailboat, carrying a worried-looking squirrel, appeared on the edge of the baseplate. ""I'm lost!"" cried Squeaky Squirrel. ""I can't find my way back to the nut tree!""
+
+Barnaby knew what to do. He raced to the top of his house, grabbed a shiny LEGO light, and started to spin it. The light beamed across the baseplate, a comforting beacon in the LEGO world. Squeaky Squirrel followed the light, his little boat bobbing happily. Soon, he was safe at the foot of his nut tree, waving goodbye.
+
+Barnaby smiled. Even a little bear in a LEGO house could make a big difference. He switched off his light, the world settling into peaceful quiet, knowing that helping others always brings the warmest feeling of all. Sleep came easily, filled with dreams of LEGO adventures.",2.35,0.000350,188,24.25,True,True,True,True,False,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gemini-2.0-flash-lite,"Title: The LEGO Forest Friends
+
+Once upon a time, nestled on a bright green baseplate, lived a family of LEGO animals. There was Barnaby Bear, Penelope Pig, and Finley Fox. Their home was a cozy LEGO house with a red roof and a chimney that puffed pretend smoke. Around their house grew colorful LEGO trees, where chirping LEGO birds made their nests.
+
+One day, a big wind blew through the LEGO forest. The trees swayed, and the birds hid in their nests. Barnaby, Penelope, and Finley felt a little scared. “It’s okay,” said Barnaby, “Let’s help each other.”
+
+They worked together, carefully leaning the trees back up. They helped the birds find their way home. They learned that by helping each other, even scary things didn’t seem so bad. From then on, they knew that friendship and working together could make anything feel safe and happy. As the sun set, casting a warm glow on their LEGO world, they all snuggled close, feeling grateful for their friends and their happy little home.",1.99,0.000405,172,22.00,True,True,False,True,True,False,False
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gemini-1.5-pro,"Title: The Little LEGO House
+
+In a bright green LEGO land, stood a cozy little house with a red roof and yellow walls.  A friendly giraffe with long, colorful spots peeked into the window.  A playful bluebird perched on the chimney, singing a cheerful tune.  Two fluffy sheep grazed nearby, their white wool as soft as clouds.  Tall LEGO trees with bright green leaves swayed gently in the breeze.
+
+Inside the little house lived a family of LEGO people.  Mama, Papa, and their little daughter Lily were building a tower of colorful bricks.  Sometimes, the tower would wobble and fall, but Lily would just giggle and start again.  ""It's okay,"" Mama would say, ""Building takes patience and trying again.""
+
+As the sun began to set, casting a warm glow over the LEGO land, the animals gathered around the little house. The giraffe lowered his head, the bluebird sang a softer melody, and the sheep snuggled close.  Lily looked out the window. ""Look, Mama,"" she whispered, ""everyone is here!""  Papa smiled. ""We're all friends here in our little LEGO land,"" he said.  Soon, everyone was fast asleep, dreaming sweet dreams of building and friendship.  The little LEGO house stood quiet and peaceful under the twinkling LEGO stars.",6.01,0.004368,206,26.62,True,True,True,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",gemini-1.5-flash,"Title: Leo the Lion's LEGO Land
+
+Leo the lion lived in a LEGO house, bright red with a yellow door!  His house sat on a big green field, surrounded by colorful LEGO trees.  A playful LEGO giraffe swung from a branch, giggling.  A cheerful LEGO monkey chattered from another, offering Leo a bright blue LEGO banana.
+
+Leo loved his LEGO friends.  Sometimes, the giraffe would be grumpy, and the monkey would get into little squabbles over the best LEGO berries. But Leo always reminded them that even when things felt a little wobbly, like a loose LEGO brick, it was okay to ask for help and to be kind.  He'd show them how to rebuild, sharing his LEGO bricks and making everything better.
+
+Tonight, the LEGO sun was setting, casting a warm glow over the happy scene.  Leo, the giraffe, and the monkey snuggled together, their LEGO smiles shining.  Even the smallest LEGO disagreements couldn't dim their friendship. They knew, just like the strong connections of the LEGO bricks, their friendship was strong and would always be there for each other.  Sweet dreams, LEGO friends!",1.97,0.000331,185,24.00,True,True,True,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",deepseek-chat,"**Title: The Little LEGO Forest**  
+
+In a tiny LEGO world, where bright trees grew and colorful animals played, stood a cheerful red house. Inside, a kind hedgehog named Henry lived with his best friend, a shy bunny named Lulu.  
+
+One day, Lulu noticed the forest animals were too busy to play. The squirrels gathered nuts, the birds built nests, and the foxes raced about. ""No one has time for me,"" Lulu sighed.  
+
+Henry smiled. ""Let’s build something special—a place where everyone can take a break!"" Together, they stacked bricks into a cozy picnic spot with a tiny pond. One by one, the animals paused to rest, sharing stories and laughter.  
+
+""You taught us something important,"" said a squirrel. ""Even busy days need happy pauses.""  
+
+As the sun set, the friends sat together, watching fireflies glow. The LEGO forest sparkled, full of joy and quiet moments.  
+
+And so, with hearts full and bricks snugly in place, they knew: the best adventures are the ones we share.  
+
+The end.",15.75,0.000285,167,21.75,True,True,True,True,True,True,True
+toy_07.jpeg,toy,"A colorful LEGO scene with animals, trees, and a house on a green baseplate",deepseek-reasoner,"Title: **The Little LEGO Forest**
+
+Under a bright yellow LEGO sun, Leo the lion cub yawned. His cozy brick house sat near tall green trees. ""What should we do today?"" he chirped to Daisy the deer and Ollie the owl, perched on a branch.
+
+Daisy flicked her tail. ""Let's explore!"" She led them past a sparkling blue stream (made of smooth blue bricks). Near a bump",26.46,0.000276,66,8.62,False,True,True,False,False,True,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gpt-4o,"Title: The Adventure in Brickville
+
+In the colorful world of Brickville, a small LEGO town, lived a group of cheerful friends: Mia, Tom, and their little dog, Bricks. One sunny afternoon, they decided to explore the new pool at the edge of town. Mia packed their favorite snacks, while Tom carefully loaded his bright red LEGO car with towels and toys.
+
+As they drove through Brickville, the sun shone brightly, casting warm rays on the little figures bustling around. When they arrived at the pool, laughter and splashes filled the air. The friends dove in, creating tiny waves, while Bricks happily paddled beside them.
+
+After some time, they noticed a shy LEGO figure sitting alone by the pool's edge. ""Come join us!"" Mia waved, her smile as bright as the sun. The figure, named Sam, hesitated, then nodded, joining the fun. Together, they built a floating castle with pool noodles and bricks, their laughter echoing through the town.
+
+As the sun began to set, casting a golden glow over Brickville, the friends packed up, hearts full of joy. They learned that sharing adventures and kindness makes every day brighter. With the car gently rumbling, they headed home, feeling warm and happy inside.
+
+And so, in Brickville, friendships grew, and happiness flowed like a never-ending splash.",4.63,0.004990,215,27.62,True,True,True,True,True,True,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gpt-4o-mini,"Title: A Sunny Day in LEGO Land
+
+Once upon a time in LEGO Land, a bright yellow car zoomed along the colorful streets. Inside were three cheerful friends: Benny the Builder, Lucy the Artist, and Max the Explorer. They decided to visit the sunny pool where everyone gathered to splash and play!
+
+As they parked the car, Benny said, “Let’s have a race to the pool!” Off they went, running and giggling. At the pool, they found many LEGO figures enjoying the warm sun. Some were floating on bright blue rafts, while others played games with beach balls.
+
+Lucy spotted a little LEGO figure sitting alone. “Why don’t we invite her to join our fun?” she suggested. The friends smiled and welcomed the shy figure into their games. Soon, everyone was laughing, splashing, and having the best time together.
+
+As the sun began to set, they all sat by the pool, sharing stories and enjoying ice cream. Benny, Lucy, and Max learned that kindness brings friends together, making every day a little brighter. They waved goodbye to their new friends, feeling warm inside, just like the sun that shone down on them.",4.84,0.000167,192,24.62,True,True,False,True,True,True,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gemini-2.0-flash,"Title: The LEGO Pool Party
+
+The sun shone brightly on LEGO Land! Little Lily LEGO was so excited. Her bright yellow LEGO car was packed with towels and her favourite floaty duck. Today was the annual LEGO pool party!
+
+She zoomed up to the pool, where her friends, Benny and Rosie, were already splashing. Benny, the astronaut LEGO, was trying to do a cannonball, but mostly just made tiny splashes. Rosie, the baker LEGO, was carefully building a sandcastle by the side.
+
+""Lily! You're here!"" Rosie shouted, waving. Lily parked her car and jumped out, ready to join the fun. They spent the afternoon swimming, laughing, and sharing snacks. Even Benny’s splashy cannonballs couldn't dampen their spirits.
+
+As the sun began to set, casting a warm orange glow over LEGO Land, they packed up their things. Lily realized she had forgotten her floaty duck. Benny and Rosie helped her search, and soon, they found it tucked under a towel.
+
+Lily smiled. ""Thanks, friends! It's always better when we help each other."" They all piled into Lily’s car, tired but happy. The LEGO pool party had been the best one yet. Back at home, snuggled in her LEGO bed, Lily drifted off to sleep, dreaming of sunshine and friends.",2.44,0.000371,208,26.88,True,True,True,True,True,True,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gemini-2.0-flash-lite,"Title: Sunny Day Adventures
+
+Once upon a time, in a world made of bright LEGO bricks, lived a happy family. There was Mom, Dad, and their two little LEGO children, Lily and Tom. It was a sunny day, perfect for fun!
+
+They had a cool red car, ready for an adventure, and a sparkling blue pool. Lily and Tom, with their tiny LEGO arms, splashed and played in the water. Mom and Dad built a little LEGO picnic table and set out tasty LEGO snacks.
+
+Suddenly, Tom felt a little sad. He wanted to build a bigger LEGO boat, but he didn't know how. Dad smiled and said, ""Sometimes, building things is tricky. But if you ask for help, things become easier."" He helped Tom, and soon, they had the biggest LEGO boat ever!
+
+As the sun began to set, painting the LEGO sky with orange and pink, they all snuggled close. They realized that sharing and helping each other made everything more fun. Feeling happy and content, they drifted off to sleep, dreaming of more LEGO adventures.",1.95,0.000400,178,23.12,True,True,True,True,True,True,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gemini-1.5-pro,"Title:  The Little LEGO Pool Party
+
+The sun shone brightly on the LEGO town.  A little red car zipped down the brick road, carrying a family of LEGO people to their friend's house.  It was a special day: a pool party!
+
+When they arrived, the garden was already bustling.  Tiny LEGO figures splashed in the bright blue pool, laughing and playing.  One little figure, wearing a yellow swimsuit, was a bit nervous about jumping in.  Her friend, a smiling figure with a red cap, noticed.
+
+“It’s okay to be scared sometimes,"" the little figure with the red cap said gently. ""But it's also fun to try new things! I'll be right here with you.”
+
+Taking a deep breath, the little figure in yellow jumped in. The water felt cool and refreshing.  She giggled, splashing happily with her friend.  Soon, everyone was playing a game of LEGO water polo, tossing a tiny ball back and forth.
+
+As the sun began to set, the LEGO friends gathered around the pool, tired but happy.  They had learned that trying something new could be a little scary, but also lots of fun, especially when you have friends by your side. The little red car took the family home, filled with warm memories of a perfect LEGO pool party.  Everyone drifted off to sleep, dreaming of sunshine, water, and the joy of friendship.",6.66,0.004550,228,29.12,False,True,True,True,True,False,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",gemini-1.5-flash,"Title: The LEGO Pool Party
+
+The sun shone brightly on the LEGO town.  A shiny red car zoomed towards the sparkling blue pool.  Inside were Mia, Leo, and their little sister, Lily.  They were all ready for a pool party!  Mia carefully placed her LEGO sun hat on her head. Leo checked that his LEGO goggles were secure.  Lily giggled, her tiny LEGO arms waving excitedly.
+
+They splashed and played, building a magnificent LEGO castle out of floating blocks.  Suddenly, Lily’s LEGO castle started to sink!  Leo, ever the helpful brother, quickly helped her rebuild it, bigger and stronger this time.  
+
+""Sharing and helping each other makes everything more fun!"" Mia said, smiling.  As the sun began to set, casting a warm glow on the LEGO pool, the three siblings snuggled together, tired but happy.  They knew that even when things fell apart, working together made them stronger and their adventures even more memorable.  The LEGO pool party was a huge success, a perfect ending to a perfect day.",1.93,0.000307,169,21.88,True,True,True,True,True,True,False
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",deepseek-chat,"**Title: The Lego Pool Party**  
+
+One sunny afternoon, the Lego friends decided to have a pool party at Mia’s house. She had just built a bright blue pool in her backyard, complete with a tiny diving board and a yellow car parked nearby.  
+
+“Let’s see who can make the biggest splash!” said Jake, grinning. One by one, the friends jumped in—some with flips, some with cannonballs. But when it was Lily’s turn, she hesitated. “What if I don’t do it right?” she whispered.  
+
+Mia patted her shoulder. “It’s not about being perfect. It’s about having fun together!” With a deep breath, Lily jumped—splash! Water flew everywhere, and everyone cheered.  
+
+As the sun began to set, the friends dried off and sat by the car, sharing snacks and laughing. “Today was the best,” Lily said, smiling. “Because we did it together.”  
+
+And so, with hearts full of joy and memories made, the Lego friends knew that the best adventures were the ones shared with kindness and courage. The stars twinkled above as they waved goodbye, already dreaming of their next happy day.",16.32,0.000305,181,23.38,True,True,False,True,True,True,True
+toy_08.jpeg,toy,"A LEGO scene with a car, pool, and several small figures",deepseek-reasoner,"**Title: The Best Detour Ever**
+
+Benny the blue LEGO car zoomed down the brick road, his family – Mom, Dad, and little Mia – excited for the beach. Suddenly, *clunk!* Benny stopped. A tiny brick blocked his wheel! ""Oh dear,"" sighed Dad.
+
+""Look!""",24.07,0.000217,43,5.75,False,True,True,False,False,True,False
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gpt-4o,"Title: The Cozy Blanket Gathering
+
+Once upon a time, in the cozy corner of Ella's room, lived a delightful pile of stuffed animals on a dark green blanket. There was Benny the Bear, a gentle giant with a soft brown coat; Lily the Lamb, fluffy and white as snow; and Tilly the Tiger, with her friendly orange stripes. Each night, they gathered together to share stories and dreams.
+
+One evening, as the moonlight softly kissed their faces, Benny said, ""I wish we could explore the world like Ella does."" Lily, always the dreamer, replied, ""We can imagine it! Let's close our eyes and pretend.""
+
+With a gentle breeze from the open window, they began their adventure. They soared over cotton candy clouds, danced with the stars, and even splashed in a moonlit sea. Laughing and playing, their imaginations knew no bounds.
+
+Suddenly, a voice whispered, ""It's time to rest, little ones."" It was Ella, snuggling them close. ""You all make my dreams so magical,"" she said, tucking them gently under the blanket.
+
+As they drifted off to sleep, the stuffed animals learned a simple truth: with imagination and friendship, any dream is possible. And with that, they settled into a peaceful, happy slumber, ready for more adventures tomorrow.",5.19,0.004900,208,26.88,True,True,True,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gpt-4o-mini,"Title: The Cozy Cuddle Pile
+
+Once upon a time, in a cheerful little room, there was a dark green blanket spread across the floor. On that blanket sat a wonderful pile of stuffed animals and plush toys, all waiting for their friend, Mia, to come home.
+
+Each toy had a special story to tell. There was Benny the bear, who loved to dance, and Lila the bunny, who dreamed of exploring the moon. As Mia entered the room, her face lit up with joy. She hugged each friend tightly, and they all snuggled together in a cozy cuddle pile.
+
+“Let’s share our dreams tonight!” Mia declared, and one by one, the toys shared their wishes. They talked about kindness, bravery, and the importance of being together.
+
+As the stars twinkled outside, Mia closed her eyes, feeling safe and warm among her friends. She learned that dreams grow bigger when shared with those we love. With a heart full of happiness, she drifted into a peaceful sleep, surrounded by her cuddly companions, knowing that every dream was possible. 
+
+And so, the night whispered sweet dreams to all.",4.61,0.000165,186,24.00,True,True,False,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gemini-2.0-flash,"Title: The Sleepytime Snuggle Pile
+
+Once upon a time, nestled on a dark green blanket, lived a mountain of cuddly friends. There was Barnaby Bear, Penelope Penguin, Finley Fox, and Rosie Rabbit, all soft and plush. They loved to play all day, but bedtime was their favorite.
+
+Every night, Lily would gather them close. ""Tonight,"" she'd whisper, ""we're sharing our dreams!"" Barnaby would dream of honey pots, Penelope of icy slides, Finley of playful chases, and Rosie of carrot gardens.
+
+Sometimes, Lily felt a little scared of the dark. But looking at her sleepy pile, all snuggled together, made her feel brave. Barnaby's soft fur, Penelope's wobbly wings, Finley's bushy tail, and Rosie's floppy ears – they were all there for her.
+
+Lily knew that even when things seemed a little scary, having friends, even stuffed ones, could make everything better. She closed her eyes, feeling safe and loved in her sleepytime snuggle pile, ready for sweet dreams. And all the plushies dreamt right along with her, filled with warmth and happiness.",2.81,0.000335,172,22.25,True,True,True,True,True,False,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gemini-2.0-flash-lite,"Title: The Sleepy Softies' Sleepover
+
+Once upon a time, on a cozy dark green blanket, lived a whole family of stuffed animals. There was Barnaby Bear, Rosie Rabbit, Finley Fox, and many more! Every night, when the moon peeked through the window, they’d have a special sleepover.
+
+Tonight, the little ones were restless. ""I can't sleep!"" cried Finley, his fluffy tail drooping. Rosie agreed, ""Me neither! I miss my family.""
+
+Barnaby, wise and old, gently patted Finley's head. ""Remember, even when we miss our families, we have each other. We are a family here, too."" He snuggled close.
+
+Soon, one by one, the softies began to feel sleepy. They huddled close, sharing stories and giggles. They remembered all the fun they had, and the love they shared.
+
+As the night deepened, their eyelids grew heavy. They drifted off to dreamland, surrounded by the warmth of the blanket and the comfort of their friends. The next morning, they woke up feeling refreshed and happy. Because, at the end of the day, friendship makes everything better.",2.08,0.000440,174,22.62,True,True,True,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gemini-1.5-pro,"Title: The Cuddle Mountain
+
+On a dark green blanket, as soft as moss, lived a mountain of cuddly friends.  There was Barnaby Bear, fluffy and brown, Penelope Pig with her curly tail, Sir Reginald the brave knight (a plush rabbit), and a whole host of others. Every night, they tumbled and nestled together, creating a warm, cozy heap.
+
+One evening, little Lily the Lamb felt lonely at the bottom of the pile.  “No one can see me,” she bleated softly.  Barnaby Bear, hearing her tiny voice, rumbled, “Lily, you’re important even if you’re not on top.  We all need you to hold the mountain together.”
+
+Penelope Pig oinked in agreement. ""Your softness makes the bottom comfy for everyone!""  Sir Reginald the brave knight hopped down and snuggled beside Lily.  “And you’re very good at keeping toes warm!” he declared.
+
+Lily the Lamb felt a warm glow spread through her fluffy wool.  She realized that even though she wasn’t the biggest or the brightest, she was still an important part of the Cuddle Mountain. And as the moonlight peeked through the window, the whole mountain of friends drifted off to sleep, warm, cozy, and happy together.",7.52,0.004298,195,25.25,True,True,True,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,gemini-1.5-flash,"Title: The Sleepy Stuffed Animal Mountain
+
+On a dark green blanket, nestled amongst fluffy pillows, sat a mountain of stuffed animals.  There was Barnaby Bear, with his worn fur and missing button eye; Rosie Rabbit, her pink nose twitching; and Finley Fox, his tail perpetually askew.  They were all tired after a long day of imaginary adventures.
+
+Barnaby, the oldest, sighed. ""Sometimes,"" he mumbled, ""I wish I could just stay still and rest."" Rosie nodded, her floppy ears drooping. Finley, usually full of energy, yawned widely.
+
+Suddenly, a little girl, Lily, gently picked up each animal.  She held them close, whispering goodnight to each one. ""It's okay to be tired,"" she said softly. ""Resting is important, so you can have even more fun tomorrow.""
+
+Lily carefully arranged the sleepy stuffed animals on their green blanket mountain.  She tucked them in with a soft blanket, and kissed each one goodnight.  As the room grew quiet, the stuffed animals drifted off to sleep, dreaming of their next grand adventure, knowing they could always find peace and rest together.  And Lily, snuggled in her bed, smiled contentedly.",2.01,0.000354,184,23.88,True,True,True,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,deepseek-chat,"**Title: The Snuggle Pile**  
+
+On a soft, dark green blanket, a pile of plush friends waited every night for their favorite moment—snuggle time. There was Benny the bear, Lila the bunny, and tiny Pip the penguin, all nestled together like a cozy mountain of love.  
+
+One evening, Benny sighed. ""I wish we could stay this close forever.""  
+
+Lila twitched her ears. ""But what if someone needs us?"" Just then, a little voice called from across the room. ""I can’t sleep!"" It was Mia, their favorite human, clutching her blanket.  
+
+Without hesitation, the plush friends tumbled toward her. Benny became a pillow, Lila a cuddle buddy, and Pip a tiny hand warmer. Mia giggled as she buried herself in their softness. ""You’re the best team ever,"" she whispered.  
+
+As Mia drifted off, the friends smiled. They’d learned something wonderful: love grows when you share it. And so, every night after that, the snuggle pile grew bigger—just like their hearts.  
+
+The end.",15.92,0.000289,160,20.88,True,True,True,True,True,True,True
+toy_09.jpeg,toy,A pile of stuffed animals and plush toys on a dark green blanket,deepseek-reasoner,"**Title: The Snuggle Pile**
+
+On the soft, dark green blanket, a happy mountain grew. It wasn't made of rocks or snow, but of Teddy, Worn Bunny, Sparkle the Unicorn, and all their plush friends. They tumbled together in a cozy, colorful heap.
+
+Lily felt a little lonely that evening. The big room seemed quiet. Then she saw the pile on her blanket. ""Oh",26.69,0.000268,63,8.62,False,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gpt-4o,"Title: Tiny Tim's Bathtub Adventure
+
+In a cozy little bathroom, nestled under the sink, lived Tiny Tim, a miniature mouse toy with a big heart. Tiny Tim loved his home, especially the little tub, soft sink, and fuzzy rug, where he would often daydream.
+
+One sunny morning, as the golden sunbeams danced through the window, Tiny Tim decided to have an adventure. He filled his tiny tub with warm water and hopped in, imagining he was sailing across a vast, gentle ocean. As he floated, he thought about how sometimes the world seemed big and he seemed small, but that was okay. He realized that every adventure, big or small, starts with a simple step—or in his case, a splash!
+
+Tiny Tim's friend, Daisy the duck toy, waddled over and joined him. Together, they splashed and laughed, creating their own little waves. The bathroom was filled with the sound of their joyful giggles.
+
+As the evening sky turned a soft pink, Tiny Tim dried off on the rug, feeling warm and happy inside. He whispered to Daisy, ""Every day is an adventure if we have each other.""
+
+With a gentle yawn, Tiny Tim nestled into his cozy nook, dreaming of tomorrow's adventures. And so, in the peaceful glow of the night, he drifted into a sweet, happy sleep.",6.13,0.004970,218,28.12,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gpt-4o-mini,"Title: Momo's Magical Bath Time
+
+Once upon a time, in a cozy little house, there lived a tiny mouse toy named Momo. Momo loved to explore, especially the bright and shiny bathroom with its big tub and soft rug. One sunny afternoon, while the family was busy, Momo decided to have a special adventure.
+
+He hopped onto the edge of the tub and looked at his reflection in the water. “I can be anything I want!” he squeaked excitedly. With a little wiggle, he imagined being a brave pirate sailing on a sea of bubbles. Splashes of water danced around him like waves, and Momo giggled with joy.
+
+After his adventure, Momo dried off on the fluffy rug. He realized that while it was fun to pretend, being himself was the best adventure of all. Filled with happiness, Momo whispered, “Every day is a new chance to be brave and have fun!”
+
+As the sun set and the stars twinkled outside, Momo snuggled into a warm corner, dreaming of tomorrow’s adventures. And in that cozy bathroom, he felt loved and safe, ready to greet a brand new day.",4.51,0.000169,188,24.38,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gemini-2.0-flash,"Title: Mortimer's Big Bath
+
+Mortimer was a tiny toy mouse with button eyes and a very important job: bath time supervisor! Tonight, his job was especially important. Lily, his human, was a little scared of the bubbles.
+
+He perched on the fluffy rug beside the bathtub, his tiny felt nose twitching. “Don’t worry, Lily!” he squeaked, though only Lily’s imagination could hear him. “The bubbles are friendly! They just want to tickle your toes!”
+
+Lily giggled, poking a bubble with her finger. It popped with a soft *plink*. Mortimer pointed with his miniature paw towards the rubber ducky swimming nearby. “See? Even Ducky is having fun!”
+
+Lily smiled wider, splashing gently. Mortimer felt a surge of pride. Sometimes, even the smallest among us can help chase away big fears. As Lily’s bath ended, she carefully placed Mortimer on the sink, giving him a kiss. “Thank you, Mortimer,” she whispered.
+
+Later, snuggled in bed, Lily drifted off to sleep, dreaming of bubble adventures. Mortimer, tucked beside her, felt warm and content. Even a tiny toy mouse could make a big difference.",2.29,0.000345,180,23.38,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gemini-2.0-flash-lite,"Title: Barnaby's Big Bath
+
+Barnaby the mouse was a tiny toy, but he had a very big imagination! Every night, after the humans were asleep, he'd sneak into their bathroom. Tonight, the fluffy rug was his grassy meadow, the sink a sparkling lake, and the bathtub…oh, the bathtub was his grand swimming pool!
+
+He’d carefully climb onto the edge and, with a deep breath, *plop* into the water. He pretended to be a brave explorer, sailing across the bubbly waves. Sometimes, he’d get a little scared, but then he remembered the warm glow of the nightlight and the soft towels waiting for him.
+
+One night, he felt a little lonely. He wished he had a friend to play with. Then, he realized: he had himself! And that was okay. He could be his own best friend. He splashed and played, laughing with delight.
+
+As the first rays of sun peeked through the window, Barnaby snuggled back into his cozy spot on the shelf, happy and content. Even a tiny toy mouse could have a grand adventure, and the best adventures were the ones you had with yourself. Sweet dreams, little Barnaby.",2.26,0.000446,191,24.75,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gemini-1.5-pro,"Title: Millie's Miniature Spa Day
+
+Millie the miniature mouse loved her tiny bathroom.  It had a porcelain tub just the right size for a walnut shell, a sink made from a thimble, and a fluffy cotton ball rug.  Tonight was special. Millie decided to have a spa night!
+
+First, she filled her tub with warm dewdrop water.  She sprinkled in a pinch of chamomile tea for a calming scent.  Millie slipped into the tub with a happy sigh.  The tiny bubbles tickled her whiskers.  
+
+Next, she brushed her teeth with a dandelion bristle and washed her face with a drop of morning glory dew.  She felt sparkly clean!  Finally, Millie wrapped herself in a petal-soft towel and stepped onto the cotton ball rug.  It felt like walking on a cloud.
+
+Millie realized how lovely it was to take care of herself.  Even small acts of kindness towards yourself can make a big difference.  Feeling cozy and content, Millie snuggled into her acorn bed, ready for sweet dreams.  The bathroom, now filled with the calming scent of chamomile, glowed softly in the moonlight.",5.22,0.004025,182,23.62,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",gemini-1.5-flash,"Title: Pip's Big Bath Adventure
+
+Pip the mouse was a tiny toy, no bigger than your thumb! He lived in a little bathroom, a whole world to him.  There was a big, white tub, a shiny sink, and a fluffy rug that felt like a cloud.  One day, Pip felt a little grubby from playing hide-and-seek behind the soap dish.
+
+He decided to have a bath! Carefully, he climbed into the tub (it was a very big tub for a very little mouse!). He splashed and played, giggling as the water tickled his whiskers.  He washed his tiny paws and his even tinier tail.
+
+After his bath, Pip felt so clean and fresh! He snuggled on the fluffy rug to dry, feeling happy and peaceful.  He learned that even the smallest things can have big adventures, and that a little bit of self-care makes everything feel better.  As the sun set, casting a warm glow on the bathroom, Pip drifted off to sleep, dreaming of more fun bath times to come.",1.76,0.000308,171,22.25,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",deepseek-chat,"Title: **Tiny Mouse’s Big Bathroom Adventure**  
+
+In a cozy little house, there lived a tiny mouse named Milo. One day, while exploring, he scurried into the bathroom—a giant world of shiny tubs, tall sinks, and a fluffy rug that felt like a cloud.  
+
+Milo’s tiny paws pattered across the tiles as he climbed onto the sink. ""Wow!"" he squeaked, seeing his reflection in the faucet. ""I look so small!"" Then he spotted the tub—a perfect swimming pool for a mouse. He slid down the side and landed with a soft *plop* on the rug, giggling.  
+
+Just then, a drop of water fell from the faucet. Milo jumped, but then he smiled. ""Even tiny things can make big splashes,"" he thought.  
+
+As the sun set, Milo curled up on the rug, warm and content. ""Adventures are everywhere,"" he whispered, ""if you’re brave enough to look.""  
+
+With a happy sigh, he closed his eyes, dreaming of tomorrow’s discoveries. The bathroom, once so big, now felt just right—a little world full of wonder for a little mouse with a big heart.  
+
+The end.",15.80,0.000312,180,23.38,True,True,True,True,True,True,True
+toy_10.jpeg,toy,"A miniature mouse toy in a bathroom with a tub, sink, and rug",deepseek-reasoner,"**Title: Bathroom Mouse**
+
+Oliver lived in the cozy space behind the big, white bathtub. He was a tiny mouse, no bigger than a child's thumb, made of soft, grey felt. His favorite time was after the bathwater gurgled away. When the big people left, the bathroom became his quiet kingdom.
+
+He’d scamper across the fluffy blue rug, its threads tickling his paws. He’",24.37,0.000269,63,8.50,False,True,True,False,True,True,True
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",gpt-4o,"Title: Whiskers and the Purple Cheeks
+
+In a cozy corner of Wiggly Woods, there lived a gentle creature named Whiskers. Whiskers wasn't just any creature; he had cat ears that perked up with every sound, fur striped like a candy cane, and cheeks that blushed a delightful shade of purple whenever he smiled.
+
+Every evening, the woodland animals gathered around Whiskers for storytime. Tonight, he was telling the tale of the Rainbow Bridge, a magical place where every color had a special meaning. As Whiskers spoke, his purple cheeks glowed, spreading warmth to all who listened.
+
+The animals loved Whiskers not just for his stories but because he taught them an important lesson: it’s okay to be different. Whiskers’ unique appearance reminded everyone that true beauty comes from within and that kindness is the most beautiful color of all.
+
+As the story ended, the animals snuggled close, feeling safe and cherished. Whiskers gave each of them a gentle nuzzle, and soon, the forest was filled with the soft sounds of peaceful, dreaming creatures.
+
+With a final twinkle in his eyes, Whiskers whispered, ""Goodnight, dear friends."" And as the moon bathed Wiggly Woods in silver light, everyone drifted into a world of colorful dreams.",5.54,0.004915,203,26.25,True,True,True,True,True,True,True
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",gpt-4o-mini,"Title: The Adventures of Purrl the Friendly Feline
+
+Once upon a time, in a colorful meadow, lived a cheerful creature named Purrl. Purrl had soft, striped fur, cat ears that perked up with joy, and the sweetest purple cheeks that sparkled in the sunlight. Every morning, Purrl greeted the day with a big smile, ready for new adventures.
+
+One sunny day, Purrl spotted a little bird with a hurt wing. Instead of playing, Purrl decided to help. “Don’t worry, I’ll take care of you!” Purrl said, gently wrapping the bird in a soft leaf. Purrl sang a sweet lullaby, and soon the bird felt better. 
+
+As the sun began to set, Purrl watched the bird fly off, chirping happily. Purrl learned that helping others brings joy, and that kindness makes the world brighter.
+
+That night, as the stars twinkled above, Purrl curled up in a cozy spot, feeling warm inside. With a heart full of happiness, Purrl closed their eyes, dreaming of all the friends yet to meet and the adventures yet to come. 
+
+And so, in the gentle glow of the moon, Purrl slept peacefully, knowing tomorrow would bring more smiles.",4.27,0.000186,192,24.75,True,True,False,True,True,True,True
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",gemini-2.0-flash,"Title: Purrcival's Purple Patch
+
+Purrcival wasn't just any kitty. He had cat ears, of course, and lovely striped fur. But Purrcival also had bright purple cheeks! He worried they were a little odd.
+
+One sunny morning, Purrcival saw little Lily crying. Her favorite blue balloon had floated away. Purrcival wanted to help, but what could he do? Then, he had an idea! He puffed out his purple cheeks as big as he could and started juggling acorns.
+
+Lily giggled, then laughed! Her sadness floated away like the balloon. Purrcival realized his purple cheeks weren’t odd at all. They were special! They made people happy.
+
+From that day on, Purrcival used his purple cheeks to cheer everyone up. He made silly faces for grumpy squirrels and blew purple-tinted kisses to the sleepy owls. He learned that even the things that make you different can be the things that make you wonderful. And as the sun set, Purrcival purred himself to sleep, dreaming of purple smiles.",2.16,0.000312,164,21.38,True,True,True,True,True,True,True
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",gemini-2.0-flash-lite,"Title: The Sleepy Stripey
+
+Once upon a time, in a cozy forest, lived a creature named Stripey. Stripey had fluffy cat ears, stripy fur like a candy cane, and rosy purple cheeks that always seemed to blush with joy. Stripey loved bedtime, and every night, just as the moon peeked out, Stripey would yawn a big, wide yawn.
+
+One evening, a little firefly, Flicker, couldn't find her way home. She was scared! Stripey, seeing Flicker's tiny light flicker with worry, gently scooped her up with a soft paw. ""Don't worry,"" purred Stripey, ""Everyone gets lost sometimes. The best thing to do is ask for help.""
+
+Stripey guided Flicker home, showing her the sparkly path. Flicker, feeling safe and loved, was soon tucked in with her family. Stripey, sleepy from the adventure, snuggled under the leaves, feeling happy. He knew that being kind and helping others always made the night even sweeter. As the stars twinkled, Stripey drifted off, dreaming of more friendly adventures.",1.92,0.000428,163,21.25,True,True,True,True,True,True,True
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",gemini-1.5-pro,"Title: Pipkin and the Sparkling Pebbles
+
+Pipkin, a creature with soft, striped fur, cat ears, and rosy purple cheeks, loved collecting sparkling pebbles. Every evening, as the sun dipped below the horizon, Pipkin would scamper down to the Whispering River and search for the prettiest stones.  He’d carefully place them in his little woven basket, his heart brimming with joy.
+
+One evening, a little firefly, Flicker, buzzed around Pipkin’s head. “Why do you collect these pebbles, Pipkin?” Flicker asked, his light blinking curiously.
+
+Pipkin smiled. “They remind me of happy moments,” he explained. “This shiny blue one reminds me of the day I learned to fly on a dandelion seed. This sparkly green one reminds me of sharing berries with my friends.”
+
+Flicker’s light pulsed with understanding. “Sharing happiness makes it even brighter,” he chirped.
+
+Pipkin nodded, realizing Flicker was right. He picked out a beautiful rose-colored pebble and offered it to Flicker. “This one reminds me of meeting you,” Pipkin said warmly.
+
+Flicker, delighted, perched on the pebble. Pipkin watched as Flicker’s light danced on the stone, making it shine even brighter.  He felt a warm glow spread through him.  Sharing his happiness had indeed made it sparkle even more.  That night, Pipkin snuggled into his leafy bed, dreaming of sparkling pebbles and the joy of friendship.",6.44,0.005124,218,28.00,True,True,False,True,True,True,True
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",gemini-1.5-flash,"Title: Pip the Purr-fectly Striped Cat
+
+Pip was a very special creature. He had soft, orange and white striped fur, big floppy cat ears, and the cutest purple cheeks you ever did see!  He lived in a cozy burrow under a giant oak tree, filled with fluffy moss and sweet-smelling wildflowers. Pip loved to play hide-and-seek with the bumblebees and sing lullabies to the sleepy field mice.
+
+One day, a little girl named Lily stumbled upon Pip's burrow.  She was scared at first, but Pip's big, friendly eyes and gentle purr calmed her.  Lily giggled as Pip showed her his collection of shiny pebbles. They spent the afternoon playing together, sharing stories and laughter.
+
+As the sun began to set, Lily had to go home.  Pip felt a little sad to see her go, but he knew she’d visit again.  He learned that even though being different can feel a little scary sometimes, kindness and friendship can make everything feel purr-fectly alright.  He snuggled into his moss bed, a warm feeling in his heart, dreaming of his new friend and the joy of sharing a special day.",2.16,0.000347,187,24.12,True,True,True,True,True,False,True
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",deepseek-chat,"**Title: The Purr-fect Friend**  
+
+In a cozy little village nestled between rolling hills, there lived a special creature named Lila. With soft striped fur, twitching cat ears, and cheeks as purple as ripe plums, Lila was unlike anyone else. But what made her truly special was her kindness.  
+
+Every day, Lila would visit the village square, where children gathered to play. She’d listen to their stories, share warm hugs, and even purr when they felt sad. ""Why are you always so happy?"" a little boy once asked.  
+
+Lila smiled, her purple cheeks glowing. ""Because happiness grows when you share it,"" she said. ""A kind word or a gentle purr can brighten someone’s day!""  
+
+Inspired, the children began spreading kindness too, helping neighbors and sharing smiles. Soon, the village was filled with laughter and warmth.  
+
+As the sun set, Lila curled up under a willow tree, her purrs blending with the evening breeze. The children knew that no matter what, Lila’s love would always be there—soft, steady, and purr-fect.  
+
+And so, with hearts full of joy, they drifted off to sleep, dreaming of their striped, purple-cheeked friend.",16.14,0.000327,186,24.12,True,True,True,True,True,True,True
+drawing_01.jpeg,drawing,"A smiling creature with cat ears, striped fur, and purple cheeks",deepseek-reasoner,"**Title: Purri's Happy Glow**
+
+In the Whispering Woods lived Purri, a creature unlike any other. Purri had soft, striped fur like a tiger, pointy cat ears that twitched at every sound, and the most wonderful, round purple cheeks that",24.50,0.000197,39,5.62,False,True,True,True,True,True,True
+drawing_02.jpeg,drawing,A fluffy grey bear with white ears standing on a blue background,gpt-4o,"Title: Benny's Big Blue Adventure
+
+Once upon a time, in a land of fluffy clouds and sunny skies, lived a soft, grey bear named Benny. Benny had the whitest ears, which made him feel extra special. His world was painted in shades of blue, from the gentle rivers to the endless sky.
+
+Benny loved exploring, but he sometimes felt a bit shy. One sunny day, he decided to take a stroll to the Great Blue Meadow, a place he'd only heard about in bedtime stories. His little heart fluttered with excitement and a dash of nervousness.
+
+As Benny walked, he met a friendly butterfly named Bella. ""Where are you going, Benny?"" she asked, fluttering around his ears. ""To the Great Blue Meadow,"" Benny replied with a brave smile.
+
+Bella decided to join him, and together, they laughed, played, and sang songs along the way. When they finally reached the meadow, Benny realized he was no longer shy because he had a friend by his side.
+
+That night, as Benny snuggled into his cozy bed, he learned that adventures are even better when shared with friends. And so, Benny drifted into a peaceful sleep, dreaming of more adventures with Bella.
+
+And from that day on, Benny knew he was never alone.",6.32,0.004730,210,27.12,True,True,True,True,True,True,True
+drawing_02.jpeg,drawing,A fluffy grey bear with white ears standing on a blue background,gpt-4o-mini,"Title: Benny the Bear's Blue Sky Adventure
+
+Once upon a time, in a land filled with fluffy clouds and bright blue skies, there lived a gentle bear named Benny. Benny was a soft, grey bear with fluffy white ears that made him look even more huggable. Every day, he would wander through the meadows, dreaming of adventures.
+
+One sunny morning, Benny decided to explore the forest beyond his home. As he walked, he met a little bird named Lola. She flapped her tiny wings and chirped, “Where are you going, Benny?”
+
+“I’m off to find the biggest tree!” Benny replied with excitement.
+
+Together, they ventured deeper into the woods. They climbed hills, crossed sparkling streams, and shared stories under the sun. Benny realized that the best adventures are not just about reaching a destination but enjoying the journey with friends.
+
+When they finally found the biggest tree, Benny smiled. “Thank you for joining me, Lola. It’s much more fun together!”
+
+As the sun began to set, Benny and Lola sat beneath the tree, feeling happy and peaceful. From that day on, Benny knew that friends make every adventure brighter. 
+
+And with that, they drifted off to sleep, dreaming of their next journey.",5.45,0.000176,202,26.12,True,True,True,True,True,True,True
+drawing_02.jpeg,drawing,A fluffy grey bear with white ears standing on a blue background,claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+drawing_02.jpeg,drawing,A fluffy grey bear with white ears standing on a blue background,claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+drawing_02.jpeg,drawing,A fluffy grey bear with white ears standing on a blue background,gemini-2.0-flash,"Title: Barnaby's Blue Sky Dream
+
+Barnaby, a fluffy grey bear with snow-white ears, loved the color blue. He loved blueberries, bluebells, and especially, the big, bright blue sky. One day, Barnaby woke up feeling a little…grey. Not fluffy-grey, but sad-grey.
+
+He went outside and saw the blue sky, but it didn’t seem as bright as usual. Barnaby sighed. “Maybe if I stand on the sky,” he mumbled. He tried to climb an apple tree, but he couldn’t reach the sky.
+
+Suddenly, a little bluebird landed on his nose. ""Why the long face, Barnaby?"" she chirped.
+
+Barnaby explained about feeling grey. The bluebird smiled. “Sometimes, even the bluest sky needs a little sunshine. And you, Barnaby, are sunshine to your friends!”
+
+Barnaby thought about his friends. He decided to visit Rosie Rabbit. Rosie was delighted to see him, and Barnaby's grey feeling began to fade. Helping others, he realized, made the blue sky seem brighter after all. He and Rosie shared berries and watched the clouds, happy as could be under the beautiful blue sky.",2.13,0.000339,174,22.62,True,True,True,True,True,True,True
+drawing_02.jpeg,drawing,A fluffy grey bear with white ears standing on a blue background,gemini-2.0-flash-lite,"Title: Barnaby's Big Blue Blanket
+
+Barnaby the bear was a very fluffy bear. His fur was the color of a cloudy sky, and his ears were as white as freshly fallen snow. Barnaby loved his big blue blanket. It was the color of the ocean and felt so soft against his fur.
+
+One day, a little bunny, Lily, came hopping by. Lily looked sad. ""My favorite carrot is lost,"" she sniffled. Barnaby, feeling a bit sad for Lily, offered, ""Would you like to share my blanket until you find it?""
+
+Lily snuggled close. Barnaby felt a warmth spread through his chest, even warmer than his blanket. They chatted and soon, Lily's tears disappeared. After a while, Lily's nose twitched! ""I smell it!"" she cried, and hopped off.
+
+Lily returned, carrot in paw, and gave Barnaby a big hug. ""Thank you!"" she chirped. Barnaby smiled. Sharing his blanket had made him feel even happier than usual. He learned that day that sharing makes everyone feel cozy and warm, just like a big blue blanket. He snuggled down, content, on his blanket that evening, dreaming of bunnies and carrots.",2.19,0.000455,187,24.25,True,True,True,True,True,True,True
+drawing_02.jpeg,drawing,A fluffy grey bear with white ears standing on a blue background,gemini-1.5-pro,"Title: Barnaby's Blue Sky Day
+
+Barnaby the bear loved blue.  His favorite color was the bright, clear blue of a summer sky. Barnaby, fluffy and grey with snowy white ears, longed to touch the sky. One breezy afternoon, he sat on a grassy hill, gazing upwards.  A big, puffy white cloud drifted by.  ""If I could just reach that cloud,"" he thought, ""maybe I could climb all the way to the blue!""
+
+He stood on his hind legs, stretching as high as he could. He wiggled his nose. He waved his paws.  But the cloud floated further away.  Barnaby sighed.  A little blue butterfly landed on his nose.  ""Why the long face?"" she asked.  Barnaby explained his wish. The butterfly giggled. ""The sky is everywhere, Barnaby,"" she said. ""You're already touching it! Just breathe.""
+
+Barnaby took a deep breath.  The butterfly was right!  The cool air filled his lungs. He felt the gentle breeze on his fur.  He realized the sky wasn't something to reach for; it was all around him. Barnaby smiled. He lay back on the grass, watching the clouds drift by.  He felt peaceful and happy, wrapped in the big, beautiful blue.",5.42,0.004378,195,25.25,True,True,True,True,True,True,True
+drawing_02.jpeg,drawing,A fluffy grey bear with white ears standing on a blue background,gemini-1.5-flash,"Title: Barnaby's Blue Sky Dream
+
+Barnaby the bear was fluffy and grey, with ears as white as fresh snow.  He lived in a cozy cave nestled beside a big, blue lake.  One day, Barnaby dreamt he was floating on the lake, the blue water sparkling like a thousand tiny stars.  He felt so light and happy!
+
+In his dream, Barnaby saw a little bird struggling to fly.  Its wing was drooping.  Barnaby, being a kind bear, gently nudged the bird with his fluffy nose and whispered, ""Don't worry, little one.""  He helped the bird reach a branch, where it could rest its tired wing.
+
+The little bird chirped happily, its song as sweet as honey. Barnaby smiled.  He felt warm and fuzzy inside, knowing he'd helped someone in need.  He floated on, the blue sky above him vast and comforting.  When Barnaby woke up, the sun was shining, and he knew, even without his dream, that helping others always brought the biggest smiles. He hummed a happy tune, ready for a day filled with kindness.",1.94,0.000324,175,22.75,True,True,True,True,True,True,True
+drawing_02.jpeg,drawing,A fluffy grey bear with white ears standing on a blue background,deepseek-chat,"**Title: Benny the Bear’s Cozy Hug**  
+
+Benny the bear was the fluffiest, softest bear in the whole forest. His grey fur was as cozy as a blanket, and his white ears twitched when he laughed. One day, Benny noticed his friends feeling sad—the squirrels were too tired to play, and the rabbits were grumpy.  
+
+“What’s wrong?” Benny asked.  
+
+“We’re just having a bad day,” sighed a little squirrel.  
+
+Benny had an idea. He wrapped his big, fluffy arms around each friend, giving them the warmest hugs. “Sometimes, all you need is a little love,” he whispered.  
+
+One by one, the animals smiled. The squirrels giggled, the rabbits hopped happily, and even the birds sang a cheerful tune. Benny’s hugs reminded them that kindness can turn any day around.  
+
+That night, as the stars twinkled, Benny curled up under a tree, his heart full. “The world is brighter when we share our love,” he thought, drifting off to sleep with a contented sigh.  
+
+And so, with cozy hugs and happy hearts, the forest slept peacefully under the moon’s gentle glow.",15.09,0.000309,179,23.12,True,True,False,True,True,True,True
+drawing_02.jpeg,drawing,A fluffy grey bear with white ears standing on a blue background,deepseek-reasoner,"**Title: Barney’s Quiet Day**
+
+Barney Bear was soft as dandelion fluff and grey as a raincloud, with ears like two puffy white clouds stuck on his head. He lived against a calm, endless blue sky that felt like a big, gentle hug.
+
+Every morning, Barney stood very still. He watched tiny birds zip by and listened to the wind whisper secrets through distant trees. Sometimes, he felt a little lonely, wishing someone would notice his special white ears.
+
+""Patience, little bear",27.10,0.000306,81,10.75,False,True,True,False,True,True,True
+drawing_03.jpeg,drawing,A green leaf with detailed veins lying on a white surface,gpt-4o,"Title: The Leaf's Journey
+
+Once upon a time, in a quiet, sunlit forest, there grew a small, vibrant green leaf named Lila. Lila lived on the branch of a grand oak tree, surrounded by her leafy friends. She loved feeling the warm sun and the gentle breeze that made her dance with joy.
+
+One day, Lila noticed her veins glowing under the sun, carrying life and stories from the tree. She felt proud to be part of something so wonderful. But soon, autumn came, and Lila knew her time on the branch was ending. She whispered goodbye to her friends and let the breeze carry her away.
+
+Lila floated gracefully and landed on a soft, white blanket of snow. At first, she missed her tree, but then she realized something important. Though she was no longer on the branch, she was still part of the forest. Her veins, like the stories she carried, would nourish the earth, helping new leaves to grow.
+
+As the stars twinkled above, Lila felt a sense of peace. She knew that every end was a new beginning. The forest hummed a lullaby, and Lila drifted into a gentle sleep, happy to be forever part of the forest's story.",6.41,0.004620,203,26.25,True,True,True,True,True,True,True
+drawing_03.jpeg,drawing,A green leaf with detailed veins lying on a white surface,gpt-4o-mini,"Title: The Leaf's Gentle Journey
+
+Once upon a time, in a lush green forest, there lived a little leaf named Lila. Lila was bright green with delicate veins that danced like tiny rivers across her surface. One day, a gentle breeze whispered to her, “Lila, it’s time for an adventure!”
+
+Lila fluttered and twirled through the air, laughing with joy. She landed softly on a white surface—a smooth, shiny rock. “Oh, how beautiful this place is!” she exclaimed, marveling at how her green color stood out against the white.
+
+As the sun warmed her, Lila noticed a tiny ant struggling to climb up the rock. “Let me help you!” she called, stretching her stem towards the ant. With a gentle nudge, the ant found his footing and climbed onto Lila. Together, they shared stories of the forest and the adventures they dreamed of.
+
+At the end of the day, as the sun set and the sky turned soft pink, Lila learned that even the smallest acts of kindness could create wonderful connections. With a heart full of joy, she closed her eyes, ready for sweet dreams, knowing she had made a new friend.",4.71,0.000172,193,25.00,True,True,True,True,True,True,True
+drawing_03.jpeg,drawing,A green leaf with detailed veins lying on a white surface,claude-3.5-sonnet,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+drawing_03.jpeg,drawing,A green leaf with detailed veins lying on a white surface,claude-3.5-haiku,Error: Anthropic API error: 'Anthropic' object has no attribute 'messages',0,0,0,0,False,False,False,False,False,False,False
+drawing_03.jpeg,drawing,A green leaf with detailed veins lying on a white surface,gemini-2.0-flash,"Title: Leafy's Big Sleep
+
+Once upon a time, there was a little green leaf named Leafy. Leafy lived on a tall, strong oak tree, but one breezy autumn day, *whoosh!* Leafy tumbled down, down, down, landing softly on a big, white blanket - the snowy tablecloth on Mrs. Gable's picnic table!
+
+Leafy felt a little scared at first. He missed his family on the oak tree. But then, Mrs. Gable's granddaughter, Lily, picked him up. “Oh, what a beautiful leaf!” she exclaimed, tracing Leafy’s veins with her finger.
+
+Lily carefully placed Leafy on her bedroom windowsill. He could see the sun setting, painting the sky in orange and pink. Though he wasn't on his tree anymore, Leafy felt safe and warm. He realized even though things change, and we might feel a bit lost, there's always beauty and kindness to be found.
+
+Soon, Leafy drifted off to sleep, dreaming of sunny days and rustling leaves, knowing he had brought a little bit of nature's beauty into Lily's room. And Lily, looking at Leafy, smiled contentedly, ready for sweet dreams of her own.",2.31,0.000345,182,23.62,True,True,True,True,True,True,True
+drawing_03.jpeg,drawing,A green leaf with detailed veins lying on a white surface,gemini-2.0-flash-lite,"Title: Little Leaf's Big Dream
+
+Once upon a time, on a crisp white cloud, lived a little green leaf. He wasn’t like the other leaves. He was small and delicate, with tiny, intricate veins that looked like roads. He wasn't attached to a tree, but felt safe on the cloud. He wished he could fly, to see the world.
+
+One sunny morning, a gentle breeze whispered, ""Little Leaf, you can fly! Just let go."" Little Leaf was scared. He clung tightly to the white cloud. But the breeze kept whispering, ""Trust your veins. They are your wings.""
+
+Finally, with a deep breath, Little Leaf let go. He tumbled and twirled, his veins catching the wind. He saw the world below – sparkling blue rivers and fluffy white sheep. He wasn't scared anymore. He realized the breeze was right, his veins *were* his wings. He floated gently, eventually landing on a soft patch of grass, happy and free. And he knew, even the smallest of us can achieve our dreams with a little courage. He closed his eyes and drifted off to sleep, content.",1.97,0.000421,183,23.75,True,True,True,True,True,True,True
+drawing_03.jpeg,drawing,A green leaf with detailed veins lying on a white surface,gemini-1.5-pro,"Title: Leafy's Big Adventure
+
+Leafy the leaf wasn't like the other leaves on the big oak tree. While they danced and twirled high above, Leafy felt a gentle tug. One breezy autumn day, he let go.  He spiraled down, down, down, landing softly on a smooth, white surface.  It was a picnic table!
+
+Leafy felt a little scared. He missed his branch and the rustling whispers of his leafy brothers and sisters. But then, a little girl with bright eyes picked him up. ""Look, Mama,"" she said, tracing Leafy's delicate veins with her tiny finger.  ""It looks like a little map!""
+
+The girl's mama smiled. ""It does, doesn't it? Each leaf has its own unique story, just like you.""
+
+The girl carefully placed Leafy on a piece of paper and began to draw. She drew a whimsical world around him, with colorful birds and smiling suns.  Leafy realized his journey wasn't an ending, but a new beginning. He was part of a beautiful picture now, a reminder that even small things can be part of something bigger and brighter.  That night, tucked safely in the girl's sketchbook, Leafy dreamt of his next grand adventure.",5.74,0.004179,194,25.12,True,True,True,True,True,True,True
+drawing_03.jpeg,drawing,A green leaf with detailed veins lying on a white surface,gemini-1.5-flash,"Title: Leo the Leaf's Long Journey
+
+Leo the Leaf was a tiny emerald jewel, his veins like delicate silver threads.  He lived high up on a big oak tree, swaying gently in the summer breeze. One day, a strong gust of wind whispered a story of the world below.  Leo felt a tickle, then a whoosh! He tumbled down, down, down, landing softly on a white, fluffy cloud – a patch of snow!
+
+He lay there, feeling a little scared and all alone.  But then, the sun peeked through the clouds, warming Leo's leaf-skin. He saw tiny snowflakes melting around him, and he felt the warmth sinking into his veins.  He wasn't scared anymore. He was part of a bigger story, a part of nature's gentle cycle.
+
+Soon, the sun melted the snow, and a little girl found him.  She gently picked him up, admiring his beautiful veins.  She knew Leo had travelled far, and she whispered, ""Even though you fell, you found your way to somewhere new and beautiful.""  Then, she carefully placed him on a windowsill, where he could watch the world go by, safe and sound. Leo knew, no matter where he was, he was always loved.",2.10,0.000359,200,25.88,True,True,True,True,True,True,True
+drawing_03.jpeg,drawing,A green leaf with detailed veins lying on a white surface,deepseek-chat,"**Title: The Little Leaf’s Journey**  
+
+One sunny morning, a tiny green leaf named Lila fluttered down from her tree and landed softly on a smooth white stone. ""Oh dear,"" she whispered, ""I’m all alone!"" But as she lay there, she noticed the intricate veins running through her, like tiny rivers of life.  
+
+A gentle breeze rustled by. ""Don’t worry, Lila,"" it said. ""Even alone, you’re part of something bigger."" Curious, Lila looked around. She saw ants marching, carrying crumbs. A ladybug landed on her, resting its wings. ""Thank you for the shade,"" it hummed.  
+
+Lila smiled. She wasn’t just a leaf—she was a bridge for ants, a shelter for bugs, and a piece of the earth’s beautiful puzzle. As the sun set, painting the sky in warm colors, Lila felt peaceful. ""I may be small,"" she thought, ""but I matter.""  
+
+That night, under a blanket of stars, Lila nestled into the grass, content. She knew that even the littlest things have a purpose—and that made her heart glow.  
+
+The end.",15.52,0.000306,170,22.12,True,True,True,True,True,True,True

@@ -1,0 +1,212 @@
+image_file,image_type,image_caption,story_model,generated_story,execution_time,cost,word_count,quality_score,meets_length_req,has_title,contains_dialogue,positive_tone,story_structure,age_appropriate,bedtime_suitable
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gpt-4o,"Title: The Cozy Couch Adventure
+
+Once upon a time, in a cozy little cottage nestled by the woods, there lived a doll named Daisy. Daisy had curly blonde hair and wore a bright red jumpsuit. She loved her spot on the big, comfy couch where she could see the world outside through the window.
+
+One sunny morning, Daisy noticed a little squirrel outside, trying to reach the bird feeder. The squirrel was too small to reach, so Daisy wished she could help. As if by magic, the wind whispered through the window, filling the room with a gentle breeze.
+
+Daisy suddenly found herself on the windowsill! The squirrel looked up at Daisy and wiggled its tiny nose in thanks. Daisy smiled and watched as the squirrel cleverly found a way to climb up the tree and reach the feeder.
+
+When the sun began to set, Daisy felt a warm glow in her heart. She had learned that sometimes, cheering someone on from afar can be just as helpful as lending a hand.
+
+As the stars twinkled in the night sky, Daisy returned to her spot on the couch. She knew she had made a new friend and drifted off to sleep, dreaming of cozy adventures and kind deeds.",6.26,0.004345,208,26.75,True,True,False,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gpt-4o-mini,"Title: Daisy the Brave Little Doll
+
+Once upon a time, in a cozy little living room, there was a doll named Daisy. Daisy had curly blonde hair that bounced whenever she laughed and wore a bright red jumpsuit that made her feel like a superhero. She lived on a soft couch, surrounded by colorful cushions and warm blankets.
+
+Every night, as the stars twinkled outside the window, Daisy watched the children play. She dreamed of having adventures just like them. One evening, she decided to be brave. With a gentle leap from the couch, she landed softly on the floor. 
+
+“Tonight, I’ll explore!” she whispered to herself. Daisy tiptoed around the room, discovering new games to play and even making friends with a friendly teddy bear. 
+
+As the moonlight filled the room, Daisy realized that being brave didn’t mean being the biggest or the strongest. It meant having the courage to try new things and make new friends. 
+
+Feeling happy and sleepy, Daisy climbed back onto the couch, snuggled into a warm blanket, and closed her eyes, dreaming of all the wonderful adventures waiting for her tomorrow. 
+
+And so, Daisy the brave little doll drifted off to sleep, ready for dreams filled with joy.",4.13,0.000172,204,26.25,True,True,False,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-3.5-sonnet,"Title: Rosie's Lonely Evening
+
+Rosie was a beautiful doll with bouncy blonde curls who sat all alone on the big brown couch. She wore her favorite red jumpsuit but didn't feel very cheerful. You see, her best friend, a teddy bear named Mr. Hugs, had fallen behind the couch yesterday, and she couldn't reach him.
+
+As night fell, Rosie heard a tiny voice. ""Hello up there!"" A little mouse named Pip peeked out from behind the couch. At first, Rosie was nervous – she'd never talked to a mouse before.
+
+""Would you like to be friends?"" Pip asked kindly. ""I noticed you looking sad.""
+
+Rosie smiled and explained about Mr. Hugs. Without hesitation, Pip scurried behind the couch and, with a gentle push, helped Mr. Hugs back to his spot beside Rosie.
+
+""Thank you!"" Rosie exclaimed, giving both Pip and Mr. Hugs a warm hug. ""I learned something important today – sometimes the best friends come in unexpected packages.""
+
+From that evening on, the couch became a happy gathering spot where a doll, a teddy bear, and a tiny mouse shared stories and giggles every night.
+
+[Word count: 156]",6.74,0.004146,189,24.50,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,claude-3.5-haiku,"Title: Rosie's Cozy Night Adventure
+
+In a warm, quiet living room, Rosie the doll sat on the soft, cushiony couch. Her golden curls bounced softly, and her bright red jumpsuit sparkled in the gentle lamplight. Though she looked cheerful, Rosie felt a little lonely.
+
+One quiet evening, her favorite teddy bear, Mr. Snuggles, hopped onto the couch beside her. ""Why do you look sad?"" he asked kindly.
+
+""I wish I had a friend to play with,"" Rosie whispered.
+
+Mr. Snuggles smiled. ""But you do have friends! Sometimes they're right next to you, even if you can't see them moving.""
+
+Just then, the other toys in the room - a wooden train, a soft bunny, and a colorful ball - all wiggled closer. They hadn't been able to move before, but something magical happened when Rosie felt sad.
+
+""We're your friends!"" they whispered together.
+
+Rosie's heart filled with warmth. She realized friendship isn't about constant movement, but about caring and being there for each other.
+
+As moonlight danced through the window, Rosie snuggled close to her new friends, feeling loved and never alone again.",6.43,0.001094,183,23.75,True,True,True,True,True,True,True
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.5-pro-preview,Content blocked by safety filters. Please try a different prompt.,5.56,0.000000,10,1.38,False,False,False,False,False,True,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.5-flash-preview,Content blocked by safety filters. Please try a different prompt.,2.62,0.000000,10,1.38,False,False,False,False,False,True,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.0-flash,Error: Gemini API error with gemini-2.0-flash: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-2.0-flash-lite,Error: Gemini API error with gemini-2.0-flash-lite: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-1.5-pro,Error: Gemini API error with gemini-1.5-pro: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_01.jpeg,toy,A doll with curly blonde hair and a red jumpsuit sitting on a couch,gemini-1.5-flash,Error: Gemini API error with gemini-1.5-flash: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gpt-4o,"Title: Benny the Brave Bunny
+
+Once upon a time, in a cozy little nursery, there sat a fabric bunny named Benny. Benny wore a cheerful striped outfit and loved his comfy coral chair by the window. Every morning, he watched the sun rise, painting the sky with pinks and oranges.
+
+Benny had a special secret. At night, when the house was quiet, he would come to life! One evening, as the stars twinkled, Benny noticed a tiny, frightened ladybug on the windowsill. The little bug was lost and far from home.
+
+Benny gently hopped over and whispered, ""Don't worry, little one. I'll help you find your way."" Together, they traveled through the nursery, past the toy blocks and books, until they reached the garden door.
+
+With Benny's guidance, the ladybug found her way outside, where her family awaited. ""Thank you, Benny,"" she chirped, feeling brave and safe.
+
+As Benny returned to his coral chair, he felt warm and happy inside. He learned that helping others made him brave, too.
+
+And so, as the moonlight bathed the nursery, Benny drifted into a peaceful sleep, dreaming of new adventures and friendships. The gentle night wrapped him in a soft, comforting hug, promising more magical days ahead.",7.81,0.004635,204,26.38,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gpt-4o-mini,"Title: Benny the Brave Bunny
+
+Once upon a time, in a cozy little room, there lived a fabric bunny named Benny. Benny wore a soft, striped outfit and sat proudly on a coral chair, watching over the children who played nearby. Every night, as the stars twinkled outside, Benny would whisper stories to the moon.
+
+One evening, a little girl named Lily felt scared of the dark. She looked at Benny and said, “I wish I could be brave like you.” Benny’s button eyes twinkled with kindness. He replied, “You are already brave, Lily! Being brave means facing your fears, even when you feel small.”
+
+Lily took a deep breath and hugged Benny tight. With his soft fabric comforting her, she whispered, “I can be brave!” And just like that, the shadows became friendly shapes, and the dark felt less scary. 
+
+From that night on, Benny and Lily shared many adventures, always reminding each other that courage comes from within. As Lily drifted off to sleep, she smiled, knowing she was never alone. 
+
+With Benny by her side, she could face anything. Sweet dreams, little ones!",5.02,0.000162,186,23.88,True,True,False,True,True,False,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-3.5-sonnet,"Title: The Lonely Chair's New Friend
+
+In a cozy corner of little Emma's playroom sat a coral-colored chair that always felt lonely. Day after day, it watched the other toys having fun together while it remained empty and unused.
+
+One afternoon, Emma placed her favorite stuffed bunny, wearing blue and white stripes, on the chair's soft cushion. The bunny, named Pip, could tell the chair was sad.
+
+""Why do you look so glum?"" Pip asked kindly.
+
+The chair sighed. ""Nobody ever wants to sit with me. They say I'm too small for the bigger toys.""
+
+Pip's floppy ears perked up. ""Well, I think you're just perfect! Would you like to be my special spot? We could share stories and watch the stars through the window together.""
+
+The chair felt warmth spread through its wooden frame. ""Really? You'd do that?""
+
+From that day forward, Pip and the coral chair became inseparable friends. Every evening, they would watch the sunset together, and Pip would tell wonderful stories about magical gardens and flying adventures.
+
+The chair learned that sometimes the best friendships come when you least expect them, and that everyone is just right for somebody.
+
+[Word count: 156]",6.96,0.004095,196,25.38,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,claude-3.5-haiku,"Title: Buttons' Cozy Evening
+
+In a warm, soft bedroom, Buttons the fabric bunny sat quietly on his favorite coral chair. His striped outfit was neatly pressed, and his button eyes sparkled with curiosity. Though he was just a toy, Buttons had a big heart and loved watching over his young friend Emma as she prepared for bedtime.
+
+Tonight, Emma seemed a little nervous. She was worried about starting a new school tomorrow and didn't think she could be brave. Buttons listened carefully as she shared her fears.
+
+""Sometimes being brave isn't about never feeling scared,"" Buttons whispered gently. ""It's about doing something even when you feel nervous.""
+
+He told Emma a story about how he once felt scared sitting alone on the chair, but he learned that courage means taking small steps and believing in yourself. His soft, reassuring voice made Emma smile.
+
+As Emma snuggled into bed, she hugged Buttons close. His warmth and wisdom made her feel safe and confident. She knew that with her special bunny friend beside her, she could face anything.
+
+Slowly, Emma drifted off to sleep, dreaming of wonderful new adventures.",7.69,0.001004,187,24.25,True,True,True,True,True,True,True
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.5-pro-preview,Content blocked by safety filters. Please try a different prompt.,5.63,0.000000,10,1.38,False,False,False,False,False,True,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.5-flash-preview,Content blocked by safety filters. Please try a different prompt.,2.70,0.000000,10,1.38,False,False,False,False,False,True,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.0-flash,Error: Gemini API error with gemini-2.0-flash: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-2.0-flash-lite,Error: Gemini API error with gemini-2.0-flash-lite: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-1.5-pro,Error: Gemini API error with gemini-1.5-pro: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_02.jpeg,toy,A fabric bunny toy wearing a striped outfit sitting on a coral chair,gemini-1.5-flash,Error: Gemini API error with gemini-1.5-flash: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gpt-4o,"Title: The Adventures of Fluffy and the Blue Bow
+
+Once upon a time, there was a soft white plush toy named Fluffy. Fluffy had bright yellow hair and a shiny blue bow that twinkled like the night sky. Fluffy loved going on adventures with Mia, the little girl who held Fluffy in her hand everywhere she went.
+
+One sunny morning, Mia and Fluffy went on a picnic in the garden. As they sat under the big oak tree, Fluffy whispered, ""Mia, let's find the secret meadow!"" Mia giggled and agreed, so off they went, hand in plush hand.
+
+They wandered over the hills, where butterflies danced and birds sang sweet lullabies. Suddenly, they found a hidden meadow filled with daisies and dandelions. Mia and Fluffy twirled and laughed, their hearts full of joy. Fluffy's blue bow shimmered in the sunlight, feeling extra special.
+
+As the sun began to set, Mia hugged Fluffy tight and said, ""Thank you for making every day an adventure."" Fluffy whispered back, ""Together, we can find magic anywhere.""
+
+With sleepy eyes, they headed home, knowing that the best adventures are shared with friends. And as they drifted into dreamland, the stars winked down, promising more magical journeys to come.",7.42,0.004720,203,26.25,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gpt-4o-mini,"Title: Benny's Big Adventure
+
+Once upon a time, in a cozy little room, there lived a white plush toy named Benny. Benny had soft yellow hair and a shiny blue bow that made him look extra special. Benny loved to dream, but he also loved to go on adventures!
+
+One night, as the stars twinkled outside, Benny's friend, Lily, held him tight in her hand. ""Let’s go on an adventure, Benny!"" she whispered. With a gentle squeeze, Benny felt a warm glow, and suddenly, they were flying through the sky!
+
+They soared over fields of flowers and danced with the moonbeams. Benny giggled as they twirled through the clouds, feeling free and happy. But soon, they began to drift back home.
+
+As they snuggled into bed, Benny said, “Every adventure is wonderful, but there’s no place like home.” Lily smiled and hugged him close. 
+
+“Goodnight, Benny,” she whispered. “You make my dreams come true.” 
+
+And with that, they both closed their eyes, drifting into sweet dreams filled with stars, laughter, and endless adventures—together.",6.15,0.000162,173,22.50,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,claude-3.5-sonnet,"Title: The Little Bow Who Found Her Smile
+
+Lucy's favorite plush friend was a soft white bunny named Bella, who always wore a beautiful blue bow. One morning, Lucy noticed Bella's bow wasn't as perky as usual. It drooped sadly to one side, having lost its sparkle.
+
+""What's wrong, Bella?"" Lucy whispered, holding her friend close. The bunny seemed to sigh, and Lucy imagined Bella was feeling lonely during the daytime when she had to stay home while Lucy went to school.
+
+The next day, Lucy had an idea. She brought her craft supplies and carefully made tiny matching blue bows for all her other stuffed animals. When she came home from school, she found Bella surrounded by new friends – a teddy bear, a giraffe, and even a silly penguin, all wearing identical blue bows.
+
+""Now you have a bow family, Bella!"" Lucy exclaimed. ""They can keep you company while I'm away.""
+
+From that day on, Bella's bow stayed perfectly perky. Every night, Lucy would find her bunny snuggled among her bow-wearing friends, and they would all have sweet dreams together in their special corner of Lucy's room.
+
+[Word count: 152]",6.55,0.004071,192,24.88,True,True,True,True,True,True,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,claude-3.5-haiku,"Title: Whispers of Comfort
+
+In a cozy bedroom filled with moonlight, Sophie held her favorite plush friend, Cloudy. With soft white fur and bright yellow hair topped by a cheerful blue bow, Cloudy was more than just a toy—he was her most trusted companion.
+
+One night, Sophie noticed Cloudy looking a little worried. ""What's wrong?"" she asked gently. Cloudy whispered that he was afraid of the shadows dancing on the wall. Sophie smiled and hugged him close. ""Those shadows might look scary,"" she said, ""but they can't hurt us. Sometimes things that seem frightening are just misunderstood.""
+
+She told Cloudy about being brave, explaining that courage isn't about never feeling scared, but about facing your fears with a loving heart. Together, they watched the shadows, and slowly, Cloudy's trembling stopped. The moonlight seemed to wrap around them like a warm blanket, turning the shadows into magical shapes that danced playfully.
+
+As Sophie's eyes grew heavy, she cuddled Cloudy tight. ""We're safe,"" she whispered. ""We have each other."" And with that, they both drifted into peaceful dreams, surrounded by love and understanding.",7.67,0.001058,181,23.38,True,True,True,True,True,False,True
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-2.5-pro-preview,Content blocked by safety filters. Please try a different prompt.,5.47,0.000000,10,1.38,False,False,False,False,False,True,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-2.5-flash-preview,Content blocked by safety filters. Please try a different prompt.,2.62,0.000000,10,1.38,False,False,False,False,False,True,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-2.0-flash,Error: Gemini API error with gemini-2.0-flash: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-2.0-flash-lite,Error: Gemini API error with gemini-2.0-flash-lite: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-1.5-pro,Error: Gemini API error with gemini-1.5-pro: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_03.jpeg,toy,A white plush toy with yellow hair and a blue bow held in a hand,gemini-1.5-flash,Error: Gemini API error with gemini-1.5-flash: 'gemini-pro',0,0,0,0,False,False,False,False,False,False,False
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gpt-4o,"Title: Cozy Adventures with Hoodie the Dog
+
+In a cozy little bedroom, there sat a brown fabric dog toy named Hoodie. Hoodie wore a bright pink hoodie that was soft and snug, making him the perfect companion for little Emma. Every night, Hoodie would come to life in Emma's dreams, ready for a gentle adventure.
+
+One magical evening, as Emma drifted off to sleep, Hoodie whispered, ""Let's visit the Land of Lullabies!"" Together, they floated on fluffy clouds, giggling as the stars twinkled like tiny lanterns. The land was filled with friendly animals who hummed sweet lullabies, wrapping the world in a soothing melody.
+
+Hoodie introduced Emma to a wise old owl named Oliver, who shared an important lesson: ""Remember, Emma, kindness makes the world a cozier place."" Emma nodded, feeling warm inside like a cup of hot cocoa.
+
+As the night sky turned a dreamy shade of blue, it was time for Emma and Hoodie to return. Emma cuddled Hoodie close, whispering, ""Thank you for the adventure.""
+
+Hoodie smiled, his pink hoodie as bright as ever. ""Goodnight, Emma,"" he said softly, as they both drifted into a peaceful sleep, dreaming of kindness and cozy adventures yet to come.",6.79,0.004555,199,25.75,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,gpt-4o-mini,"Title: Bella's Cozy Adventure
+
+Once upon a time, in a cozy little house, there lived a brown fabric dog toy named Bella. Bella wore a soft pink hoodie that made her feel warm and snuggly. Every night, Bella dreamed of adventures with her best friend, a little girl named Lily.
+
+One chilly evening, Lily picked up Bella and whispered, “Let’s go on a magical adventure!” They traveled to a sparkling meadow filled with twinkling stars and glowing flowers. Bella felt brave in her pink hoodie, and together, they danced under the moonlight, laughing and playing.
+
+As the stars twinkled above, Bella noticed something special. She saw how happiness grew when friends shared joyful moments. “Lily,” Bella said softly, “every adventure is better when we stick together!”
+
+After a fun-filled night, Lily hugged Bella tightly. “You’re right, Bella! I love our adventures!” With a gentle yawn, they returned home, snuggling under the blankets.
+
+As they drifted off to sleep, Bella whispered, “Always remember, love and friendship make every adventure magical.” And with that warm thought, they both fell into a peaceful slumber, dreaming of wonderful journeys to come.",4.44,0.000168,187,24.25,True,True,True,True,True,True,True
+toy_04.jpeg,toy,A brown fabric dog toy wearing a pink hoodie,claude-3.5-sonnet,"Title: Hoodie's Brave Adventure
+
+Hoodie was a small brown stuffed puppy who lived on a shelf in Lucy's bedroom. He loved wearing his cozy pink hoodie, but sometimes the other toys giggled about it. ""Boys don't wear pink,"" they'd whisper, making Hoodie feel small and shy.
+
+One stormy night, Lucy's favorite teddy bear fell behind the bed into the dusty darkness. All the toys gasped, but no one dared to go after him. Hoodie looked at his pink hoodie and remembered how it always made him feel warm and brave inside.
+
+""I'll help!"" Hoodie announced, surprising everyone. He carefully climbed down and ventured into the shadows. His pink hoodie glowed softly in the dark, like a gentle nightlight, helping him find his way. Soon, he found the scared teddy bear and helped him back to safety.
+
+From that day on, none of the toys ever teased Hoodie about his pink hoodie again. Instead, they admired his bravery and kindness. Every night, the toys would gather around Hoodie as he shared stories about being true to yourself and helping others.
+
+""After all,"" Hoodie would say with a smile, ""brave hearts come in all colors.""
+
+[Word count: 157]",6.45,0.004218,196,25.38,True,True,True,True,True,True,True

@@ -1,0 +1,5 @@
+file_name,model_name,description,execution_time,cost
+toy_01.jpeg,gemini-2.5-pro-preview,"Viewed from directly above, a baby doll with a voluminous mane of curly blonde hair and wide blue eyes lies on a light blue-grey fabric surface. The doll is dressed in a reddish-brown corduroy romper, its arms and legs slightly splayed. Its fixed, innocent gaze is directed upward.",9.77,0.0025
+toy_01.jpeg,blip,Caption: a doll laying on a couch with her hands in the air,4.04,0.0046
+toy_01.jpeg,blip-2,a doll sitting on a couch,3.57,0.0060
+toy_01.jpeg,gpt-4o,"The image shows a doll with curly, blonde hair, sitting on a light gray couch. The doll is dressed in a reddish-brown outfit, which includes a top with ruffled details and matching pants. Its expression is neutral, and its limbs are positioned naturally, giving it a lifelike appearance.",9.42,0.0100

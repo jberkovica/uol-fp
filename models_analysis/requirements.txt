@@ -1,0 +1,55 @@
+# Core dependencies for MIRA Models Analysis (Updated December 2025)
+python-dotenv==1.1.0
+pandas==2.0.3
+matplotlib==3.7.2
+seaborn==0.12.2
+requests==2.31.0
+tqdm==4.67.1
+ipython==8.30.0
+pillow==11.1.0
+numpy==1.24.3
+json5==0.9.28
+jupyter==1.0.0
+jupyterlab==3.6.3
+plotly==5.9.0
+scikit-learn==1.3.0
+
+# API client libraries (Working versions as of December 2025)
+openai==1.6.1               # For GPT-4o, GPT-4o-mini models
+anthropic==0.54.0           # For Claude 3.5 Sonnet, Claude 3.5 Haiku (UPDATED - Fixed API issues)
+google-generativeai==0.3.2  # For Gemini 2.0 Flash, Gemini 1.5 Pro/Flash
+replicate==0.22.0           # For BLIP, BLIP-2, LLaVA models
+tiktoken==0.9.0             # For accurate token counting across models
+
+# Additional dependencies for story generation and analysis
+typing-extensions==4.14.0   # For type hints compatibility
+pydantic==2.11.5           # For data validation (OpenAI dependency)
+distro==1.9.0              # For system info (OpenAI dependency)
+jiter==0.10.0              # Fast JSON parsing (OpenAI dependency)
+grpcio==1.72.1             # For Google API communication
+protobuf==5.29.5           # For Google protocol buffers
+httpx>=0.21.0              # HTTP client (replicate dependency)
+packaging                  # Packaging utilities (replicate dependency)
+
+# Analysis and visualization
+scipy==1.13.1              # Statistical analysis
+wordcloud==1.9.4           # For text visualization
+nltk==3.9.1                # Natural language processing
+textstat==0.7.4            # Text readability metrics
+
+# Development and testing
+pytest==8.4.0             # For testing
+black==24.12.0             # Code formatting
+flake8==7.1.1              # Code linting
+
+# Note: These versions are confirmed working with the story generation collection script
+# All 10 models (OpenAI, Anthropic, Google, DeepSeek) are functional with these dependencies
+# Last verified: December 2025
+
+# TTS integration dependencies (for 03_tts_collect.py)
+boto3==1.35.0                     # Amazon Polly TTS
+google-cloud-texttospeech==2.17.0 # Google Cloud TTS  
+elevenlabs==0.2.27                # ElevenLabs TTS
+azure-cognitiveservices-speech==1.40.0  # Microsoft Azure TTS
+pydub==0.25.1                     # Audio processing utilities
+# Note: OpenAI TTS included in openai==1.6.1 package above
