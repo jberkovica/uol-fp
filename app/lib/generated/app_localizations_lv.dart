@@ -1,5 +1,5 @@
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -109,10 +109,12 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get audioRecordingComingSoon => 'Audio ierakstīšana drīz būs pieejama!';
+  String get audioRecordingComingSoon =>
+      'Audio ierakstīšana drīz būs pieejama!';
 
   @override
-  String get textStoryComingSoon => 'Teksta stāstu ģenerēšana drīz būs pieejama!';
+  String get textStoryComingSoon =>
+      'Teksta stāstu ģenerēšana drīz būs pieejama!';
 
   @override
   String failedToPickImage(String error) {
@@ -147,13 +149,16 @@ class AppLocalizationsLv extends AppLocalizations {
   String get incorrectPin => 'Nepareizs PIN. Lūdzu, mēģiniet vēlreiz.';
 
   @override
-  String get accountCreatedSuccessfully => 'Konts veiksmīgi izveidots! Pārbaudiet savu e-pastu, lai apstiprinātu kontu.';
+  String get accountCreatedSuccessfully =>
+      'Konts veiksmīgi izveidots! Pārbaudiet savu e-pastu, lai apstiprinātu kontu.';
 
   @override
-  String get appleSignInComingSoon => 'Pierakstīšanās ar Apple drīz būs pieejama!';
+  String get appleSignInComingSoon =>
+      'Pierakstīšanās ar Apple drīz būs pieejama!';
 
   @override
-  String get appleSignUpComingSoon => 'Reģistrācija ar Apple drīz būs pieejama!';
+  String get appleSignUpComingSoon =>
+      'Reģistrācija ar Apple drīz būs pieejama!';
 
   @override
   String failedToLoadKids(String error) {
@@ -161,10 +166,12 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get addKidProfileFirst => 'Vispirms pievienojiet bērna profilu, lai izveidotu stāstus';
+  String get addKidProfileFirst =>
+      'Vispirms pievienojiet bērna profilu, lai izveidotu stāstus';
 
   @override
-  String get noKidsProfilesAvailable => 'Nav bērnu profilu. Vispirms pievienojiet bērnu!';
+  String get noKidsProfilesAvailable =>
+      'Nav bērnu profilu. Vispirms pievienojiet bērnu!';
 
   @override
   String get changePinComingSoon => 'PIN maiņa drīz būs pieejama!';
@@ -282,7 +289,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get writeYourIdeaHere => 'rakstiet savu ideju šeit...';
 
   @override
-  String get enterFeedbackOrChanges => 'Ievadiet atsauksmes vai pieprasiet izmaiņas...';
+  String get enterFeedbackOrChanges =>
+      'Ievadiet atsauksmes vai pieprasiet izmaiņas...';
 
   @override
   String get transcribingAudio => 'Transkripcija notiek...';
@@ -342,7 +350,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get storySettings => 'Stāstu iestatījumi';
 
   @override
-  String get configureStoryGenerationPreferences => 'Konfigurēt stāstu ģenerēšanas preferences';
+  String get configureStoryGenerationPreferences =>
+      'Konfigurēt stāstu ģenerēšanas preferences';
 
   @override
   String get exportData => 'Eksportēt datus';
@@ -374,7 +383,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get noKidsProfilesYet => 'Pagaidām nav bērnu profilu';
 
   @override
-  String get addFirstKidProfile => 'Pievienojiet pirmo bērna profilu personalizētiem stāstiem!';
+  String get addFirstKidProfile =>
+      'Pievienojiet pirmo bērna profilu personalizētiem stāstiem!';
 
   @override
   String get parentControls => 'Vecāku kontrole';
@@ -469,7 +479,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get pleaseProvideReason => 'Lūdzu, norādiet noraidīšanas iemeslu:';
 
   @override
-  String get declineReasonHint => 'Piemēram, pārāk baidoši, nepiedienīgs saturs utt.';
+  String get declineReasonHint =>
+      'Piemēram, pārāk baidoši, nepiedienīgs saturs utt.';
 
   @override
   String get suggestEdits => 'Ieteikt izmaiņas';
@@ -478,10 +489,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get provideSuggestions => 'Sniedziet ieteikumus stāsta uzlabošanai:';
 
   @override
-  String get suggestionsHint => 'Piemēram, padarīt mazāk baidošu, pievienot vairāk par draudzību utt.';
+  String get suggestionsHint =>
+      'Piemēram, padarīt mazāk baidošu, pievienot vairāk par draudzību utt.';
 
   @override
-  String get regeneratingStory => 'Izveidojam jaunu stāsta versiju ar jūsu ieteikumiem...';
+  String get regeneratingStory =>
+      'Izveidojam jaunu stāsta versiju ar jūsu ieteikumiem...';
 
   @override
   String get regenerateStory => 'Izveidot jaunu versiju';
@@ -522,13 +535,16 @@ class AppLocalizationsLv extends AppLocalizations {
   String get reviewByEmail => 'Pārskatīt pa e-pastu';
 
   @override
-  String get autoApproveDescription => 'Stāsti tiek automātiski apstiprināti un uzreiz pieejami';
+  String get autoApproveDescription =>
+      'Stāsti tiek automātiski apstiprināti un uzreiz pieejami';
 
   @override
-  String get reviewInAppDescription => 'Pārskatiet stāstus vecāku panelī, pirms tie tiek rādīti bērniem';
+  String get reviewInAppDescription =>
+      'Pārskatiet stāstus vecāku panelī, pirms tie tiek rādīti bērniem';
 
   @override
-  String get reviewByEmailDescription => 'Saņemiet e-pasta paziņojumus, lai pārskatītu stāstus pirms apstiprināšanas';
+  String get reviewByEmailDescription =>
+      'Saņemiet e-pasta paziņojumus, lai pārskatītu stāstus pirms apstiprināšanas';
 
   @override
   String approvalMethodUpdated(String method) {
@@ -536,7 +552,8 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get failedToUpdateApprovalMethod => 'Neizdevās nomainīt apstiprinājuma veidu';
+  String get failedToUpdateApprovalMethod =>
+      'Neizdevās nomainīt apstiprinājuma veidu';
 
   @override
   String errorUpdatingApprovalMethod(String error) {
@@ -550,10 +567,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get parentReviewPending => 'Gaida vecāku apstiprinājumu';
 
   @override
-  String get tapReviewToApprove => 'Nospied Pārskatīt, lai lūgtu vecāku apstiprinājumu';
+  String get tapReviewToApprove =>
+      'Nospied Pārskatīt, lai lūgtu vecāku apstiprinājumu';
 
   @override
-  String get weWillNotifyWhenReady => 'Mēs paziņosim, kad tavs stāsts būs gatavs!';
+  String get weWillNotifyWhenReady =>
+      'Mēs paziņosim, kad tavs stāsts būs gatavs!';
 
   @override
   String get openStory => 'atvērt';
@@ -562,10 +581,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get pleaseEnterText => 'Lūdzu, ievadiet tekstu, lai izveidotu stāstu';
 
   @override
-  String get textTooShort => 'Lūdzu, uzrakstiet vismaz 10 simbolus savas stāsta idejas aprakstam';
+  String get textTooShort =>
+      'Lūdzu, uzrakstiet vismaz 10 simbolus savas stāsta idejas aprakstam';
 
   @override
-  String get textTooLong => 'Teksts ir pārāk garš. Lūdzu, ierobežojiet to līdz 500 simboliem';
+  String get textTooLong =>
+      'Teksts ir pārāk garš. Lūdzu, ierobežojiet to līdz 500 simboliem';
 
   @override
   String get pleaseSelectChild => 'Lūdzu, vispirms izvēlieties bērnu';
@@ -577,7 +598,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get stopRecording => 'Beigt ierakstīšanu';
 
   @override
-  String get microphonePermissionRequired => 'Mikrofonam ir nepieciešama atļauja audio ierakstīšanai';
+  String get microphonePermissionRequired =>
+      'Mikrofonam ir nepieciešama atļauja audio ierakstīšanai';
 
   @override
   String get failedToStartRecording => 'Neizdevās sākt ierakstīšanu';
@@ -613,7 +635,8 @@ class AppLocalizationsLv extends AppLocalizations {
   String get personalityPreferences => 'Personība un preferences';
 
   @override
-  String get personalityPreferencesOptional => 'Personība un preferences (neobligāti)';
+  String get personalityPreferencesOptional =>
+      'Personība un preferences (neobligāti)';
 
   @override
   String get additionalNotes => 'Papildu piezīmes';
@@ -661,10 +684,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get favoriteStoryTypes => 'Iecienītie stāstu veidi';
 
   @override
-  String get favoriteStoryTypesOptional => 'Iecienītie stāstu veidi (neobligāti)';
+  String get favoriteStoryTypesOptional =>
+      'Iecienītie stāstu veidi (neobligāti)';
 
   @override
-  String get addSpecialNotes => 'Pievienojiet jebkādas īpašas piezīmes par savu bērnu...';
+  String get addSpecialNotes =>
+      'Pievienojiet jebkādas īpašas piezīmes par savu bērnu...';
 
   @override
   String addSpecialNotesFor(String childName) {
@@ -686,19 +711,22 @@ class AppLocalizationsLv extends AppLocalizations {
   String get setYourParentPin => 'Iestatīt vecāku PIN';
 
   @override
-  String get createFourDigitPinAccess => 'Izveidojiet 4 ciparu PIN, lai piekļūtu\nvecāku vadības panelim un iestatījumiem';
+  String get createFourDigitPinAccess =>
+      'Izveidojiet 4 ciparu PIN, lai piekļūtu\nvecāku vadības panelim un iestatījumiem';
 
   @override
   String get settingUpYourPin => 'Iestata jūsu PIN...';
 
   @override
-  String get thisWillBeUsedForAccess => 'Šis PIN tiks izmantots, lai piekļūtu vecāku iestatījumiem un apstiprinātu stāstus jūsu bērniem.';
+  String get thisWillBeUsedForAccess =>
+      'Šis PIN tiks izmantots, lai piekļūtu vecāku iestatījumiem un apstiprinātu stāstus jūsu bērniem.';
 
   @override
   String get pleaseEnterAllFourDigits => 'Lūdzu, ievadiet visus 4 ciparus';
 
   @override
-  String get failedToSetPin => 'Neizdevās iestatīt PIN. Lūdzu, mēģiniet vēlreiz.';
+  String get failedToSetPin =>
+      'Neizdevās iestatīt PIN. Lūdzu, mēģiniet vēlreiz.';
 
   @override
   String get tapToStartRecording => 'Pieskarieties, lai sāktu ierakstīšanu';

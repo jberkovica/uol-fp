@@ -334,8 +334,8 @@ class AppTheme {
     );
   }
 
-  static CardTheme get _cardTheme {
-    return CardTheme(
+  static CardThemeData get _cardTheme {
+    return CardThemeData(
       elevation: 0, // ZERO shadow
       shadowColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,

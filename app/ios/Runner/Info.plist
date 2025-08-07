@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -20,9 +22,41 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>supabase-auth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.mirastoryteller.mira_storyteller</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>facebook-auth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fbYOUR_FACEBOOK_APP_ID</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>YOUR_FACEBOOK_APP_ID</string>
+	<key>FacebookClientToken</key>
+	<string>YOUR_FACEBOOK_CLIENT_TOKEN</string>
+	<key>FacebookDisplayName</key>
+	<string>Mira Storyteller</string>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -41,53 +75,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-	
-	<!-- PostHog Configuration -->
 	<key>com.posthog.posthog.AUTO_INIT</key>
 	<false/>
-	
-	<!-- URL schemes for OAuth callbacks -->
-	<key>CFBundleURLTypes</key>
-	<array>
-		<!-- Supabase OAuth callback -->
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>supabase-auth</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.mirastoryteller.mira_storyteller</string>
-			</array>
-		</dict>
-		<!-- Facebook OAuth callback -->
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>facebook-auth</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>fbYOUR_FACEBOOK_APP_ID</string>
-			</array>
-		</dict>
-	</array>
-
-	<!-- Facebook Configuration -->
-	<key>FacebookAppID</key>
-	<string>YOUR_FACEBOOK_APP_ID</string>
-	<key>FacebookClientToken</key>
-	<string>YOUR_FACEBOOK_CLIENT_TOKEN</string>
-	<key>FacebookDisplayName</key>
-	<string>Mira Storyteller</string>
-	
-	<!-- Apple Sign In Capability (handled via Xcode signing) -->
-	
-	<!-- Allow HTTP for development -->
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-	</dict>
 </dict>
 </plist>

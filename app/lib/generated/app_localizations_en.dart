@@ -1,5 +1,5 @@
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -109,10 +109,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get audioRecordingComingSoon => 'Audio recording will be implemented soon!';
+  String get audioRecordingComingSoon =>
+      'Audio recording will be implemented soon!';
 
   @override
-  String get textStoryComingSoon => 'Text story generation will be implemented soon!';
+  String get textStoryComingSoon =>
+      'Text story generation will be implemented soon!';
 
   @override
   String failedToPickImage(String error) {
@@ -147,7 +149,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get incorrectPin => 'Incorrect PIN. Please try again.';
 
   @override
-  String get accountCreatedSuccessfully => 'Account created successfully! Please check your email to verify your account.';
+  String get accountCreatedSuccessfully =>
+      'Account created successfully! Please check your email to verify your account.';
 
   @override
   String get appleSignInComingSoon => 'Apple sign in coming soon!';
@@ -161,10 +164,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get addKidProfileFirst => 'Please add a kid profile first to create stories';
+  String get addKidProfileFirst =>
+      'Please add a kid profile first to create stories';
 
   @override
-  String get noKidsProfilesAvailable => 'No kids profiles available. Add a kid first!';
+  String get noKidsProfilesAvailable =>
+      'No kids profiles available. Add a kid first!';
 
   @override
   String get changePinComingSoon => 'Change PIN coming soon!';
@@ -282,7 +287,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get writeYourIdeaHere => 'write your idea here...';
 
   @override
-  String get enterFeedbackOrChanges => 'Enter any feedback or request changes...';
+  String get enterFeedbackOrChanges =>
+      'Enter any feedback or request changes...';
 
   @override
   String get transcribingAudio => 'Transcribing audio...';
@@ -342,7 +348,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get storySettings => 'Story Settings';
 
   @override
-  String get configureStoryGenerationPreferences => 'Configure story generation preferences';
+  String get configureStoryGenerationPreferences =>
+      'Configure story generation preferences';
 
   @override
   String get exportData => 'Export Data';
@@ -374,7 +381,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noKidsProfilesYet => 'No Kids Profiles Yet';
 
   @override
-  String get addFirstKidProfile => 'Add your first kid profile to get started with personalized stories!';
+  String get addFirstKidProfile =>
+      'Add your first kid profile to get started with personalized stories!';
 
   @override
   String get parentControls => 'Parent Controls';
@@ -469,7 +477,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseProvideReason => 'Please provide a reason for declining:';
 
   @override
-  String get declineReasonHint => 'E.g., too scary, inappropriate content, etc.';
+  String get declineReasonHint =>
+      'E.g., too scary, inappropriate content, etc.';
 
   @override
   String get suggestEdits => 'Suggest Edits';
@@ -478,7 +487,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get provideSuggestions => 'Provide suggestions to improve the story:';
 
   @override
-  String get suggestionsHint => 'E.g., make it less scary, add more about friendship, etc.';
+  String get suggestionsHint =>
+      'E.g., make it less scary, add more about friendship, etc.';
 
   @override
   String get regeneratingStory => 'Regenerating story with your suggestions...';
@@ -522,13 +532,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewByEmail => 'Review by Email';
 
   @override
-  String get autoApproveDescription => 'Stories are automatically approved and available immediately';
+  String get autoApproveDescription =>
+      'Stories are automatically approved and available immediately';
 
   @override
-  String get reviewInAppDescription => 'Review stories in the parent dashboard before they\'re shown to children';
+  String get reviewInAppDescription =>
+      'Review stories in the parent dashboard before they\'re shown to children';
 
   @override
-  String get reviewByEmailDescription => 'Receive email notifications to review stories before approval';
+  String get reviewByEmailDescription =>
+      'Receive email notifications to review stories before approval';
 
   @override
   String approvalMethodUpdated(String method) {
@@ -553,7 +566,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tapReviewToApprove => 'Tap Review to ask parent for approval';
 
   @override
-  String get weWillNotifyWhenReady => 'We\'ll let you know when your story is ready!';
+  String get weWillNotifyWhenReady =>
+      'We\'ll let you know when your story is ready!';
 
   @override
   String get openStory => 'open';
@@ -562,10 +576,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pleaseEnterText => 'Please enter some text to create your story';
 
   @override
-  String get textTooShort => 'Please write at least 10 characters for your story idea';
+  String get textTooShort =>
+      'Please write at least 10 characters for your story idea';
 
   @override
-  String get textTooLong => 'Text is too long. Please keep it under 500 characters';
+  String get textTooLong =>
+      'Text is too long. Please keep it under 500 characters';
 
   @override
   String get pleaseSelectChild => 'Please select a child first';
@@ -577,7 +593,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stopRecording => 'Stop Recording';
 
   @override
-  String get microphonePermissionRequired => 'Microphone permission is required to record audio';
+  String get microphonePermissionRequired =>
+      'Microphone permission is required to record audio';
 
   @override
   String get failedToStartRecording => 'Failed to start recording';
@@ -613,7 +630,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get personalityPreferences => 'Personality & Preferences';
 
   @override
-  String get personalityPreferencesOptional => 'Personality & Preferences (Optional)';
+  String get personalityPreferencesOptional =>
+      'Personality & Preferences (Optional)';
 
   @override
   String get additionalNotes => 'Additional Notes';
@@ -686,13 +704,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setYourParentPin => 'Set Your Parent PIN';
 
   @override
-  String get createFourDigitPinAccess => 'Create a 4-digit PIN to access\nparent dashboard and settings';
+  String get createFourDigitPinAccess =>
+      'Create a 4-digit PIN to access\nparent dashboard and settings';
 
   @override
   String get settingUpYourPin => 'Setting up your PIN...';
 
   @override
-  String get thisWillBeUsedForAccess => 'This PIN will be used to access parent settings and approve stories for your children.';
+  String get thisWillBeUsedForAccess =>
+      'This PIN will be used to access parent settings and approve stories for your children.';
 
   @override
   String get pleaseEnterAllFourDigits => 'Please enter all 4 digits';

@@ -1,5 +1,5 @@
+// ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -109,10 +109,12 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get audioRecordingComingSoon => 'Запись звука будет реализована в ближайшее время!';
+  String get audioRecordingComingSoon =>
+      'Запись звука будет реализована в ближайшее время!';
 
   @override
-  String get textStoryComingSoon => 'Генерация текстовых историй будет реализована в ближайшее время!';
+  String get textStoryComingSoon =>
+      'Генерация текстовых историй будет реализована в ближайшее время!';
 
   @override
   String failedToPickImage(String error) {
@@ -133,7 +135,8 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get editProfileComingSoon => 'Редактирование профиля скоро будет доступно!';
+  String get editProfileComingSoon =>
+      'Редактирование профиля скоро будет доступно!';
 
   @override
   String get favoritesComingSoon => 'Избранное скоро будет доступно!';
@@ -147,13 +150,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get incorrectPin => 'Неверный PIN. Попробуйте еще раз.';
 
   @override
-  String get accountCreatedSuccessfully => 'Аккаунт успешно создан! Проверьте свою почту для подтверждения.';
+  String get accountCreatedSuccessfully =>
+      'Аккаунт успешно создан! Проверьте свою почту для подтверждения.';
 
   @override
   String get appleSignInComingSoon => 'Вход через Apple скоро будет доступен!';
 
   @override
-  String get appleSignUpComingSoon => 'Регистрация через Apple скоро будет доступна!';
+  String get appleSignUpComingSoon =>
+      'Регистрация через Apple скоро будет доступна!';
 
   @override
   String failedToLoadKids(String error) {
@@ -161,16 +166,19 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get addKidProfileFirst => 'Сначала добавьте профиль ребенка для создания сказок';
+  String get addKidProfileFirst =>
+      'Сначала добавьте профиль ребенка для создания сказок';
 
   @override
-  String get noKidsProfilesAvailable => 'Нет профилей детей. Сначала добавьте ребенка!';
+  String get noKidsProfilesAvailable =>
+      'Нет профилей детей. Сначала добавьте ребенка!';
 
   @override
   String get changePinComingSoon => 'Изменение PIN скоро будет доступно!';
 
   @override
-  String get storySettingsComingSoon => 'Настройки сказок скоро будут доступны!';
+  String get storySettingsComingSoon =>
+      'Настройки сказок скоро будут доступны!';
 
   @override
   String get exportDataComingSoon => 'Экспорт данных скоро будет доступен!';
@@ -282,7 +290,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get writeYourIdeaHere => 'напишите вашу идею здесь...';
 
   @override
-  String get enterFeedbackOrChanges => 'Введите отзыв или запросите изменения...';
+  String get enterFeedbackOrChanges =>
+      'Введите отзыв или запросите изменения...';
 
   @override
   String get transcribingAudio => 'Транскрипция аудио...';
@@ -294,7 +303,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get switchProfile => 'Сменить профиль';
 
   @override
-  String get changeToDifferentKidProfile => 'Переключиться на другой профиль ребенка';
+  String get changeToDifferentKidProfile =>
+      'Переключиться на другой профиль ребенка';
 
   @override
   String get favoriteStories => 'Любимые сказки';
@@ -342,7 +352,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get storySettings => 'Настройки сказок';
 
   @override
-  String get configureStoryGenerationPreferences => 'Настроить параметры генерации сказок';
+  String get configureStoryGenerationPreferences =>
+      'Настроить параметры генерации сказок';
 
   @override
   String get exportData => 'Экспорт данных';
@@ -374,7 +385,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noKidsProfilesYet => 'Пока нет профилей детей';
 
   @override
-  String get addFirstKidProfile => 'Добавьте первый профиль ребенка для персонализированных сказок!';
+  String get addFirstKidProfile =>
+      'Добавьте первый профиль ребенка для персонализированных сказок!';
 
   @override
   String get parentControls => 'Родительский контроль';
@@ -428,7 +440,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get profileOptions => 'Настройки профиля';
 
   @override
-  String get changeToDifferentProfile => 'Переключиться на другой профиль ребенка';
+  String get changeToDifferentProfile =>
+      'Переключиться на другой профиль ребенка';
 
   @override
   String get english => 'English';
@@ -470,7 +483,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get pleaseProvideReason => 'Пожалуйста, укажите причину отклонения:';
 
   @override
-  String get declineReasonHint => 'Например, слишком страшно, неподходящий контент и т.д.';
+  String get declineReasonHint =>
+      'Например, слишком страшно, неподходящий контент и т.д.';
 
   @override
   String get suggestEdits => 'Предложить правки';
@@ -479,10 +493,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get provideSuggestions => 'Предложите улучшения для сказки:';
 
   @override
-  String get suggestionsHint => 'Например, сделать менее страшно, добавить больше о дружбе и т.д.';
+  String get suggestionsHint =>
+      'Например, сделать менее страшно, добавить больше о дружбе и т.д.';
 
   @override
-  String get regeneratingStory => 'Создаем новую версию сказки с вашими предложениями...';
+  String get regeneratingStory =>
+      'Создаем новую версию сказки с вашими предложениями...';
 
   @override
   String get regenerateStory => 'Создать новую версию';
@@ -523,13 +539,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get reviewByEmail => 'Проверка по email';
 
   @override
-  String get autoApproveDescription => 'Истории автоматически одобряются и сразу становятся доступными';
+  String get autoApproveDescription =>
+      'Истории автоматически одобряются и сразу становятся доступными';
 
   @override
-  String get reviewInAppDescription => 'Проверяйте истории в родительской панели перед показом детям';
+  String get reviewInAppDescription =>
+      'Проверяйте истории в родительской панели перед показом детям';
 
   @override
-  String get reviewByEmailDescription => 'Получайте уведомления по email для проверки историй перед одобрением';
+  String get reviewByEmailDescription =>
+      'Получайте уведомления по email для проверки историй перед одобрением';
 
   @override
   String approvalMethodUpdated(String method) {
@@ -537,7 +556,8 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get failedToUpdateApprovalMethod => 'Не удалось изменить способ одобрения';
+  String get failedToUpdateApprovalMethod =>
+      'Не удалось изменить способ одобрения';
 
   @override
   String errorUpdatingApprovalMethod(String error) {
@@ -551,22 +571,27 @@ class AppLocalizationsRu extends AppLocalizations {
   String get parentReviewPending => 'Ожидает одобрения родителей';
 
   @override
-  String get tapReviewToApprove => 'Нажмите Проверить, чтобы попросить родителей одобрить';
+  String get tapReviewToApprove =>
+      'Нажмите Проверить, чтобы попросить родителей одобрить';
 
   @override
-  String get weWillNotifyWhenReady => 'Мы сообщим, когда ваша история будет готова!';
+  String get weWillNotifyWhenReady =>
+      'Мы сообщим, когда ваша история будет готова!';
 
   @override
   String get openStory => 'открыть';
 
   @override
-  String get pleaseEnterText => 'Пожалуйста, введите текст для создания истории';
+  String get pleaseEnterText =>
+      'Пожалуйста, введите текст для создания истории';
 
   @override
-  String get textTooShort => 'Пожалуйста, напишите хотя бы 10 символов для вашей идеи истории';
+  String get textTooShort =>
+      'Пожалуйста, напишите хотя бы 10 символов для вашей идеи истории';
 
   @override
-  String get textTooLong => 'Текст слишком длинный. Пожалуйста, сократите до 500 символов';
+  String get textTooLong =>
+      'Текст слишком длинный. Пожалуйста, сократите до 500 символов';
 
   @override
   String get pleaseSelectChild => 'Пожалуйста, сначала выберите ребенка';
@@ -578,7 +603,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get stopRecording => 'Остановить запись';
 
   @override
-  String get microphonePermissionRequired => 'Для записи аудио требуется разрешение на использование микрофона';
+  String get microphonePermissionRequired =>
+      'Для записи аудио требуется разрешение на использование микрофона';
 
   @override
   String get failedToStartRecording => 'Не удалось начать запись';
@@ -614,13 +640,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get personalityPreferences => 'Личность и предпочтения';
 
   @override
-  String get personalityPreferencesOptional => 'Личность и предпочтения (необязательно)';
+  String get personalityPreferencesOptional =>
+      'Личность и предпочтения (необязательно)';
 
   @override
   String get additionalNotes => 'Дополнительные заметки';
 
   @override
-  String get additionalNotesOptional => 'Дополнительные заметки (необязательно)';
+  String get additionalNotesOptional =>
+      'Дополнительные заметки (необязательно)';
 
   @override
   String get ageOptional => 'Возраст (необязательно)';
@@ -662,10 +690,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get favoriteStoryTypes => 'Любимые типы историй';
 
   @override
-  String get favoriteStoryTypesOptional => 'Любимые типы историй (необязательно)';
+  String get favoriteStoryTypesOptional =>
+      'Любимые типы историй (необязательно)';
 
   @override
-  String get addSpecialNotes => 'Добавьте любые особые заметки о вашем ребенке...';
+  String get addSpecialNotes =>
+      'Добавьте любые особые заметки о вашем ребенке...';
 
   @override
   String addSpecialNotesFor(String childName) {
@@ -687,19 +717,22 @@ class AppLocalizationsRu extends AppLocalizations {
   String get setYourParentPin => 'Установите родительский PIN';
 
   @override
-  String get createFourDigitPinAccess => 'Создайте 4-значный PIN для доступа\nк родительской панели и настройкам';
+  String get createFourDigitPinAccess =>
+      'Создайте 4-значный PIN для доступа\nк родительской панели и настройкам';
 
   @override
   String get settingUpYourPin => 'Установка вашего PIN...';
 
   @override
-  String get thisWillBeUsedForAccess => 'Этот PIN будет использоваться для доступа к родительским настройкам и одобрения историй для ваших детей.';
+  String get thisWillBeUsedForAccess =>
+      'Этот PIN будет использоваться для доступа к родительским настройкам и одобрения историй для ваших детей.';
 
   @override
   String get pleaseEnterAllFourDigits => 'Пожалуйста, введите все 4 цифры';
 
   @override
-  String get failedToSetPin => 'Не удалось установить PIN. Пожалуйста, попробуйте еще раз.';
+  String get failedToSetPin =>
+      'Не удалось установить PIN. Пожалуйста, попробуйте еще раз.';
 
   @override
   String get tapToStartRecording => 'Нажмите, чтобы начать запись';
