@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:local_auth/local_auth.dart';
 import '../../constants/app_colors.dart';
 import '../../generated/app_localizations.dart';
 import '../../services/auth_service.dart';
-import '../../services/biometric_auth_service.dart';
 
 class PinEntryScreen extends StatefulWidget {
   const PinEntryScreen({super.key});
@@ -16,63 +14,12 @@ class PinEntryScreen extends StatefulWidget {
 class _PinEntryScreenState extends State<PinEntryScreen> {
   String _enteredPin = '';
   bool _isError = false;
-  bool _biometricAvailable = false;
-  BiometricType? _primaryBiometric;
-  bool _isAuthenticating = false;
 
   @override
   void initState() {
     super.initState();
-    _initializeBiometric();
   }
 
-  Future<void> _initializeBiometric() async {
-    final biometricService = BiometricAuthService.instance;
-    final isAvailable = await biometricService.isAvailable();
-    
-    if (isAvailable) {
-      final primaryBiometric = await biometricService.getPrimaryBiometricType();
-      setState(() {
-        _biometricAvailable = true;
-        _primaryBiometric = primaryBiometric;
-      });
-    }
-  }
-
-  Future<void> _authenticateWithBiometric() async {
-    if (!_biometricAvailable || _isAuthenticating) return;
-
-    setState(() {
-      _isAuthenticating = true;
-    });
-
-    final biometricService = BiometricAuthService.instance;
-    
-    try {
-      final authenticated = await biometricService.authenticate(
-        reason: 'Please authenticate to access parent dashboard',
-        useErrorDialogs: true,
-        stickyAuth: true,
-      );
-
-      if (authenticated && mounted) {
-        Navigator.pushReplacementNamed(context, '/parent-dashboard-main');
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Biometric authentication failed. Please use PIN.'),
-            backgroundColor: AppColors.error,
-          ),
-        );
-      }
-    } finally {
-      setState(() {
-        _isAuthenticating = false;
-      });
-    }
-  }
 
   void _onNumberTap(String number) {
     if (_enteredPin.length < 4) {
@@ -188,14 +135,7 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
                         // PIN dots
                         _buildPinDots(),
                         
-                        // Biometric button (if available)
-                        if (_biometricAvailable)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 24, bottom: 16),
-                            child: _buildBiometricButton(),
-                          ),
-                        
-                        SizedBox(height: _biometricAvailable ? 24 : 40),
+                        const SizedBox(height: 40),
 
                         // Number pad
                         _buildNumberPad(),
@@ -333,70 +273,4 @@ class _PinEntryScreenState extends State<PinEntryScreen> {
     );
   }
 
-  Widget _buildBiometricButton() {
-    // Get the appropriate icon for the biometric type
-    String biometricIcon;
-    String biometricText;
-    
-    switch (_primaryBiometric) {
-      case BiometricType.face:
-        biometricIcon = 'assets/icons/eye.svg';
-        biometricText = 'Face ID';
-        break;
-      case BiometricType.fingerprint:
-        biometricIcon = 'assets/icons/fingerprint.svg';
-        biometricText = 'Fingerprint';
-        break;
-      default:
-        biometricIcon = 'assets/icons/shield-check.svg';
-        biometricText = 'Biometric';
-    }
-
-    return Column(
-      children: [
-        // Biometric icon button
-        Container(
-          width: 56,
-          height: 56,
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(28),
-          ),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: _isAuthenticating ? null : _authenticateWithBiometric,
-              borderRadius: BorderRadius.circular(28),
-              child: Center(
-                child: _isAuthenticating
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                        ),
-                      )
-                    : SvgPicture.asset(
-                        biometricIcon,
-                        width: 24,
-                        height: 24,
-                        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                      ),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        
-        // Biometric text
-        Text(
-          biometricText,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Colors.white.withValues(alpha: 0.8),
-          ),
-        ),
-      ],
-    );
-  }
 }
