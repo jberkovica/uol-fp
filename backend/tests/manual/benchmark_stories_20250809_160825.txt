@@ -1,0 +1,66 @@
+GENERATED STORIES FOR REVIEW
+================================================================================
+Date: 2025-08-09 16:08:25.649282
+Test scenarios: 1
+
+
+================================================================================
+VENDOR: MISTRAL (mistral-medium-latest)
+================================================================================
+
+Story 1:
+----------------------------------------
+Title: Emma and the Friendly Dragon's Balloon Adventure
+Processing Time: 5.57s
+Word Count: 175
+Has Kid Name: True
+JSON Format: True
+
+STORY CONTENT:
+----------------------------------------
+Once upon a time, in a colorful land, lived a friendly dragon named Puffy. Puffy loved to blow bubbles that turned into beautiful balloons. One sunny day, Emma was playing in her garden when she saw Puffy flying above. Puffy's balloons were shining in the sunlight. Emma waved at Puffy, and the friendly dragon landed gently beside her. 'Hello, Emma!' Puffy said with a smile. 'Would you like to go on an adventure with me?' Emma clapped her hands and said, 'Yes!' Puffy gave Emma a shiny red balloon and they both climbed onto Puffy's back. They flew over green forests, blue rivers, and fluffy clouds. Emma giggled as they played with the balloons, making them dance and swirl in the sky. When they landed back in Emma's garden, Puffy gave her a big hug. 'Thank you for a wonderful adventure, Emma!' Puffy said. Emma smiled and said, 'Thank you, Puffy! Let's do it again soon!' And with that, Puffy flew off into the sunset, leaving Emma with a sky full of beautiful, shining balloons.
+
+
+================================================================================
+VENDOR: GPT-4O-MINI (gpt-4o-mini)
+================================================================================
+
+Story 1:
+----------------------------------------
+Title: Emma and the Friendly Dragon's Balloons
+Processing Time: 4.81s
+Word Count: 186
+Has Kid Name: True
+JSON Format: True
+
+STORY CONTENT:
+----------------------------------------
+Once upon a time, in a bright and colorful land, there lived a friendly dragon named Sparkle. Sparkle loved to blow up big, shiny balloons in every color of the rainbow. One sunny day, a little girl named Emma walked by Sparkle’s cave. She saw the balloons floating high in the sky. 
+
+"Wow! Those are beautiful!" Emma said, her eyes wide with wonder. Sparkle smiled and waved. "Hello, Emma! Would you like to play with my balloons?" 
+
+Emma jumped with joy. "Yes, please!" 
+
+Sparkle gently tossed down a big, red balloon. Emma grabbed it and laughed as it bobbed up and down. They played together, running and dancing in the grassy field. 
+
+Suddenly, a strong wind blew, and the balloons began to lift off the ground! "Oh no!" Emma cried. Sparkle took a deep breath and flapped his wings. With a whoosh, he flew up to catch the balloons. 
+
+"Got them!" Sparkle shouted as he floated back down. Emma cheered! Together, they held the balloons tightly and promised to have many more adventures. And from that day on, Emma and Sparkle became the best of friends.
+
+
+================================================================================
+VENDOR: GOOGLE (gemini-2.0-flash-exp)
+================================================================================
+
+Story 1:
+----------------------------------------
+Title: Sparky's Balloon Adventure
+Processing Time: 2.54s
+Word Count: 108
+Has Kid Name: True
+JSON Format: False
+
+STORY CONTENT:
+----------------------------------------
+Sparky was a friendly dragon. He loved balloons! One sunny day, Sparky had lots of colorful balloons. Red, blue, yellow, and green! He wanted to share them. Emma saw Sparky. "Wow!" said Emma. Sparky smiled. He gave Emma a bright red balloon. "Thank you!" Emma giggled. Sparky flapped his wings. He floated up, up, up! Emma held her red balloon tight. Sparky tied more balloons together. They made a big bunch! He held the balloons and floated over the forest. Emma waved. Sparky waved back with his big, green claw. He flew to share balloons with all his friends. What a happy, balloon-filled day for Emma and Sparky!
+

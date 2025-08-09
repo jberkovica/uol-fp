@@ -1,4 +1,11 @@
-"""Integration tests for API endpoints."""
+"""
+Integration tests for API endpoints with mocked dependencies.
+
+These tests verify API endpoint behavior, request/response formats, 
+and error handling without making external API calls.
+
+Run with: pytest tests/integration/test_api_endpoints.py -v
+"""
 import pytest
 from unittest.mock import AsyncMock, patch
 from httpx import AsyncClient
@@ -7,6 +14,7 @@ from src.types.domain import Kid, Story, StoryStatus, Language
 from src.types.requests import CreateKidRequest, GenerateStoryRequest
 
 
+@pytest.mark.integration
 class TestHealthEndpoints:
     """Test health check endpoints."""
     
@@ -40,6 +48,7 @@ class TestHealthEndpoints:
         assert "supabase" in data["services"]
 
 
+@pytest.mark.integration
 class TestKidEndpoints:
     """Test kid profile management endpoints."""
     
@@ -153,6 +162,7 @@ class TestKidEndpoints:
         assert data["name"] == "Bob"
 
 
+@pytest.mark.integration
 class TestStoryEndpoints:
     """Test story management endpoints."""
     
@@ -300,6 +310,7 @@ class TestStoryEndpoints:
         mock_supabase_service.update_story.assert_called_once()
 
 
+@pytest.mark.integration
 class TestLegacyEndpoints:
     """Test legacy endpoint compatibility."""
     

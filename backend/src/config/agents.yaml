@@ -20,150 +20,100 @@ agents:
           Be factual but include specific names for recognizable items.
       
   storyteller:
-    vendor: "mistral"  # Options: mistral, openai, anthropic, google
+    # Current: mistral-medium (5.5s, reliable JSON, good quality)
+    # Alternatives: gpt-3.5-turbo (faster), gpt-4o-mini (better quality)
+    vendor: "mistral"  # Options: mistral, openai, google
     model: "mistral-medium-latest"
     api_key: ${MISTRAL_API_KEY}
-    max_tokens: 300
+    max_tokens: 800
     temperature: 0.7
+    word_count: "500"  # Target story length in words
     prompts:
       story_generation:
-        system:
-          default: |
-            You are a creative children's storyteller. Create engaging, family-friendly stories
-            that are 150-200 words long. The stories should be imaginative, positive, and
-            appropriate for children aged 3-8 years old.
-          mistral: |
-            You are Mira, a magical storyteller who creates wonderful tales for children.
-            Your stories should be:
-            - Exactly 150-200 words long
-            - Family-friendly and positive
-            - Imaginative and engaging
-            - Appropriate for ages 3-8
-            - Include a simple moral or learning moment
-          
-        user:
-          default: |
-            Based on this image description, create a magical children's story:
-            {image_description}
-            
-            Remember to keep it 150-200 words and appropriate for young children.
-          with_language: |
-            Based on this image description, create a magical children's story in {language}:
-            {image_description}
-            
-            Remember to keep it 150-200 words and appropriate for young children.
-          with_theme: |
-            Based on this image description, create a magical children's story:
-            {image_description}
-            
-            Theme: {theme}
-            Keep it 150-200 words and appropriate for young children.
+        system: |
+          You are a creative children's storyteller. Create engaging, family-friendly stories.
+          The stories should be imaginative, positive, and appropriate for children aged 3-8 years old.
+        user: |
+          Create a children's story and return it as valid JSON.
+
+          Story details:
+          - Base story on: {image_description}
+          - Child's name: {kid_name}
+          - Age group: {age_group}
+          - Language: {language}
+          - Target length: {word_count} words
+          - Additional context: {additional_context}
+
+          Requirements:
+          - Story should be imaginative, positive, and age-appropriate
+          - Include the child's name naturally in the story
+          - Format the story with 4-5 paragraphs separated by double newlines (\n\n)
+          - Each paragraph should be 2-4 sentences
+          - Do not include any text except JSON in your response
+          - Do not return Markdown or HTML
+
+          Return ONLY this JSON structure:
+          {{
+            "title": "An engaging story title",
+            "content": "The complete story content..."
+          }}
     
   voice:
-    # Per-language TTS provider configuration
+    # TTS configuration per language
     languages:
-      en:  # English
+      en:
         vendor: "elevenlabs"
         api_key: ${ELEVENLABS_API_KEY}
         voice: "callum"
-        voice_id: "N2lVS1w4EtoT3dr4eOWO"  # Correct Callum voice ID
-        model: "eleven_multilingual_v2"  # Best model for multilingual content
+        voice_id: "N2lVS1w4EtoT3dr4eOWO"
+        model: "eleven_multilingual_v2"
         settings:
           stability: 0.5
           similarity_boost: 0.5
           style: 0.0
           use_speaker_boost: true
-          speed: 0.8  # Slower speed for better clarity
-      ru:  # Russian
+          speed: 0.8
+      ru:
         vendor: "elevenlabs"
         api_key: ${ELEVENLABS_API_KEY}
         voice: "nina"
-        voice_id: "N8lIVPsFkvOoqev5Csxo"  # Nina - Professional Russian voice, perfect for stories
-        model: "eleven_multilingual_v2"  # Best model for multilingual content
+        voice_id: "N8lIVPsFkvOoqev5Csxo"
+        model: "eleven_multilingual_v2"
         settings:
-          stability: 0.4          # Lower for more variation and expressiveness
-          similarity_boost: 0.6   # Reduced for more creative interpretation
-          style: 0.4              # Increased for more emotional expression
-          use_speaker_boost: true # Enhanced clarity
-          speed: 0.9              # Slightly slower for better comprehension
-          # Additional emotional settings:
-          # stability: 0.3-0.5 (lower = more expressive, higher = more consistent)
-          # similarity_boost: 0.5-0.6 (lower = more creative, higher = more similar to original)
-          # style: 0.3-0.6 (higher = more dramatic and emotional)
-      lv:  # Latvian
+          stability: 0.4
+          similarity_boost: 0.6
+          style: 0.4
+          use_speaker_boost: true
+          speed: 0.9
+      lv:
         vendor: "openai"
         api_key: ${OPENAI_API_KEY}
-        voice: "sage"  # More expressive newer voice, good for Latvian
-        model: "tts-1-hd"  # High quality model (could try gpt-4o-mini-tts)
+        voice: "sage"
+        model: "tts-1-hd"
         settings:
-          speed: 0.95       # Slightly slower for more natural rhythm
-          response_format: "flac"  # Lossless audio for best quality
-        # Alternative configurations to try:
-        # voice: "coral" - also good for Latvian according to your tests
-        # model: "gpt-4o-mini-tts" - newer model, may have better quality
-        # response_format: "wav" - uncompressed alternative to flac
-        # speed: 0.9 to 1.1 - experiment in this range for most natural sound
+          speed: 0.95
+          response_format: "flac"
     
-    # Voice library for reference
+    # Voice alternatives for reference
     available_voices:
       elevenlabs:
-        callum:
-          id: "N2lVS1w4EtoT3dr4eOWO"
-          description: "Warm, friendly male voice (corrected ID)"
-          language: "en"
-        rachel:
-          id: "21m00Tcm4TlvDq8ikWAM"
-          description: "Gentle, caring female voice"
-          language: "en"
-        nina:
-          id: "N8lIVPsFkvOoqev5Csxo"
-          description: "Professional Russian voice - soft, melodic tone ideal for narratives"
-          language: "ru"
-          category: "professional"
-        antoni:
-          id: "ErXwobaYiN019PkySvjV"
-          description: "Well-rounded voice, great for narration"
-          language: "en"
-        bella:
-          id: "EXAVITQu4vr4xnSDxMaL"
-          description: "American female voice"
-          language: "en"
+        callum: "N2lVS1w4EtoT3dr4eOWO"  # Warm male voice (EN)
+        nina: "N8lIVPsFkvOoqev5Csxo"    # Professional female voice (RU)
+        rachel: "21m00Tcm4TlvDq8ikWAM"  # Gentle female voice (EN)
       openai:
-        coral:
-          description: "Expressive female voice"
-          language: "en"
-        sage:
-          description: "Calm, thoughtful voice"
-          language: "en"
-        nova:
-          description: "Bright, engaging voice"
-          language: "en"
-      google:
-        en-US-Journey-F:
-          description: "Warm female voice"
-          language: "en-US"
-        en-US-Journey-D:
-          description: "Friendly male voice"
-          language: "en-US"
+        sage: "Calm, thoughtful voice"    # Current LV choice
+        coral: "Expressive female voice"
+        nova: "Bright, engaging voice"
       
-  speech:  # Speech-to-Text Recognition
-    vendor: "openai"  # Current: openai (whisper), Future: google, azure, etc.
+  speech:
+    vendor: "openai"
     vendors:
       openai:
         model: "whisper-1"
         api_key: ${OPENAI_API_KEY}
         settings:
-          # Language passed dynamically from user's app selection
-          # Supports: en, ru, lv and all other Whisper-supported languages
           response_format: "text"
-          temperature: 0.0  # Most deterministic transcription
-      # Future vendors can be added here:
-      # google:
-      #   model: "speech-to-text-v1"
-      #   api_key: ${GOOGLE_API_KEY}
-      # azure:
-      #   model: "speech-to-text"
-      #   api_key: ${AZURE_API_KEY}
+          temperature: 0.0
     
   artist:  # Future - Image Generation
     vendor: "openai"

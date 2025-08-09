@@ -19,8 +19,14 @@ This document explains our test strategy, which prioritizes **meaningful tests**
 
 ## Test Structure
 
-### Unit Tests (`tests/unit/`) - **49 passing**
-Fast, isolated tests that run in < 1 second total.
+### Unit Tests (`tests/unit/`) - **64 passing**
+Fast, isolated tests that run in < 2 seconds total.
+
+- **`test_storyteller_agent.py`** - New JSON storyteller agent (15 tests)
+  - Agent creation and validation
+  - JSON response parsing and fallback handling  
+  - Context building and prompt generation
+  - Mocked API interactions (no real API calls)
 
 - **`test_validators.py`** - Core input validation (16 tests)
   - Image validation (base64, size, format)
@@ -46,42 +52,57 @@ Fast, isolated tests that run in < 1 second total.
 ### Integration Tests (`tests/integration/`) 
 Tests that involve multiple components or external services.
 
-- **`test_api_endpoints.py`** - API endpoint testing
-- **`disabled/test_agents_integration.py`** - AI agent tests (DISABLED)
+- **`test_api_endpoints.py`** - API endpoint testing (safe, mocked dependencies)
+- **`test_storyteller_integration.py`** - AI provider integration (COSTS MONEY)
 
-### Disabled Tests (`tests/integration/disabled/`)
-Tests that require API calls and cost money. Only run when necessary.
+### Cost Management
+Integration tests are organized by cost:
+
+- **Safe Integration Tests**: Use mocked dependencies, no external calls
+- **AI Integration Tests**: Make real API calls, excluded from default runs
 
 ## Running Tests
 
 ### Unit Tests (Recommended - Fast & Free)
 ```bash
-# Run all unit tests (< 1 second)
-python -m pytest tests/unit/ -v
+# Run all unit tests (< 2 seconds, 64 tests)
+pytest tests/unit/ -v
 
 # Run specific test file
-python -m pytest tests/unit/test_validators.py -v
+pytest tests/unit/test_storyteller_agent.py -v
+pytest tests/unit/test_validators.py -v
 
-# Run with coverage (if needed)
-python -m pytest tests/unit/ --cov=src --cov-report=term-missing
+# Quick feedback during development
+pytest tests/unit/ -x  # Stop on first failure
+pytest tests/unit/ -q  # Quiet mode
+
+# With coverage report
+pytest tests/unit/ --cov=src --cov-report=term-missing
+
+# Watch mode during development (requires pytest-watch)
+pip install pytest-watch
+ptw tests/unit/
 ```
 
-### Integration Tests (Use Sparingly)
+### Integration Tests (Safe)
 ```bash
-# Run integration tests (slower, may require setup)
-python -m pytest tests/integration/ -v
+# Run safe integration tests (API endpoints with mocks)
+python -m pytest tests/integration/test_api_endpoints.py -v
 
-# Skip disabled tests (default behavior)
-python -m pytest tests/integration/ -v -m "not skip"
+# All safe integration tests
+python -m pytest tests/integration/ -v -m "integration and not ai_required"
 ```
 
-### Disabled Tests (Cost Money!)
+### AI Integration Tests (Cost Money!)
 ```bash
-# Only run when absolutely necessary
-# 1. Set API keys: export OPENAI_API_KEY="..." etc.
-# 2. Move file from disabled/ to integration/  
-# 3. Remove @pytest.mark.skip decorator
-# 4. Run: python -m pytest tests/integration/test_agents_integration.py -v
+# 1. Set API keys first
+export MISTRAL_API_KEY="..." OPENAI_API_KEY="..." GOOGLE_API_KEY="..."
+
+# 2. Run AI tests (costs ~$0.01)
+python -m pytest tests/integration/ -v -m "ai_required"
+
+# 3. Run specific vendor
+python -m pytest tests/integration/test_storyteller_integration.py::TestMistralIntegration -v
 ```
 
 ## Test Quality Standards

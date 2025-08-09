@@ -1,0 +1,126 @@
+"""Pydantic models for story generation with JSON validation."""
+from typing import Optional
+from pydantic import BaseModel, Field, validator
+
+
+class LLMStoryResponse(BaseModel):
+    """Expected JSON response format from LLMs for story generation."""
+    
+    title: str = Field(
+        ..., 
+        min_length=1, 
+        max_length=200,
+        description="The story title"
+    )
+    content: str = Field(
+        ..., 
+        min_length=50,
+        max_length=2000,
+        description="The main story content"
+    )
+    
+    @validator('title')
+    def clean_title(cls, v):
+        """Remove any markdown formatting from title."""
+        # Remove common markdown patterns
+        v = v.strip()
+        v = v.replace('**', '')
+        v = v.replace('*', '')
+        v = v.replace('#', '')
+        v = v.strip('"').strip("'")
+        return v
+    
+    @validator('content')
+    def validate_content_length(cls, v):
+        """Ensure story is appropriate length (flexible for testing)."""
+        word_count = len(v.split())
+        if word_count < 20:  # More lenient for testing
+            raise ValueError(f"Story too short: {word_count} words (minimum 20)")
+        if word_count > 500:  # More lenient for long stories
+            raise ValueError(f"Story too long: {word_count} words (maximum 500)")
+        return v
+    
+    class Config:
+        """Pydantic configuration."""
+        json_schema_extra = {
+            "example": {
+                "title": "The Magical Garden Adventure",
+                "content": "Once upon a time, in a garden filled with rainbow flowers..."
+            }
+        }
+
+
+class StoryGenerationContext(BaseModel):
+    """Context data for story generation."""
+    
+    # Required fields
+    image_description: str = Field(..., description="Description of uploaded image/input")
+    kid_name: str = Field(..., min_length=1, max_length=50)
+    age: int = Field(..., ge=1, le=18)
+    language: str = Field(default="en", pattern="^[a-z]{2}$")
+    
+    # Optional fields
+    appearance_description: Optional[str] = Field(
+        None, 
+        description="Natural language description of child's appearance"
+    )
+    genres: Optional[list[str]] = Field(
+        default_factory=list,
+        description="Selected story genres"
+    )
+    parent_notes: Optional[str] = Field(
+        None,
+        description="Additional context from parent"
+    )
+    
+    # Control parameters
+    include_appearance: float = Field(
+        default=0.3,
+        ge=0.0,
+        le=1.0,
+        description="Probability of including appearance in this story"
+    )
+    word_count: str = Field(
+        default="150-200",
+        description="Target word count for story"
+    )
+    
+    def build_context_string(self) -> str:
+        """Build the context string for the prompt."""
+        context_parts = []
+        
+        # Add genres if specified
+        if self.genres:
+            context_parts.append(f"Genres: {', '.join(self.genres[:2])}")
+        
+        # Add appearance based on probability (this will be randomized per request)
+        if self.appearance_description and self.include_appearance > 0.5:
+            context_parts.append(f"Child appearance: {self.appearance_description}")
+        
+        # Add parent notes if provided
+        if self.parent_notes:
+            context_parts.append(f"Additional context: {self.parent_notes}")
+        
+        return " | ".join(context_parts) if context_parts else ""
+    
+    def get_age_group(self) -> str:
+        """Return age-appropriate content descriptor."""
+        if self.age <= 3:
+            return "toddler (very simple language)"
+        elif self.age <= 6:
+            return "preschool (simple sentences)"
+        elif self.age <= 9:
+            return "early elementary (engaging narrative)"
+        elif self.age <= 12:
+            return "elementary (more complex stories)"
+        else:
+            return "young reader (sophisticated vocabulary)"
+
+
+class StoryGenerationRequest(BaseModel):
+    """Internal request model for story generation."""
+    
+    context: StoryGenerationContext
+    vendor: Optional[str] = Field(None, description="Override default vendor")
+    temperature: Optional[float] = Field(None, ge=0.0, le=2.0)
+    max_tokens: Optional[int] = Field(None, ge=100, le=1000)
