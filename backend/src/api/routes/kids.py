@@ -2,12 +2,14 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 
-from ...types.requests import CreateKidRequest, UpdateKidRequest
-from ...types.responses import KidResponse, KidListResponse, StoryResponse
+from ...types.requests import CreateKidRequest, UpdateKidRequest, ExtractAppearanceRequest
+from ...types.responses import KidResponse, KidListResponse, StoryResponse, ExtractAppearanceResponse
 from ...services.supabase import get_supabase_service
 from ...core.validators import validate_kid_name, validate_age, validate_uuid
 from ...core.exceptions import NotFoundError, ValidationError
 from ...utils.logger import get_logger
+from ...agents.appearance.agent import create_appearance_agent
+from ...utils.config import get_config
 
 logger = get_logger(__name__)
 router = APIRouter(prefix="/kids", tags=["kids"])
@@ -36,12 +38,14 @@ async def create_kid(request: CreateKidRequest) -> KidResponse:
             name=kid.name,
             age=kid.age,
             avatar_type=kid.avatar_type,
-            hair_color=kid.hair_color,
-            hair_length=kid.hair_length,
-            skin_color=kid.skin_color,
-            eye_color=kid.eye_color,
-            gender=kid.gender,
+            appearance_method=kid.appearance_method,
+            appearance_photo_url=kid.appearance_photo_url,
+            appearance_description=kid.appearance_description,
+            appearance_extracted_at=kid.appearance_extracted_at,
+            appearance_metadata=kid.appearance_metadata,
             favorite_genres=kid.favorite_genres,
+            parent_notes=kid.parent_notes,
+            preferred_language=kid.preferred_language,
             stories_count=0,
             created_at=kid.created_at
         )
@@ -74,12 +78,14 @@ async def get_kid(kid_id: str) -> KidResponse:
             name=kid.name,
             age=kid.age,
             avatar_type=kid.avatar_type,
-            hair_color=kid.hair_color,
-            hair_length=kid.hair_length,
-            skin_color=kid.skin_color,
-            eye_color=kid.eye_color,
-            gender=kid.gender,
+            appearance_method=kid.appearance_method,
+            appearance_photo_url=kid.appearance_photo_url,
+            appearance_description=kid.appearance_description,
+            appearance_extracted_at=kid.appearance_extracted_at,
+            appearance_metadata=kid.appearance_metadata,
             favorite_genres=kid.favorite_genres,
+            parent_notes=kid.parent_notes,
+            preferred_language=kid.preferred_language,
             stories_count=len(stories),
             created_at=kid.created_at
         )
@@ -113,12 +119,14 @@ async def get_kids_for_user(user_id: str) -> KidListResponse:
                     name=kid.name,
                     age=kid.age,
                     avatar_type=kid.avatar_type,
-                    hair_color=kid.hair_color,
-                    hair_length=kid.hair_length,
-                    skin_color=kid.skin_color,
-                    eye_color=kid.eye_color,
-                    gender=kid.gender,
+                    appearance_method=kid.appearance_method,
+                    appearance_photo_url=kid.appearance_photo_url,
+                    appearance_description=kid.appearance_description,
+                    appearance_extracted_at=kid.appearance_extracted_at,
+                    appearance_metadata=kid.appearance_metadata,
                     favorite_genres=kid.favorite_genres,
+                    parent_notes=kid.parent_notes,
+                    preferred_language=kid.preferred_language,
                     stories_count=len(stories),
                     created_at=kid.created_at
                 )
@@ -163,12 +171,14 @@ async def update_kid(kid_id: str, request: UpdateKidRequest) -> KidResponse:
             name=kid.name,
             age=kid.age,
             avatar_type=kid.avatar_type,
-            hair_color=kid.hair_color,
-            hair_length=kid.hair_length,
-            skin_color=kid.skin_color,
-            eye_color=kid.eye_color,
-            gender=kid.gender,
+            appearance_method=kid.appearance_method,
+            appearance_photo_url=kid.appearance_photo_url,
+            appearance_description=kid.appearance_description,
+            appearance_extracted_at=kid.appearance_extracted_at,
+            appearance_metadata=kid.appearance_metadata,
             favorite_genres=kid.favorite_genres,
+            parent_notes=kid.parent_notes,
+            preferred_language=kid.preferred_language,
             stories_count=len(stories),
             created_at=kid.created_at
         )
@@ -246,3 +256,45 @@ async def get_kid_stories(kid_id: str):
     except Exception as e:
         logger.error(f"Failed to get stories for kid {kid_id}: {e}")
         raise HTTPException(status_code=500, detail="Failed to get kid stories")
+
+
+@router.post("/extract-appearance", response_model=ExtractAppearanceResponse)
+async def extract_appearance_from_photo(request: ExtractAppearanceRequest) -> ExtractAppearanceResponse:
+    """Extract appearance description from a child's photo using AI."""
+    try:
+        # Validate inputs
+        validate_kid_name(request.kid_name)
+        validate_age(request.age)
+        
+        # Get appearance agent configuration
+        config = get_config()
+        agent_config = config["agents"]["appearance"]
+        
+        # Create appearance extraction agent
+        agent = create_appearance_agent(agent_config)
+        
+        # Extract appearance description
+        result = await agent.extract_appearance(
+            image_data=request.image_data,
+            kid_name=request.kid_name,
+            age=request.age
+        )
+        
+        # Return structured response
+        return ExtractAppearanceResponse(
+            description=result["description"],
+            extracted_at=result["extracted_at"],
+            model_used=result["model_used"],
+            vendor=result["vendor"],
+            confidence=result["confidence"],
+            word_count=result["word_count"],
+            extraction_method=result["extraction_method"]
+        )
+        
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Failed to extract appearance from photo: {e}")
+        raise HTTPException(status_code=500, detail="Failed to extract appearance from photo")

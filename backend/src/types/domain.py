@@ -33,18 +33,38 @@ class Language(str, Enum):
 
 
 class Kid(BaseModel):
-    """Kid profile domain model."""
+    """Kid profile domain model with natural language appearance system."""
+    # Basic Info (Required)
     id: str = Field(..., description="Unique identifier")
     user_id: str = Field(..., description="Parent's Supabase Auth ID")
     name: str = Field(..., min_length=1, max_length=50)
-    age: Optional[int] = Field(default=5, ge=3, le=12, description="Child's age (3-12)")
-    avatar_type: str = Field(default="profile1")
-    hair_color: Optional[str] = Field(None, description="Hair color key")
-    hair_length: Optional[str] = Field(None, description="Hair length key")
-    skin_color: Optional[str] = Field(None, description="Skin color key")
-    eye_color: Optional[str] = Field(None, description="Eye color key")
-    gender: Optional[str] = Field(None, description="Gender identity")
+    age: int = Field(..., ge=3, le=12, description="Child's age (3-12) - mandatory for age-appropriate content")
+    avatar_type: str = Field(default="profile1", description="UI avatar selection")
+    
+    # Natural Language Appearance System
+    appearance_method: Optional[str] = Field(None, description="How appearance was set: 'photo', 'manual', or null")
+    appearance_photo_url: Optional[str] = Field(None, description="Supabase storage URL for uploaded photo")
+    appearance_description: Optional[str] = Field(
+        None,
+        max_length=500,
+        description="Natural language description of child's appearance"
+    )
+    appearance_extracted_at: Optional[datetime] = Field(None, description="When features were extracted from photo")
+    appearance_metadata: Optional[dict] = Field(
+        default_factory=dict,
+        description="Extraction details, AI model used, confidence scores, etc."
+    )
+    
+    # Story Preferences
     favorite_genres: list[str] = Field(default_factory=list, description="Preferred story genres")
+    parent_notes: Optional[str] = Field(
+        None,
+        max_length=300,
+        description="Special context for stories: hobbies, pets, siblings, etc."
+    )
+    preferred_language: str = Field(default="en", description="Child's preferred story language")
+    
+    # Timestamps
     created_at: datetime
     updated_at: Optional[datetime] = None
     

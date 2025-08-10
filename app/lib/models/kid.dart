@@ -1,33 +1,42 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
-/// Kid model representing a child profile linked to a user account
+/// Kid model representing a child profile with natural language appearance system
 class Kid {
   final String id;
   final String userId;
   final String name;
-  final int? age;
+  final int age; // Now mandatory for age-appropriate content
   final String avatarType;
-  final String? hairColor;
-  final String? hairLength;
-  final String? skinColor;
-  final String? eyeColor;
-  final String? gender;
+  
+  // Natural Language Appearance System
+  final String? appearanceMethod; // 'photo', 'manual', or null
+  final String? appearancePhotoUrl; // Supabase storage URL
+  final String? appearanceDescription; // Natural language description
+  final DateTime? appearanceExtractedAt; // When extracted from photo
+  final Map<String, dynamic>? appearanceMetadata; // AI extraction details
+  
+  // Story Preferences
   final List<String> favoriteGenres;
+  final String? parentNotes; // Special context for stories
+  final String preferredLanguage; // Child's preferred language
+  
   final DateTime createdAt;
 
   const Kid({
     required this.id,
     required this.userId,
     required this.name,
-    this.age,
+    required this.age, // Now required
     required this.avatarType,
-    this.hairColor,
-    this.hairLength,
-    this.skinColor,
-    this.eyeColor,
-    this.gender,
+    this.appearanceMethod,
+    this.appearancePhotoUrl,
+    this.appearanceDescription,
+    this.appearanceExtractedAt,
+    this.appearanceMetadata,
     this.favoriteGenres = const [],
+    this.parentNotes,
+    this.preferredLanguage = 'en',
     required this.createdAt,
   });
 
@@ -46,8 +55,22 @@ class Kid {
           }
         } catch (e) {
           // Log error and continue with empty genres list
-          // TODO: Replace with proper logging framework
           debugPrint('Error parsing favorite_genres: $e');
+        }
+      }
+    }
+    
+    // Parse appearance metadata if present
+    Map<String, dynamic>? metadata;
+    final metadataData = json['appearance_metadata'];
+    if (metadataData != null) {
+      if (metadataData is Map<String, dynamic>) {
+        metadata = metadataData;
+      } else if (metadataData is String) {
+        try {
+          metadata = jsonDecode(metadataData) as Map<String, dynamic>;
+        } catch (e) {
+          debugPrint('Error parsing appearance_metadata: $e');
         }
       }
     }
@@ -56,31 +79,37 @@ class Kid {
       id: json['id'] as String? ?? json['kid_id'] as String,
       userId: json['user_id'] as String? ?? '',
       name: json['name'] as String,
-      age: json['age'] as int?,
+      age: json['age'] as int? ?? 5, // Default age if missing
       avatarType: json['avatar_type'] as String? ?? 'profile1',
-      hairColor: json['hair_color'] as String?,
-      hairLength: json['hair_length'] as String?,
-      skinColor: json['skin_color'] as String?,
-      eyeColor: json['eye_color'] as String?,
-      gender: json['gender'] as String?,
+      appearanceMethod: json['appearance_method'] as String?,
+      appearancePhotoUrl: json['appearance_photo_url'] as String?,
+      appearanceDescription: json['appearance_description'] as String?,
+      appearanceExtractedAt: json['appearance_extracted_at'] != null 
+          ? DateTime.tryParse(json['appearance_extracted_at'] as String) 
+          : null,
+      appearanceMetadata: metadata,
       favoriteGenres: genres,
+      parentNotes: json['parent_notes'] as String?,
+      preferredLanguage: json['preferred_language'] as String? ?? 'en',
       createdAt: DateTime.tryParse(json['created_at'] as String? ?? '') ?? DateTime.now(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'kid_id': id,
+      'id': id,
       'user_id': userId,
       'name': name,
       'age': age,
       'avatar_type': avatarType,
-      'hair_color': hairColor,
-      'hair_length': hairLength,
-      'skin_color': skinColor,
-      'eye_color': eyeColor,
-      'gender': gender,
+      'appearance_method': appearanceMethod,
+      'appearance_photo_url': appearancePhotoUrl,
+      'appearance_description': appearanceDescription,
+      'appearance_extracted_at': appearanceExtractedAt?.toIso8601String(),
+      'appearance_metadata': appearanceMetadata,
       'favorite_genres': favoriteGenres,
+      'parent_notes': parentNotes,
+      'preferred_language': preferredLanguage,
       'created_at': createdAt.toIso8601String(),
     };
   }
@@ -91,12 +120,14 @@ class Kid {
     String? name,
     int? age,
     String? avatarType,
-    String? hairColor,
-    String? hairLength,
-    String? skinColor,
-    String? eyeColor,
-    String? gender,
+    String? appearanceMethod,
+    String? appearancePhotoUrl,
+    String? appearanceDescription,
+    DateTime? appearanceExtractedAt,
+    Map<String, dynamic>? appearanceMetadata,
     List<String>? favoriteGenres,
+    String? parentNotes,
+    String? preferredLanguage,
     DateTime? createdAt,
   }) {
     return Kid(
@@ -105,12 +136,14 @@ class Kid {
       name: name ?? this.name,
       age: age ?? this.age,
       avatarType: avatarType ?? this.avatarType,
-      hairColor: hairColor ?? this.hairColor,
-      hairLength: hairLength ?? this.hairLength,
-      skinColor: skinColor ?? this.skinColor,
-      eyeColor: eyeColor ?? this.eyeColor,
-      gender: gender ?? this.gender,
+      appearanceMethod: appearanceMethod ?? this.appearanceMethod,
+      appearancePhotoUrl: appearancePhotoUrl ?? this.appearancePhotoUrl,
+      appearanceDescription: appearanceDescription ?? this.appearanceDescription,
+      appearanceExtractedAt: appearanceExtractedAt ?? this.appearanceExtractedAt,
+      appearanceMetadata: appearanceMetadata ?? this.appearanceMetadata,
       favoriteGenres: favoriteGenres ?? this.favoriteGenres,
+      parentNotes: parentNotes ?? this.parentNotes,
+      preferredLanguage: preferredLanguage ?? this.preferredLanguage,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -124,12 +157,14 @@ class Kid {
            other.name == name &&
            other.age == age &&
            other.avatarType == avatarType &&
-           other.hairColor == hairColor &&
-           other.hairLength == hairLength &&
-           other.skinColor == skinColor &&
-           other.eyeColor == eyeColor &&
-           other.gender == gender &&
-           _listEquals(other.favoriteGenres, favoriteGenres);
+           other.appearanceMethod == appearanceMethod &&
+           other.appearancePhotoUrl == appearancePhotoUrl &&
+           other.appearanceDescription == appearanceDescription &&
+           other.appearanceExtractedAt == appearanceExtractedAt &&
+           _mapEquals(other.appearanceMetadata, appearanceMetadata) &&
+           _listEquals(other.favoriteGenres, favoriteGenres) &&
+           other.parentNotes == parentNotes &&
+           other.preferredLanguage == preferredLanguage;
   }
   
   bool _listEquals<T>(List<T>? a, List<T>? b) {
@@ -140,24 +175,35 @@ class Kid {
     }
     return true;
   }
+  
+  bool _mapEquals<K, V>(Map<K, V>? a, Map<K, V>? b) {
+    if (a == null) return b == null;
+    if (b == null || a.length != b.length) return false;
+    for (final key in a.keys) {
+      if (!b.containsKey(key) || a[key] != b[key]) return false;
+    }
+    return true;
+  }
 
   @override
   int get hashCode {
     return id.hashCode ^ 
            userId.hashCode ^ 
            name.hashCode ^ 
-           (age?.hashCode ?? 0) ^
+           age.hashCode ^
            avatarType.hashCode ^
-           (hairColor?.hashCode ?? 0) ^
-           (hairLength?.hashCode ?? 0) ^
-           (skinColor?.hashCode ?? 0) ^
-           (eyeColor?.hashCode ?? 0) ^
-           (gender?.hashCode ?? 0) ^
-           favoriteGenres.hashCode;
+           (appearanceMethod?.hashCode ?? 0) ^
+           (appearancePhotoUrl?.hashCode ?? 0) ^
+           (appearanceDescription?.hashCode ?? 0) ^
+           (appearanceExtractedAt?.hashCode ?? 0) ^
+           (appearanceMetadata?.hashCode ?? 0) ^
+           favoriteGenres.hashCode ^
+           (parentNotes?.hashCode ?? 0) ^
+           preferredLanguage.hashCode;
   }
 
   @override
   String toString() {
-    return 'Kid(id: $id, name: $name, age: $age, avatarType: $avatarType, hairColor: $hairColor, hairLength: $hairLength, skinColor: $skinColor, eyeColor: $eyeColor, gender: $gender, favoriteGenres: $favoriteGenres)';
+    return 'Kid(id: $id, name: $name, age: $age, avatarType: $avatarType, appearanceMethod: $appearanceMethod, appearanceDescription: $appearanceDescription, favoriteGenres: $favoriteGenres, parentNotes: $parentNotes, preferredLanguage: $preferredLanguage)';
   }
 }

@@ -64,14 +64,13 @@ class KidService {
   static Future<Kid> createKid({
     required String userId,
     required String name,
-    int? age,
+    required int age, // Now mandatory
     String avatarType = 'profile1',
-    String? hairColor,
-    String? hairLength,
-    String? skinColor,
-    String? eyeColor,
-    String? gender,
+    String? appearanceMethod,
+    String? appearanceDescription,
     List<String>? favoriteGenres,
+    String? parentNotes,
+    String? preferredLanguage,
   }) async {
     try {
       final uri = Uri.parse('$baseUrl/kids/');
@@ -83,12 +82,11 @@ class KidService {
           'name': name.trim(),
           'age': age,
           'avatar_type': avatarType,
-          'hair_color': hairColor,
-          'hair_length': hairLength,
-          'skin_color': skinColor,
-          'eye_color': eyeColor,
-          'gender': gender,
+          'appearance_method': appearanceMethod,
+          'appearance_description': appearanceDescription?.trim(),
           'favorite_genres': favoriteGenres ?? [],
+          'parent_notes': parentNotes?.trim(),
+          'preferred_language': preferredLanguage ?? 'en',
         }),
       );
 
@@ -132,13 +130,11 @@ class KidService {
     String? name,
     int? age,
     String? avatarType,
-    String? hairColor,
-    String? hairLength,
-    String? skinColor,
-    String? eyeColor,
-    String? gender,
+    String? appearanceMethod,
+    String? appearanceDescription,
     List<String>? favoriteGenres,
-    String? notes,
+    String? parentNotes,
+    String? preferredLanguage,
   }) async {
     try {
       final uri = Uri.parse('$baseUrl/kids/$kidId');
@@ -147,13 +143,11 @@ class KidService {
       if (name != null) updateData['name'] = name.trim();
       if (age != null) updateData['age'] = age;
       if (avatarType != null) updateData['avatar_type'] = avatarType;
-      if (hairColor != null) updateData['hair_color'] = hairColor;
-      if (hairLength != null) updateData['hair_length'] = hairLength;
-      if (skinColor != null) updateData['skin_color'] = skinColor;
-      if (eyeColor != null) updateData['eye_color'] = eyeColor;
-      if (gender != null) updateData['gender'] = gender;
+      if (appearanceMethod != null) updateData['appearance_method'] = appearanceMethod;
+      if (appearanceDescription != null) updateData['appearance_description'] = appearanceDescription.trim();
       if (favoriteGenres != null) updateData['favorite_genres'] = favoriteGenres;
-      if (notes != null) updateData['notes'] = notes;
+      if (parentNotes != null) updateData['parent_notes'] = parentNotes.trim();
+      if (preferredLanguage != null) updateData['preferred_language'] = preferredLanguage;
 
       final response = await http.put(
         uri,

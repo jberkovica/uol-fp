@@ -502,41 +502,48 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
               ),
             ),
             
-            // Menu Button
-            PopupMenuButton<String>(
-              icon: SvgPicture.asset(
-                'assets/icons/adjustments-horizontal.svg',
-                width: 24,
-                height: 24,
-                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
-              ),
-              onSelected: (value) {
-                switch (value) {
-                  case 'edit':
-                    _navigateToEditScreen(kid);
-                    break;
-                  case 'stories':
+            // Inline Action Icons
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Edit Profile Button (moved to first position)
+                IconButton(
+                  onPressed: () => _navigateToEditScreen(kid),
+                  icon: SvgPicture.asset(
+                    'assets/icons/mood-edit.svg',
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                  ),
+                  tooltip: 'Edit Profile',
+                ),
+                
+                // View Stories Button (moved to second position)
+                IconButton(
+                  onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(AppLocalizations.of(context)!.viewStories)),
                     );
-                    break;
-                  case 'delete':
-                    _showDeleteKidDialog(kid);
-                    break;
-                }
-              },
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 'edit',
-                  child: Text(AppLocalizations.of(context)!.editProfile),
+                  },
+                  icon: SvgPicture.asset(
+                    'assets/icons/file-pencil.svg',
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(AppColors.secondary, BlendMode.srcIn),
+                  ),
+                  tooltip: 'View Stories',
                 ),
-                PopupMenuItem(
-                  value: 'stories',
-                  child: Text(AppLocalizations.of(context)!.viewStories),
-                ),
-                PopupMenuItem(
-                  value: 'delete',
-                  child: Text(AppLocalizations.of(context)!.deleteProfile),
+                
+                // Delete Profile Button
+                IconButton(
+                  onPressed: () => _showDeleteKidDialog(kid),
+                  icon: SvgPicture.asset(
+                    'assets/icons/trash.svg',
+                    width: 20,
+                    height: 20,
+                    colorFilter: const ColorFilter.mode(AppColors.error, BlendMode.srcIn),
+                  ),
+                  tooltip: 'Delete Profile',
                 ),
               ],
             ),
@@ -903,267 +910,6 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
     }
   }
 
-  Future<void> _showEditKidDialog(Kid kid) async {
-    // Debug print to see what we have
-    print('Edit dialog - Kid data: name=${kid.name}, age=${kid.age}, avatar=${kid.avatarType}');
-    print('Edit dialog - Hair: ${kid.hairColor}, Skin: ${kid.skinColor}, Eye: ${kid.eyeColor}');
-    print('Edit dialog - Genres: ${kid.favoriteGenres}');
-    
-    final nameController = TextEditingController(text: kid.name);
-    String selectedAvatarType = kid.avatarType;
-    int selectedAge = kid.age ?? 5;
-    String? selectedHairColor = kid.hairColor;
-    String? selectedSkinColor = kid.skinColor;
-    String? selectedEyeColor = kid.eyeColor;
-    List<String> selectedGenres = List.from(kid.favoriteGenres);
-
-    final result = await showDialog<Kid>(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            return AlertDialog(
-              backgroundColor: AppColors.white,
-              elevation: 0,
-              surfaceTintColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              title: Text(
-                'Edit ${kid.name}\'s Profile',
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              content: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Name Field
-                      TextField(
-                        controller: nameController,
-                        decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.enterChildName,
-                          border: const OutlineInputBorder(),
-                        ),
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Age Selection
-                      Text(
-                        'Age:',
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: List.generate(10, (index) {
-                          final age = index + 3; // Ages 3-12
-                          return GestureDetector(
-                            onTap: () {
-                              setDialogState(() {
-                                selectedAge = age;
-                              });
-                            },
-                            child: Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: selectedAge == age 
-                                    ? AppColors.primary 
-                                    : AppColors.lightGrey,
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: selectedAge == age 
-                                      ? AppColors.primary 
-                                      : AppColors.grey,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  age.toString(),
-                                  style: TextStyle(
-                                    color: selectedAge == age 
-                                        ? Colors.white 
-                                        : AppColors.textDark,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Avatar Selection
-                      Text(
-                        'Choose Avatar:',
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: ProfileType.values.map((type) {
-                          final typeString = ProfileAvatar.typeToString(type);
-                          return GestureDetector(
-                            onTap: () {
-                              setDialogState(() {
-                                selectedAvatarType = typeString;
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: selectedAvatarType == typeString
-                                    ? Border.all(color: AppColors.primary, width: 3)
-                                    : null,
-                              ),
-                              child: ProfileAvatar(
-                                radius: 28,
-                                profileType: type,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Hair Color Selection
-                      Text(
-                        'Hair Color:',
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildColorSelector(
-                        colors: KidProfileConstants.hairColors,
-                        selectedColor: selectedHairColor,
-                        onColorSelected: (color) {
-                          setDialogState(() {
-                            selectedHairColor = color;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Skin Color Selection
-                      Text(
-                        'Skin Color:',
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildColorSelector(
-                        colors: KidProfileConstants.skinColors,
-                        selectedColor: selectedSkinColor,
-                        onColorSelected: (color) {
-                          setDialogState(() {
-                            selectedSkinColor = color;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Eye Color Selection
-                      Text(
-                        'Eye Color:',
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildColorSelector(
-                        colors: KidProfileConstants.eyeColors,
-                        selectedColor: selectedEyeColor,
-                        onColorSelected: (color) {
-                          setDialogState(() {
-                            selectedEyeColor = color;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Favorite Genres Selection
-                      Text(
-                        'Favorite Story Types:',
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                      const SizedBox(height: 12),
-                      _buildGenreSelector(
-                        selectedGenres: selectedGenres,
-                        onGenresChanged: (genres) {
-                          setDialogState(() {
-                            selectedGenres = genres;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: Text(
-                    'Cancel',
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (nameController.text.trim().isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseEnterName)),
-                      );
-                      return;
-                    }
-
-                    try {
-                      final updatedKid = await KidService.updateKid(
-                        kidId: kid.id,
-                        name: nameController.text.trim(),
-                        age: selectedAge,
-                        avatarType: selectedAvatarType,
-                        hairColor: selectedHairColor,
-                        hairLength: null, // TODO: Add hair length selector
-                        skinColor: selectedSkinColor,
-                        eyeColor: selectedEyeColor,
-                        gender: null, // TODO: Add gender selector
-                        favoriteGenres: selectedGenres,
-                      );
-                      Navigator.of(context).pop(updatedKid);
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to update profile: ${e.toString()}')),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    shadowColor: Colors.transparent,
-                    surfaceTintColor: Colors.transparent,
-                  ),
-                  child: Text(
-                    'Save Changes',
-                    style: Theme.of(context).textTheme.headlineLarge,
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-
-    if (result != null) {
-      // Clear cache and refresh the kids list to show updated information
-      KidService.clearCache();
-      await _loadKids();
-    }
-  }
 
   void _showDeleteKidDialog(Kid kid) {
     final storyCount = _kidStories[kid.id]?.length ?? 0;
@@ -1508,126 +1254,4 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
     }
   }
 
-  Widget _buildColorSelector({
-    required Map<String, Color> colors,
-    required String? selectedColor,
-    required Function(String?) onColorSelected,
-  }) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: [
-        // "None" option
-        GestureDetector(
-          onTap: () => onColorSelected(null),
-          child: Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: AppColors.lightGrey,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: selectedColor == null ? AppColors.primary : AppColors.grey,
-                width: selectedColor == null ? 3 : 1,
-              ),
-            ),
-            child: selectedColor == null
-                ? SvgPicture.asset(
-                    'assets/icons/circle-dashed-check.svg',
-                    width: 16,
-                    height: 16,
-                    colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
-                  )
-                : SvgPicture.asset(
-                    'assets/icons/x.svg',
-                    width: 12,
-                    height: 12,
-                    colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
-                  ),
-          ),
-        ),
-        // Color options
-        ...colors.entries.map((entry) {
-          final colorKey = entry.key;
-          final color = entry.value;
-          final isSelected = selectedColor == colorKey;
-          
-          return GestureDetector(
-            onTap: () => onColorSelected(colorKey),
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected ? AppColors.primary : AppColors.grey,
-                  width: isSelected ? 3 : 1,
-                ),
-              ),
-              child: isSelected
-                  ? SvgPicture.asset(
-                      'assets/icons/circle-dashed-check.svg',
-                      width: 16,
-                      height: 16,
-                      color: _getContrastColor(color),
-                    )
-                  : null,
-            ),
-          );
-        }),
-      ],
-    );
-  }
-
-  Widget _buildGenreSelector({
-    required List<String> selectedGenres,
-    required Function(List<String>) onGenresChanged,
-  }) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: KidProfileConstants.storyGenres.map((genre) {
-        final isSelected = selectedGenres.contains(genre);
-        final displayName = KidProfileConstants.getGenreDisplayName(genre);
-        
-        return GestureDetector(
-          onTap: () {
-            final newGenres = List<String>.from(selectedGenres);
-            if (isSelected) {
-              newGenres.remove(genre);
-            } else {
-              newGenres.add(genre);
-            }
-            onGenresChanged(newGenres);
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: isSelected ? AppColors.secondary : AppColors.lightGrey,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: isSelected ? AppColors.primary : AppColors.grey,
-                width: isSelected ? 2 : 1,
-              ),
-            ),
-            child: Text(
-              displayName,
-              style: TextStyle(
-                color: isSelected ? AppColors.textDark : AppColors.textGrey,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                fontSize: 12,
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Color _getContrastColor(Color backgroundColor) {
-    // Calculate luminance to determine if we need dark or light text
-    final luminance = backgroundColor.computeLuminance();
-    return luminance > 0.5 ? Colors.black : Colors.white;
-  }
 }

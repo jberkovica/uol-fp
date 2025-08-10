@@ -37,14 +37,22 @@ class KidResponse(BaseModel):
     id: str
     user_id: str
     name: str
-    age: Optional[int] = None
+    age: int
     avatar_type: str
-    hair_color: Optional[str] = None
-    hair_length: Optional[str] = None
-    skin_color: Optional[str] = None
-    eye_color: Optional[str] = None
-    gender: Optional[str] = None
+    
+    # Natural Language Appearance System
+    appearance_method: Optional[str] = None
+    appearance_photo_url: Optional[str] = None
+    appearance_description: Optional[str] = None
+    appearance_extracted_at: Optional[datetime] = None
+    appearance_metadata: Optional[dict] = Field(default_factory=dict)
+    
+    # Story Preferences
     favorite_genres: List[str] = Field(default_factory=list)
+    parent_notes: Optional[str] = None
+    preferred_language: str = "en"
+    
+    # Computed fields
     stories_count: int = 0
     created_at: datetime
     
@@ -94,3 +102,14 @@ class TranscriptionResponse(BaseModel):
     transcribed_text: str
     status: StoryStatus = StoryStatus.DRAFT
     message: str = "Audio transcribed successfully"
+
+
+class ExtractAppearanceResponse(BaseModel):
+    """Response for appearance extraction."""
+    description: str = Field(..., description="Natural language appearance description")
+    extracted_at: datetime = Field(default_factory=datetime.utcnow)
+    model_used: str = Field(..., description="AI model used for extraction")
+    vendor: str = Field(..., description="AI vendor used")
+    confidence: str = Field(default="high", description="Extraction confidence level")
+    word_count: int = Field(..., description="Number of words in description")
+    extraction_method: str = Field(default="ai_vision", description="Method used for extraction")

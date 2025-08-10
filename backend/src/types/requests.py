@@ -25,28 +25,34 @@ class GenerateStoryRequest(BaseModel):
 class CreateKidRequest(BaseModel):
     """Request to create a new kid profile."""
     name: str = Field(..., min_length=1, max_length=50, description="Kid's name")
-    age: Optional[int] = Field(None, ge=3, le=12, description="Kid's age (3-12 years)")
-    avatar_type: str = Field(default="profile1", description="Avatar selection")
-    hair_color: Optional[str] = Field(None, description="Hair color key")
-    hair_length: Optional[str] = Field(None, description="Hair length key")
-    skin_color: Optional[str] = Field(None, description="Skin color key")
-    eye_color: Optional[str] = Field(None, description="Eye color key")
-    gender: Optional[str] = Field(None, description="Gender identity")
-    favorite_genres: list[str] = Field(default_factory=list, description="Preferred story genres")
+    age: int = Field(..., ge=3, le=12, description="Kid's age (3-12 years) - mandatory")
+    avatar_type: str = Field(default="profile1", description="UI avatar selection")
     user_id: str = Field(..., description="Parent's Supabase Auth ID")
+    
+    # Natural Language Appearance System (optional)
+    appearance_method: Optional[str] = Field(None, description="'photo' or 'manual'")
+    appearance_description: Optional[str] = Field(None, max_length=500, description="Natural language appearance description")
+    
+    # Story Preferences (optional)
+    favorite_genres: list[str] = Field(default_factory=list, description="Preferred story genres")
+    parent_notes: Optional[str] = Field(None, max_length=300, description="Special context for stories")
+    preferred_language: str = Field(default="en", description="Child's preferred story language")
 
 
 class UpdateKidRequest(BaseModel):
     """Request to update a kid profile."""
     name: Optional[str] = Field(None, min_length=1, max_length=50)
     age: Optional[int] = Field(None, ge=3, le=12, description="Kid's age (3-12 years)")
-    avatar_type: Optional[str] = Field(None)
-    hair_color: Optional[str] = Field(None, description="Hair color key")
-    hair_length: Optional[str] = Field(None, description="Hair length key")
-    skin_color: Optional[str] = Field(None, description="Skin color key")
-    eye_color: Optional[str] = Field(None, description="Eye color key")
-    gender: Optional[str] = Field(None, description="Gender identity")
+    avatar_type: Optional[str] = Field(None, description="UI avatar selection")
+    
+    # Natural Language Appearance System
+    appearance_method: Optional[str] = Field(None, description="'photo' or 'manual'")
+    appearance_description: Optional[str] = Field(None, max_length=500, description="Natural language appearance description")
+    
+    # Story Preferences
     favorite_genres: Optional[list[str]] = Field(None, description="Preferred story genres")
+    parent_notes: Optional[str] = Field(None, max_length=300, description="Special context for stories")
+    preferred_language: Optional[str] = Field(None, description="Child's preferred story language")
 
 
 class ReviewStoryRequest(BaseModel):
@@ -86,3 +92,21 @@ class SubmitStoryTextRequest(BaseModel):
     """Request to submit final text for story generation."""
     story_id: str = Field(..., description="ID of the story")
     text: str = Field(..., min_length=10, max_length=500, description="Final text for story generation")
+
+
+class ExtractAppearanceRequest(BaseModel):
+    """Request to extract appearance from photo."""
+    image_data: str = Field(..., description="Base64 encoded image data")
+    kid_name: str = Field(..., min_length=1, max_length=50, description="Child's name")
+    age: int = Field(..., ge=3, le=12, description="Child's age for context")
+    
+    @validator('image_data')
+    def validate_base64(cls, v):
+        """Validate that image_data is valid base64."""
+        import base64
+        try:
+            # Check if it's valid base64
+            base64.b64decode(v)
+            return v
+        except Exception:
+            raise ValueError("Invalid base64 image data")

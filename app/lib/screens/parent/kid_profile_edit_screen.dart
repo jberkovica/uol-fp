@@ -1,5 +1,9 @@
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 import '../../models/kid.dart';
 import '../../services/kid_service.dart';
 import '../../constants/kid_profile_constants.dart';
@@ -24,19 +28,19 @@ class KidProfileEditScreen extends StatefulWidget {
 class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
   late TextEditingController _nameController;
   late TextEditingController _notesController;
+  late TextEditingController _appearanceController;
   
   double _scrollOffset = 0.0;
-  int? _selectedAge;
+  int _selectedAge = 5; // Now required field
   String _selectedAvatarType = 'profile1';
-  String? _selectedHairColor;
-  String? _selectedHairLength;
-  String? _selectedSkinColor;
-  String? _selectedEyeColor;
-  String? _selectedGender;
+  String? _appearanceMethod;
   List<String> _selectedGenres = [];
+  String _preferredLanguage = 'en'; // Will be initialized from kid data
   
   bool _isLoading = false;
   bool _hasChanges = false;
+  bool _isExtractingAppearance = false;
+  File? _selectedImage;
 
   @override
   void initState() {
@@ -46,20 +50,19 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
 
   void _initializeFields() {
     _nameController = TextEditingController(text: widget.kid.name);
-    _notesController = TextEditingController(text: ''); // TODO: Add notes field to backend
+    _notesController = TextEditingController(text: widget.kid.parentNotes ?? '');
+    _appearanceController = TextEditingController(text: widget.kid.appearanceDescription ?? '');
     
     _selectedAge = widget.kid.age;
     _selectedAvatarType = widget.kid.avatarType;
-    _selectedHairColor = widget.kid.hairColor;
-    _selectedHairLength = widget.kid.hairLength;
-    _selectedSkinColor = widget.kid.skinColor;
-    _selectedEyeColor = widget.kid.eyeColor;
-    _selectedGender = widget.kid.gender;
+    _appearanceMethod = widget.kid.appearanceMethod;
     _selectedGenres = List.from(widget.kid.favoriteGenres);
+    _preferredLanguage = widget.kid.preferredLanguage;
     
     // Listen for changes
     _nameController.addListener(_onFieldChanged);
     _notesController.addListener(_onFieldChanged);
+    _appearanceController.addListener(_onFieldChanged);
   }
 
   void _onFieldChanged() {
@@ -74,10 +77,102 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
     _onFieldChanged();
   }
 
+  Future<void> _pickAndExtractFromPhoto() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        imageQuality: 85,
+      );
+
+      if (image == null) return;
+
+      setState(() {
+        _isExtractingAppearance = true;
+        _selectedImage = File(image.path);
+      });
+
+      // Convert image to base64 for API call
+      final bytes = await image.readAsBytes();
+      final base64Image = base64Encode(bytes);
+
+      // Call appearance extraction API
+      final extractedDescription = await _extractAppearanceFromImage(
+        base64Image,
+        widget.kid.name,
+        _selectedAge,
+      );
+
+      // Populate the text field with extracted description
+      if (mounted && extractedDescription != null) {
+        setState(() {
+          _appearanceController.text = extractedDescription;
+          _appearanceMethod = 'photo';
+        });
+        _onFieldChanged();
+
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Appearance extracted! You can review and edit the description below.'),
+            backgroundColor: AppColors.primary,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to extract appearance: ${e.toString()}'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isExtractingAppearance = false;
+        });
+      }
+    }
+  }
+
+  Future<String?> _extractAppearanceFromImage(
+    String base64Image,
+    String kidName,
+    int age,
+  ) async {
+    try {
+      final uri = Uri.parse('${KidService.baseUrl}/kids/extract-appearance');
+      final response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'image_data': base64Image,
+          'kid_name': kidName,
+          'age': age,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data['description'] as String;
+      } else {
+        final errorData = jsonDecode(response.body);
+        throw Exception(errorData['detail'] ?? 'Failed to extract appearance');
+      }
+    } catch (e) {
+      throw Exception('Failed to extract appearance from photo: $e');
+    }
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
     _notesController.dispose();
+    _appearanceController.dispose();
     super.dispose();
   }
 
@@ -102,12 +197,15 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         name: _nameController.text.trim(),
         age: _selectedAge,
         avatarType: _selectedAvatarType,
-        hairColor: _selectedHairColor,
-        hairLength: _selectedHairLength,
-        skinColor: _selectedSkinColor,
-        eyeColor: _selectedEyeColor,
-        gender: _selectedGender,
+        appearanceMethod: _appearanceMethod,
+        appearanceDescription: _appearanceController.text.trim().isEmpty 
+            ? null 
+            : _appearanceController.text.trim(),
         favoriteGenres: _selectedGenres,
+        parentNotes: _notesController.text.trim().isEmpty 
+            ? null 
+            : _notesController.text.trim(),
+        preferredLanguage: _preferredLanguage,
       );
 
       // Update backend
@@ -116,12 +214,15 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         name: _nameController.text.trim(),
         age: _selectedAge,
         avatarType: _selectedAvatarType,
-        hairColor: _selectedHairColor,
-        hairLength: _selectedHairLength,
-        skinColor: _selectedSkinColor,
-        eyeColor: _selectedEyeColor,
-        gender: _selectedGender,
+        appearanceMethod: _appearanceMethod,
+        appearanceDescription: _appearanceController.text.trim().isEmpty 
+            ? null 
+            : _appearanceController.text.trim(),
         favoriteGenres: _selectedGenres,
+        parentNotes: _notesController.text.trim().isEmpty 
+            ? null 
+            : _notesController.text.trim(),
+        preferredLanguage: _preferredLanguage,
       );
 
       // Return updated kid to parent screen
@@ -350,7 +451,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         const SizedBox(height: 24),
         Text(
-          AppLocalizations.of(context)!.ageOptional,
+          'Age',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -378,80 +479,33 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.appearanceOptional,
+          'Appearance (Optional)',
           style: Theme.of(context).textTheme.headlineMedium,
         ),
-        const SizedBox(height: 16),
-        
+        const SizedBox(height: 8),
         Text(
-          AppLocalizations.of(context)!.hairColor,
+          'Describe how your child looks to help create personalized stories.',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: AppColors.textGrey,
+          ),
+        ),
+        const SizedBox(height: 24),
+        
+        // Appearance method selector
+        Text(
+          'How would you like to describe appearance?',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
           ),
         ),
         const SizedBox(height: 16),
-        _buildColorSelector(
-          colors: KidProfileConstants.hairColors,
-          selectedColor: _selectedHairColor,
-          onColorSelected: (color) {
-            setState(() {
-              _selectedHairColor = color;
-            });
-            _onSelectionChanged();
-          },
-        ),
+        _buildAppearanceMethodSelector(),
         
         const SizedBox(height: 24),
-        Text(
-          AppLocalizations.of(context)!.hairLength,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textDark,
-          ),
-        ),
-        const SizedBox(height: 16),
-        _buildHairLengthSelector(),
         
-        const SizedBox(height: 24),
-        Text(
-          AppLocalizations.of(context)!.skinColor,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textDark,
-          ),
-        ),
-        const SizedBox(height: 16),
-        _buildColorSelector(
-          colors: KidProfileConstants.skinColors,
-          selectedColor: _selectedSkinColor,
-          onColorSelected: (color) {
-            setState(() {
-              _selectedSkinColor = color;
-            });
-            _onSelectionChanged();
-          },
-        ),
-        
-        const SizedBox(height: 24),
-        Text(
-          AppLocalizations.of(context)!.eyeColor,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textDark,
-          ),
-        ),
-        const SizedBox(height: 16),
-        _buildColorSelector(
-          colors: KidProfileConstants.eyeColors,
-          selectedColor: _selectedEyeColor,
-          onColorSelected: (color) {
-            setState(() {
-              _selectedEyeColor = color;
-            });
-            _onSelectionChanged();
-          },
-        ),
+        // Appearance description field (always shown for now, photo upload to be added later)
+        _buildAppearanceDescriptionField(),
       ],
     );
   }
@@ -461,24 +515,24 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.personalityPreferencesOptional,
+          'Story Preferences (Optional)',
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
         
         Text(
-          AppLocalizations.of(context)!.gender,
+          'Preferred Language',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
           ),
         ),
         const SizedBox(height: 16),
-        _buildGenderSelector(),
+        _buildLanguageSelector(),
         
         const SizedBox(height: 24),
         Text(
-          AppLocalizations.of(context)!.favoriteStoryTypes,
+          'Favorite Story Types',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -495,8 +549,15 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context)!.additionalNotesOptional,
+          'Parent Notes (Optional)',
           style: Theme.of(context).textTheme.headlineMedium,
+        ),
+        const SizedBox(height: 8),
+        Text(
+          'Add special context for stories: hobbies, pets, siblings, interests, etc.',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: AppColors.textGrey,
+          ),
         ),
         const SizedBox(height: 16),
         Container(
@@ -610,96 +671,95 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
     );
   }
 
-  Widget _buildColorSelector({
-    required Map<String, Color> colors,
-    required String? selectedColor,
-    required Function(String?) onColorSelected,
-  }) {
-    return Wrap(
-      spacing: 12,
-      runSpacing: 12,
-      children: [
-        // None option
-        GestureDetector(
-          onTap: () => onColorSelected(null),
-          child: Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: AppColors.lightGrey,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: selectedColor == null ? AppColors.primary : Colors.transparent,
-                width: 3,
-              ),
-            ),
-            child: const SizedBox.shrink(),
-          ),
-        ),
-        // Color options
-        ...colors.entries.map((entry) {
-          final colorKey = entry.key;
-          final color = entry.value;
-          final isSelected = selectedColor == colorKey;
-          
-          return GestureDetector(
-            onTap: () => onColorSelected(colorKey),
-            child: Container(
-              width: 56,
-              height: 56,
-              decoration: BoxDecoration(
-                color: color,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: isSelected ? AppColors.primary : Colors.transparent,
-                  width: 3,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    blurRadius: 8,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: const SizedBox.shrink(),
-            ),
-          );
-        }),
-      ],
-    );
-  }
-
-  Widget _buildHairLengthSelector() {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: KidProfileConstants.hairLengths.map((length) {
-        final isSelected = _selectedHairLength == length;
-        final displayName = KidProfileConstants.getHairLengthDisplayName(length);
+  Widget _buildAppearanceMethodSelector() {
+    final methods = [
+      {'key': 'manual', 'label': 'Describe in words', 'icon': 'assets/icons/pencil-plus.svg'},
+      {'key': 'photo', 'label': 'Upload photo', 'icon': 'assets/icons/camera-filled.svg'},
+    ];
+    
+    return Column(
+      children: methods.map((method) {
+        final isSelected = _appearanceMethod == method['key'];
+        final isPhoto = method['key'] == 'photo';
         
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedHairLength = isSelected ? null : length;
-            });
-            _onSelectionChanged();
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            decoration: BoxDecoration(
-              color: isSelected ? AppColors.primary : AppColors.white,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: isSelected ? AppColors.primary : AppColors.lightGrey,
-                width: 2,
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: GestureDetector(
+            onTap: () async {
+              if (isPhoto) {
+                // Handle photo upload
+                await _pickAndExtractFromPhoto();
+              } else {
+                // Handle manual method
+                setState(() {
+                  _appearanceMethod = isSelected ? null : method['key'] as String;
+                });
+                _onSelectionChanged();
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: isSelected ? AppColors.primary.withValues(alpha: 0.1) : AppColors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isSelected ? AppColors.primary : AppColors.lightGrey,
+                  width: 2,
+                ),
               ),
-            ),
-            child: Text(
-              displayName,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: isSelected ? Colors.white : AppColors.textDark,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+              child: Row(
+                children: [
+                  if (_isExtractingAppearance && isPhoto)
+                    SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
+                      ),
+                    )
+                  else
+                    SvgPicture.asset(
+                      method['icon'] as String,
+                      width: 24,
+                      height: 24,
+                      colorFilter: ColorFilter.mode(
+                        isSelected ? AppColors.primary : AppColors.textDark,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _isExtractingAppearance && isPhoto 
+                              ? 'Extracting appearance...' 
+                              : method['label'] as String,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: isSelected ? AppColors.primary : AppColors.textDark,
+                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                          ),
+                        ),
+                        if (isPhoto && !_isExtractingAppearance)
+                          Text(
+                            'AI will analyze the photo and create a description',
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.textGrey,
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  if (isSelected && !_isExtractingAppearance)
+                    SvgPicture.asset(
+                      'assets/icons/circle-check-filled.svg',
+                      width: 20,
+                      height: 20,
+                      colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                    ),
+                ],
               ),
             ),
           ),
@@ -708,18 +768,94 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
     );
   }
 
-  Widget _buildGenderSelector() {
+  Widget _buildAppearanceDescriptionField() {
+    final isFromPhoto = _appearanceMethod == 'photo' && _appearanceController.text.isNotEmpty;
+    
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (isFromPhoto) ...[
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1),
+            ),
+            child: Row(
+              children: [
+                SvgPicture.asset(
+                  'assets/icons/circle-check-filled.svg',
+                  width: 20,
+                  height: 20,
+                  colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'AI extracted this description from your photo. Feel free to review and edit it.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textDark,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+        ],
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.lightGrey, width: 1),
+          ),
+          child: TextField(
+            controller: _appearanceController,
+            maxLines: 3,
+            maxLength: 500,
+            style: Theme.of(context).textTheme.bodyLarge,
+            decoration: InputDecoration(
+              hintText: _appearanceMethod == 'photo' 
+                  ? 'Upload a photo above to auto-generate description, or type manually'
+                  : 'Example: "Curly brown hair, bright green eyes, and a gap-toothed smile"',
+              hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: AppColors.textGrey,
+              ),
+              helperText: isFromPhoto 
+                  ? 'You can edit this AI-generated description to make it more personal.'
+                  : 'Describe hair, eyes, distinctive features, etc. This helps create personalized stories.',
+              helperStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: AppColors.textGrey,
+              ),
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.all(20),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLanguageSelector() {
+    final languages = [
+      {'code': 'en', 'name': 'English'},
+      {'code': 'ru', 'name': 'Russian'},
+      {'code': 'lv', 'name': 'Latvian'},
+      {'code': 'es', 'name': 'Spanish'},
+    ];
+    
     return Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: KidProfileConstants.genderOptions.map((gender) {
-        final isSelected = _selectedGender == gender;
-        final displayName = KidProfileConstants.getGenderDisplayName(gender);
+      children: languages.map((lang) {
+        final isSelected = _preferredLanguage == lang['code'];
         
         return GestureDetector(
           onTap: () {
             setState(() {
-              _selectedGender = isSelected ? null : gender;
+              _preferredLanguage = lang['code'] as String;
             });
             _onSelectionChanged();
           },
@@ -734,7 +870,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
               ),
             ),
             child: Text(
-              displayName,
+              lang['name'] as String,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: isSelected ? Colors.white : AppColors.textDark,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
@@ -788,8 +924,4 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
     );
   }
 
-  Color _getContrastColor(Color color) {
-    final luminance = color.computeLuminance();
-    return luminance > 0.5 ? Colors.black : Colors.white;
-  }
 }
