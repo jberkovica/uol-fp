@@ -119,15 +119,28 @@ class StorytellerAgent(BaseAgent):
         if isinstance(language, Language):
             language = language.value
         
+        # Clean optional parameters - only pass if they have actual values
+        appearance = kwargs.get("appearance")
+        genres = kwargs.get("genres", [])
+        parent_notes = kwargs.get("parent_notes")
+        
+        # Filter out None and empty values
+        if appearance and not appearance.strip():
+            appearance = None
+        if parent_notes and not parent_notes.strip():
+            parent_notes = None
+        if genres and not any(g for g in genres if g and g.strip()):
+            genres = []
+        
         # Create context object
         return StoryGenerationContext(
             image_description=image_description,
             kid_name=kid_name,
             age=age,
             language=language,
-            appearance_description=kwargs.get("appearance"),
-            genres=kwargs.get("genres", []),
-            parent_notes=kwargs.get("parent_notes"),
+            appearance_description=appearance,
+            genres=genres,
+            parent_notes=parent_notes,
             include_appearance=kwargs.get("include_appearance", 0.3),
             word_count=kwargs.get("word_count", self.word_count)
         )
@@ -141,6 +154,10 @@ class StorytellerAgent(BaseAgent):
         language_name = self._get_language_name_from_code(context.language)
         age_group = context.get_age_group()
         additional_context = context.build_context_string()
+        
+        # If no additional context, provide a cleaner prompt
+        if not additional_context:
+            additional_context = "None provided"
         
         # Format the template with actual values
         return prompt_template.format(

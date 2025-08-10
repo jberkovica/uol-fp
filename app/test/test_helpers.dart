@@ -47,6 +47,7 @@ class TestDataFactory {
     String? skinColor,
     String? eyeColor,
     String? gender,
+    String? appearanceDescription,
     List<String>? favoriteGenres,
     DateTime? createdAt,
   }) {
@@ -56,11 +57,7 @@ class TestDataFactory {
       name: name ?? 'Alice',
       age: age ?? 7,
       avatarType: avatarType ?? 'profile1',
-      hairColor: hairColor,
-      hairLength: hairLength,
-      skinColor: skinColor,
-      eyeColor: eyeColor,
-      gender: gender,
+      appearanceDescription: appearanceDescription ?? 'Brown hair, green eyes',
       favoriteGenres: favoriteGenres ?? [],
       createdAt: createdAt ?? DateTime.now(),
     );
@@ -383,11 +380,7 @@ class TestHelpers {
       name: name,
       age: age,
       avatarType: avatarType,
-      hairColor: hairColor,
-      hairLength: hairLength,
-      skinColor: skinColor,
-      eyeColor: eyeColor,
-      gender: gender,
+      appearanceDescription: 'Brown hair, green eyes',
       favoriteGenres: favoriteGenres,
       createdAt: createdAt,
     );

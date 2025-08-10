@@ -18,7 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get create => 'create';
 
   @override
-  String get favourites => 'Favourites';
+  String get favourites => 'Favorites';
 
   @override
   String get latest => 'Latest';
@@ -447,6 +447,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get latvian => 'Latviešu';
 
   @override
+  String get spanish => 'Español';
+
+  @override
+  String get french => 'Français';
+
+  @override
   String get pleaseEnterEmail => 'Please enter your email';
 
   @override
@@ -761,4 +767,140 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gallery => 'gallery';
+
+  @override
+  String get age => 'Age';
+
+  @override
+  String get appearanceOptionalSection => 'Appearance (Optional)';
+
+  @override
+  String get appearanceDescription =>
+      'Describe how your child looks to help create personalized stories.';
+
+  @override
+  String get appearanceMethodQuestion =>
+      'How would you like to describe appearance?';
+
+  @override
+  String get describeInWords => 'Describe in words';
+
+  @override
+  String get uploadPhoto => 'Upload photo';
+
+  @override
+  String get aiWillAnalyzePhoto =>
+      'AI will analyze the photo and create a description';
+
+  @override
+  String get extractingAppearance => 'Extracting appearance...';
+
+  @override
+  String get aiExtractedDescription =>
+      'AI extracted this description from your photo. Feel free to review and edit it.';
+
+  @override
+  String get appearanceExamplePlaceholder =>
+      'Example: \"Curly brown hair, bright green eyes, and a gap-toothed smile\"';
+
+  @override
+  String get appearancePhotoPlaceholder =>
+      'Upload a photo above to auto-generate description, or type manually';
+
+  @override
+  String get appearanceHelperText =>
+      'Describe hair, eyes, distinctive features, etc. This helps create personalized stories.';
+
+  @override
+  String get aiGeneratedHelperText =>
+      'You can edit this AI-generated description to make it more personal.';
+
+  @override
+  String get storyPreferencesOptional => 'Story Preferences (Optional)';
+
+  @override
+  String get preferredLanguage => 'Preferred Language';
+
+  @override
+  String get parentNotesOptional => 'Parent Notes (Optional)';
+
+  @override
+  String get parentNotesDescription =>
+      'Add special context for stories: hobbies, pets, siblings, interests, etc.';
+
+  @override
+  String get parentNotesExample =>
+      'Example: Loves dinosaurs, has a pet cat named Whiskers...';
+
+  @override
+  String get ageRequired => 'Age (Required)';
+
+  @override
+  String get appearanceExtractedSuccess =>
+      'Appearance extracted! You can review and edit the description below.';
+
+  @override
+  String failedToExtractAppearance(String error) {
+    return 'Failed to extract appearance: $error';
+  }
+
+  @override
+  String get genreAdventure => 'Adventure';
+
+  @override
+  String get genreFantasy => 'Fantasy';
+
+  @override
+  String get genreFriendship => 'Friendship';
+
+  @override
+  String get genreFamily => 'Family';
+
+  @override
+  String get genreAnimals => 'Animals';
+
+  @override
+  String get genreMagic => 'Magic';
+
+  @override
+  String get genreSpace => 'Space';
+
+  @override
+  String get genreUnderwater => 'Underwater';
+
+  @override
+  String get genreForest => 'Forest';
+
+  @override
+  String get genreFairyTale => 'Fairy Tale';
+
+  @override
+  String get genreSuperhero => 'Superhero';
+
+  @override
+  String get genreDinosaurs => 'Dinosaurs';
+
+  @override
+  String get genrePirates => 'Pirates';
+
+  @override
+  String get genrePrincess => 'Princess';
+
+  @override
+  String get genreDragons => 'Dragons';
+
+  @override
+  String get genreRobots => 'Robots';
+
+  @override
+  String get genreMystery => 'Mystery';
+
+  @override
+  String get genreFunny => 'Funny';
+
+  @override
+  String get genreEducational => 'Educational';
+
+  @override
+  String get genreBedtime => 'Bedtime Stories';
 }

@@ -102,7 +102,7 @@ class AIStoryService {
 
       // Call the new efficient endpoint
       final response = await http.post(
-        Uri.parse('$baseUrl/generate-story-from-image/'),
+        Uri.parse('$baseUrl/stories/generate'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -341,17 +341,21 @@ class AIStoryService {
 
       final audioBase64 = base64Encode(audioBytes);
 
-      // Call the audio-based story generation endpoint
+      // Use the new voice workflow for audio-based story generation
+      final storyId = await initiateVoiceStory(kidId);
+      
+      // Transcribe the audio first
+      final transcribedText = await transcribeAudio(storyId, audioPath);
+      
+      // Submit the transcribed text for story generation
       final response = await http.post(
-        Uri.parse('$baseUrl/generate-story-from-audio/'),
+        Uri.parse('$baseUrl/stories/submit-text'),
         headers: {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
-          'kid_id': kidId,
-          'audio_data': audioBase64,
-          'language': userLanguage,
-          'preferences': null,
+          'story_id': storyId,
+          'text': transcribedText,
         }),
       );
 
@@ -359,8 +363,7 @@ class AIStoryService {
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        String storyId = responseData['story_id'];
-        _logger.i('Story generation initiated: $storyId');
+        _logger.i('Audio story generation initiated: $storyId');
 
         // Poll for story completion (same logic as text/image)
         Story? story;
@@ -407,17 +410,36 @@ class AIStoryService {
       String userLanguage = LanguageService.instance.currentLanguageCode;
       _logger.i('Story generation using language: $userLanguage');
 
-      // Call the text-based story generation endpoint
-      final response = await http.post(
-        Uri.parse('$baseUrl/generate-story-from-text/'),
+      // For text input, use the text-specific initiate endpoint
+      // Step 1: Initiate story (creates in DRAFT state for text)
+      final initResponse = await http.post(
+        Uri.parse('$baseUrl/stories/initiate-text'),
         headers: {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
           'kid_id': kidId,
-          'text_input': textInput,
           'language': userLanguage,
-          'preferences': null,
+        }),
+      );
+      
+      if (initResponse.statusCode != 200) {
+        throw Exception('Failed to initiate text story: ${initResponse.statusCode}');
+      }
+      
+      final initData = jsonDecode(initResponse.body);
+      final storyId = initData['story_id'] as String;
+      _logger.i('Text story initiated: $storyId');
+      
+      // Step 2: Now submit the actual text
+      final response = await http.post(
+        Uri.parse('$baseUrl/stories/submit-text'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'story_id': storyId,
+          'text': textInput,
         }),
       );
 
@@ -425,8 +447,7 @@ class AIStoryService {
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        String storyId = responseData['story_id'];
-        _logger.i('Story generation initiated: $storyId');
+        _logger.i('Text story generation initiated: $storyId');
 
         // Poll for story completion (same logic as image)
         Story? story;

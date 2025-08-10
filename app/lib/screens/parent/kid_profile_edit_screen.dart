@@ -479,12 +479,12 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Appearance (Optional)',
+          AppLocalizations.of(context)!.appearanceOptionalSection,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 8),
         Text(
-          'Describe how your child looks to help create personalized stories.',
+          AppLocalizations.of(context)!.appearanceDescription,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: AppColors.textGrey,
           ),
@@ -493,7 +493,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         // Appearance method selector
         Text(
-          'How would you like to describe appearance?',
+          AppLocalizations.of(context)!.appearanceMethodQuestion,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -515,7 +515,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Story Preferences (Optional)',
+          AppLocalizations.of(context)!.storyPreferencesOptional,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 16),
@@ -549,7 +549,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Parent Notes (Optional)',
+          AppLocalizations.of(context)!.parentNotesOptional,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 8),
@@ -673,8 +673,8 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
 
   Widget _buildAppearanceMethodSelector() {
     final methods = [
-      {'key': 'manual', 'label': 'Describe in words', 'icon': 'assets/icons/pencil-plus.svg'},
-      {'key': 'photo', 'label': 'Upload photo', 'icon': 'assets/icons/camera-filled.svg'},
+      {'key': 'manual', 'label': AppLocalizations.of(context)!.describeInWords, 'icon': 'assets/icons/pencil-plus.svg'},
+      {'key': 'photo', 'label': AppLocalizations.of(context)!.uploadPhoto, 'icon': 'assets/icons/camera-filled.svg'},
     ];
     
     return Column(
@@ -744,7 +744,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
                         ),
                         if (isPhoto && !_isExtractingAppearance)
                           Text(
-                            'AI will analyze the photo and create a description',
+                            AppLocalizations.of(context)!.aiWillAnalyzePhoto,
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.textGrey,
                             ),
@@ -819,13 +819,13 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
             decoration: InputDecoration(
               hintText: _appearanceMethod == 'photo' 
                   ? 'Upload a photo above to auto-generate description, or type manually'
-                  : 'Example: "Curly brown hair, bright green eyes, and a gap-toothed smile"',
+                  : AppLocalizations.of(context)!.appearanceExamplePlaceholder,
               hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.textGrey,
               ),
               helperText: isFromPhoto 
                   ? 'You can edit this AI-generated description to make it more personal.'
-                  : 'Describe hair, eyes, distinctive features, etc. This helps create personalized stories.',
+                  : AppLocalizations.of(context)!.appearanceHelperText,
               helperStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textGrey,
               ),
@@ -888,7 +888,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
       runSpacing: 8,
       children: KidProfileConstants.storyGenres.map((genre) {
         final isSelected = _selectedGenres.contains(genre);
-        final displayName = KidProfileConstants.getGenreDisplayName(genre);
+        final displayName = _getLocalizedGenreName(genre);
         
         return GestureDetector(
           onTap: () {
@@ -924,4 +924,51 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
     );
   }
 
+  String _getLocalizedGenreName(String genre) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (genre) {
+      case 'adventure':
+        return l10n.genreAdventure;
+      case 'fantasy':
+        return l10n.genreFantasy;
+      case 'friendship':
+        return l10n.genreFriendship;
+      case 'family':
+        return l10n.genreFamily;
+      case 'animals':
+        return l10n.genreAnimals;
+      case 'magic':
+        return l10n.genreMagic;
+      case 'space':
+        return l10n.genreSpace;
+      case 'underwater':
+        return l10n.genreUnderwater;
+      case 'forest':
+        return l10n.genreForest;
+      case 'fairy_tale':
+        return l10n.genreFairyTale;
+      case 'superhero':
+        return l10n.genreSuperhero;
+      case 'dinosaurs':
+        return l10n.genreDinosaurs;
+      case 'pirates':
+        return l10n.genrePirates;
+      case 'princess':
+        return l10n.genrePrincess;
+      case 'dragons':
+        return l10n.genreDragons;
+      case 'robots':
+        return l10n.genreRobots;
+      case 'mystery':
+        return l10n.genreMystery;
+      case 'funny':
+        return l10n.genreFunny;
+      case 'educational':
+        return l10n.genreEducational;
+      case 'bedtime':
+        return l10n.genreBedtime;
+      default:
+        return genre;
+    }
+  }
 }

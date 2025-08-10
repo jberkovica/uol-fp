@@ -161,6 +161,8 @@ class LanguageService extends ChangeNotifier {
     Locale('en'), // English
     Locale('ru'), // Russian
     Locale('lv'), // Latvian
+    Locale('es'), // Spanish
+    Locale('fr'), // French
   ];
 
   /// Check if locale is supported

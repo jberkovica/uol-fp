@@ -128,7 +128,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Age Selection (now mandatory)
                       Text(
-                        'Age (Required)',
+                        AppLocalizations.of(context)!.ageRequired,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -213,7 +213,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Appearance Section
                       Text(
-                        'Appearance (Optional)',
+                        AppLocalizations.of(context)!.appearanceOptionalSection,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -221,7 +221,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Describe how your child looks to help create personalized stories.',
+                        AppLocalizations.of(context)!.appearanceDescription,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textGrey,
                         ),
@@ -272,7 +272,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Favorite Genres Selection
                       Text(
-                        'Favorite Story Types (Optional)',
+                        AppLocalizations.of(context)!.favoriteStoryTypesOptional,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -291,7 +291,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       
                       // Parent Notes
                       Text(
-                        'Parent Notes (Optional)',
+                        AppLocalizations.of(context)!.parentNotesOptional,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: AppColors.textDark,
@@ -299,7 +299,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Special context for stories: hobbies, pets, siblings, interests, etc.',
+                        AppLocalizations.of(context)!.parentNotesDescription,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: AppColors.textGrey,
                         ),
@@ -317,7 +317,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                           maxLength: 300,
                           style: Theme.of(context).textTheme.bodyMedium,
                           decoration: InputDecoration(
-                            hintText: 'Example: Loves dinosaurs, has a pet cat named Whiskers...',
+                            hintText: AppLocalizations.of(context)!.parentNotesExample,
                             hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: AppColors.textGrey,
                             ),
@@ -498,8 +498,8 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
     required VoidCallback onExtractionStart,
   }) {
     final methods = [
-      {'key': 'manual', 'label': 'Describe in words', 'icon': 'assets/icons/pencil-plus.svg'},
-      {'key': 'photo', 'label': 'Upload photo', 'icon': 'assets/icons/camera-filled.svg'},
+      {'key': 'manual', 'label': AppLocalizations.of(context)!.describeInWords, 'icon': 'assets/icons/pencil-plus.svg'},
+      {'key': 'photo', 'label': AppLocalizations.of(context)!.uploadPhoto, 'icon': 'assets/icons/camera-filled.svg'},
     ];
     
     return Column(
@@ -565,7 +565,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
                         ),
                         if (isPhoto && !isExtractingAppearance)
                           Text(
-                            'AI will analyze the photo and create a description',
+                            AppLocalizations.of(context)!.aiWillAnalyzePhoto,
                             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               color: AppColors.textGrey,
                             ),
@@ -642,14 +642,14 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
             style: Theme.of(context).textTheme.bodyMedium,
             decoration: InputDecoration(
               hintText: appearanceMethod == 'photo' 
-                  ? 'Upload a photo above to auto-generate description, or type manually'
-                  : 'Example: "Curly brown hair, bright green eyes, and a gap-toothed smile"',
+                  ? AppLocalizations.of(context)!.appearancePhotoPlaceholder
+                  : AppLocalizations.of(context)!.appearanceExamplePlaceholder,
               hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textGrey,
               ),
               helperText: isFromPhoto 
-                  ? 'You can edit this AI-generated description.'
-                  : 'Describe hair, eyes, distinctive features, etc.',
+                  ? AppLocalizations.of(context)!.aiGeneratedHelperText
+                  : AppLocalizations.of(context)!.appearanceHelperText,
               helperStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textGrey,
               ),
@@ -880,7 +880,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
       runSpacing: 8,
       children: KidProfileConstants.storyGenres.map((genre) {
         final isSelected = selectedGenres.contains(genre);
-        final displayName = KidProfileConstants.getGenreDisplayName(genre);
+        final displayName = _getLocalizedGenreName(context, genre);
         
         return GestureDetector(
           onTap: () {
@@ -913,6 +913,54 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
         );
       }).toList(),
     );
+  }
+
+  static String _getLocalizedGenreName(BuildContext context, String genre) {
+    final l10n = AppLocalizations.of(context)!;
+    switch (genre) {
+      case 'adventure':
+        return l10n.genreAdventure;
+      case 'fantasy':
+        return l10n.genreFantasy;
+      case 'friendship':
+        return l10n.genreFriendship;
+      case 'family':
+        return l10n.genreFamily;
+      case 'animals':
+        return l10n.genreAnimals;
+      case 'magic':
+        return l10n.genreMagic;
+      case 'space':
+        return l10n.genreSpace;
+      case 'underwater':
+        return l10n.genreUnderwater;
+      case 'forest':
+        return l10n.genreForest;
+      case 'fairy_tale':
+        return l10n.genreFairyTale;
+      case 'superhero':
+        return l10n.genreSuperhero;
+      case 'dinosaurs':
+        return l10n.genreDinosaurs;
+      case 'pirates':
+        return l10n.genrePirates;
+      case 'princess':
+        return l10n.genrePrincess;
+      case 'dragons':
+        return l10n.genreDragons;
+      case 'robots':
+        return l10n.genreRobots;
+      case 'mystery':
+        return l10n.genreMystery;
+      case 'funny':
+        return l10n.genreFunny;
+      case 'educational':
+        return l10n.genreEducational;
+      case 'bedtime':
+        return l10n.genreBedtime;
+      default:
+        return genre;
+    }
   }
 
 }

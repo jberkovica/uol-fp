@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
-"""List all ElevenLabs voices to find Russian voices."""
+"""List ElevenLabs voices with optional language filtering."""
 import os
+import sys
+import argparse
+import asyncio
 import httpx
 from dotenv import load_dotenv
 
@@ -13,15 +16,15 @@ if not ELEVENLABS_API_KEY:
     print("Error: ELEVENLABS_API_KEY not found in environment variables")
     exit(1)
 
-async def list_voices():
-    """List all available ElevenLabs voices."""
+async def list_voices(languages=None, search_terms=None, children_only=False):
+    """List available ElevenLabs voices with filtering options."""
     headers = {
         "Accept": "application/json",
         "xi-api-key": ELEVENLABS_API_KEY
     }
     
     async with httpx.AsyncClient() as client:
-        # Try to get more voices with different parameters
+        # Get all available voices first
         response = await client.get(
             "https://api.elevenlabs.io/v1/voices",
             headers=headers,
@@ -33,93 +36,119 @@ async def list_voices():
         response.raise_for_status()
         data = response.json()
         
-        # Also try the voice library endpoint
-        print("=== Checking Voice Library ===\n")
-        try:
-            lib_response = await client.get(
-                "https://api.elevenlabs.io/v1/shared-voices",
-                headers=headers,
-                params={
-                    "page_size": 100,
-                    "category": "professional",
-                    "language": "ru"
-                }
-            )
-            if lib_response.status_code == 200:
-                lib_data = lib_response.json()
-                print(f"Found {len(lib_data.get('voices', []))} voices in library\n")
-        except:
-            print("Could not access voice library\n")
+        print("=== ElevenLabs Voice Discovery Tool ===\n")
         
-    print("=== All Available ElevenLabs Voices ===\n")
-    
-    # Look for Russian voices
-    russian_voices = []
-    all_voices = []
-    
-    for voice in data.get("voices", []):
-        voice_info = {
-            "name": voice.get("name"),
-            "voice_id": voice.get("voice_id"),
-            "category": voice.get("category"),
-            "description": voice.get("description", ""),
-            "labels": voice.get("labels", {})
-        }
-        all_voices.append(voice_info)
+        # Search voice library for specified languages
+        if languages:
+            for lang_code in languages:
+                print(f"=== {lang_code.upper()} VOICES FROM LIBRARY ===\n")
+                try:
+                    lib_response = await client.get(
+                        "https://api.elevenlabs.io/v1/shared-voices",
+                        headers=headers,
+                        params={
+                            "page_size": 100,
+                            "language": lang_code
+                        }
+                    )
+                    if lib_response.status_code == 200:
+                        lib_data = lib_response.json()
+                        voices = lib_data.get('voices', [])
+                        
+                        if children_only:
+                            # Filter voices suitable for children's stories
+                            story_voices = []
+                            for voice in voices:
+                                desc = voice.get('description', '').lower()
+                                if any(term in desc for term in ['children', 'story', 'narrat', 'bedtime', 'fairy', 'tale', 'kid']):
+                                    story_voices.append(voice)
+                            
+                            print(f"Found {len(story_voices)} children-suitable voices out of {len(voices)} total\n")
+                            voices = story_voices
+                        else:
+                            print(f"Found {len(voices)} total voices\n")
+                        
+                        for voice in voices:
+                            print(f"Name: {voice.get('name')}")
+                            print(f"Voice ID: {voice.get('voice_id')}")
+                            print(f"Category: {voice.get('category')}")
+                            desc = voice.get('description', 'No description')
+                            print(f"Description: {desc[:150]}{'...' if len(desc) > 150 else ''}")
+                            print("-" * 60)
+                        print()
+                        
+                except Exception as e:
+                    print(f"Could not access voice library for {lang_code}: {e}\n")
         
-        # Check if it's a Russian voice
-        name_lower = voice_info["name"].lower()
-        desc_lower = (voice_info["description"] or "").lower()
+        # Search by terms if provided
+        if search_terms:
+            for term in search_terms:
+                print(f"=== SEARCH RESULTS FOR '{term}' ===\n")
+                try:
+                    search_response = await client.get(
+                        "https://api.elevenlabs.io/v1/shared-voices",
+                        headers=headers,
+                        params={
+                            "page_size": 50,
+                            "search": term
+                        }
+                    )
+                    if search_response.status_code == 200:
+                        search_data = search_response.json()
+                        search_voices = search_data.get('voices', [])
+                        print(f"Found {len(search_voices)} voices matching '{term}'\n")
+                        for voice in search_voices:
+                            print(f"Name: {voice.get('name')}")
+                            print(f"Voice ID: {voice.get('voice_id')}")
+                            desc = voice.get('description', 'No description')
+                            print(f"Description: {desc[:100]}{'...' if len(desc) > 100 else ''}")
+                            print("-" * 40)
+                        print()
+                except Exception as e:
+                    print(f"Could not search for '{term}': {e}\n")
         
-        if any(term in desc_lower for term in ["russian", "russia", "rus "]) or \
-           any(name in name_lower for name in ["viktoriia", "anna", "kate", "igor", "ivan", "alexandr", "veronica", "max"]):
-            russian_voices.append(voice_info)
+        # Show premade voices if no specific language requested
+        if not languages and not search_terms:
+            print("=== PREMADE VOICES ===\n")
+            premade_voices = []
+            
+            for voice in data.get("voices", []):
+                if voice.get("category") == "premade":
+                    premade_voices.append(voice)
+            
+            print(f"Found {len(premade_voices)} premade voices\n")
+            for voice in premade_voices:
+                print(f"Name: {voice.get('name')}")
+                print(f"Voice ID: {voice.get('voice_id')}")
+                labels = voice.get('labels', {})
+                if labels:
+                    print(f"Labels: {labels}")
+                desc = voice.get('description', '')
+                if desc:
+                    print(f"Description: {desc[:100]}{'...' if len(desc) > 100 else ''}")
+                print("-" * 40)
+
+def main():
+    parser = argparse.ArgumentParser(description='List ElevenLabs voices with filtering options')
+    parser.add_argument('--languages', '-l', nargs='+', help='Language codes to search for (e.g., ru es fr)')
+    parser.add_argument('--search', '-s', nargs='+', help='Search terms to look for')
+    parser.add_argument('--children-only', '-c', action='store_true', help='Show only voices suitable for children')
     
-    # Print Russian voices first
-    print("=== Russian/Russian-speaking Voices ===\n")
-    for voice in russian_voices:
-        print(f"Name: {voice['name']}")
-        print(f"Voice ID: {voice['voice_id']}")
-        print(f"Category: {voice['category']}")
-        if voice['description']:
-            print(f"Description: {voice['description']}")
-        print("-" * 50)
+    args = parser.parse_args()
     
-    print(f"\nTotal Russian voices found: {len(russian_voices)}")
-    print(f"Total voices available: {len(all_voices)}")
+    if not args.languages and not args.search:
+        print("Usage examples:")
+        print("  python list_elevenlabs_voices.py --languages ru es fr")
+        print("  python list_elevenlabs_voices.py --search storyteller narrator")
+        print("  python list_elevenlabs_voices.py --languages es --children-only")
+        print("  python list_elevenlabs_voices.py  # Show all premade voices")
+        print()
     
-    # Print all available voices with categories
-    print("\n=== All Available Voices by Category ===\n")
-    categories = {}
-    for voice in all_voices:
-        cat = voice['category'] or 'uncategorized'
-        if cat not in categories:
-            categories[cat] = []
-        categories[cat].append(voice)
-    
-    for category, voices in categories.items():
-        print(f"\n--- {category.upper()} ({len(voices)} voices) ---")
-        for voice in voices:
-            print(f"Name: {voice['name']}, ID: {voice['voice_id']}")
-            if voice['description']:
-                print(f"  Description: {voice['description'][:100]}...")
-            # Check for language info in labels
-            if voice['labels']:
-                print(f"  Labels: {voice['labels']}")
-    
-    # Also print female voices that might work well for Russian
-    print("\n=== Female Voices (might work for Russian stories) ===\n")
-    for voice in all_voices:
-        if voice['category'] == 'premade':
-            desc_lower = (voice['description'] or '').lower()
-            name_lower = voice['name'].lower()
-            if any(term in desc_lower for term in ['female', 'woman', 'girl', 'she', 'her']) or \
-               any(name in name_lower for name in ['rachel', 'charlotte', 'bella', 'domi', 'matilda', 'dorothy', 'emily']):
-                print(f"Name: {voice['name']}")
-                print(f"Voice ID: {voice['voice_id']}")
-                print(f"Description: {voice['description']}")
-                print("-" * 30)
+    asyncio.run(list_voices(
+        languages=args.languages,
+        search_terms=args.search,
+        children_only=args.children_only
+    ))
 
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(list_voices())
+    main()

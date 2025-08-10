@@ -316,7 +316,56 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
 
   @override
   Widget build(BuildContext context) {
-    final Story originalStory = ModalRoute.of(context)!.settings.arguments as Story;
+    // Safely get the story argument with proper null checking
+    final Object? arguments = ModalRoute.of(context)?.settings.arguments;
+    
+    if (arguments == null || arguments is! Story) {
+      _logger.e('StoryDisplayScreen: Invalid or missing story argument', error: arguments);
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: AppColors.primary,
+          foregroundColor: Colors.white,
+          title: Text(
+            'Error',
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.white),
+          ),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                size: 64,
+                color: AppColors.primary,
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Story not found',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Please go back and try again',
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                ),
+                child: Text('Go Back'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    
+    final Story originalStory = arguments;
     // Use updated story if available, otherwise use original
     final Story story = _updatedStory ?? originalStory;
     

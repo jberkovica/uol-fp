@@ -1,0 +1,730 @@
+{
+  "@@locale": "fr",
+  
+  "appTitle": "Mira Conteuse",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "myTales": "Mes contes",
+  "@myTales": {
+    "description": "Home screen title"
+  },
+  
+  "create": "créer",
+  "@create": {
+    "description": "Create button text"
+  },
+  
+  "favourites": "Favoris",
+  "@favourites": {
+    "description": "Favourites section title"
+  },
+  
+  "latest": "Récents",
+  "@latest": {
+    "description": "Latest stories section title"
+  },
+  
+  "kidStories": "Contes de {kidName}",
+  "@kidStories": {
+    "description": "Kid's personal stories section",
+    "placeholders": {
+      "kidName": {
+        "type": "String",
+        "example": "Ava"
+      }
+    }
+  },
+  
+  "noStoriesYet": "Pas encore de contes",
+  "@noStoriesYet": {
+    "description": "Empty state message"
+  },
+  
+  "profile": "Profil",
+  "@profile": {
+    "description": "Profile navigation item"
+  },
+  
+  "home": "Accueil",
+  "@home": {
+    "description": "Home navigation item"
+  },
+  
+  "settings": "Paramètres",
+  "@settings": {
+    "description": "Settings navigation item"
+  },
+  
+  "selectProfile": "Sélectionner un Profil",
+  "@selectProfile": {
+    "description": "Profile selection screen title"
+  },
+  
+  "noProfileSelected": "Aucun profil sélectionné",
+  "@noProfileSelected": {
+    "description": "Error when no profile is selected"
+  },
+  
+  "magicIsHappening": "La magie opère..",
+  "@magicIsHappening": {
+    "description": "Processing screen message"
+  },
+  
+  "uploadYourCreation": "Téléchargez votre création",
+  "@uploadYourCreation": {
+    "description": "Upload screen title"
+  },
+  
+  "dragDropHere": "Glissez-déposez ici",
+  "@dragDropHere": {
+    "description": "Upload area text"
+  },
+  
+  "or": "OU",
+  "@or": {
+    "description": "Alternative option separator"
+  },
+  
+  "browseFile": "Parcourir",
+  "@browseFile": {
+    "description": "File browser button"
+  },
+  
+  "generateStory": "Générer un conte",
+  "@generateStory": {
+    "description": "Generate story button"
+  },
+  
+  "signIn": "Se Connecter",
+  "@signIn": {
+    "description": "Sign in button"
+  },
+  
+  "signUp": "S'Inscrire",
+  "@signUp": {
+    "description": "Sign up button"
+  },
+  
+  "email": "Adresse e-mail",
+  "@email": {
+    "description": "Email field label"
+  },
+  
+  "password": "Mot de passe",
+  "@password": {
+    "description": "Password field label"
+  },
+  
+  "confirmPassword": "Confirmer le Mot de passe",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+  
+  "forgotPassword": "Mot de passe oublié ?",
+  "@forgotPassword": {
+    "description": "Forgot password link"
+  },
+  
+  "alreadyHaveAccount": "Vous avez déjà un compte ?",
+  "@alreadyHaveAccount": {
+    "description": "Login prompt on signup page"
+  },
+
+  "logout": "Se Déconnecter",
+  "@logout": {
+    "description": "Logout button text"
+  },
+  
+  "dontHaveAccount": "Vous n'avez pas de compte ?",
+  "@dontHaveAccount": {
+    "description": "Signup prompt on login page"
+  },
+  
+  "welcomeBack": "Bon retour !",
+  "@welcomeBack": {
+    "description": "Login screen greeting"
+  },
+  
+  "createYourAccount": "Créez votre compte",
+  "@createYourAccount": {
+    "description": "Signup screen title"
+  },
+  
+  "parentDashboard": "Panneau Parental",
+  "@parentDashboard": {
+    "description": "Parent dashboard title"
+  },
+  
+  "enterPin": "Entrer le PIN",
+  "@enterPin": {
+    "description": "PIN entry screen title"
+  },
+  
+  "failedToLoadStories": "Échec du chargement des contes : {error}",
+  "@failedToLoadStories": {
+    "description": "Error message when stories fail to load",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "audioRecordingComingSoon": "L'enregistrement audio sera bientôt disponible !",
+  "textStoryComingSoon": "La génération de contes texte sera bientôt disponible !",
+  "failedToPickImage": "Échec de la sélection d'image : {error}",
+  "@failedToPickImage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToGenerateStory": "Échec de la génération du conte : {error}",
+  "@failedToGenerateStory": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "pleaseEnterName": "Veuillez entrer un nom",
+  "failedToCreateProfile": "Échec de la création du profil : {error}",
+  "@failedToCreateProfile": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "editProfileComingSoon": "Modifier le profil sera bientôt disponible !",
+  "favoritesComingSoon": "Les favoris seront bientôt disponibles !",
+  "failedToPlayAudio": "Échec de la lecture audio : {error}",
+  "@failedToPlayAudio": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "incorrectPin": "PIN incorrect. Veuillez réessayer.",
+  "accountCreatedSuccessfully": "Compte créé avec succès ! Veuillez vérifier votre e-mail pour vérifier votre compte.",
+  "appleSignInComingSoon": "La connexion avec Apple sera bientôt disponible !",
+  "appleSignUpComingSoon": "L'inscription avec Apple sera bientôt disponible !",
+  "failedToLoadKids": "Échec du chargement des enfants : {error}",
+  "@failedToLoadKids": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "addKidProfileFirst": "Veuillez d'abord ajouter un profil d'enfant pour créer des contes",
+  "noKidsProfilesAvailable": "Aucun profil d'enfant disponible. Ajoutez d'abord un enfant !",
+  "changePinComingSoon": "Changer le PIN sera bientôt disponible !",
+  "storySettingsComingSoon": "Les paramètres des contes seront bientôt disponibles !",
+  "exportDataComingSoon": "L'exportation des données sera bientôt disponible !",
+  "deletingKidProfile": "Suppression du profil de {kidName}...",
+  "@deletingKidProfile": {
+    "placeholders": {
+      "kidName": {
+        "type": "String"
+      }
+    }
+  },
+  "kidProfileDeleted": "Profil de {kidName} supprimé avec succès",
+  "@kidProfileDeleted": {
+    "placeholders": {
+      "kidName": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToDeleteProfile": "Échec de la suppression du profil : {error}",
+  "@failedToDeleteProfile": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "languageUpdatedTo": "Langue mise à jour vers {language}",
+  "@languageUpdatedTo": {
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToUpdateLanguage": "Échec de la mise à jour de la langue",
+  "errorUpdatingLanguage": "Erreur lors de la mise à jour de la langue : {error}",
+  "@errorUpdatingLanguage": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "upload": "télécharger",
+  "dictate": "dicter",
+  "submit": "soumettre",
+  "cancel": "Annuler",
+  "continueWithGoogle": "Continuer avec Google",
+  "continueWithApple": "Continuer avec Apple",
+  "continueWithFacebook": "Continuer avec Facebook",
+  "googleSignInFailed": "Échec de la connexion Google",
+  "appleSignInFailed": "Échec de la connexion Apple", 
+  "facebookSignInFailed": "Échec de la connexion Facebook",
+  "createAccount": "Créer un Compte",
+  "editProfile": "Modifier le Profil",
+  "viewStories": "Voir les Contes", 
+  "deleteProfile": "Supprimer le Profil",
+  "addKid": "Ajouter un Enfant",
+  "decline": "Refuser",
+  "approve": "Approuver",
+  "delete": "Supprimer",
+  
+  "storyPreview": "Aperçu du conte",
+  "exitParentMode": "Quitter le Mode Parent",
+  "textSize": "Taille du Texte",
+  "backgroundMusic": "Musique de Fond",
+  "createAnotherStory": "Créer un Autre Conte",
+  
+  "fullNameOptional": "Nom Complet (Facultatif)",
+  "enterChildName": "Entrez le nom de l'enfant",
+  "writeYourIdeaHere": "écrivez votre idée ici...",
+  "enterFeedbackOrChanges": "Entrez des commentaires ou demandez des modifications...",
+  "transcribingAudio": "Transcription audio...",
+  
+  "changeNameAgeAvatar": "Changer nom, âge ou avatar",
+  "switchProfile": "Changer de Profil",
+  "changeToDifferentKidProfile": "Changer vers un profil d'enfant différent",
+  "favoriteStories": "Contes Favoris", 
+  "viewYourMostLovedTales": "Consultez vos contes les plus aimés",
+  "language": "Langue",
+  "changePin": "Changer le PIN",
+  "updateParentDashboardPin": "Mettre à jour le PIN du panneau parental",
+  "currentPin": "PIN Actuel",
+  "newPin": "Nouveau PIN", 
+  "confirmPin": "Confirmer le PIN",
+  "enterCurrentPin": "Entrez votre PIN actuel",
+  "enterNewPin": "Entrez votre nouveau PIN",
+  "confirmNewPin": "Confirmez votre nouveau PIN",
+  "pinsDoNotMatch": "Les PINs ne correspondent pas",
+  "pinChangedSuccessfully": "PIN changé avec succès",
+  "incorrectCurrentPin": "PIN actuel incorrect",
+  "storySettings": "Paramètres des Contes",
+  "configureStoryGenerationPreferences": "Configurer les préférences de génération de contes",
+  "exportData": "Exporter les Données",
+  "downloadAllStoriesAndData": "Télécharger tous les contes et données",
+  
+  "noStoryDataAvailable": "Aucune donnée de conte disponible",
+  "currentFontSize": "Actuel : {size}pt",
+  "@currentFontSize": {
+    "placeholders": {
+      "size": {
+        "type": "int"
+      }
+    }
+  },
+  "enabled": "Activé",
+  "disabled": "Désactivé",
+  
+  "kidsProfiles": "Profils d'Enfants",
+  "totalStories": "Total des Contes",
+  "noKidsProfilesYet": "Pas Encore de Profils d'Enfants",
+  "addFirstKidProfile": "Ajoutez votre premier profil d'enfant pour commencer avec des contes personnalisés !",
+  "parentControls": "Contrôles Parentaux",
+  "selectLanguage": "Sélectionner la Langue",
+  "newStory": "Nouveau Conte",
+  "stories": "{count} {count, plural, =0{contes} =1{conte} other{contes}}",
+  "@stories": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "createdDate": "Créé le {date}",
+  "@createdDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteProfileConfirm": "Êtes-vous sûr de vouloir supprimer le profil de {kidName} ? Cela supprimera aussi tous ses {storyCount} contes.",
+  "@deleteProfileConfirm": {
+    "placeholders": {
+      "kidName": {
+        "type": "String"
+      },
+      "storyCount": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "profileDetails": "Profil : {avatarType}",
+  "@profileDetails": {
+    "placeholders": {
+      "avatarType": {
+        "type": "String"
+      }
+    }
+  },
+  "creatingStoriesSince": "Crée des contes depuis {date}",
+  "@creatingStoriesSince": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "storiesCreated": "Contes Créés",
+  "wordsWritten": "Mots Écrits",
+  "profileOptions": "Options de Profil",
+  "changeToDifferentProfile": "Changer vers un profil d'enfant différent",
+  
+  "english": "English",
+  "russian": "Русский", 
+  "latvian": "Latviešu",
+  "spanish": "Español",
+  "french": "Français",
+  
+  "pleaseEnterEmail": "Veuillez entrer votre adresse e-mail",
+  "pleaseEnterValidEmail": "Veuillez entrer une adresse e-mail valide",
+  "passwordMinLength": "Le mot de passe doit comporter au moins 6 caractères",
+  "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+  "pleaseEnterPassword": "Veuillez entrer un mot de passe",
+  "pleaseConfirmPassword": "Veuillez confirmer votre mot de passe",
+
+  "storyApprovedSuccessfully": "Conte approuvé avec succès !",
+  "storyDeclined": "Conte refusé",
+  "declineStory": "Refuser le Conte",
+  "pleaseProvideReason": "Veuillez fournir une raison pour le refus :",
+  "declineReasonHint": "Ex., trop effrayant, contenu inapproprié, etc.",
+  "suggestEdits": "Suggérer des Modifications",
+  "provideSuggestions": "Fournissez des suggestions pour améliorer le conte :",
+  "suggestionsHint": "Ex., le rendre moins effrayant, ajouter plus sur l'amitié, etc.",
+  "regeneratingStory": "Régénération du conte avec vos suggestions...",
+  "regenerateStory": "Régénérer le Conte",
+  "imageNotAvailable": "Image non disponible",
+  "cancel": "Annuler",
+  
+  "pendingStories": "Contes en Attente",
+  "noPendingStories": "Aucun conte en attente de révision",
+  "allStoriesReviewed": "Tous les contes ont été révisés",
+  "forChild": "Pour {childName}",
+  "@forChild": {
+    "placeholders": {
+      "childName": {
+        "type": "String"
+      }
+    }
+  },
+  "review": "Réviser",
+  
+  "approvalMethod": "Méthode d'Approbation",
+  "selectApprovalMethod": "Sélectionner la Méthode d'Approbation",
+  "autoApprove": "Approuver Automatiquement",
+  "reviewInApp": "Réviser dans l'App",
+  "reviewByEmail": "Réviser par E-mail",
+  "autoApproveDescription": "Les contes sont automatiquement approuvés et disponibles immédiatement",
+  "reviewInAppDescription": "Révisez les contes dans le panneau parental avant de les montrer aux enfants",
+  "reviewByEmailDescription": "Recevez des notifications par e-mail pour réviser les contes avant approbation",
+  "approvalMethodUpdated": "Méthode d'approbation mise à jour vers {method}",
+  "@approvalMethodUpdated": {
+    "placeholders": {
+      "method": {
+        "type": "String"
+      }
+    }
+  },
+  "failedToUpdateApprovalMethod": "Échec de la mise à jour de la méthode d'approbation",
+  "errorUpdatingApprovalMethod": "Erreur lors de la mise à jour de la méthode d'approbation : {error}",
+  "@errorUpdatingApprovalMethod": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "yourStoryIsReady": "Votre conte est prêt !",
+  "parentReviewPending": "Révision parentale en attente",
+  "tapReviewToApprove": "Appuyez sur Réviser pour demander l'approbation parentale",
+  "weWillNotifyWhenReady": "Nous vous préviendrons quand votre conte sera prêt !",
+  "openStory": "ouvrir",
+  
+  "pleaseEnterText": "Veuillez entrer du texte pour créer votre conte",
+  "textTooShort": "Veuillez écrire au moins 10 caractères pour votre idée de conte",
+  "textTooLong": "Le texte est trop long. Veuillez le garder sous 500 caractères",
+  "pleaseSelectChild": "Veuillez d'abord sélectionner un enfant",
+  
+  "recording": "Enregistrement",
+  "stopRecording": "Arrêter l'Enregistrement",
+  "microphonePermissionRequired": "Permission du microphone requise pour enregistrer l'audio",
+  "failedToStartRecording": "Échec du démarrage de l'enregistrement",
+  "failedToStopRecording": "Échec de l'arrêt de l'enregistrement",
+  "noRecordingAvailable": "Aucun enregistrement disponible",
+  
+  "appleSignUpComingSoon": "L'inscription avec Apple sera bientôt disponible !",
+  
+  "addNewProfile": "Ajouter un Nouveau Profil",
+  "createProfile": "Créer un Profil",
+  "editProfile": "Modifier le Profil",
+  "createNewProfile": "Créer un Nouveau Profil",
+  "addDetailsForChild": "Ajoutez les détails pour votre enfant",
+  "basicInformation": "Informations de Base",
+  "appearance": "Apparence",
+  "appearanceOptional": "Apparence (Facultatif)",
+  "personalityPreferences": "Personnalité et Préférences",
+  "personalityPreferencesOptional": "Personnalité et Préférences (Facultatif)",
+  "additionalNotes": "Notes Supplémentaires",
+  "additionalNotesOptional": "Notes Supplémentaires (Facultatif)",
+  "ageOptional": "Âge (Facultatif)",
+  "chooseAvatar": "Choisir un Avatar",
+  "hairColor": "Couleur des Cheveux",
+  "hairColorOptional": "Couleur des Cheveux (Facultatif)",
+  "hairLength": "Longueur des Cheveux",
+  "hairLengthOptional": "Longueur des Cheveux (Facultatif)",
+  "skinColor": "Couleur de Peau",
+  "skinColorOptional": "Couleur de Peau (Facultatif)",
+  "eyeColor": "Couleur des Yeux",
+  "eyeColorOptional": "Couleur des Yeux (Facultatif)",
+  "gender": "Genre",
+  "genderOptional": "Genre (Facultatif)",
+  "favoriteStoryTypes": "Types de Contes Favoris",
+  "favoriteStoryTypesOptional": "Types de Contes Favoris (Facultatif)",
+  "addSpecialNotes": "Ajoutez des notes spéciales sur votre enfant...",
+  "addSpecialNotesFor": "Ajoutez des notes spéciales sur {childName}...",
+  "@addSpecialNotesFor": {
+    "placeholders": {
+      "childName": {
+        "type": "String"
+      }
+    }
+  },
+  "saveChanges": "Sauvegarder les Modifications",
+  "creating": "Création...",
+  "failedToUpdateProfile": "Échec de la mise à jour du profil : {error}",
+  "@failedToUpdateProfile": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "setYourParentPin": "Définir votre PIN Parental",
+  "createFourDigitPinAccess": "Créez un PIN à 4 chiffres pour accéder\nau panneau parental et aux paramètres",
+  "settingUpYourPin": "Configuration de votre PIN...",
+  "thisWillBeUsedForAccess": "Ce PIN sera utilisé pour accéder aux paramètres parentaux et approuver les contes pour vos enfants.",
+  "pleaseEnterAllFourDigits": "Veuillez entrer les 4 chiffres",
+  "failedToSetPin": "Échec de la définition du PIN. Veuillez réessayer.",
+
+  "tapToStartRecording": "Appuyez pour commencer l'enregistrement",
+  "@tapToStartRecording": {
+    "description": "Hint text for dictation recording button"
+  },
+
+  "pauseRecording": "Pause l'enregistrement",
+  "@pauseRecording": {
+    "description": "Tooltip for pause recording button"
+  },
+
+  "startOver": "Recommencer",
+  "@startOver": {
+    "description": "Tooltip for start over button"
+  },
+
+  "playAudio": "Lire l'audio",
+  "@playAudio": {
+    "description": "Tooltip for play audio button"
+  },
+
+  "pauseAudio": "Pause l'audio",
+  "@pauseAudio": {
+    "description": "Tooltip for pause audio button"
+  },
+
+  "submitForTranscription": "Soumettre pour transcription",
+  "@submitForTranscription": {
+    "description": "Tooltip for submit transcription button"
+  },
+
+  "dictateAgain": "Dicter à Nouveau",
+  "@dictateAgain": {
+    "description": "Button to dictate again"
+  },
+
+  "editAsText": "Modifier comme Texte",
+  "@editAsText": {
+    "description": "Button to edit as text"
+  },
+
+  "selectImageSource": "Sélectionner la Source d'Image",
+  "@selectImageSource": {
+    "description": "Title for image source selection dialog"
+  },
+
+  "takePhoto": "Prendre une Photo",
+  "@takePhoto": {
+    "description": "Button to take photo with camera"
+  },
+
+  "chooseFromGallery": "Choisir dans la Galerie",
+  "@chooseFromGallery": {
+    "description": "Button to choose photo from gallery"
+  },
+
+  "switchToText": "Passer au Texte",
+  "@switchToText": {
+    "description": "Button to switch to text input mode"
+  },
+
+  "camera": "appareil photo",
+  "@camera": {
+    "description": "Short camera button label"
+  },
+
+  "gallery": "galerie",
+  "@gallery": {
+    "description": "Short gallery button label"
+  },
+
+  "age": "Âge",
+  "@age": {
+    "description": "Age field label"
+  },
+
+  "appearanceOptionalSection": "Apparence (Facultatif)",
+  "@appearanceOptionalSection": {
+    "description": "Appearance section title in profile forms"
+  },
+
+  "appearanceDescription": "Décrivez à quoi ressemble votre enfant pour aider à créer des contes personnalisés.",
+  "@appearanceDescription": {
+    "description": "Explanation text for appearance section"
+  },
+
+  "appearanceMethodQuestion": "Comment souhaitez-vous décrire l'apparence ?",
+  "@appearanceMethodQuestion": {
+    "description": "Question for appearance method selection"
+  },
+
+  "describeInWords": "Décrire avec des mots",
+  "@describeInWords": {
+    "description": "Manual appearance description option"
+  },
+
+  "uploadPhoto": "Télécharger une photo",
+  "@uploadPhoto": {
+    "description": "Photo upload appearance option"
+  },
+
+  "aiWillAnalyzePhoto": "L'IA analysera la photo et créera une description",
+  "@aiWillAnalyzePhoto": {
+    "description": "Explanation for photo upload option"
+  },
+
+  "extractingAppearance": "Extraction de l'apparence...",
+  "@extractingAppearance": {
+    "description": "Loading text during AI appearance extraction"
+  },
+
+  "aiExtractedDescription": "L'IA a extrait cette description de votre photo. N'hésitez pas à la réviser et l'éditer.",
+  "@aiExtractedDescription": {
+    "description": "Info text for AI-generated appearance description"
+  },
+
+  "appearanceExamplePlaceholder": "Exemple : \"Cheveux bouclés bruns, yeux verts brillants et un sourire avec un écart entre les dents\"",
+  "@appearanceExamplePlaceholder": {
+    "description": "Example placeholder text for appearance description"
+  },
+
+  "appearancePhotoPlaceholder": "Téléchargez une photo ci-dessus pour générer automatiquement la description, ou tapez manuellement",
+  "@appearancePhotoPlaceholder": {
+    "description": "Placeholder text when photo method is selected"
+  },
+
+  "appearanceHelperText": "Décrivez les cheveux, les yeux, les traits distinctifs, etc. Cela aide à créer des contes personnalisés.",
+  "@appearanceHelperText": {
+    "description": "Helper text for appearance description field"
+  },
+
+  "aiGeneratedHelperText": "Vous pouvez éditer cette description générée par IA pour la rendre plus personnelle.",
+  "@aiGeneratedHelperText": {
+    "description": "Helper text for AI-generated appearance descriptions"
+  },
+
+  "storyPreferencesOptional": "Préférences de Contes (Facultatif)",
+  "@storyPreferencesOptional": {
+    "description": "Story preferences section title"
+  },
+
+  "preferredLanguage": "Langue Préférée",
+  "@preferredLanguage": {
+    "description": "Preferred language field label"
+  },
+
+  "parentNotesOptional": "Notes Parentales (Facultatif)",
+  "@parentNotesOptional": {
+    "description": "Parent notes section title"
+  },
+
+  "parentNotesDescription": "Ajoutez un contexte spécial pour les contes : loisirs, animaux de compagnie, frères et sœurs, intérêts, etc.",
+  "@parentNotesDescription": {
+    "description": "Description for parent notes section"
+  },
+
+  "parentNotesExample": "Exemple : Aime les dinosaures, a un chat nommé Moustaches...",
+  "@parentNotesExample": {
+    "description": "Example text for parent notes field"
+  },
+
+  "ageRequired": "Âge (Requis)",
+  "@ageRequired": {
+    "description": "Age field label when required"
+  },
+
+  "appearanceExtractedSuccess": "Apparence extraite ! Vous pouvez réviser et éditer la description ci-dessous.",
+  "@appearanceExtractedSuccess": {
+    "description": "Success message after appearance extraction"
+  },
+
+  "failedToExtractAppearance": "Échec de l'extraction de l'apparence : {error}",
+  "@failedToExtractAppearance": {
+    "description": "Error message for appearance extraction failure",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "genreAdventure": "Aventure",
+  "genreFantasy": "Fantastique",
+  "genreFriendship": "Amitié",
+  "genreFamily": "Famille",
+  "genreAnimals": "Animaux",
+  "genreMagic": "Magie",
+  "genreSpace": "Espace",
+  "genreUnderwater": "Sous-marin",
+  "genreForest": "Forêt",
+  "genreFairyTale": "Conte de fées",
+  "genreSuperhero": "Super-héros",
+  "genreDinosaurs": "Dinosaures",
+  "genrePirates": "Pirates",
+  "genrePrincess": "Princesse",
+  "genreDragons": "Dragons",
+  "genreRobots": "Robots",
+  "genreMystery": "Mystère",
+  "genreFunny": "Drôle",
+  "genreEducational": "Éducatif",
+  "genreBedtime": "Contes du soir"
+}

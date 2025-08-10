@@ -69,7 +69,11 @@ Priority:
 [] how to monitor logs for backend
 
 [] bug if we go from select kid to settings and then to create story
-[] localization tests
+[x] localization tests
+[] Set up CI/CD integration for localization checks
+[] flutter analyze - 102 issues
+[] test elevenlab turbo
+[] improve supabase - story_input - input_type: text / text_final
 
 [] auth with apple and google
 [] kids profile info
@@ -80,7 +84,14 @@ Priority:
 [] remove /test-processing
 [] check for unused screens
 [] home page sections
-[] gallery view "see all" for more then 10?
+[] gallery view "see all" for more then 10? -> just All, like in bolt food
+
+[] sentry
+[] ci cd
+
+[] debug messages cleanup
+[] remove Mira Storyteller references
+[] need help or support option in parent dashboard
 
 
 [] remove print to console

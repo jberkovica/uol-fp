@@ -1,0 +1,25 @@
+hardcoded_strings_lint:
+  # Minimum length for strings to be considered for linting
+  min_lint_length: 3
+  
+  # Severity level for hardcoded strings (info, warning, error)
+  hardcoded_string: warning
+  
+  # Severity level for invalid keys (info, warning, error)  
+  invalid_key: error
+  
+  # Exclude certain patterns that are technical and shouldn't be localized
+  exclude_patterns:
+    - '^[0-9]+$'           # Numbers only
+    - '^#[0-9A-Fa-f]{6}$'  # Hex colors
+    - '^https?://'         # URLs
+    - '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$' # Emails
+    - '^/[a-zA-Z0-9/_-]*$' # Paths
+    - '^[A-Z_][A-Z0-9_]*$' # Constants
+    - '^assets/'           # Asset paths
+    
+  # Files to exclude from checking
+  exclude_files:
+    - 'lib/generated/**'
+    - 'lib/l10n/**'
+    - 'test/**'

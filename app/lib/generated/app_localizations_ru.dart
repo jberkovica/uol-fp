@@ -453,6 +453,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get latvian => 'Latviešu';
 
   @override
+  String get spanish => 'Español';
+
+  @override
+  String get french => 'Français';
+
+  @override
   String get pleaseEnterEmail => 'Пожалуйста, введите ваш email';
 
   @override
@@ -775,4 +781,139 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get gallery => 'галерея';
+
+  @override
+  String get age => 'Возраст';
+
+  @override
+  String get appearanceOptionalSection => 'Внешность (необязательно)';
+
+  @override
+  String get appearanceDescription =>
+      'Опишите, как выглядит ваш ребенок, чтобы помочь создать персонализированные истории.';
+
+  @override
+  String get appearanceMethodQuestion => 'Как вы хотели бы описать внешность?';
+
+  @override
+  String get describeInWords => 'Описать словами';
+
+  @override
+  String get uploadPhoto => 'Загрузить фото';
+
+  @override
+  String get aiWillAnalyzePhoto => 'ИИ проанализирует фото и создаст описание';
+
+  @override
+  String get extractingAppearance => 'Извлечение внешности...';
+
+  @override
+  String get aiExtractedDescription =>
+      'ИИ создал это описание из вашего фото. Пожалуйста, просмотрите и отредактируйте его.';
+
+  @override
+  String get appearanceExamplePlaceholder =>
+      'Пример: \"Кудрявые коричневые волосы, ярко-зеленые глаза и улыбка с щербинкой\"';
+
+  @override
+  String get appearancePhotoPlaceholder =>
+      'Загрузите фото выше для автоматического создания описания, или напишите вручную';
+
+  @override
+  String get appearanceHelperText =>
+      'Опишите волосы, глаза, отличительные черты и т.д. Это помогает создавать персонализированные истории.';
+
+  @override
+  String get aiGeneratedHelperText =>
+      'Вы можете отредактировать это созданное ИИ описание, чтобы сделать его более личным.';
+
+  @override
+  String get storyPreferencesOptional =>
+      'Предпочтения по историям (необязательно)';
+
+  @override
+  String get preferredLanguage => 'Предпочитаемый язык';
+
+  @override
+  String get parentNotesOptional => 'Заметки для родителей (необязательно)';
+
+  @override
+  String get parentNotesDescription =>
+      'Добавьте особый контекст для историй: хобби, домашние животные, братья и сестры, интересы и т.д.';
+
+  @override
+  String get parentNotesExample =>
+      'Пример: Любит динозавров, есть кот по имени Усик...';
+
+  @override
+  String get ageRequired => 'Возраст (обязательно)';
+
+  @override
+  String get appearanceExtractedSuccess =>
+      'Внешность извлечена! Вы можете просмотреть и отредактировать описание ниже.';
+
+  @override
+  String failedToExtractAppearance(String error) {
+    return 'Не удалось извлечь внешность: $error';
+  }
+
+  @override
+  String get genreAdventure => 'Приключения';
+
+  @override
+  String get genreFantasy => 'Фантастика';
+
+  @override
+  String get genreFriendship => 'Дружба';
+
+  @override
+  String get genreFamily => 'Семья';
+
+  @override
+  String get genreAnimals => 'Животные';
+
+  @override
+  String get genreMagic => 'Волшебство';
+
+  @override
+  String get genreSpace => 'Космос';
+
+  @override
+  String get genreUnderwater => 'Подводный мир';
+
+  @override
+  String get genreForest => 'Лес';
+
+  @override
+  String get genreFairyTale => 'Сказка';
+
+  @override
+  String get genreSuperhero => 'Супергерои';
+
+  @override
+  String get genreDinosaurs => 'Динозавры';
+
+  @override
+  String get genrePirates => 'Пираты';
+
+  @override
+  String get genrePrincess => 'Принцессы';
+
+  @override
+  String get genreDragons => 'Драконы';
+
+  @override
+  String get genreRobots => 'Роботы';
+
+  @override
+  String get genreMystery => 'Тайна';
+
+  @override
+  String get genreFunny => 'Смешное';
+
+  @override
+  String get genreEducational => 'Обучающее';
+
+  @override
+  String get genreBedtime => 'Сказки на ночь';
 }

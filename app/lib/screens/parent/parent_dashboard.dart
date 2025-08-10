@@ -515,7 +515,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                     height: 20,
                     colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                   ),
-                  tooltip: 'Edit Profile',
+                  tooltip: AppLocalizations.of(context)!.editProfile,
                 ),
                 
                 // View Stories Button (moved to second position)
@@ -531,7 +531,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                     height: 20,
                     colorFilter: const ColorFilter.mode(AppColors.secondary, BlendMode.srcIn),
                   ),
-                  tooltip: 'View Stories',
+                  tooltip: AppLocalizations.of(context)!.viewStories,
                 ),
                 
                 // Delete Profile Button
@@ -543,7 +543,7 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                     height: 20,
                     colorFilter: const ColorFilter.mode(AppColors.error, BlendMode.srcIn),
                   ),
-                  tooltip: 'Delete Profile',
+                  tooltip: AppLocalizations.of(context)!.deleteProfile,
                 ),
               ],
             ),
@@ -1007,6 +1007,10 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
         return AppLocalizations.of(context)!.russian;
       case 'lv':
         return AppLocalizations.of(context)!.latvian;
+      case 'es':
+        return AppLocalizations.of(context)!.spanish;
+      case 'fr':
+        return AppLocalizations.of(context)!.french;
       default:
         return AppLocalizations.of(context)!.english;
     }
@@ -1043,8 +1047,10 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
             ),
             const SizedBox(height: 16),
             _buildLanguageOption('en', AppLocalizations.of(context)!.english, '🇺🇸'),
-            _buildLanguageOption('ru', AppLocalizations.of(context)!.russian, '🇷🇺'),
+            _buildLanguageOption('es', AppLocalizations.of(context)!.spanish, '🇪🇸'),
+            _buildLanguageOption('fr', AppLocalizations.of(context)!.french, '🇫🇷'),
             _buildLanguageOption('lv', AppLocalizations.of(context)!.latvian, '🇱🇻'),
+            _buildLanguageOption('ru', AppLocalizations.of(context)!.russian, '🇷🇺'),
             const SizedBox(height: 16),
           ],
         ),

@@ -66,44 +66,114 @@ agents:
         api_key: ${ELEVENLABS_API_KEY}
         voice: "callum"
         voice_id: "N2lVS1w4EtoT3dr4eOWO"
-        model: "eleven_multilingual_v2"
+        model: "eleven_multilingual_v2"  # Consider upgrading to eleven_turbo_v2_5 or v3 alpha
         settings:
-          stability: 0.5
-          similarity_boost: 0.5
-          style: 0.0
+          stability: 0.3                # Lower for more emotional range (was 0.5)
+          similarity_boost: 0.6         # Slightly higher for clarity (was 0.5)
+          style: 0.4                    # Higher for more expressiveness (was 0.0)
           use_speaker_boost: true
           speed: 0.8
       ru:
         vendor: "elevenlabs"
         api_key: ${ELEVENLABS_API_KEY}
-        voice: "nina"
+        voice: "nina"  
         voice_id: "N8lIVPsFkvOoqev5Csxo"
-        model: "eleven_multilingual_v2"
+        model: "eleven_multilingual_v2"     # Consider upgrading to v3 alpha for emotional tags
         settings:
-          stability: 0.4
-          similarity_boost: 0.6
-          style: 0.4
-          use_speaker_boost: true
-          speed: 0.9
+          stability: 0.3                    # Lower for more emotional range (was 0.6)
+          similarity_boost: 0.7             # Higher for Russian clarity (was 0.6)
+          style: 0.5                        # Higher emotional expression (was 0.3)
+          use_speaker_boost: true           # Better audio quality
+          speed: 0.85                       # Slower for children's comprehension
       lv:
         vendor: "openai"
         api_key: ${OPENAI_API_KEY}
-        voice: "sage"
-        model: "tts-1-hd"
+        voice: "nova"                   # Best female voice for non-English languages
+        model: "tts-1-hd"               # High quality model for better pronunciation
         settings:
-          speed: 0.95
-          response_format: "flac"
+          speed: 0.9                    # Slower for better Latvian comprehension
+          response_format: "mp3"        # More compatible format than FLAC
+      es:
+        vendor: "elevenlabs"
+        api_key: ${ELEVENLABS_API_KEY}
+        voice: "diego_storyteller"   # Young Spanish male, suitable for narration & storytelling
+        voice_id: "7vGAwSjuM5RvIjtavbnb"  # Diego - Storyteller
+        model: "eleven_multilingual_v2"     # Consider upgrading to v3 alpha for emotional tags
+        settings:
+          stability: 0.3             # Lower for more emotional range (was 0.6)
+          similarity_boost: 0.6      # Enhanced clarity (was 0.5)
+          style: 0.5                 # Higher emotional expression (was 0.2)
+          use_speaker_boost: true    # Enhanced audio clarity
+          speed: 0.85                # Slower pace for comprehension
+      fr:
+        vendor: "elevenlabs"
+        api_key: ${ELEVENLABS_API_KEY}
+        voice: "gaelle_storyteller"  # Warm French voice, ideal for audiobooks and children stories
+        voice_id: "tKaoyJLW05zqV0tIH9FD"  # Gaëlle - Audiobooks & Story-telling
+        model: "eleven_multilingual_v2"     # Consider upgrading to v3 alpha for emotional tags
+        settings:
+          stability: 0.3             # Lower for more emotional range (was 0.5)
+          similarity_boost: 0.7      # Higher clarity for French (was 0.6)
+          style: 0.5                 # Higher emotional expression (was 0.3)
+          use_speaker_boost: true    # Enhanced audio clarity
+          speed: 0.85                # Slower pace for comprehension
     
-    # Voice alternatives for reference
+    # Voice alternatives for reference during testing and fallback
     available_voices:
       elevenlabs:
-        callum: "N2lVS1w4EtoT3dr4eOWO"  # Warm male voice (EN)
-        nina: "N8lIVPsFkvOoqev5Csxo"    # Professional female voice (RU)
-        rachel: "21m00Tcm4TlvDq8ikWAM"  # Gentle female voice (EN)
+        # English voices
+        callum: "N2lVS1w4EtoT3dr4eOWO"    # English storyteller (warm male)
+        rachel: "21m00Tcm4TlvDq8ikWAM"    # English alternative (gentle female)
+        
+        # Russian voices
+        kate_children_storyteller: "WfExDXCt2GBg6MI5KjQk"  # Russian children storyteller (young female)
+        anna_calm: "rxEz5E7hIAPk7D3bXwf6"        # Calm Russian, perfect for kids fairy tales
+        igor_bedtime: "rUOpAdbAl56KxO00wR5D"     # Bedtime storyteller, soothing and gentle
+        elegant_narrator: "FnNYfPjyvZwLwb043Kl1" # Classic literature voice, warm and expressive
+        nina: "N8lIVPsFkvOoqev5Csxo"         # Previous voice (had pronunciation issues)
+        
+        # Spanish voices for storytelling
+        diego_storyteller: "7vGAwSjuM5RvIjtavbnb"    # Young Spanish male, narration & storytelling
+        leonor_bedtime: "ROg7YFURXCUrJKFIrGXT"       # Soft, calm, ideal for bedtime stories
+        mateo_chill: "6I5fU8GKAFqBMRcSN7FA"          # Relaxed, warm, authentic tone for stories
+        salvador_natural: "egQgipO1HHxedaRzEYJy"     # Professional narration, natural and fluid
+        
+        # French voices for storytelling  
+        gaelle_storyteller: "tKaoyJLW05zqV0tIH9FD"   # Warm, clear, ideal for children stories
+        teddy_children: "Y9pL3Tawpspxe35NUtif"       # Soft French Canadian, perfect for children
+        thomas_calm: "KLCSI9PVpwo49B6dC7Bo"          # Young male, calm, good for small stories
+        luca_expressive: "Ndm6bI6wo3Ycnlx1PPZS"      # Confident, expressive, ideal for storytelling
+        
       openai:
-        sage: "Calm, thoughtful voice"    # Current LV choice
-        coral: "Expressive female voice"
-        nova: "Bright, engaging voice"
+        # Standard TTS API voices (available for all languages)
+        nova: "Bright, engaging female voice"     # Latvian (best for non-English)
+        alloy: "Neutral, versatile voice"         # Fallback option
+        fable: "British accent, good for stories" # Alternative for storytelling
+        shimmer: "Warm female voice"              # Another female option
+        onyx: "Deep male voice"                   # Male alternative
+        echo: "Clear male voice"                  # Another male option
+        
+        # Note: "sage" only available in Realtime API, not standard TTS
+        
+    # Emotional storytelling configuration for future v3 alpha upgrade
+    emotional_storytelling:
+      # ElevenLabs v3 alpha audio tags for enhanced emotional expression
+      enabled: false  # Enable when upgrading to v3 alpha model
+      stability_preset: "creative"  # Options: creative, natural, robust
+      audio_tags:
+        excitement: "[excited]"
+        whisper: "[whispers]" 
+        dramatic: "[dramatically]"
+        cheerful: "[cheerfully]"
+        mysterious: "[mysteriously]"
+        scared: "[nervously]"
+        happy: "[joyfully]"
+        pause: "[pause]"
+        # Character voices for different story elements
+        monster_voice: "[deep voice]"
+        child_voice: "[soft-spoken]"
+        narrator_awe: "[awe]"
+        dramatic_moment: "[dramatic tone]"
       
   speech:
     vendor: "openai"

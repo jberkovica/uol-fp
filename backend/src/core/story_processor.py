@@ -48,16 +48,37 @@ class StoryProcessor:
             logger.info(f"Analyzing image for story {story_id}")
             image_description = await self.vision_agent.process(request.image_data)
             
-            # Update story with image description
-            await self.supabase.update_story(story_id, {
-                "image_description": image_description
-            })
+            # Store image description in story_inputs table (not in stories table)
+            from ..utils.config import load_config
+            config = load_config()
+            story_input_data = {
+                "story_id": story_id,
+                "input_type": "image",
+                "input_value": image_description,
+                "metadata": {
+                    "vision_model": config["agents"]["vision"]["model"],
+                    "vision_provider": config["agents"]["vision"]["vendor"],
+                    "processing_timestamp": datetime.utcnow().isoformat()
+                }
+            }
+            await self.supabase.create_story_input(story_input_data)
             
-            # Step 2: Generate story
+            # Step 2: Generate story - need to get kid info first
             logger.info(f"Generating story content for {story_id}")
+            
+            # Get kid information for personalized story
+            kid = await self.supabase.get_kid(request.kid_id)
+            if not kid:
+                raise ValueError(f"Kid not found: {request.kid_id}")
+            
             story_result = await self.storyteller_agent.process(
                 image_description,
-                language=request.language
+                language=request.language,
+                kid_name=kid.name,
+                age=kid.age,
+                appearance=kid.appearance_description,
+                genres=kid.favorite_genres or [],
+                parent_notes=kid.parent_notes
             )
             
             # Update story with content
@@ -95,8 +116,7 @@ class StoryProcessor:
             logger.error(f"Story processing failed for {story_id}: {e}")
             # Update story status to error
             await self.supabase.update_story(story_id, {
-                "status": StoryStatus.ERROR.value,
-                "metadata": {"error": str(e)}
+                "status": StoryStatus.ERROR.value
             })
             raise
     
@@ -189,11 +209,22 @@ class StoryProcessor:
         try:
             logger.info(f"Processing text to story for {story_id}")
             
-            # Step 1: Generate story from text
+            # Step 1: Generate story from text - need to get kid info first
             logger.info(f"Generating story content for {story_id} from text: {text[:50]}...")
+            
+            # Get kid information for personalized story
+            kid = await self.supabase.get_kid(kid_id)
+            if not kid:
+                raise ValueError(f"Kid not found: {kid_id}")
+            
             story_result = await self.storyteller_agent.process(
                 text,
-                language=Language(language)
+                language=Language(language),
+                kid_name=kid.name,
+                age=kid.age,
+                appearance=kid.appearance_description,
+                genres=kid.favorite_genres or [],
+                parent_notes=kid.parent_notes
             )
             
             # Update story with content
@@ -230,8 +261,7 @@ class StoryProcessor:
             logger.error(f"Story processing failed for {story_id}: {e}")
             # Update story status to error
             await self.supabase.update_story(story_id, {
-                "status": StoryStatus.ERROR.value,
-                "metadata": {"error": str(e)}
+                "status": StoryStatus.ERROR.value
             })
             raise
     

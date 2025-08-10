@@ -4,14 +4,14 @@ This document explains our test strategy, which prioritizes **meaningful tests**
 
 ## Philosophy: Quality Over Quantity
 
-✅ **We Test:**
+**We Test:**
 - Business logic that can break
 - Input validation and security
 - Data model constraints
 - Edge cases and error conditions
 - Critical failure scenarios
 
-❌ **We Don't Test:**
+**We Don't Test:**
 - Simple getters/setters
 - Framework code
 - External library behavior
@@ -19,7 +19,7 @@ This document explains our test strategy, which prioritizes **meaningful tests**
 
 ## Test Structure
 
-### Unit Tests (`tests/unit/`) - **64 passing**
+### Unit Tests (`tests/unit/`) - **76 passing**
 Fast, isolated tests that run in < 2 seconds total.
 
 - **`test_storyteller_agent.py`** - New JSON storyteller agent (15 tests)
@@ -107,7 +107,7 @@ python -m pytest tests/integration/test_storyteller_integration.py::TestMistralI
 
 ## Test Quality Standards
 
-### ✅ Good Tests
+### Good Tests
 - **Test behavior, not implementation**
 - **Cover security vulnerabilities** (XSS, injection, etc.)
 - **Test edge cases** (empty input, boundary values)
@@ -130,7 +130,7 @@ def test_kid_name_security_validation(self):
             validate_kid_name(malicious_input)
 ```
 
-### ❌ Avoid These Tests
+### Avoid These Tests
 ```python
 # Don't test simple getters
 def test_kid_name_getter(self):
@@ -175,8 +175,8 @@ def test_internal_method_call_count(self):
 
 ## Current Status
 
-✅ **49 Unit Tests Passing** - Core business logic protected  
-⚠️ **Integration Tests** - Some failing due to setup issues  
-🚫 **AI Agent Tests** - Disabled to prevent API costs  
+**76 Unit Tests Passing** - Core business logic protected  
+**Integration Tests** - Some failing due to setup issues (expected)  
+**AI Agent Tests** - Disabled to prevent API costs  
 
 This test suite protects your most critical business logic without wasting time on trivial tests or burning through API credits during development.

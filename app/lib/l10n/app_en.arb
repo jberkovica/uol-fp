@@ -16,7 +16,7 @@
     "description": "Create button text"
   },
   
-  "favourites": "Favourites",
+  "favourites": "Favorites",
   "@favourites": {
     "description": "Favourites section title"
   },
@@ -392,6 +392,8 @@
   "english": "English",
   "russian": "Русский", 
   "latvian": "Latviešu",
+  "spanish": "Español",
+  "french": "Français",
   
   "pleaseEnterEmail": "Please enter your email",
   "pleaseEnterValidEmail": "Please enter a valid email",
@@ -593,5 +595,136 @@
   "gallery": "gallery",
   "@gallery": {
     "description": "Short gallery button label"
-  }
+  },
+
+  "age": "Age",
+  "@age": {
+    "description": "Age field label"
+  },
+
+  "appearanceOptionalSection": "Appearance (Optional)",
+  "@appearanceOptionalSection": {
+    "description": "Appearance section title in profile forms"
+  },
+
+  "appearanceDescription": "Describe how your child looks to help create personalized stories.",
+  "@appearanceDescription": {
+    "description": "Explanation text for appearance section"
+  },
+
+  "appearanceMethodQuestion": "How would you like to describe appearance?",
+  "@appearanceMethodQuestion": {
+    "description": "Question for appearance method selection"
+  },
+
+  "describeInWords": "Describe in words",
+  "@describeInWords": {
+    "description": "Manual appearance description option"
+  },
+
+  "uploadPhoto": "Upload photo",
+  "@uploadPhoto": {
+    "description": "Photo upload appearance option"
+  },
+
+  "aiWillAnalyzePhoto": "AI will analyze the photo and create a description",
+  "@aiWillAnalyzePhoto": {
+    "description": "Explanation for photo upload option"
+  },
+
+  "extractingAppearance": "Extracting appearance...",
+  "@extractingAppearance": {
+    "description": "Loading text during AI appearance extraction"
+  },
+
+  "aiExtractedDescription": "AI extracted this description from your photo. Feel free to review and edit it.",
+  "@aiExtractedDescription": {
+    "description": "Info text for AI-generated appearance description"
+  },
+
+  "appearanceExamplePlaceholder": "Example: \"Curly brown hair, bright green eyes, and a gap-toothed smile\"",
+  "@appearanceExamplePlaceholder": {
+    "description": "Example placeholder text for appearance description"
+  },
+
+  "appearancePhotoPlaceholder": "Upload a photo above to auto-generate description, or type manually",
+  "@appearancePhotoPlaceholder": {
+    "description": "Placeholder text when photo method is selected"
+  },
+
+  "appearanceHelperText": "Describe hair, eyes, distinctive features, etc. This helps create personalized stories.",
+  "@appearanceHelperText": {
+    "description": "Helper text for appearance description field"
+  },
+
+  "aiGeneratedHelperText": "You can edit this AI-generated description to make it more personal.",
+  "@aiGeneratedHelperText": {
+    "description": "Helper text for AI-generated appearance descriptions"
+  },
+
+  "storyPreferencesOptional": "Story Preferences (Optional)",
+  "@storyPreferencesOptional": {
+    "description": "Story preferences section title"
+  },
+
+  "preferredLanguage": "Preferred Language",
+  "@preferredLanguage": {
+    "description": "Preferred language field label"
+  },
+
+  "parentNotesOptional": "Parent Notes (Optional)",
+  "@parentNotesOptional": {
+    "description": "Parent notes section title"
+  },
+
+  "parentNotesDescription": "Add special context for stories: hobbies, pets, siblings, interests, etc.",
+  "@parentNotesDescription": {
+    "description": "Description for parent notes section"
+  },
+
+  "parentNotesExample": "Example: Loves dinosaurs, has a pet cat named Whiskers...",
+  "@parentNotesExample": {
+    "description": "Example text for parent notes field"
+  },
+
+  "ageRequired": "Age (Required)",
+  "@ageRequired": {
+    "description": "Age field label when required"
+  },
+
+  "appearanceExtractedSuccess": "Appearance extracted! You can review and edit the description below.",
+  "@appearanceExtractedSuccess": {
+    "description": "Success message after appearance extraction"
+  },
+
+  "failedToExtractAppearance": "Failed to extract appearance: {error}",
+  "@failedToExtractAppearance": {
+    "description": "Error message for appearance extraction failure",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "genreAdventure": "Adventure",
+  "genreFantasy": "Fantasy",
+  "genreFriendship": "Friendship",
+  "genreFamily": "Family",
+  "genreAnimals": "Animals",
+  "genreMagic": "Magic",
+  "genreSpace": "Space",
+  "genreUnderwater": "Underwater",
+  "genreForest": "Forest",
+  "genreFairyTale": "Fairy Tale",
+  "genreSuperhero": "Superhero",
+  "genreDinosaurs": "Dinosaurs",
+  "genrePirates": "Pirates",
+  "genrePrincess": "Princess",
+  "genreDragons": "Dragons",
+  "genreRobots": "Robots",
+  "genreMystery": "Mystery",
+  "genreFunny": "Funny",
+  "genreEducational": "Educational",
+  "genreBedtime": "Bedtime Stories"
 }

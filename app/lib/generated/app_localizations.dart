@@ -6,6 +6,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
+import 'app_localizations_fr.dart';
 import 'app_localizations_lv.dart';
 import 'app_localizations_ru.dart';
 
@@ -96,6 +98,8 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
+    Locale('es'),
+    Locale('fr'),
     Locale('lv'),
     Locale('ru')
   ];
@@ -121,7 +125,7 @@ abstract class AppLocalizations {
   /// Favourites section title
   ///
   /// In en, this message translates to:
-  /// **'Favourites'**
+  /// **'Favorites'**
   String get favourites;
 
   /// Latest stories section title
@@ -874,6 +878,18 @@ abstract class AppLocalizations {
   /// **'Latviešu'**
   String get latvian;
 
+  /// No description provided for @spanish.
+  ///
+  /// In en, this message translates to:
+  /// **'Español'**
+  String get spanish;
+
+  /// No description provided for @french.
+  ///
+  /// In en, this message translates to:
+  /// **'Français'**
+  String get french;
+
   /// No description provided for @pleaseEnterEmail.
   ///
   /// In en, this message translates to:
@@ -1461,6 +1477,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'gallery'**
   String get gallery;
+
+  /// Age field label
+  ///
+  /// In en, this message translates to:
+  /// **'Age'**
+  String get age;
+
+  /// Appearance section title in profile forms
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance (Optional)'**
+  String get appearanceOptionalSection;
+
+  /// Explanation text for appearance section
+  ///
+  /// In en, this message translates to:
+  /// **'Describe how your child looks to help create personalized stories.'**
+  String get appearanceDescription;
+
+  /// Question for appearance method selection
+  ///
+  /// In en, this message translates to:
+  /// **'How would you like to describe appearance?'**
+  String get appearanceMethodQuestion;
+
+  /// Manual appearance description option
+  ///
+  /// In en, this message translates to:
+  /// **'Describe in words'**
+  String get describeInWords;
+
+  /// Photo upload appearance option
+  ///
+  /// In en, this message translates to:
+  /// **'Upload photo'**
+  String get uploadPhoto;
+
+  /// Explanation for photo upload option
+  ///
+  /// In en, this message translates to:
+  /// **'AI will analyze the photo and create a description'**
+  String get aiWillAnalyzePhoto;
+
+  /// Loading text during AI appearance extraction
+  ///
+  /// In en, this message translates to:
+  /// **'Extracting appearance...'**
+  String get extractingAppearance;
+
+  /// Info text for AI-generated appearance description
+  ///
+  /// In en, this message translates to:
+  /// **'AI extracted this description from your photo. Feel free to review and edit it.'**
+  String get aiExtractedDescription;
+
+  /// Example placeholder text for appearance description
+  ///
+  /// In en, this message translates to:
+  /// **'Example: \"Curly brown hair, bright green eyes, and a gap-toothed smile\"'**
+  String get appearanceExamplePlaceholder;
+
+  /// Placeholder text when photo method is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Upload a photo above to auto-generate description, or type manually'**
+  String get appearancePhotoPlaceholder;
+
+  /// Helper text for appearance description field
+  ///
+  /// In en, this message translates to:
+  /// **'Describe hair, eyes, distinctive features, etc. This helps create personalized stories.'**
+  String get appearanceHelperText;
+
+  /// Helper text for AI-generated appearance descriptions
+  ///
+  /// In en, this message translates to:
+  /// **'You can edit this AI-generated description to make it more personal.'**
+  String get aiGeneratedHelperText;
+
+  /// Story preferences section title
+  ///
+  /// In en, this message translates to:
+  /// **'Story Preferences (Optional)'**
+  String get storyPreferencesOptional;
+
+  /// Preferred language field label
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred Language'**
+  String get preferredLanguage;
+
+  /// Parent notes section title
+  ///
+  /// In en, this message translates to:
+  /// **'Parent Notes (Optional)'**
+  String get parentNotesOptional;
+
+  /// Description for parent notes section
+  ///
+  /// In en, this message translates to:
+  /// **'Add special context for stories: hobbies, pets, siblings, interests, etc.'**
+  String get parentNotesDescription;
+
+  /// Example text for parent notes field
+  ///
+  /// In en, this message translates to:
+  /// **'Example: Loves dinosaurs, has a pet cat named Whiskers...'**
+  String get parentNotesExample;
+
+  /// Age field label when required
+  ///
+  /// In en, this message translates to:
+  /// **'Age (Required)'**
+  String get ageRequired;
+
+  /// Success message after appearance extraction
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance extracted! You can review and edit the description below.'**
+  String get appearanceExtractedSuccess;
+
+  /// Error message for appearance extraction failure
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to extract appearance: {error}'**
+  String failedToExtractAppearance(String error);
+
+  /// No description provided for @genreAdventure.
+  ///
+  /// In en, this message translates to:
+  /// **'Adventure'**
+  String get genreAdventure;
+
+  /// No description provided for @genreFantasy.
+  ///
+  /// In en, this message translates to:
+  /// **'Fantasy'**
+  String get genreFantasy;
+
+  /// No description provided for @genreFriendship.
+  ///
+  /// In en, this message translates to:
+  /// **'Friendship'**
+  String get genreFriendship;
+
+  /// No description provided for @genreFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get genreFamily;
+
+  /// No description provided for @genreAnimals.
+  ///
+  /// In en, this message translates to:
+  /// **'Animals'**
+  String get genreAnimals;
+
+  /// No description provided for @genreMagic.
+  ///
+  /// In en, this message translates to:
+  /// **'Magic'**
+  String get genreMagic;
+
+  /// No description provided for @genreSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'Space'**
+  String get genreSpace;
+
+  /// No description provided for @genreUnderwater.
+  ///
+  /// In en, this message translates to:
+  /// **'Underwater'**
+  String get genreUnderwater;
+
+  /// No description provided for @genreForest.
+  ///
+  /// In en, this message translates to:
+  /// **'Forest'**
+  String get genreForest;
+
+  /// No description provided for @genreFairyTale.
+  ///
+  /// In en, this message translates to:
+  /// **'Fairy Tale'**
+  String get genreFairyTale;
+
+  /// No description provided for @genreSuperhero.
+  ///
+  /// In en, this message translates to:
+  /// **'Superhero'**
+  String get genreSuperhero;
+
+  /// No description provided for @genreDinosaurs.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinosaurs'**
+  String get genreDinosaurs;
+
+  /// No description provided for @genrePirates.
+  ///
+  /// In en, this message translates to:
+  /// **'Pirates'**
+  String get genrePirates;
+
+  /// No description provided for @genrePrincess.
+  ///
+  /// In en, this message translates to:
+  /// **'Princess'**
+  String get genrePrincess;
+
+  /// No description provided for @genreDragons.
+  ///
+  /// In en, this message translates to:
+  /// **'Dragons'**
+  String get genreDragons;
+
+  /// No description provided for @genreRobots.
+  ///
+  /// In en, this message translates to:
+  /// **'Robots'**
+  String get genreRobots;
+
+  /// No description provided for @genreMystery.
+  ///
+  /// In en, this message translates to:
+  /// **'Mystery'**
+  String get genreMystery;
+
+  /// No description provided for @genreFunny.
+  ///
+  /// In en, this message translates to:
+  /// **'Funny'**
+  String get genreFunny;
+
+  /// No description provided for @genreEducational.
+  ///
+  /// In en, this message translates to:
+  /// **'Educational'**
+  String get genreEducational;
+
+  /// No description provided for @genreBedtime.
+  ///
+  /// In en, this message translates to:
+  /// **'Bedtime Stories'**
+  String get genreBedtime;
 }
 
 class _AppLocalizationsDelegate
@@ -1474,7 +1736,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'lv', 'ru'].contains(locale.languageCode);
+      <String>['en', 'es', 'fr', 'lv', 'ru'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -1485,6 +1747,10 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
+    case 'fr':
+      return AppLocalizationsFr();
     case 'lv':
       return AppLocalizationsLv();
     case 'ru':

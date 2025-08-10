@@ -89,17 +89,20 @@ class StoryGenerationContext(BaseModel):
         """Build the context string for the prompt."""
         context_parts = []
         
-        # Add genres if specified
-        if self.genres:
-            context_parts.append(f"Genres: {', '.join(self.genres[:2])}")
+        # Add genres if specified and not empty
+        if self.genres and any(self.genres):
+            # Filter out empty strings and take first 2 genres
+            valid_genres = [g for g in self.genres if g and g.strip()][:2]
+            if valid_genres:
+                context_parts.append(f"Genres: {', '.join(valid_genres)}")
         
         # Add appearance based on probability (this will be randomized per request)
-        if self.appearance_description and self.include_appearance > 0.5:
-            context_parts.append(f"Child appearance: {self.appearance_description}")
+        if self.appearance_description and self.appearance_description.strip() and self.include_appearance > 0.5:
+            context_parts.append(f"Child appearance: {self.appearance_description.strip()}")
         
-        # Add parent notes if provided
-        if self.parent_notes:
-            context_parts.append(f"Additional context: {self.parent_notes}")
+        # Add parent notes if provided and not empty
+        if self.parent_notes and self.parent_notes.strip():
+            context_parts.append(f"Additional context: {self.parent_notes.strip()}")
         
         return " | ".join(context_parts) if context_parts else ""
     

@@ -344,6 +344,49 @@ async def delete_story(story_id: str):
         raise HTTPException(status_code=500, detail="Failed to delete story")
 
 
+@router.post("/initiate-text", response_model=InitiateStoryResponse)
+async def initiate_text_story(request: InitiateVoiceStoryRequest) -> InitiateStoryResponse:
+    """Create a new story in draft state for text input."""
+    try:
+        # Validate kid exists
+        supabase = get_supabase_service()
+        kid = await supabase.get_kid(request.kid_id)
+        if not kid:
+            raise NotFoundError("Kid profile", request.kid_id)
+        
+        initial_status = StoryStatus.DRAFT
+        
+        # Select random background music
+        background_music_filename = background_music_service.get_random_track()
+        if background_music_filename:
+            logger.info(f"Selected background music: {background_music_filename}")
+        else:
+            logger.warning("No background music tracks available")
+        
+        # Create story record for text input
+        story_data = {
+            "kid_id": request.kid_id,
+            "title": "New Story",
+            "content": "",
+            "language": request.language.value,
+            "status": initial_status.value,
+            "background_music_filename": background_music_filename
+        }
+        story = await supabase.create_story(story_data)
+        
+        return InitiateStoryResponse(
+            story_id=story.id,
+            status=initial_status,
+            message=f"Story created in {initial_status.value} state for text input"
+        )
+        
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        logger.error(f"Failed to initiate text story: {e}")
+        raise HTTPException(status_code=500, detail="Failed to initiate text story")
+
+
 @router.post("/initiate-voice", response_model=InitiateStoryResponse)
 async def initiate_voice_story(request: InitiateVoiceStoryRequest) -> InitiateStoryResponse:
     """Create a new story in transcribing state for voice input."""
@@ -356,13 +399,21 @@ async def initiate_voice_story(request: InitiateVoiceStoryRequest) -> InitiateSt
         
         initial_status = StoryStatus.TRANSCRIBING
         
+        # Select random background music
+        background_music_filename = background_music_service.get_random_track()
+        if background_music_filename:
+            logger.info(f"Selected background music: {background_music_filename}")
+        else:
+            logger.warning("No background music tracks available")
+        
         # Create story record (input_format stored in story_inputs table instead)
         story_data = {
             "kid_id": request.kid_id,
             "title": "New Story",
             "content": "",
             "language": request.language.value,
-            "status": initial_status.value
+            "status": initial_status.value,
+            "background_music_filename": background_music_filename
         }
         story = await supabase.create_story(story_data)
         

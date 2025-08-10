@@ -449,6 +449,12 @@ class AppLocalizationsLv extends AppLocalizations {
   String get latvian => 'Latviešu';
 
   @override
+  String get spanish => 'Español';
+
+  @override
+  String get french => 'Français';
+
+  @override
   String get pleaseEnterEmail => 'Lūdzu, ievadiet savu e-pastu';
 
   @override
@@ -769,4 +775,139 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get gallery => 'galerija';
+
+  @override
+  String get age => 'Vecums';
+
+  @override
+  String get appearanceOptionalSection => 'Izskats (neobligāti)';
+
+  @override
+  String get appearanceDescription =>
+      'Aprakstiet, kā izskatās jūsu bērns, lai palīdzētu izveidot personalizētus stāstus.';
+
+  @override
+  String get appearanceMethodQuestion => 'Kā vēlaties aprakstīt izskatu?';
+
+  @override
+  String get describeInWords => 'Aprakstīt ar vārdiem';
+
+  @override
+  String get uploadPhoto => 'Augšupielādēt fotoattēlu';
+
+  @override
+  String get aiWillAnalyzePhoto =>
+      'AI analizēs fotoattēlu un izveidos aprakstu';
+
+  @override
+  String get extractingAppearance => 'Izvelk izskatu...';
+
+  @override
+  String get aiExtractedDescription =>
+      'AI izveidoja šo aprakstu no jūsu fotoattēla. Lūdzu, pārskatiet un rediģējiet to.';
+
+  @override
+  String get appearanceExamplePlaceholder =>
+      'Piemērs: \"Cirtaini brūni mati, spilgti zaļas acis un smaids ar atstarpi starp zobiem\"';
+
+  @override
+  String get appearancePhotoPlaceholder =>
+      'Augšupielādējiet fotoattēlu augšpusē, lai automātiski izveidotu aprakstu, vai rakstiet pašrocīgi';
+
+  @override
+  String get appearanceHelperText =>
+      'Aprakstiet matus, acis, raksturīgās pazīmes utt. Tas palīdz radīt personalizētus stāstus.';
+
+  @override
+  String get aiGeneratedHelperText =>
+      'Jūs varat rediģēt šo AI izveidoto aprakstu, lai padarītu to personīgāku.';
+
+  @override
+  String get storyPreferencesOptional => 'Stāstu preferences (neobligāti)';
+
+  @override
+  String get preferredLanguage => 'Vēlamā valoda';
+
+  @override
+  String get parentNotesOptional => 'Vecāku piezīmes (neobligāti)';
+
+  @override
+  String get parentNotesDescription =>
+      'Pievienojiet īpašu kontekstu stāstiem: hobiji, mājdzīvnieki, brāļi un māsas, intereses utt.';
+
+  @override
+  String get parentNotesExample =>
+      'Piemērs: Mīl dinozaurus, ir kaķēns vārdā Ūsiņš...';
+
+  @override
+  String get ageRequired => 'Vecums (nepieciešams)';
+
+  @override
+  String get appearanceExtractedSuccess =>
+      'Izskats izvilkts! Jūs varat pārskatīt un rediģēt aprakstu zemāk.';
+
+  @override
+  String failedToExtractAppearance(String error) {
+    return 'Neizdevās izvilkt izskatu: $error';
+  }
+
+  @override
+  String get genreAdventure => 'Piedzīvojumi';
+
+  @override
+  String get genreFantasy => 'Fantāzija';
+
+  @override
+  String get genreFriendship => 'Draudzība';
+
+  @override
+  String get genreFamily => 'Ģimene';
+
+  @override
+  String get genreAnimals => 'Dzīvnieki';
+
+  @override
+  String get genreMagic => 'Burvība';
+
+  @override
+  String get genreSpace => 'Kosmoss';
+
+  @override
+  String get genreUnderwater => 'Zemūdens pasaule';
+
+  @override
+  String get genreForest => 'Mežs';
+
+  @override
+  String get genreFairyTale => 'Pasaka';
+
+  @override
+  String get genreSuperhero => 'Supervaroņi';
+
+  @override
+  String get genreDinosaurs => 'Dinozauri';
+
+  @override
+  String get genrePirates => 'Pirāti';
+
+  @override
+  String get genrePrincess => 'Princeses';
+
+  @override
+  String get genreDragons => 'Pūķi';
+
+  @override
+  String get genreRobots => 'Roboti';
+
+  @override
+  String get genreMystery => 'Noslēpums';
+
+  @override
+  String get genreFunny => 'Smieklīgi';
+
+  @override
+  String get genreEducational => 'Izglītojoši';
+
+  @override
+  String get genreBedtime => 'Gulētiešanas stāsti';
 }
