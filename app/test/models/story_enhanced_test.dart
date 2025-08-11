@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import '../../lib/models/story.dart';
+import 'package:mira_storyteller/models/story.dart';
 import '../test_helpers.dart';
 
 void main() {

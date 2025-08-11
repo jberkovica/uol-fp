@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
-import '../../constants/kid_profile_constants.dart';
 import '../../models/input_format.dart';
 import '../../models/kid.dart';
 import '../../models/story.dart';
@@ -235,13 +234,6 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
     }
   }
   
-  void _navigateBackToChildArea() {
-    // Pop back through the navigation stack to return to the child area
-    Navigator.of(context).popUntil((route) => 
-      route.settings.name != '/parent-dashboard-main' && 
-      route.settings.name != '/parent-dashboard'
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -763,9 +755,8 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
-                  if (story.childName != null)
-                    Text(
-                      AppLocalizations.of(context)!.forChild(story.childName!),
+                  Text(
+                      AppLocalizations.of(context)!.forChild(story.childName),
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: AppColors.primary,
                       ),
@@ -845,49 +836,6 @@ class _ParentDashboardMainState extends State<ParentDashboardMain> {
     );
   }
 
-  void _showSettingsMenu() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        padding: EdgeInsets.all(ResponsiveBreakpoints.getResponsivePadding(context)),
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              margin: const EdgeInsets.only(bottom: 24),
-              decoration: BoxDecoration(
-                color: AppColors.textLight,
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            ListTile(
-              leading: SvgPicture.asset(
-                'assets/icons/arrow-left.svg',
-                width: 24,
-                height: 24,
-                colorFilter: const ColorFilter.mode(AppColors.error, BlendMode.srcIn),
-              ),
-              title: Text(AppLocalizations.of(context)!.exitParentMode),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushReplacementNamed(context, '/child-home');
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Future<void> _navigateToEditScreen(Kid kid) async {
     final result = await Navigator.of(context).push<Kid>(

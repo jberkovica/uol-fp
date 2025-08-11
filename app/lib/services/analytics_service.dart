@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'logging_service.dart';
 
 /// Analytics service for user behavior tracking
@@ -7,11 +6,9 @@ import 'logging_service.dart';
 class AnalyticsService {
   static final _logger = LoggingService.getLogger('AnalyticsService');
   static bool _initialized = false;
-  static bool _enabled = false; // Analytics disabled by default
+  static final bool _enabled = false; // Analytics disabled by default
   
-  // COPPA compliance flags
-  static bool _parentalConsentGiven = false;
-  static bool _isChildUser = true; // Default to child user for safety
+  // COPPA compliance flags (disabled)
 
   /// Initialize analytics (currently disabled)
   static Future<void> initialize() async {
@@ -39,22 +36,17 @@ class AnalyticsService {
     _logger.d('Screen tracked: $screenName');
   }
 
-  /// Set parental consent status for COPPA compliance
+  /// Set parental consent status for COPPA compliance (disabled)
   static void setParentalConsent(bool consentGiven) {
-    _parentalConsentGiven = consentGiven;
     if (_enabled) _logger.i('Parental consent updated: $consentGiven');
   }
   
-  /// Set user type (child vs parent)
+  /// Set user type (child vs parent) (disabled)
   static void setUserType({required bool isChild}) {
-    _isChildUser = isChild;
     if (_enabled) _logger.i('User type set: ${isChild ? "child" : "adult"}');
   }
   
   /// Check if tracking is allowed based on COPPA compliance
-  static bool get _isTrackingAllowed {
-    return !_isChildUser || _parentalConsentGiven;
-  }
 
   // Story tracking methods (disabled)
   static void trackImageUploadStarted({required String sessionId, String? imageSource}) {}

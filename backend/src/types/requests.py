@@ -26,6 +26,7 @@ class CreateKidRequest(BaseModel):
     """Request to create a new kid profile."""
     name: str = Field(..., min_length=1, max_length=50, description="Kid's name")
     age: int = Field(..., ge=3, le=12, description="Kid's age (3-12 years) - mandatory")
+    gender: Optional[str] = Field(None, description="Child's gender: 'boy', 'girl', or 'other'")
     avatar_type: str = Field(default="profile1", description="UI avatar selection")
     user_id: str = Field(..., description="Parent's Supabase Auth ID")
     
@@ -43,6 +44,7 @@ class UpdateKidRequest(BaseModel):
     """Request to update a kid profile."""
     name: Optional[str] = Field(None, min_length=1, max_length=50)
     age: Optional[int] = Field(None, ge=3, le=12, description="Kid's age (3-12 years)")
+    gender: Optional[str] = Field(None, description="Child's gender: 'boy', 'girl', or 'other'")
     avatar_type: Optional[str] = Field(None, description="UI avatar selection")
     
     # Natural Language Appearance System

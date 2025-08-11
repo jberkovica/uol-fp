@@ -2,8 +2,8 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import '../lib/models/story.dart';
-import '../lib/models/kid.dart';
+import 'package:mira_storyteller/models/story.dart';
+import 'package:mira_storyteller/models/kid.dart';
 
 /// Test data factory for creating test instances
 class TestDataFactory {
@@ -41,14 +41,13 @@ class TestDataFactory {
     String? userId,
     String? name,
     int? age,
-    String? avatarType,
-    String? hairColor,
-    String? hairLength,
-    String? skinColor,
-    String? eyeColor,
     String? gender,
+    String? avatarType,
+    String? appearanceMethod,
     String? appearanceDescription,
     List<String>? favoriteGenres,
+    String? parentNotes,
+    String? preferredLanguage,
     DateTime? createdAt,
   }) {
     return Kid(
@@ -56,9 +55,13 @@ class TestDataFactory {
       userId: userId ?? 'test-user-123',
       name: name ?? 'Alice',
       age: age ?? 7,
+      gender: gender ?? 'girl',
       avatarType: avatarType ?? 'profile1',
+      appearanceMethod: appearanceMethod,
       appearanceDescription: appearanceDescription ?? 'Brown hair, green eyes',
-      favoriteGenres: favoriteGenres ?? [],
+      favoriteGenres: favoriteGenres ?? ['fantasy', 'adventure'],
+      parentNotes: parentNotes,
+      preferredLanguage: preferredLanguage ?? 'en',
       createdAt: createdAt ?? DateTime.now(),
     );
   }
@@ -365,13 +368,13 @@ class TestHelpers {
     String? userId,
     String? name,
     int? age,
-    String? avatarType,
-    String? hairColor,
-    String? hairLength,
-    String? skinColor,
-    String? eyeColor,
     String? gender,
+    String? avatarType,
+    String? appearanceMethod,
+    String? appearanceDescription,
     List<String>? favoriteGenres,
+    String? parentNotes,
+    String? preferredLanguage,
     DateTime? createdAt,
   }) {
     return TestDataFactory.createTestKid(
@@ -379,9 +382,13 @@ class TestHelpers {
       userId: userId,
       name: name,
       age: age,
+      gender: gender,
       avatarType: avatarType,
-      appearanceDescription: 'Brown hair, green eyes',
+      appearanceMethod: appearanceMethod,
+      appearanceDescription: appearanceDescription ?? 'Brown hair, green eyes',
       favoriteGenres: favoriteGenres,
+      parentNotes: parentNotes,
+      preferredLanguage: preferredLanguage,
       createdAt: createdAt,
     );
   }

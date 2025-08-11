@@ -7,11 +7,11 @@ class Kid {
   final String userId;
   final String name;
   final int age; // Now mandatory for age-appropriate content
+  final String? gender; // 'boy', 'girl', or 'other'
   final String avatarType;
   
   // Natural Language Appearance System
   final String? appearanceMethod; // 'photo', 'manual', or null
-  final String? appearancePhotoUrl; // Supabase storage URL
   final String? appearanceDescription; // Natural language description
   final DateTime? appearanceExtractedAt; // When extracted from photo
   final Map<String, dynamic>? appearanceMetadata; // AI extraction details
@@ -28,9 +28,9 @@ class Kid {
     required this.userId,
     required this.name,
     required this.age, // Now required
+    this.gender,
     required this.avatarType,
     this.appearanceMethod,
-    this.appearancePhotoUrl,
     this.appearanceDescription,
     this.appearanceExtractedAt,
     this.appearanceMetadata,
@@ -80,9 +80,9 @@ class Kid {
       userId: json['user_id'] as String? ?? '',
       name: json['name'] as String,
       age: json['age'] as int? ?? 5, // Default age if missing
+      gender: json['gender'] as String?,
       avatarType: json['avatar_type'] as String? ?? 'profile1',
       appearanceMethod: json['appearance_method'] as String?,
-      appearancePhotoUrl: json['appearance_photo_url'] as String?,
       appearanceDescription: json['appearance_description'] as String?,
       appearanceExtractedAt: json['appearance_extracted_at'] != null 
           ? DateTime.tryParse(json['appearance_extracted_at'] as String) 
@@ -101,9 +101,9 @@ class Kid {
       'user_id': userId,
       'name': name,
       'age': age,
+      'gender': gender,
       'avatar_type': avatarType,
       'appearance_method': appearanceMethod,
-      'appearance_photo_url': appearancePhotoUrl,
       'appearance_description': appearanceDescription,
       'appearance_extracted_at': appearanceExtractedAt?.toIso8601String(),
       'appearance_metadata': appearanceMetadata,
@@ -119,9 +119,9 @@ class Kid {
     String? userId,
     String? name,
     int? age,
+    String? gender,
     String? avatarType,
     String? appearanceMethod,
-    String? appearancePhotoUrl,
     String? appearanceDescription,
     DateTime? appearanceExtractedAt,
     Map<String, dynamic>? appearanceMetadata,
@@ -135,9 +135,9 @@ class Kid {
       userId: userId ?? this.userId,
       name: name ?? this.name,
       age: age ?? this.age,
+      gender: gender ?? this.gender,
       avatarType: avatarType ?? this.avatarType,
       appearanceMethod: appearanceMethod ?? this.appearanceMethod,
-      appearancePhotoUrl: appearancePhotoUrl ?? this.appearancePhotoUrl,
       appearanceDescription: appearanceDescription ?? this.appearanceDescription,
       appearanceExtractedAt: appearanceExtractedAt ?? this.appearanceExtractedAt,
       appearanceMetadata: appearanceMetadata ?? this.appearanceMetadata,
@@ -156,9 +156,9 @@ class Kid {
            other.userId == userId &&
            other.name == name &&
            other.age == age &&
+           other.gender == gender &&
            other.avatarType == avatarType &&
            other.appearanceMethod == appearanceMethod &&
-           other.appearancePhotoUrl == appearancePhotoUrl &&
            other.appearanceDescription == appearanceDescription &&
            other.appearanceExtractedAt == appearanceExtractedAt &&
            _mapEquals(other.appearanceMetadata, appearanceMetadata) &&
@@ -191,9 +191,9 @@ class Kid {
            userId.hashCode ^ 
            name.hashCode ^ 
            age.hashCode ^
+           (gender?.hashCode ?? 0) ^
            avatarType.hashCode ^
            (appearanceMethod?.hashCode ?? 0) ^
-           (appearancePhotoUrl?.hashCode ?? 0) ^
            (appearanceDescription?.hashCode ?? 0) ^
            (appearanceExtractedAt?.hashCode ?? 0) ^
            (appearanceMetadata?.hashCode ?? 0) ^
@@ -204,6 +204,6 @@ class Kid {
 
   @override
   String toString() {
-    return 'Kid(id: $id, name: $name, age: $age, avatarType: $avatarType, appearanceMethod: $appearanceMethod, appearanceDescription: $appearanceDescription, favoriteGenres: $favoriteGenres, parentNotes: $parentNotes, preferredLanguage: $preferredLanguage)';
+    return 'Kid(id: $id, name: $name, age: $age, gender: $gender, avatarType: $avatarType, appearanceMethod: $appearanceMethod, appearanceDescription: $appearanceDescription, favoriteGenres: $favoriteGenres, parentNotes: $parentNotes, preferredLanguage: $preferredLanguage)';
   }
 }

@@ -17,6 +17,7 @@ class TestDomainTypes:
             "user_id": "user-456",
             "name": "Alice",
             "age": 6,
+            "gender": "girl",
             "avatar_type": "profile1",
             "created_at": datetime.now()
         }
@@ -25,6 +26,7 @@ class TestDomainTypes:
         assert kid.id == "kid-123"
         assert kid.name == "Alice"
         assert kid.age == 6
+        assert kid.gender == "girl"
         assert kid.avatar_type == "profile1"
     
     def test_kid_model_validation_errors(self):
@@ -57,6 +59,60 @@ class TestDomainTypes:
                 age=19,  # Too old
                 created_at=datetime.now()
             )
+    
+    def test_kid_model_with_appearance_system(self):
+        """Test Kid model with natural language appearance system."""
+        kid_data = {
+            "id": "kid-123",
+            "user_id": "user-456",
+            "name": "Alice",
+            "age": 6,
+            "gender": "girl",
+            "avatar_type": "profile1",
+            "appearance_method": "photo",
+            "appearance_description": "Brown curly hair, green eyes, loves wearing princess dresses",
+            "appearance_extracted_at": datetime.now(),
+            "appearance_metadata": {"ai_model": "vision-pro", "confidence": 0.95},
+            "favorite_genres": ["fantasy", "adventure"],
+            "parent_notes": "Loves stories about brave princesses",
+            "preferred_language": "en",
+            "created_at": datetime.now()
+        }
+        
+        kid = Kid(**kid_data)
+        assert kid.appearance_method == "photo"
+        assert kid.appearance_description == "Brown curly hair, green eyes, loves wearing princess dresses"
+        assert kid.favorite_genres == ["fantasy", "adventure"]
+        assert kid.parent_notes == "Loves stories about brave princesses"
+        assert kid.preferred_language == "en"
+        
+    def test_kid_model_gender_validation(self):
+        """Test Kid model gender field validation."""
+        # Test valid gender values
+        for gender in ["boy", "girl", "other"]:
+            kid_data = {
+                "id": "kid-123",
+                "user_id": "user-456",
+                "name": "Alice",
+                "age": 6,
+                "gender": gender,
+                "avatar_type": "profile1",
+                "created_at": datetime.now()
+            }
+            kid = Kid(**kid_data)
+            assert kid.gender == gender
+        
+        # Test optional gender (None)
+        kid_data = {
+            "id": "kid-123",
+            "user_id": "user-456",
+            "name": "Alice",
+            "age": 6,
+            "avatar_type": "profile1",
+            "created_at": datetime.now()
+        }
+        kid = Kid(**kid_data)
+        assert kid.gender is None
     
     def test_story_model_valid_data(self):
         """Test Story model with valid data."""
@@ -161,14 +217,26 @@ class TestRequestTypes:
         request_data = {
             "name": "Alice",
             "age": 6,
+            "gender": "girl",
             "avatar_type": "profile1",
-            "user_id": "user-456"
+            "user_id": "user-456",
+            "appearance_method": "manual",
+            "appearance_description": "Brown hair, green eyes",
+            "favorite_genres": ["fantasy", "adventure"],
+            "parent_notes": "Loves princess stories",
+            "preferred_language": "en"
         }
         
         request = CreateKidRequest(**request_data)
         assert request.name == "Alice"
         assert request.age == 6
+        assert request.gender == "girl"
         assert request.avatar_type == "profile1"
+        assert request.appearance_method == "manual"
+        assert request.appearance_description == "Brown hair, green eyes"
+        assert request.favorite_genres == ["fantasy", "adventure"]
+        assert request.parent_notes == "Loves princess stories"
+        assert request.preferred_language == "en"
     
     def test_create_kid_request_validation(self):
         """Test kid creation request validation."""
@@ -194,13 +262,27 @@ class TestRequestTypes:
         request = UpdateKidRequest()
         assert request.name is None
         assert request.age is None
+        assert request.gender is None
         assert request.avatar_type is None
         
-        # Partial update
-        request = UpdateKidRequest(name="Bob", age=7)
+        # Partial update with gender
+        request = UpdateKidRequest(name="Bob", age=7, gender="boy")
         assert request.name == "Bob"
         assert request.age == 7
+        assert request.gender == "boy"
         assert request.avatar_type is None
+        
+        # Test appearance system fields
+        request = UpdateKidRequest(
+            appearance_method="photo",
+            appearance_description="Updated appearance",
+            favorite_genres=["adventure", "mystery"],
+            parent_notes="Updated notes"
+        )
+        assert request.appearance_method == "photo"
+        assert request.appearance_description == "Updated appearance"
+        assert request.favorite_genres == ["adventure", "mystery"]
+        assert request.parent_notes == "Updated notes"
 
 
 class TestResponseTypes:
@@ -233,7 +315,13 @@ class TestResponseTypes:
             "user_id": "user-456",
             "name": "Alice",
             "age": 6,
+            "gender": "girl",
             "avatar_type": "profile1",
+            "appearance_method": "manual",
+            "appearance_description": "Brown hair, green eyes",
+            "favorite_genres": ["fantasy", "adventure"],
+            "parent_notes": "Loves princess stories",
+            "preferred_language": "en",
             "stories_count": 5,
             "created_at": datetime.now()
         }
@@ -241,6 +329,8 @@ class TestResponseTypes:
         response = KidResponse(**response_data)
         assert response.id == "kid-123"
         assert response.name == "Alice"
+        assert response.gender == "girl"
+        assert response.appearance_description == "Brown hair, green eyes"
         assert response.stories_count == 5
     
     def test_health_response_creation(self):

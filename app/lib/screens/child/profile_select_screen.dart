@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -14,6 +13,7 @@ import '../../services/kid_service.dart';
 import '../../services/app_state_service.dart';
 import '../../models/kid.dart';
 import '../../generated/app_localizations.dart';
+import 'kid_onboarding_wizard.dart';
 
 class ProfileSelectScreen extends StatefulWidget {
   const ProfileSelectScreen({super.key});
@@ -57,360 +57,22 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
     }
   }
 
-  Future<void> _showCreateKidDialog() async {
-    final nameController = TextEditingController();
-    final appearanceController = TextEditingController();
-    final notesController = TextEditingController();
-    
-    String selectedAvatarType = 'profile1';
-    int selectedAge = 5; // Age is now mandatory
-    String? appearanceMethod;
-    List<String> selectedGenres = [];
-    String preferredLanguage = 'en';
-    
-    bool isExtractingAppearance = false;
-    File? selectedImage;
-
-    final result = await showDialog<Kid>(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            return AlertDialog(
-              backgroundColor: AppColors.white,
-              elevation: 0,
-              surfaceTintColor: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              title: Text(
-                AppLocalizations.of(context)!.addNewProfile,
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              content: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Name Field
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: AppColors.lightGrey, width: 1),
-                        ),
-                        child: TextField(
-                          controller: nameController,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context)!.enterChildName,
-                            hintStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: AppColors.textGrey,
-                            ),
-                            prefixIcon: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: SvgPicture.asset(
-                                'assets/icons/user-filled.svg',
-                                width: 20,
-                                height: 20,
-                                colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
-                              ),
-                            ),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.all(16),
-                          ),
-                          autofocus: true,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Age Selection (now mandatory)
-                      Text(
-                        AppLocalizations.of(context)!.ageRequired,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textDark,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: List.generate(10, (index) {
-                          final age = index + 3;
-                          final isSelected = selectedAge == age;
-                          
-                          return GestureDetector(
-                            onTap: () {
-                              setDialogState(() {
-                                selectedAge = age;
-                              });
-                            },
-                            child: Container(
-                              width: 44,
-                              height: 44,
-                              decoration: BoxDecoration(
-                                color: isSelected ? AppColors.primary : AppColors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: isSelected ? AppColors.primary : AppColors.lightGrey,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  age.toString(),
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: isSelected ? Colors.white : AppColors.textDark,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Avatar Selection
-                      Text(
-                        '${AppLocalizations.of(context)!.chooseAvatar}:',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textDark,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
-                        children: ProfileType.values.map((type) {
-                          final typeString = ProfileAvatar.typeToString(type);
-                          return GestureDetector(
-                            onTap: () {
-                              setDialogState(() {
-                                selectedAvatarType = typeString;
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: selectedAvatarType == typeString
-                                    ? Border.all(color: AppColors.primary, width: 3)
-                                    : null,
-                              ),
-                              child: ProfileAvatar(
-                                radius: 28,
-                                profileType: type,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Appearance Section
-                      Text(
-                        AppLocalizations.of(context)!.appearanceOptionalSection,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textDark,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        AppLocalizations.of(context)!.appearanceDescription,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textGrey,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      
-                      // Appearance method selector
-                      _buildDialogAppearanceMethodSelector(
-                        appearanceMethod: appearanceMethod,
-                        isExtractingAppearance: isExtractingAppearance,
-                        onMethodSelected: (method) async {
-                          if (method == 'photo') {
-                            // Handle photo upload
-                            await _pickAndExtractFromPhotoDialog(
-                              nameController.text.trim().isNotEmpty ? nameController.text.trim() : 'your child',
-                              selectedAge,
-                              setDialogState,
-                              (description) {
-                                setDialogState(() {
-                                  appearanceController.text = description;
-                                  appearanceMethod = 'photo';
-                                  isExtractingAppearance = false;
-                                });
-                              },
-                            );
-                          } else {
-                            setDialogState(() {
-                              appearanceMethod = method == appearanceMethod ? null : method;
-                            });
-                          }
-                        },
-                        onExtractionStart: () {
-                          setDialogState(() {
-                            isExtractingAppearance = true;
-                          });
-                        },
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      // Appearance description field
-                      _buildDialogAppearanceDescriptionField(
-                        controller: appearanceController,
-                        appearanceMethod: appearanceMethod,
-                      ),
-                      
-                      const SizedBox(height: 20),
-                      
-                      // Favorite Genres Selection
-                      Text(
-                        AppLocalizations.of(context)!.favoriteStoryTypesOptional,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textDark,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      _buildGenreSelector(
-                        selectedGenres: selectedGenres,
-                        onGenresChanged: (genres) {
-                          setDialogState(() {
-                            selectedGenres = genres;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      
-                      // Parent Notes
-                      Text(
-                        AppLocalizations.of(context)!.parentNotesOptional,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textDark,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        AppLocalizations.of(context)!.parentNotesDescription,
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.textGrey,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: AppColors.lightGrey, width: 1),
-                        ),
-                        child: TextField(
-                          controller: notesController,
-                          maxLines: 3,
-                          maxLength: 300,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          decoration: InputDecoration(
-                            hintText: AppLocalizations.of(context)!.parentNotesExample,
-                            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.textGrey,
-                            ),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.all(16),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: AppTheme.cancelButtonStyle,
-                  child: Text(
-                    AppLocalizations.of(context)!.cancel,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: isExtractingAppearance ? null : () async {
-                    if (nameController.text.trim().isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(AppLocalizations.of(context)!.pleaseEnterName),
-                          backgroundColor: AppColors.error,
-                        ),
-                      );
-                      return;
-                    }
-
-                    try {
-                      final user = AuthService.instance.currentUser;
-                      if (user == null) throw Exception('User not authenticated');
-
-                      final newKid = await KidService.createKid(
-                        userId: user.id,
-                        name: nameController.text.trim(),
-                        age: selectedAge,
-                        avatarType: selectedAvatarType,
-                        appearanceMethod: appearanceMethod,
-                        appearanceDescription: appearanceController.text.trim().isEmpty 
-                            ? null 
-                            : appearanceController.text.trim(),
-                        favoriteGenres: selectedGenres,
-                        parentNotes: notesController.text.trim().isEmpty 
-                            ? null 
-                            : notesController.text.trim(),
-                        preferredLanguage: preferredLanguage,
-                      );
-                      Navigator.of(context).pop(newKid);
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Failed to create profile: ${e.toString()}'),
-                          backgroundColor: AppColors.error,
-                        ),
-                      );
-                    }
-                  },
-                  style: AppTheme.modalActionButtonStyle,
-                  child: isExtractingAppearance 
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
-                          ),
-                        )
-                      : Text(
-                          AppLocalizations.of(context)!.createProfile,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      },
+  Future<void> _showCreateKidWizard() async {
+    final result = await Navigator.push<Kid>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const KidOnboardingWizard(),
+        fullscreenDialog: true,
+      ),
     );
-
+    
     if (result != null) {
       setState(() {
         _kids.add(result);
       });
     }
   }
+  
 
   // Photo upload and extraction for create dialog
   Future<void> _pickAndExtractFromPhotoDialog(
@@ -835,7 +497,7 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
 
   Widget _buildAddProfileCard() {
     return GestureDetector(
-      onTap: _showCreateKidDialog,
+      onTap: _showCreateKidWizard,
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: Column(

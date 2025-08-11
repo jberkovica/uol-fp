@@ -726,5 +726,59 @@
   "genreMystery": "Mystery",
   "genreFunny": "Funny",
   "genreEducational": "Educational",
-  "genreBedtime": "Bedtime Stories"
+  "genreBedtime": "Bedtime Stories",
+
+  "wizardNameTitle": "What's your little one's name?",
+  "wizardNameSubtitle": "Choose a name and fun avatar",
+  "wizardAgeTitle": "How old is your little one?",
+  "wizardAgeSubtitle": "This helps us choose the perfect vocabulary and themes",
+  "wizardGenderTitle": "Tell us about your child",
+  "wizardGenderSubtitle": "We'll use the right pronouns and perspective",
+  "wizardAppearanceTitle": "Help us personalize stories",
+  "wizardAppearanceSubtitle": "Describe your child's appearance (optional)",
+  "wizardGenresTitle": "What does your child love?",
+  "wizardGenresSubtitle": "Pick their favorite story types (optional)",
+  "wizardNotesTitle": "Any special details?",
+  "wizardNotesSubtitle": "Share interests, pets, or lessons to include (optional)",
+  "wizardReviewTitle": "Ready to create magic!",
+  "wizardReviewSubtitle": "Review your child's profile",
+  
+  "enterName": "Enter name",
+  "chooseAnAvatar": "Choose an avatar",
+  "boy": "Boy",
+  "girl": "Girl",
+  "preferNotToSay": "Prefer not to say",
+
+  "stepOfSteps": "Step {currentStep} of {totalSteps}",
+  "@stepOfSteps": {
+    "description": "Progress indicator showing current step out of total steps",
+    "placeholders": {
+      "currentStep": {
+        "type": "int",
+        "example": "3"
+      },
+      "totalSteps": {
+        "type": "int",
+        "example": "7"
+      }
+    }
+  },
+
+  "parentNotesHintText": "e.g., Has a pet dog named Max, loves space and rockets, learning about sharing...",
+  "describe": "Describe",
+  "uploadPhoto": "Upload Photo",
+  "analyzing": "Analyzing...",
+  "aiExtractedAppearanceWillAppearHere": "AI extracted appearance will appear here...",
+  "appearanceDescriptionPlaceholder": "e.g., Brown curly hair, green eyes, loves wearing dinosaur t-shirts...",
+  "skip": "Skip",
+  "continueButton": "Continue",
+  "back": "Back",
+  "createProfile": "Create Profile",
+  "step": "Step",
+  "ofStep": "of",
+  "notesPlaceholder": "e.g., Has a pet dog named Max, loves space and rockets, learning about sharing...",
+  
+  "yearsOld": "years old",
+  "favoriteStories": "Favorite Stories",
+  "specialNotes": "Special Notes"
 }

@@ -39,11 +39,11 @@ class Kid(BaseModel):
     user_id: str = Field(..., description="Parent's Supabase Auth ID")
     name: str = Field(..., min_length=1, max_length=50)
     age: int = Field(..., ge=3, le=12, description="Child's age (3-12) - mandatory for age-appropriate content")
+    gender: Optional[str] = Field(None, description="Child's gender: 'boy', 'girl', or 'other'")
     avatar_type: str = Field(default="profile1", description="UI avatar selection")
     
     # Natural Language Appearance System
     appearance_method: Optional[str] = Field(None, description="How appearance was set: 'photo', 'manual', or null")
-    appearance_photo_url: Optional[str] = Field(None, description="Supabase storage URL for uploaded photo")
     appearance_description: Optional[str] = Field(
         None,
         max_length=500,

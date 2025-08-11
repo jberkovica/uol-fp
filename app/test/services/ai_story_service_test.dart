@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import '../../lib/services/ai_story_service.dart';
 import '../../lib/models/story.dart';
 import '../test_helpers.dart';
 
@@ -134,7 +133,7 @@ void main() {
       });
 
       test('should validate base64 image data format using constants', () {
-        final validBase64 = TestDataFactory.createTestBase64Image();
+        // final validBase64 = TestDataFactory.createTestBase64Image(); // Available for future use
         final base64Tests = [
           ('validBase64Data123+/=', true),
           (TestDataFactory.createTestBase64Image(), true),

@@ -33,9 +33,7 @@ class _StoryPreviewScreenState extends State<StoryPreviewScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Get story from route arguments if not provided in constructor
-    if (_story == null) {
-      _story = ModalRoute.of(context)?.settings.arguments as Story?;
-    }
+    _story ??= ModalRoute.of(context)?.settings.arguments as Story?;
   }
 
   @override

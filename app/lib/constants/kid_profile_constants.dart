@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
 
 /// Constants for kid profile features like colors and genres
 class KidProfileConstants {

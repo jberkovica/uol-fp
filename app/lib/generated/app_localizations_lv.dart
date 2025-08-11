@@ -910,4 +910,113 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get genreBedtime => 'Gulētiešanas stāsti';
+
+  @override
+  String get wizardNameTitle => 'Kā sauc jūsu mazuli?';
+
+  @override
+  String get wizardNameSubtitle => 'Šis vārds tiks izmantots stāstos';
+
+  @override
+  String get wizardAgeTitle => 'Cik gadu ir jūsu bērnam?';
+
+  @override
+  String get wizardAgeSubtitle =>
+      'Tas palīdzēs mums izvēlēties piemērotus stāstus';
+
+  @override
+  String get wizardGenderTitle => 'Izvēlieties bērna dzimumu';
+
+  @override
+  String get wizardGenderSubtitle =>
+      'Tas palīdzēs radīt personalizētākus stāstus';
+
+  @override
+  String get wizardAppearanceTitle => 'Kā izskatās jūsu bērns?';
+
+  @override
+  String get wizardAppearanceSubtitle =>
+      'Aprakstiet izskatu vai augšupielādējiet fotogrāfiju';
+
+  @override
+  String get wizardGenresTitle => 'Kādus stāstus mīl jūsu bērns?';
+
+  @override
+  String get wizardGenresSubtitle => 'Izvēlieties mīļākos žanrus';
+
+  @override
+  String get wizardNotesTitle => 'Īpašās piezīmes';
+
+  @override
+  String get wizardNotesSubtitle =>
+      'Pievienojiet kontekstu: hobiji, intereses, mājdzīvnieki';
+
+  @override
+  String get wizardReviewTitle => 'Pārbaudiet informāciju';
+
+  @override
+  String get wizardReviewSubtitle => 'Pārliecinieties, ka viss ir pareizi';
+
+  @override
+  String get enterName => 'Ievadiet vārdu';
+
+  @override
+  String get chooseAnAvatar => 'Izvēlieties avatāru';
+
+  @override
+  String get boy => 'Zēns';
+
+  @override
+  String get girl => 'Meitene';
+
+  @override
+  String get preferNotToSay => 'Labāk nespecificēt';
+
+  @override
+  String stepOfSteps(int currentStep, int totalSteps) {
+    return 'Solis $currentStep no $totalSteps';
+  }
+
+  @override
+  String get parentNotesHintText =>
+      'piemēram: Ir suns vārdā Makss, mīl kosmosu un raķetes, mācās dalīties...';
+
+  @override
+  String get describe => 'Aprakstīt';
+
+  @override
+  String get analyzing => 'Analizējam...';
+
+  @override
+  String get aiExtractedAppearanceWillAppearHere =>
+      'MI izvilks izskata aprakstu no foto';
+
+  @override
+  String get appearanceDescriptionPlaceholder =>
+      'Piemēram: brūnas acis, tumši mati, vaiga plankumiņi';
+
+  @override
+  String get skip => 'Izlaist';
+
+  @override
+  String get continueButton => 'Turpināt';
+
+  @override
+  String get back => 'Atpakaļ';
+
+  @override
+  String get step => 'Solis';
+
+  @override
+  String get ofStep => 'no';
+
+  @override
+  String get notesPlaceholder =>
+      'Piemēram: mīl dinozaurus, baidās no tumsas, ir jaunāks brālis';
+
+  @override
+  String get yearsOld => 'gadi';
+
+  @override
+  String get specialNotes => 'Īpašās piezīmes';
 }

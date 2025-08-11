@@ -916,4 +916,112 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get genreBedtime => 'Сказки на ночь';
+
+  @override
+  String get wizardNameTitle => 'Как зовут вашего малыша?';
+
+  @override
+  String get wizardNameSubtitle => 'Это имя будет использоваться в сказках';
+
+  @override
+  String get wizardAgeTitle => 'Сколько лет вашему ребенку?';
+
+  @override
+  String get wizardAgeSubtitle =>
+      'Это поможет нам подобрать подходящие истории';
+
+  @override
+  String get wizardGenderTitle => 'Выберите пол ребенка';
+
+  @override
+  String get wizardGenderSubtitle =>
+      'Это поможет создавать более персонализированные истории';
+
+  @override
+  String get wizardAppearanceTitle => 'Как выглядит ваш ребенок?';
+
+  @override
+  String get wizardAppearanceSubtitle => 'Опишите внешность или загрузите фото';
+
+  @override
+  String get wizardGenresTitle => 'Какие истории любит ваш ребенок?';
+
+  @override
+  String get wizardGenresSubtitle => 'Выберите любимые жанры';
+
+  @override
+  String get wizardNotesTitle => 'Особые заметки';
+
+  @override
+  String get wizardNotesSubtitle =>
+      'Добавьте контекст: увлечения, интересы, домашние животные';
+
+  @override
+  String get wizardReviewTitle => 'Проверьте информацию';
+
+  @override
+  String get wizardReviewSubtitle => 'Убедитесь, что все правильно';
+
+  @override
+  String get enterName => 'Введите имя';
+
+  @override
+  String get chooseAnAvatar => 'Выберите аватар';
+
+  @override
+  String get boy => 'Мальчик';
+
+  @override
+  String get girl => 'Девочка';
+
+  @override
+  String get preferNotToSay => 'Предпочитаю не указывать';
+
+  @override
+  String stepOfSteps(int currentStep, int totalSteps) {
+    return 'Шаг $currentStep из $totalSteps';
+  }
+
+  @override
+  String get parentNotesHintText =>
+      'например: Есть собака по имени Макс, любит космос и ракеты, учится делиться...';
+
+  @override
+  String get describe => 'Описать';
+
+  @override
+  String get analyzing => 'Анализируем...';
+
+  @override
+  String get aiExtractedAppearanceWillAppearHere =>
+      'ИИ извлечет описание внешности из фото';
+
+  @override
+  String get appearanceDescriptionPlaceholder =>
+      'Например: карие глаза, темные волосы, веснушки';
+
+  @override
+  String get skip => 'Пропустить';
+
+  @override
+  String get continueButton => 'Продолжить';
+
+  @override
+  String get back => 'Назад';
+
+  @override
+  String get step => 'Шаг';
+
+  @override
+  String get ofStep => 'из';
+
+  @override
+  String get notesPlaceholder =>
+      'Например: любит динозавров, боится темноты, есть младший брат';
+
+  @override
+  String get yearsOld => 'лет';
+
+  @override
+  String get specialNotes => 'Особые заметки';
 }

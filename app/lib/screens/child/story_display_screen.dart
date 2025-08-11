@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
-import '../../constants/api_constants.dart';
 import '../../models/story.dart';
 import '../../models/background_music.dart';
 import '../../widgets/responsive_wrapper.dart';
@@ -13,8 +11,6 @@ import '../../generated/app_localizations.dart';
 import '../../services/logging_service.dart';
 import '../../services/background_music_service.dart';
 import '../../services/story_service.dart';
-import '../../services/kid_service.dart';
-import '../../services/app_state_service.dart';
 
 /// Enum for simplified playback state management
 enum PlaybackState {
@@ -73,10 +69,10 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
   // Timeline configuration - easy to experiment with different values!
   // Try: AudioTimeline.quick, AudioTimeline.standard, AudioTimeline.cinematic
   // Or custom: AudioTimeline(introLength: Duration(seconds: 2), outroLength: Duration(seconds: 4))
-  AudioTimeline _timeline = AudioTimeline.standard;
+  final AudioTimeline _timeline = AudioTimeline.standard;
   
   // Audio coordination
-  bool _backgroundMusicEnabled = true;
+  final bool _backgroundMusicEnabled = true;
   bool _hasStartedNarration = false;
   Timer? _narrationStartTimer;
   Timer? _outroFadeTimer;
@@ -85,9 +81,9 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
   int _fontSizeIndex = 0; // 0=bodyMedium(16px), 1=headlineMedium(20px), 2=headlineLarge(24px)
   
   // Audio volumes
-  double _backgroundVolumeIntro = 0.2; // Initial volume for background music intro
-  double _backgroundVolumeMid = 0.1;   // Medium volume as narration approaches
-  double _backgroundVolumeNarration = 0.01; // Very low volume during narration
+  final double _backgroundVolumeIntro = 0.2; // Initial volume for background music intro
+  final double _backgroundVolumeMid = 0.1;   // Medium volume as narration approaches
+  final double _backgroundVolumeNarration = 0.01; // Very low volume during narration
   
   // Playback tracking
   Duration _currentPosition = Duration.zero;
@@ -582,39 +578,6 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
   }
 
 
-  // Primary button (purple background for play/pause)
-  Widget _buildPrimaryIconButton(
-    String iconPath, {
-    VoidCallback? onPressed,
-    bool isLoading = false,
-  }) {
-    return IconButton(
-      onPressed: onPressed,
-      icon: isLoading
-          ? const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                color: AppColors.white,
-                strokeWidth: 2,
-              ),
-            )
-          : SvgPicture.asset(
-              iconPath,
-              width: 24,
-              height: 24,
-              colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
-            ),
-      style: IconButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.white,
-        minimumSize: const Size(52, 52), // Slightly larger for primary action
-        maximumSize: const Size(52, 52),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        shape: const CircleBorder(),
-      ),
-    );
-  }
 
   // Grey icon buttons (no background, just grey icons)
   Widget _buildGreyIconButton(
@@ -641,30 +604,6 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
     );
   }
 
-  // Dark grey icon buttons (no background, just dark grey icons)
-  Widget _buildDarkGreyIconButton(
-    String iconPath, {
-    VoidCallback? onPressed,
-  }) {
-    return IconButton(
-      onPressed: onPressed,
-      icon: SvgPicture.asset(
-        iconPath,
-        width: 24,
-        height: 24,
-        colorFilter: ColorFilter.mode(
-          onPressed != null ? AppColors.grey700 : AppColors.grey400,
-          BlendMode.srcIn,
-        ),
-      ),
-      style: IconButton.styleFrom(
-        foregroundColor: AppColors.grey700,
-        minimumSize: const Size(48, 48),
-        maximumSize: const Size(48, 48),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      ),
-    );
-  }
 
   // White Material icon buttons for inside violet container
   Widget _buildWhiteMaterialIconButton(
@@ -720,39 +659,6 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
     );
   }
 
-  // Violet icon buttons (violet circle background with white icons)
-  Widget _buildVioletIconButton(
-    String iconPath, {
-    VoidCallback? onPressed,
-    bool isLoading = false,
-  }) {
-    return IconButton(
-      onPressed: onPressed,
-      icon: isLoading
-          ? SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(
-                color: AppColors.white,
-                strokeWidth: 2,
-              ),
-            )
-          : SvgPicture.asset(
-              iconPath,
-              width: 24,
-              height: 24,
-              colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
-            ),
-      style: IconButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.white,
-        minimumSize: const Size(48, 48),
-        maximumSize: const Size(48, 48),
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        shape: const CircleBorder(),
-      ),
-    );
-  }
 
   // Animated gradient music icon (no background, just animated gradient-colored icon)
   Widget _buildGradientMusicIcon(
@@ -797,11 +703,6 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
   }
 
 
-  void _toggleTextSize() {
-    setState(() {
-      _fontSizeIndex = (_fontSizeIndex + 1) % 3;
-    });
-  }
 
   void _showOptionsMenu() {
     showModalBottomSheet(
@@ -856,19 +757,6 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
     );
   }
 
-  void _toggleBackgroundMusic() {
-    setState(() {
-      _backgroundMusicEnabled = !_backgroundMusicEnabled;
-    });
-    
-    if (_backgroundMusicEnabled && _playbackState == PlaybackState.playing) {
-      // Determine appropriate volume based on narration state
-      final volume = _hasStartedNarration ? _backgroundVolumeNarration : _backgroundVolumeIntro;
-      _startBackgroundMusic(volume);
-    } else {
-      _backgroundPlayer.stop();
-    }
-  }
 
   TextStyle _getStoryTextStyle(BuildContext context) {
     switch (_fontSizeIndex) {
@@ -1069,9 +957,6 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
   }
 
   /// Start background music intro at initial volume
-  Future<void> _startBackgroundMusicIntro() async {
-    await _startBackgroundMusic(_backgroundVolumeIntro);
-  }
 
   /// Pause both audio streams
   Future<void> _pausePlayback() async {
@@ -1120,20 +1005,6 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
     _logger.d('Playback resumed');
   }
   
-  Future<void> _restartAudio(String audioUrl) async {
-    try {
-      await _stopPlayback();
-      await _audioPlayer.setSource(UrlSource(audioUrl));
-      setState(() {
-        _playbackState = PlaybackState.stopped;
-        _hasStartedNarration = false;
-        _currentPosition = Duration.zero;
-        _totalDuration = Duration.zero;
-      });
-    } catch (e) {
-      _logger.e('Error restarting audio', error: e);
-    }
-  }
   
   /// Stop playback and clean up timers
   Future<void> _stopPlayback() async {

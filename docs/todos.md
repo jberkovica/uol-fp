@@ -202,7 +202,10 @@ priororities:
 [] onborading screens
 [] subscription screens
 [] help
-
+[] logic for genres selection, if seleted with pass that list, if not selected we pass whole list and we need model to return what genre to be able to filter storys. 
+[] stories filters and search
+[] imporve kid analysis promt by photo to be focused on details rather then descrption style
+[] bug with 0 stories in kids profile stats, caching issue?
 
 
 [] public buckets - imporve secutriy?

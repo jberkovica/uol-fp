@@ -283,7 +283,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
               child: Column(
                   children: [
                     // Spacer that contains header elements
-                    Container(
+                    SizedBox(
                       height: (250 + (-_scrollOffset * 0.5)).clamp(150, 250),
                       child: Stack(
                         children: [
@@ -465,7 +465,7 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
   }
 
   Widget _buildStoryCard(Story story) {
-    return Container(
+    return SizedBox(
       width: 140,
       child: Material(
         color: Colors.transparent,

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,6 +31,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
   
   double _scrollOffset = 0.0;
   int _selectedAge = 5; // Now required field
+  String? _selectedGender;
   String _selectedAvatarType = 'profile1';
   String? _appearanceMethod;
   List<String> _selectedGenres = [];
@@ -40,7 +40,6 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
   bool _isLoading = false;
   bool _hasChanges = false;
   bool _isExtractingAppearance = false;
-  File? _selectedImage;
 
   @override
   void initState() {
@@ -54,6 +53,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
     _appearanceController = TextEditingController(text: widget.kid.appearanceDescription ?? '');
     
     _selectedAge = widget.kid.age;
+    _selectedGender = widget.kid.gender;
     _selectedAvatarType = widget.kid.avatarType;
     _appearanceMethod = widget.kid.appearanceMethod;
     _selectedGenres = List.from(widget.kid.favoriteGenres);
@@ -91,7 +91,6 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
 
       setState(() {
         _isExtractingAppearance = true;
-        _selectedImage = File(image.path);
       });
 
       // Convert image to base64 for API call
@@ -213,6 +212,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         kidId: widget.kid.id,
         name: _nameController.text.trim(),
         age: _selectedAge,
+        gender: _selectedGender,
         avatarType: _selectedAvatarType,
         appearanceMethod: _appearanceMethod,
         appearanceDescription: _appearanceController.text.trim().isEmpty 
@@ -462,6 +462,17 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         const SizedBox(height: 24),
         Text(
+          'Gender',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: AppColors.textDark,
+          ),
+        ),
+        const SizedBox(height: 12),
+        _buildGenderSelector(),
+        
+        const SizedBox(height: 24),
+        Text(
           AppLocalizations.of(context)!.chooseAvatar,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
@@ -622,6 +633,57 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
           ),
         );
       }),
+    );
+  }
+
+  Widget _buildGenderSelector() {
+    final l10n = AppLocalizations.of(context);
+    final options = [
+      {'value': 'boy', 'label': l10n?.boy ?? 'Boy'},
+      {'value': 'girl', 'label': l10n?.girl ?? 'Girl'},
+      {'value': 'other', 'label': l10n?.preferNotToSay ?? 'Prefer not to say'},
+    ];
+    
+    return Row(
+      children: options.map((option) {
+        final isSelected = _selectedGender == option['value'];
+        
+        return Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(
+              right: option['value'] != 'other' ? 8 : 0,
+            ),
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  _selectedGender = option['value'] as String;
+                });
+                _onSelectionChanged();
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: BoxDecoration(
+                  color: isSelected ? AppColors.primary : AppColors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: isSelected ? AppColors.primary : AppColors.lightGrey,
+                    width: 2,
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    option['label'] as String,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: isSelected ? Colors.white : AppColors.textDark,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 

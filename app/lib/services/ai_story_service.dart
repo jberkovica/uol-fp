@@ -150,7 +150,7 @@ class AIStoryService {
 
         if (story == null || (story.status != StoryStatus.approved && story.status != StoryStatus.pending)) {
           throw Exception(
-              'Story generation timed out or failed after ${attempts} attempts');
+              'Story generation timed out or failed after $attempts attempts');
         }
 
         return story;
@@ -267,7 +267,7 @@ class AIStoryService {
       );
 
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
+        jsonDecode(response.body); // Response received
         _logger.i('Story text submitted successfully');
         
         // Poll for story completion
@@ -297,7 +297,7 @@ class AIStoryService {
 
         if (story == null || (story.status != StoryStatus.approved && story.status != StoryStatus.pending)) {
           throw Exception(
-              'Story generation timed out or failed after ${attempts} attempts');
+              'Story generation timed out or failed after $attempts attempts');
         }
 
         return story;
@@ -320,27 +320,6 @@ class AIStoryService {
       String userLanguage = LanguageService.instance.currentLanguageCode;
       _logger.i('Story generation using language: $userLanguage');
 
-      // Handle different audio path formats (file path vs blob URL)
-      Uint8List audioBytes;
-      
-      if (audioPath.startsWith('blob:')) {
-        // Web blob URL - need to fetch the blob data
-        final response = await http.get(Uri.parse(audioPath));
-        if (response.statusCode != 200) {
-          throw Exception('Failed to fetch audio blob: ${response.statusCode}');
-        }
-        audioBytes = response.bodyBytes;
-      } else {
-        // File path - read the file
-        final audioFile = File(audioPath);
-        if (!await audioFile.exists()) {
-          throw Exception('Audio file not found at path: $audioPath');
-        }
-        audioBytes = await audioFile.readAsBytes();
-      }
-
-      final audioBase64 = base64Encode(audioBytes);
-
       // Use the new voice workflow for audio-based story generation
       final storyId = await initiateVoiceStory(kidId);
       
@@ -362,7 +341,7 @@ class AIStoryService {
       _logger.i('Story generation response status: ${response.statusCode}');
 
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
+        jsonDecode(response.body); // Response received
         _logger.i('Audio story generation initiated: $storyId');
 
         // Poll for story completion (same logic as text/image)
@@ -375,14 +354,14 @@ class AIStoryService {
           await Future.delayed(const Duration(seconds: 2));
 
           story = await getStory(storyId);
-          _logger.d('Attempt ${attempts + 1}: Story status = ${story?.status}');
+          _logger.d('Attempt ${attempts + 1}: Story status = ${story.status}');
 
-          if (story != null && (story.status == StoryStatus.approved || story.status == StoryStatus.pending)) {
+          if (story.status == StoryStatus.approved || story.status == StoryStatus.pending) {
             _logger.i('Story generation completed: ${story.id}');
             return story;
           }
 
-          if (story != null && story.status == StoryStatus.rejected) {
+          if (story.status == StoryStatus.rejected) {
             throw Exception('Story generation failed on server');
           }
 
@@ -446,7 +425,7 @@ class AIStoryService {
       _logger.i('Story generation response status: ${response.statusCode}');
 
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
+        jsonDecode(response.body); // Response received
         _logger.i('Text story generation initiated: $storyId');
 
         // Poll for story completion (same logic as image)

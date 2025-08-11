@@ -1511,7 +1511,7 @@ abstract class AppLocalizations {
   /// Photo upload appearance option
   ///
   /// In en, this message translates to:
-  /// **'Upload photo'**
+  /// **'Upload Photo'**
   String get uploadPhoto;
 
   /// Explanation for photo upload option
@@ -1723,6 +1723,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bedtime Stories'**
   String get genreBedtime;
+
+  /// No description provided for @wizardNameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your little one\'s name?'**
+  String get wizardNameTitle;
+
+  /// No description provided for @wizardNameSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a name and fun avatar'**
+  String get wizardNameSubtitle;
+
+  /// No description provided for @wizardAgeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How old is your little one?'**
+  String get wizardAgeTitle;
+
+  /// No description provided for @wizardAgeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This helps us choose the perfect vocabulary and themes'**
+  String get wizardAgeSubtitle;
+
+  /// No description provided for @wizardGenderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your child'**
+  String get wizardGenderTitle;
+
+  /// No description provided for @wizardGenderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll use the right pronouns and perspective'**
+  String get wizardGenderSubtitle;
+
+  /// No description provided for @wizardAppearanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help us personalize stories'**
+  String get wizardAppearanceTitle;
+
+  /// No description provided for @wizardAppearanceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your child\'s appearance (optional)'**
+  String get wizardAppearanceSubtitle;
+
+  /// No description provided for @wizardGenresTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What does your child love?'**
+  String get wizardGenresTitle;
+
+  /// No description provided for @wizardGenresSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick their favorite story types (optional)'**
+  String get wizardGenresSubtitle;
+
+  /// No description provided for @wizardNotesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Any special details?'**
+  String get wizardNotesTitle;
+
+  /// No description provided for @wizardNotesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share interests, pets, or lessons to include (optional)'**
+  String get wizardNotesSubtitle;
+
+  /// No description provided for @wizardReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready to create magic!'**
+  String get wizardReviewTitle;
+
+  /// No description provided for @wizardReviewSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review your child\'s profile'**
+  String get wizardReviewSubtitle;
+
+  /// No description provided for @enterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter name'**
+  String get enterName;
+
+  /// No description provided for @chooseAnAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an avatar'**
+  String get chooseAnAvatar;
+
+  /// No description provided for @boy.
+  ///
+  /// In en, this message translates to:
+  /// **'Boy'**
+  String get boy;
+
+  /// No description provided for @girl.
+  ///
+  /// In en, this message translates to:
+  /// **'Girl'**
+  String get girl;
+
+  /// No description provided for @preferNotToSay.
+  ///
+  /// In en, this message translates to:
+  /// **'Prefer not to say'**
+  String get preferNotToSay;
+
+  /// Progress indicator showing current step out of total steps
+  ///
+  /// In en, this message translates to:
+  /// **'Step {currentStep} of {totalSteps}'**
+  String stepOfSteps(int currentStep, int totalSteps);
+
+  /// No description provided for @parentNotesHintText.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Has a pet dog named Max, loves space and rockets, learning about sharing...'**
+  String get parentNotesHintText;
+
+  /// No description provided for @describe.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe'**
+  String get describe;
+
+  /// No description provided for @analyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing...'**
+  String get analyzing;
+
+  /// No description provided for @aiExtractedAppearanceWillAppearHere.
+  ///
+  /// In en, this message translates to:
+  /// **'AI extracted appearance will appear here...'**
+  String get aiExtractedAppearanceWillAppearHere;
+
+  /// No description provided for @appearanceDescriptionPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Brown curly hair, green eyes, loves wearing dinosaur t-shirts...'**
+  String get appearanceDescriptionPlaceholder;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @continueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueButton;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @step.
+  ///
+  /// In en, this message translates to:
+  /// **'Step'**
+  String get step;
+
+  /// No description provided for @ofStep.
+  ///
+  /// In en, this message translates to:
+  /// **'of'**
+  String get ofStep;
+
+  /// No description provided for @notesPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Has a pet dog named Max, loves space and rockets, learning about sharing...'**
+  String get notesPlaceholder;
+
+  /// No description provided for @yearsOld.
+  ///
+  /// In en, this message translates to:
+  /// **'years old'**
+  String get yearsOld;
+
+  /// No description provided for @specialNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Special Notes'**
+  String get specialNotes;
 }
 
 class _AppLocalizationsDelegate

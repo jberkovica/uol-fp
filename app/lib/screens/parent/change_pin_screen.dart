@@ -137,16 +137,6 @@ class _ChangePinScreenState extends State<ChangePinScreen> {
     }
   }
 
-  String _getStepSubtitle() {
-    switch (_currentStep) {
-      case PinStep.current:
-        return AppLocalizations.of(context)!.enterCurrentPin;
-      case PinStep.newPin:
-        return AppLocalizations.of(context)!.enterNewPin;
-      case PinStep.confirm:
-        return AppLocalizations.of(context)!.confirmNewPin;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

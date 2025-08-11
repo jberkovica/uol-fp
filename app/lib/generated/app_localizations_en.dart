@@ -786,7 +786,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get describeInWords => 'Describe in words';
 
   @override
-  String get uploadPhoto => 'Upload photo';
+  String get uploadPhoto => 'Upload Photo';
 
   @override
   String get aiWillAnalyzePhoto =>
@@ -903,4 +903,114 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get genreBedtime => 'Bedtime Stories';
+
+  @override
+  String get wizardNameTitle => 'What\'s your little one\'s name?';
+
+  @override
+  String get wizardNameSubtitle => 'Choose a name and fun avatar';
+
+  @override
+  String get wizardAgeTitle => 'How old is your little one?';
+
+  @override
+  String get wizardAgeSubtitle =>
+      'This helps us choose the perfect vocabulary and themes';
+
+  @override
+  String get wizardGenderTitle => 'Tell us about your child';
+
+  @override
+  String get wizardGenderSubtitle =>
+      'We\'ll use the right pronouns and perspective';
+
+  @override
+  String get wizardAppearanceTitle => 'Help us personalize stories';
+
+  @override
+  String get wizardAppearanceSubtitle =>
+      'Describe your child\'s appearance (optional)';
+
+  @override
+  String get wizardGenresTitle => 'What does your child love?';
+
+  @override
+  String get wizardGenresSubtitle =>
+      'Pick their favorite story types (optional)';
+
+  @override
+  String get wizardNotesTitle => 'Any special details?';
+
+  @override
+  String get wizardNotesSubtitle =>
+      'Share interests, pets, or lessons to include (optional)';
+
+  @override
+  String get wizardReviewTitle => 'Ready to create magic!';
+
+  @override
+  String get wizardReviewSubtitle => 'Review your child\'s profile';
+
+  @override
+  String get enterName => 'Enter name';
+
+  @override
+  String get chooseAnAvatar => 'Choose an avatar';
+
+  @override
+  String get boy => 'Boy';
+
+  @override
+  String get girl => 'Girl';
+
+  @override
+  String get preferNotToSay => 'Prefer not to say';
+
+  @override
+  String stepOfSteps(int currentStep, int totalSteps) {
+    return 'Step $currentStep of $totalSteps';
+  }
+
+  @override
+  String get parentNotesHintText =>
+      'e.g., Has a pet dog named Max, loves space and rockets, learning about sharing...';
+
+  @override
+  String get describe => 'Describe';
+
+  @override
+  String get analyzing => 'Analyzing...';
+
+  @override
+  String get aiExtractedAppearanceWillAppearHere =>
+      'AI extracted appearance will appear here...';
+
+  @override
+  String get appearanceDescriptionPlaceholder =>
+      'e.g., Brown curly hair, green eyes, loves wearing dinosaur t-shirts...';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get step => 'Step';
+
+  @override
+  String get ofStep => 'of';
+
+  @override
+  String get notesPlaceholder =>
+      'e.g., Has a pet dog named Max, loves space and rockets, learning about sharing...';
+
+  @override
+  String get yearsOld => 'years old';
+
+  @override
+  String get specialNotes => 'Special Notes';
 }

@@ -920,4 +920,113 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get genreBedtime => 'Cuentos para dormir';
+
+  @override
+  String get wizardNameTitle => '¿Cómo se llama tu pequeño?';
+
+  @override
+  String get wizardNameSubtitle => 'Este nombre se usará en los cuentos';
+
+  @override
+  String get wizardAgeTitle => '¿Cuántos años tiene tu hijo/a?';
+
+  @override
+  String get wizardAgeSubtitle =>
+      'Esto nos ayudará a elegir cuentos apropiados';
+
+  @override
+  String get wizardGenderTitle => 'Selecciona el género del niño';
+
+  @override
+  String get wizardGenderSubtitle =>
+      'Esto ayudará a crear cuentos más personalizados';
+
+  @override
+  String get wizardAppearanceTitle => '¿Cómo se ve tu hijo/a?';
+
+  @override
+  String get wizardAppearanceSubtitle =>
+      'Describe su apariencia o sube una foto';
+
+  @override
+  String get wizardGenresTitle => '¿Qué cuentos le gustan a tu hijo/a?';
+
+  @override
+  String get wizardGenresSubtitle => 'Elige los géneros favoritos';
+
+  @override
+  String get wizardNotesTitle => 'Notas especiales';
+
+  @override
+  String get wizardNotesSubtitle =>
+      'Añade contexto: aficiones, intereses, mascotas';
+
+  @override
+  String get wizardReviewTitle => 'Revisa la información';
+
+  @override
+  String get wizardReviewSubtitle => 'Asegúrate de que todo esté correcto';
+
+  @override
+  String get enterName => 'Introduce el nombre';
+
+  @override
+  String get chooseAnAvatar => 'Elige un avatar';
+
+  @override
+  String get boy => 'Niño';
+
+  @override
+  String get girl => 'Niña';
+
+  @override
+  String get preferNotToSay => 'Prefiero no especificar';
+
+  @override
+  String stepOfSteps(int currentStep, int totalSteps) {
+    return 'Paso $currentStep de $totalSteps';
+  }
+
+  @override
+  String get parentNotesHintText =>
+      'p.ej.: Tiene un perro llamado Max, ama el espacio y los cohetes, está aprendiendo a compartir...';
+
+  @override
+  String get describe => 'Describir';
+
+  @override
+  String get analyzing => 'Analizando...';
+
+  @override
+  String get aiExtractedAppearanceWillAppearHere =>
+      'La IA extraerá la descripción de la apariencia de la foto';
+
+  @override
+  String get appearanceDescriptionPlaceholder =>
+      'Por ejemplo: ojos marrones, cabello oscuro, pecas';
+
+  @override
+  String get skip => 'Omitir';
+
+  @override
+  String get continueButton => 'Continuar';
+
+  @override
+  String get back => 'Atrás';
+
+  @override
+  String get step => 'Paso';
+
+  @override
+  String get ofStep => 'de';
+
+  @override
+  String get notesPlaceholder =>
+      'Por ejemplo: le encantan los dinosaurios, teme a la oscuridad, tiene un hermano menor';
+
+  @override
+  String get yearsOld => 'años';
+
+  @override
+  String get specialNotes => 'Notas especiales';
 }

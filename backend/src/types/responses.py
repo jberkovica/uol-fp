@@ -38,11 +38,11 @@ class KidResponse(BaseModel):
     user_id: str
     name: str
     age: int
+    gender: Optional[str] = None
     avatar_type: str
     
     # Natural Language Appearance System
     appearance_method: Optional[str] = None
-    appearance_photo_url: Optional[str] = None
     appearance_description: Optional[str] = None
     appearance_extracted_at: Optional[datetime] = None
     appearance_metadata: Optional[dict] = Field(default_factory=dict)

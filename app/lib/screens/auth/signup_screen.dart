@@ -7,7 +7,6 @@ import '../../services/auth_service.dart';
 import '../../utils/page_transitions.dart';
 import 'login_screen.dart';
 import 'otp_verification_screen.dart';
-import 'pin_setup_screen.dart';
 import '../../generated/app_localizations.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -42,9 +41,9 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() => _isLoading = true);
 
     try {
-      print('DEBUG: Starting signup for email: ${_emailController.text.trim()}');
+      debugPrint('Starting signup for email: ${_emailController.text.trim()}');
       
-      final response = await AuthService.instance.signUpWithEmailAndPassword(
+      await AuthService.instance.signUpWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text,
         fullName: _nameController.text.trim().isEmpty 
@@ -52,7 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
             : _nameController.text.trim(),
       );
 
-      print('DEBUG: OTP sent successfully, navigating to verification screen');
+      debugPrint('OTP sent successfully, navigating to verification screen');
       
       // OTP signup always requires verification, so navigate to OTP screen
       if (mounted) {
@@ -70,7 +69,7 @@ class _SignupScreenState extends State<SignupScreen> {
         );
       }
     } catch (e) {
-      print('DEBUG: Signup error: ${e.toString()}');
+      debugPrint('Signup error: ${e.toString()}');
       _showError('Sign up failed: ${e.toString()}');
     } finally {
       setState(() => _isLoading = false);

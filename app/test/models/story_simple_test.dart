@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import '../../lib/models/story.dart';
+import 'package:mira_storyteller/models/story.dart';
 
 void main() {
   group('Story Model - Basic Tests', () {

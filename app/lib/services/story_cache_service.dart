@@ -140,10 +140,14 @@ class StoryCacheService {
   static void disposeAll() {
     _logger.i('Disposing all story cache resources');
     
-    _subscriptions.values.forEach((sub) => sub.cancel());
+    for (final sub in _subscriptions.values) {
+      sub.cancel();
+    }
     _subscriptions.clear();
     
-    _controllers.values.forEach((controller) => controller.close());
+    for (final controller in _controllers.values) {
+      controller.close();
+    }
     _controllers.clear();
     
     _cache.clear();

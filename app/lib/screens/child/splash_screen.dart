@@ -128,7 +128,7 @@ class SplashScreen extends StatelessWidget {
               bottom: 0,
               left: 0,
               right: 0,
-              child: Container(
+              child: SizedBox(
                 height: screenSize.height * 0.5, // Same height as purple area
                 child: Center(
                   child: Padding(

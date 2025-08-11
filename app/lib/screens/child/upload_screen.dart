@@ -8,7 +8,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import '../../constants/app_colors.dart';
-import '../../constants/app_theme.dart';
 import '../../models/input_format.dart';
 import '../../services/ai_story_service.dart';
 import '../../services/auth_service.dart';
@@ -79,7 +78,6 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
   String? _recordingPath;
   Duration _recordingDuration = Duration.zero;
   Timer? _recordingTimer;
-  bool _showSubmitButton = false;
   String? _currentStoryId;
   bool _isTranscribing = false;
   
@@ -93,7 +91,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
   
   // Real-time amplitude monitoring with smoothing
   Timer? _amplitudeTimer;
-  List<double> _amplitudeHistory = [];
+  final List<double> _amplitudeHistory = [];
   double _currentAmplitude = 0.0;
   double _smoothedAmplitude = 0.0; // Smoothed amplitude for better visualization
   double _lastSignificantAmplitude = 0.0; // Track last significant change
@@ -828,32 +826,6 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
     }
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final XFile? image = await _picker.pickImage(
-        source: source,
-        maxWidth: 1024,
-        maxHeight: 1024,
-        imageQuality: 85,
-      );
-
-      if (image != null) {
-        setState(() {
-          _isProcessing = true;
-        });
-        await _generateStory(image);
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(AppLocalizations.of(context)!.failedToPickImage(e.toString())),
-            backgroundColor: AppColors.error,
-          ),
-        );
-      }
-    }
-  }
 
   Future<void> _generateStory(XFile imageFile) async {
     try {
@@ -1175,7 +1147,6 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       setState(() {
         _isRecording = true;
         _recordingDuration = Duration.zero;
-        _showSubmitButton = false;
         _transcribedTextController.clear();
         _amplitudeHistory.clear(); // Clear previous amplitude data
       });
@@ -1352,7 +1323,6 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
         _isPlayingAudio = false;
         _recordingDuration = Duration.zero;
         _recordingPath = null;
-        _showSubmitButton = false;
         _transcribedTextController.clear();
       });
       
@@ -1397,7 +1367,6 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       _stopWaveformAnimation();
       setState(() {
         _isRecording = false;
-        _showSubmitButton = false;
         _isTranscribing = false;
         _transcribedTextController.clear();
       });
@@ -1441,7 +1410,6 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
         _isRecording = false;
         _isRecordingStopped = false;
         _isPlayingAudio = false;
-        _showSubmitButton = false;
         _transcribedTextController.clear();
         _recordingPath = null;
         _currentStoryId = null;
@@ -1479,8 +1447,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
                   // Clear audio state
                   _isRecording = false;
                   _isRecordingStopped = false;
-                  _showSubmitButton = false;
-                  _transcribedTextController.clear();
+                            _transcribedTextController.clear();
                   _currentStoryId = null;
                 });
               },
@@ -1590,7 +1557,6 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
     
     setState(() {
       _isProcessing = true;
-      _showSubmitButton = false;
     });
     
     await _generateStoryFromAudio(_recordingPath!);
@@ -1885,7 +1851,6 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
         _recordingPath = null;
         _currentStoryId = null;
         _isProcessing = false;
-        _showSubmitButton = false;
       });
       
       // Initiate new voice story
@@ -1930,7 +1895,6 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       _isRecordingStopped = false;
       _isPlayingAudio = false;
       _isTranscribing = false;
-      _showSubmitButton = false;
       _transcribedTextController.clear();
     });
     

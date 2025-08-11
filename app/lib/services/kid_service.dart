@@ -65,6 +65,7 @@ class KidService {
     required String userId,
     required String name,
     required int age, // Now mandatory
+    String? gender,
     String avatarType = 'profile1',
     String? appearanceMethod,
     String? appearanceDescription,
@@ -81,6 +82,7 @@ class KidService {
           'user_id': userId,
           'name': name.trim(),
           'age': age,
+          'gender': gender,
           'avatar_type': avatarType,
           'appearance_method': appearanceMethod,
           'appearance_description': appearanceDescription?.trim(),
@@ -129,6 +131,7 @@ class KidService {
     required String kidId,
     String? name,
     int? age,
+    String? gender,
     String? avatarType,
     String? appearanceMethod,
     String? appearanceDescription,
@@ -142,6 +145,7 @@ class KidService {
       
       if (name != null) updateData['name'] = name.trim();
       if (age != null) updateData['age'] = age;
+      if (gender != null) updateData['gender'] = gender;
       if (avatarType != null) updateData['avatar_type'] = avatarType;
       if (appearanceMethod != null) updateData['appearance_method'] = appearanceMethod;
       if (appearanceDescription != null) updateData['appearance_description'] = appearanceDescription.trim();
