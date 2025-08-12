@@ -5,12 +5,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import '../../models/kid.dart';
 import '../../services/kid_service.dart';
-import '../../constants/kid_profile_constants.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../generated/app_localizations.dart';
 import '../../widgets/responsive_wrapper.dart';
-import '../../widgets/profile_avatar.dart';
+import '../../widgets/shared/age_input_field.dart';
+import '../../widgets/shared/gender_selector.dart';
+import '../../widgets/shared/genre_chips_selector.dart';
 
 class KidProfileEditScreen extends StatefulWidget {
   final Kid kid;
@@ -40,6 +41,15 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
   bool _isLoading = false;
   bool _hasChanges = false;
   bool _isExtractingAppearance = false;
+
+  // Centralized localization getter
+  AppLocalizations get l10n {
+    final localizations = AppLocalizations.of(context);
+    if (localizations == null) {
+      throw Exception('AppLocalizations not found. Make sure the app is properly configured with localization delegates.');
+    }
+    return localizations;
+  }
 
   @override
   void initState() {
@@ -451,36 +461,41 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         const SizedBox(height: 24),
         Text(
-          'Age',
+          l10n.age,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
           ),
         ),
         const SizedBox(height: 16),
-        _buildAgeSelector(),
+        AgeInputField(
+          initialAge: _selectedAge,
+          onAgeChanged: (age) {
+            setState(() {
+              _selectedAge = age;
+            });
+            _onSelectionChanged();
+          },
+        ),
         
         const SizedBox(height: 24),
         Text(
-          'Gender',
+          l10n.gender,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
           ),
         ),
         const SizedBox(height: 12),
-        _buildGenderSelector(),
-        
-        const SizedBox(height: 24),
-        Text(
-          AppLocalizations.of(context)!.chooseAvatar,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textDark,
-          ),
+        GenderSelector(
+          selectedGender: _selectedGender,
+          onGenderChanged: (gender) {
+            setState(() {
+              _selectedGender = gender;
+            });
+            _onSelectionChanged();
+          },
         ),
-        const SizedBox(height: 16),
-        _buildAvatarSelector(),
       ],
     );
   }
@@ -532,7 +547,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         const SizedBox(height: 16),
         
         Text(
-          'Preferred Language',
+          l10n.preferredLanguage,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
@@ -543,14 +558,22 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         
         const SizedBox(height: 24),
         Text(
-          'Favorite Story Types',
+          l10n.favoriteStoryTypes,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w600,
             color: AppColors.textDark,
           ),
         ),
         const SizedBox(height: 16),
-        _buildGenreSelector(),
+        GenreChipsSelector(
+          selectedGenres: _selectedGenres,
+          onGenresChanged: (genres) {
+            setState(() {
+              _selectedGenres = genres;
+            });
+            _onSelectionChanged();
+          },
+        ),
       ],
     );
   }
@@ -565,7 +588,7 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         ),
         const SizedBox(height: 8),
         Text(
-          'Add special context for stories: hobbies, pets, siblings, interests, etc.',
+          l10n.parentNotesDescription,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: AppColors.textGrey,
           ),
@@ -595,143 +618,6 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
     );
   }
 
-  Widget _buildAgeSelector() {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: List.generate(10, (index) {
-        final age = index + 3;
-        final isSelected = _selectedAge == age;
-        
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedAge = age;
-            });
-            _onSelectionChanged();
-          },
-          child: Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: isSelected ? AppColors.primary : AppColors.white,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(
-                color: isSelected ? AppColors.primary : AppColors.lightGrey,
-                width: 2,
-              ),
-            ),
-            child: Center(
-              child: Text(
-                age.toString(),
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: isSelected ? Colors.white : AppColors.textDark,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ),
-        );
-      }),
-    );
-  }
-
-  Widget _buildGenderSelector() {
-    final l10n = AppLocalizations.of(context);
-    final options = [
-      {'value': 'boy', 'label': l10n?.boy ?? 'Boy'},
-      {'value': 'girl', 'label': l10n?.girl ?? 'Girl'},
-      {'value': 'other', 'label': l10n?.preferNotToSay ?? 'Prefer not to say'},
-    ];
-    
-    return Row(
-      children: options.map((option) {
-        final isSelected = _selectedGender == option['value'];
-        
-        return Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-              right: option['value'] != 'other' ? 8 : 0,
-            ),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedGender = option['value'] as String;
-                });
-                _onSelectionChanged();
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primary : AppColors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isSelected ? AppColors.primary : AppColors.lightGrey,
-                    width: 2,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    option['label'] as String,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: isSelected ? Colors.white : AppColors.textDark,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildAvatarSelector() {
-    const avatarTypes = ['profile1', 'profile2', 'profile3', 'profile4'];
-    
-    return SizedBox(
-      height: 100,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: avatarTypes.length,
-        itemBuilder: (context, index) {
-          final avatarType = avatarTypes[index];
-          final isSelected = _selectedAvatarType == avatarType;
-          
-          return Padding(
-            padding: EdgeInsets.only(right: 16),
-            child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedAvatarType = avatarType;
-                });
-                _onSelectionChanged();
-              },
-              child: Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: isSelected ? AppColors.primary : AppColors.lightGrey,
-                    width: isSelected ? 3 : 2,
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(22),
-                  child: ProfileAvatar(
-                    radius: 47,
-                    profileType: ProfileAvatar.fromString(avatarType),
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
 
   Widget _buildAppearanceMethodSelector() {
     final methods = [
@@ -942,95 +828,5 @@ class _KidProfileEditScreenState extends State<KidProfileEditScreen> {
         );
       }).toList(),
     );
-  }
-
-  Widget _buildGenreSelector() {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: KidProfileConstants.storyGenres.map((genre) {
-        final isSelected = _selectedGenres.contains(genre);
-        final displayName = _getLocalizedGenreName(genre);
-        
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              if (isSelected) {
-                _selectedGenres.remove(genre);
-              } else {
-                _selectedGenres.add(genre);
-              }
-            });
-            _onSelectionChanged();
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-            decoration: BoxDecoration(
-              color: isSelected ? AppColors.secondary : AppColors.white,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: isSelected ? AppColors.secondary : AppColors.lightGrey,
-                width: 2,
-              ),
-            ),
-            child: Text(
-              displayName,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: isSelected ? AppColors.textDark : AppColors.textDark,
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  String _getLocalizedGenreName(String genre) {
-    final l10n = AppLocalizations.of(context)!;
-    switch (genre) {
-      case 'adventure':
-        return l10n.genreAdventure;
-      case 'fantasy':
-        return l10n.genreFantasy;
-      case 'friendship':
-        return l10n.genreFriendship;
-      case 'family':
-        return l10n.genreFamily;
-      case 'animals':
-        return l10n.genreAnimals;
-      case 'magic':
-        return l10n.genreMagic;
-      case 'space':
-        return l10n.genreSpace;
-      case 'underwater':
-        return l10n.genreUnderwater;
-      case 'forest':
-        return l10n.genreForest;
-      case 'fairy_tale':
-        return l10n.genreFairyTale;
-      case 'superhero':
-        return l10n.genreSuperhero;
-      case 'dinosaurs':
-        return l10n.genreDinosaurs;
-      case 'pirates':
-        return l10n.genrePirates;
-      case 'princess':
-        return l10n.genrePrincess;
-      case 'dragons':
-        return l10n.genreDragons;
-      case 'robots':
-        return l10n.genreRobots;
-      case 'mystery':
-        return l10n.genreMystery;
-      case 'funny':
-        return l10n.genreFunny;
-      case 'educational':
-        return l10n.genreEducational;
-      case 'bedtime':
-        return l10n.genreBedtime;
-      default:
-        return genre;
-    }
   }
 }

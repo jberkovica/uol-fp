@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../constants/app_colors.dart';
 import '../../constants/kid_profile_constants.dart';
 import '../../widgets/profile_avatar.dart';
+import '../../widgets/shared/age_input_field.dart';
 import '../../services/auth_service.dart';
 import '../../services/kid_service.dart';
 import '../../generated/app_localizations.dart';
@@ -451,7 +452,7 @@ class _KidOnboardingWizardState extends State<KidOnboardingWizard> {
   Widget _buildAgeStep() {
     return Column(
       children: [
-        // Age display
+        // Age display circle
         Container(
           width: 120,
           height: 120,
@@ -473,43 +474,14 @@ class _KidOnboardingWizardState extends State<KidOnboardingWizard> {
         ),
         const SizedBox(height: 32),
         
-        // Age selector
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: List.generate(10, (index) {
-            final age = index + 3;
-            final isSelected = _selectedAge == age;
-            
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  _selectedAge = age;
-                });
-              },
-              child: Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: isSelected ? AppColors.orange : AppColors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isSelected ? AppColors.orange : AppColors.lightGrey,
-                    width: 2,
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    age.toString(),
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: isSelected ? AppColors.white : AppColors.textDark,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }),
+        // Clean age input field
+        AgeInputField(
+          initialAge: _selectedAge,
+          onAgeChanged: (age) {
+            setState(() {
+              _selectedAge = age;
+            });
+          },
         ),
       ],
     );
@@ -620,7 +592,7 @@ class _KidOnboardingWizardState extends State<KidOnboardingWizard> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Describe",
+                        l10n.describe,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -677,7 +649,7 @@ class _KidOnboardingWizardState extends State<KidOnboardingWizard> {
                             ),
                       const SizedBox(height: 8),
                       Text(
-                        _isExtractingAppearance ? "Analyzing..." : "Upload Photo",
+                        _isExtractingAppearance ? l10n.analyzing : l10n.uploadPhoto,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -705,8 +677,8 @@ class _KidOnboardingWizardState extends State<KidOnboardingWizard> {
               style: Theme.of(context).textTheme.bodyMedium,
               decoration: InputDecoration(
                 hintText: _appearanceMethod == 'photo'
-                    ? "AI extracted appearance will appear here..."
-                    : "e.g., Brown curly hair, green eyes, loves wearing dinosaur t-shirts...",
+                    ? l10n.aiExtractedAppearanceWillAppearHere
+                    : l10n.appearanceDescriptionPlaceholder,
                 hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textGrey,
                 ),
@@ -831,7 +803,7 @@ class _KidOnboardingWizardState extends State<KidOnboardingWizard> {
             const Divider(),
             const SizedBox(height: 16),
             Text(
-              "Appearance",
+              l10n.appearance,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -850,7 +822,7 @@ class _KidOnboardingWizardState extends State<KidOnboardingWizard> {
             const Divider(),
             const SizedBox(height: 16),
             Text(
-              "Favorite Stories",
+              l10n.favoriteStoryTypes,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -880,7 +852,7 @@ class _KidOnboardingWizardState extends State<KidOnboardingWizard> {
             const Divider(),
             const SizedBox(height: 16),
             Text(
-              "Special Notes",
+              l10n.specialNotes,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),

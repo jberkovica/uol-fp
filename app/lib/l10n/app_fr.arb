@@ -761,5 +761,11 @@
   "specialNotes": "Notes spéciales",
 
   "stepOfSteps": "Étape {currentStep} de {totalSteps}",
-  "parentNotesHintText": "ex.: A un chien nommé Max, aime l'espace et les fusées, apprend à partager..."
+  "parentNotesHintText": "ex.: A un chien nommé Max, aime l'espace et les fusées, apprend à partager...",
+  "enterAge212": "Entrez l'âge (2-12)",
+  "pleaseEnterAge": "Veuillez entrer l'âge",
+  "pleaseEnterValidAge": "Veuillez entrer un âge valide",
+  "ageRangeError": "L'âge doit être entre 2 et 12 ans",
+  "avatarUpdatedSuccessfully": "Avatar mis à jour avec succès!",
+  "failedToUpdateAvatar": "Échec de la mise à jour de l'avatar. Veuillez réessayer."
 }

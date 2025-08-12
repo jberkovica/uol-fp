@@ -976,6 +976,25 @@ class AppLocalizationsEn extends AppLocalizations {
       'e.g., Has a pet dog named Max, loves space and rockets, learning about sharing...';
 
   @override
+  String get enterAge212 => 'Enter age (2-12)';
+
+  @override
+  String get pleaseEnterAge => 'Please enter age';
+
+  @override
+  String get pleaseEnterValidAge => 'Please enter a valid age';
+
+  @override
+  String get ageRangeError => 'Age must be between 2 and 12';
+
+  @override
+  String get avatarUpdatedSuccessfully => 'Avatar updated successfully!';
+
+  @override
+  String get failedToUpdateAvatar =>
+      'Failed to update avatar. Please try again.';
+
+  @override
   String get describe => 'Describe';
 
   @override

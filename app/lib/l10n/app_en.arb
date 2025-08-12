@@ -765,6 +765,12 @@
   },
 
   "parentNotesHintText": "e.g., Has a pet dog named Max, loves space and rockets, learning about sharing...",
+  "enterAge212": "Enter age (2-12)",
+  "pleaseEnterAge": "Please enter age",
+  "pleaseEnterValidAge": "Please enter a valid age",
+  "ageRangeError": "Age must be between 2 and 12",
+  "avatarUpdatedSuccessfully": "Avatar updated successfully!",
+  "failedToUpdateAvatar": "Failed to update avatar. Please try again.",
   "describe": "Describe",
   "uploadPhoto": "Upload Photo",
   "analyzing": "Analyzing...",

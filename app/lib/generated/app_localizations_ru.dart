@@ -987,6 +987,25 @@ class AppLocalizationsRu extends AppLocalizations {
       'например: Есть собака по имени Макс, любит космос и ракеты, учится делиться...';
 
   @override
+  String get enterAge212 => 'Введите возраст (2-12)';
+
+  @override
+  String get pleaseEnterAge => 'Пожалуйста, введите возраст';
+
+  @override
+  String get pleaseEnterValidAge => 'Пожалуйста, введите корректный возраст';
+
+  @override
+  String get ageRangeError => 'Возраст должен быть от 2 до 12 лет';
+
+  @override
+  String get avatarUpdatedSuccessfully => 'Аватар успешно обновлён!';
+
+  @override
+  String get failedToUpdateAvatar =>
+      'Не удалось обновить аватар. Попробуйте снова.';
+
+  @override
   String get describe => 'Описать';
 
   @override

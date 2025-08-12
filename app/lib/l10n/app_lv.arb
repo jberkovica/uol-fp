@@ -330,5 +330,11 @@
   "specialNotes": "Īpašās piezīmes",
 
   "stepOfSteps": "Solis {currentStep} no {totalSteps}",
-  "parentNotesHintText": "piemēram: Ir suns vārdā Makss, mīl kosmosu un raķetes, mācās dalīties..."
+  "parentNotesHintText": "piemēram: Ir suns vārdā Makss, mīl kosmosu un raķetes, mācās dalīties...",
+  "enterAge212": "Ievadiet vecumu (2-12)",
+  "pleaseEnterAge": "Lūdzu, ievadiet vecumu",
+  "pleaseEnterValidAge": "Lūdzu, ievadiet derīgu vecumu",
+  "ageRangeError": "Vecumam jābūt no 2 līdz 12 gadiem",
+  "avatarUpdatedSuccessfully": "Avatārs veiksmīgi atjaunotas!",
+  "failedToUpdateAvatar": "Neizdevās atjaunot avatāru. Lūdzu, mēģiniet vēlreiz."
 }

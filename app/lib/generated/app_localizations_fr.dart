@@ -996,6 +996,25 @@ class AppLocalizationsFr extends AppLocalizations {
       'ex.: A un chien nommé Max, aime l\'espace et les fusées, apprend à partager...';
 
   @override
+  String get enterAge212 => 'Entrez l\'âge (2-12)';
+
+  @override
+  String get pleaseEnterAge => 'Veuillez entrer l\'âge';
+
+  @override
+  String get pleaseEnterValidAge => 'Veuillez entrer un âge valide';
+
+  @override
+  String get ageRangeError => 'L\'âge doit être entre 2 et 12 ans';
+
+  @override
+  String get avatarUpdatedSuccessfully => 'Avatar mis à jour avec succès!';
+
+  @override
+  String get failedToUpdateAvatar =>
+      'Échec de la mise à jour de l\'avatar. Veuillez réessayer.';
+
+  @override
   String get describe => 'Décrire';
 
   @override

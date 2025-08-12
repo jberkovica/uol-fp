@@ -982,6 +982,25 @@ class AppLocalizationsLv extends AppLocalizations {
       'piemēram: Ir suns vārdā Makss, mīl kosmosu un raķetes, mācās dalīties...';
 
   @override
+  String get enterAge212 => 'Ievadiet vecumu (2-12)';
+
+  @override
+  String get pleaseEnterAge => 'Lūdzu, ievadiet vecumu';
+
+  @override
+  String get pleaseEnterValidAge => 'Lūdzu, ievadiet derīgu vecumu';
+
+  @override
+  String get ageRangeError => 'Vecumam jābūt no 2 līdz 12 gadiem';
+
+  @override
+  String get avatarUpdatedSuccessfully => 'Avatārs veiksmīgi atjaunotas!';
+
+  @override
+  String get failedToUpdateAvatar =>
+      'Neizdevās atjaunot avatāru. Lūdzu, mēģiniet vēlreiz.';
+
+  @override
   String get describe => 'Aprakstīt';
 
   @override

@@ -330,5 +330,11 @@
   "specialNotes": "Особые заметки",
 
   "stepOfSteps": "Шаг {currentStep} из {totalSteps}",
-  "parentNotesHintText": "например: Есть собака по имени Макс, любит космос и ракеты, учится делиться..."
+  "parentNotesHintText": "например: Есть собака по имени Макс, любит космос и ракеты, учится делиться...",
+  "enterAge212": "Введите возраст (2-12)",
+  "pleaseEnterAge": "Пожалуйста, введите возраст",
+  "pleaseEnterValidAge": "Пожалуйста, введите корректный возраст",
+  "ageRangeError": "Возраст должен быть от 2 до 12 лет",
+  "avatarUpdatedSuccessfully": "Аватар успешно обновлён!",
+  "failedToUpdateAvatar": "Не удалось обновить аватар. Попробуйте снова."
 }

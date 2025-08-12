@@ -761,5 +761,11 @@
   "specialNotes": "Notas especiales",
 
   "stepOfSteps": "Paso {currentStep} de {totalSteps}",
-  "parentNotesHintText": "p.ej.: Tiene un perro llamado Max, ama el espacio y los cohetes, está aprendiendo a compartir..."
+  "parentNotesHintText": "p.ej.: Tiene un perro llamado Max, ama el espacio y los cohetes, está aprendiendo a compartir...",
+  "enterAge212": "Ingrese edad (2-12)",
+  "pleaseEnterAge": "Por favor, ingrese la edad",
+  "pleaseEnterValidAge": "Por favor, ingrese una edad válida",
+  "ageRangeError": "La edad debe estar entre 2 y 12 años",
+  "avatarUpdatedSuccessfully": "¡Avatar actualizado exitosamente!",
+  "failedToUpdateAvatar": "Error al actualizar el avatar. Inténtalo de nuevo."
 }

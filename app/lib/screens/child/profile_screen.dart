@@ -10,8 +10,10 @@ import '../../services/story_cache_service.dart';
 import '../../services/app_state_service.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
+import '../../widgets/shared/avatar_selector_sheet.dart';
 import '../../utils/page_transitions.dart';
 import '../parent/pin_entry_screen.dart';
+import '../../services/kid_service.dart';
 import '../../generated/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -135,6 +137,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  /// Show avatar selector and handle avatar change
+  Future<void> _changeAvatar() async {
+    if (_kid == null) return;
+
+    final newAvatarType = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => AvatarSelectorSheet(
+        currentAvatarType: _kid!.avatarType,
+        onAvatarSelected: (avatarType) {
+          Navigator.of(context).pop(avatarType);
+        },
+      ),
+    );
+
+    if (newAvatarType != null && newAvatarType != _kid!.avatarType) {
+      try {
+        // Update avatar in backend
+        await KidService.updateKid(
+          kidId: _kid!.id,
+          name: _kid!.name,
+          age: _kid!.age,
+          gender: _kid!.gender,
+          avatarType: newAvatarType,
+          appearanceMethod: _kid!.appearanceMethod,
+          appearanceDescription: _kid!.appearanceDescription,
+          favoriteGenres: _kid!.favoriteGenres,
+          parentNotes: _kid!.parentNotes,
+          preferredLanguage: _kid!.preferredLanguage,
+        );
+
+        // Update local state
+        setState(() {
+          _kid = _kid!.copyWith(avatarType: newAvatarType);
+        });
+
+        // Save updated kid to local storage
+        AppStateService.saveSelectedKid(_kid!);
+
+        // Show success message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)?.avatarUpdatedSuccessfully ?? 'Avatar updated successfully!'),
+              backgroundColor: AppColors.primary,
+            ),
+          );
+        }
+      } catch (e) {
+        // Show error message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)?.failedToUpdateAvatar ?? 'Failed to update avatar. Please try again.'),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
+      }
+    }
+  }
+
   @override
   void dispose() {
     _storiesSubscription?.cancel();
@@ -252,11 +317,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Profile avatar
+                // Profile avatar - tappable to change
                 Center(
-                  child: ProfileAvatar(
-                    radius: 60,
-                    profileType: _getProfileTypeFromString(_kid!.avatarType),
+                  child: GestureDetector(
+                    onTap: _changeAvatar,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.primary.withValues(alpha: 0.3),
+                          width: 2,
+                        ),
+                      ),
+                      child: ProfileAvatar(
+                        radius: 60,
+                        profileType: _getProfileTypeFromString(_kid!.avatarType),
+                      ),
+                    ),
                   ),
                 ),
                 

@@ -1850,6 +1850,42 @@ abstract class AppLocalizations {
   /// **'e.g., Has a pet dog named Max, loves space and rockets, learning about sharing...'**
   String get parentNotesHintText;
 
+  /// No description provided for @enterAge212.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter age (2-12)'**
+  String get enterAge212;
+
+  /// No description provided for @pleaseEnterAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter age'**
+  String get pleaseEnterAge;
+
+  /// No description provided for @pleaseEnterValidAge.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid age'**
+  String get pleaseEnterValidAge;
+
+  /// No description provided for @ageRangeError.
+  ///
+  /// In en, this message translates to:
+  /// **'Age must be between 2 and 12'**
+  String get ageRangeError;
+
+  /// No description provided for @avatarUpdatedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Avatar updated successfully!'**
+  String get avatarUpdatedSuccessfully;
+
+  /// No description provided for @failedToUpdateAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update avatar. Please try again.'**
+  String get failedToUpdateAvatar;
+
   /// No description provided for @describe.
   ///
   /// In en, this message translates to:
