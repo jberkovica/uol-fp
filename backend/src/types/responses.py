@@ -14,6 +14,8 @@ class StoryResponse(BaseModel):
     content: str
     audio_url: Optional[str]
     background_music_url: Optional[str]
+    cover_image_url: Optional[str] = None
+    cover_image_thumbnail_url: Optional[str] = None
     status: StoryStatus
     language: Language
     is_favourite: bool = False

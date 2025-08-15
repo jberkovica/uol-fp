@@ -274,30 +274,80 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
             margin: const EdgeInsets.symmetric(vertical: 20),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.asset(
-                'assets/images/stories/default-cover.png',
-                height: 250,
-                width: double.infinity,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.lightGrey,
-                      borderRadius: BorderRadius.circular(16),
+              child: story.coverImageUrl != null
+                  ? LayoutBuilder(
+                      builder: (context, constraints) {
+                        final imageWidth = MediaQuery.of(context).size.width * 0.75;
+                        return Center(
+                          child: SizedBox(
+                            width: imageWidth,
+                            child: AspectRatio(
+                              aspectRatio: 1.0, // Square aspect ratio to match generated images
+                              child: Image.network(
+                                story.coverImageUrl!,
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                  // Fallback to default cover if network image fails
+                                  return Image.asset(
+                                    'assets/images/stories/default-cover.png',
+                                    fit: BoxFit.contain,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.lightGrey,
+                                          borderRadius: BorderRadius.circular(16),
+                                        ),
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                            'assets/icons/photo.svg',
+                                            width: 24,
+                                            height: 24,
+                                            colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : LayoutBuilder(
+                      builder: (context, constraints) {
+                        final imageWidth = MediaQuery.of(context).size.width * 0.75;
+                        return Center(
+                          child: SizedBox(
+                            width: imageWidth,
+                            child: AspectRatio(
+                              aspectRatio: 1.0, // Square aspect ratio to match generated images
+                              child: Image.asset(
+                                'assets/images/stories/default-cover.png',
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColors.lightGrey,
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Center(
+                                      child: SvgPicture.asset(
+                                        'assets/icons/photo.svg',
+                                        width: 24,
+                                        height: 24,
+                                        colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'assets/icons/photo.svg',
-                        width: 24,
-                        height: 24,
-                        colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
-                      ),
-                    ),
-                  );
-                },
-              ),
             ),
           ),
         );

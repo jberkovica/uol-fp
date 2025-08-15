@@ -14,8 +14,8 @@ class VoiceAgent(BaseAgent):
     
     def __init__(self, vendor: AgentVendor, config: Dict[str, Any]):
         super().__init__(vendor, config)
-        self.main_config = get_config()
-        self.voice_config = self.main_config["agents"]["voice"]
+        # For voice agent, config IS the voice config (passed from new structure)
+        self.voice_config = config
         self._clients = {}  # Cache clients per vendor
     
     def validate_config(self) -> bool:
@@ -61,18 +61,73 @@ class VoiceAgent(BaseAgent):
             raise
     
     def _get_language_config(self, language: str) -> Dict[str, Any]:
-        """Get configuration for specific language."""
+        """Get configuration for specific language, merging with vendor config."""
         lang_configs = self.voice_config.get("languages", {})
+        vendors_config = self.voice_config.get("vendors", {})
         
+        if not lang_configs:
+            raise ValueError("No language configurations found in voice config")
+        if not vendors_config:
+            raise ValueError("No vendor configurations found in voice config")
+        
+        # Get language configuration
         if language in lang_configs:
-            return lang_configs[language]
-        
-        # Fallback to English if language not configured
-        if "en" in lang_configs:
+            lang_config = lang_configs[language].copy()
+        elif "en" in lang_configs:
             logger.warning(f"Language {language} not configured, falling back to English")
-            return lang_configs["en"]
+            lang_config = lang_configs["en"].copy()
+        else:
+            available_langs = list(lang_configs.keys())
+            raise ValueError(f"No TTS configuration found for language {language}. Available: {available_langs}")
         
-        raise ValueError(f"No TTS configuration found for language {language} or fallback English")
+        # Get vendor from language config
+        vendor = lang_config.get("vendor")
+        if not vendor:
+            raise ValueError(f"No vendor specified for language {language}")
+        
+        if vendor not in vendors_config:
+            available_vendors = list(vendors_config.keys())
+            raise ValueError(f"Vendor '{vendor}' not found in vendor config. Available: {available_vendors}")
+        
+        vendor_config = vendors_config[vendor]
+        
+        # Merge vendor configuration into language config
+        # API key (required)
+        if "api_key" not in vendor_config:
+            raise ValueError(f"No api_key found for vendor '{vendor}'")
+        lang_config["api_key"] = vendor_config["api_key"]
+        
+        # Model (required)
+        if "model" not in vendor_config:
+            raise ValueError(f"No model found for vendor '{vendor}'")
+        lang_config["model"] = vendor_config["model"]
+        
+        # Settings (required) - merge defaults with language-specific overrides
+        vendor_settings = vendor_config.get("default_settings", {})
+        if not vendor_settings:
+            raise ValueError(f"No default_settings found for vendor '{vendor}'")
+        
+        # Apply language-specific overrides if they exist
+        language_overrides = vendor_config.get("language_overrides", {}).get(language, {}).get("settings", {})
+        
+        # Merge settings: vendor defaults + language overrides
+        merged_settings = {**vendor_settings, **language_overrides}
+        lang_config["settings"] = merged_settings
+        
+        # For ElevenLabs, we also need voice_id from available_voices
+        if vendor == "elevenlabs":
+            voice_name = lang_config.get("voice")
+            if not voice_name:
+                raise ValueError(f"No voice specified for ElevenLabs language {language}")
+            
+            available_voices = self.voice_config.get("available_voices", {}).get("elevenlabs", {})
+            if voice_name not in available_voices:
+                available_voice_names = list(available_voices.keys())
+                raise ValueError(f"Voice '{voice_name}' not found in available ElevenLabs voices. Available: {available_voice_names}")
+            
+            lang_config["voice_id"] = available_voices[voice_name]
+        
+        return lang_config
     
     async def _process_elevenlabs(self, lang_config: Dict[str, Any], text: str) -> Tuple[bytes, str]:
         """Generate speech with ElevenLabs using language-specific configuration."""
@@ -247,6 +302,8 @@ class VoiceAgent(BaseAgent):
 
 
 def create_voice_agent(config: Dict[str, Any]) -> VoiceAgent:
-    """Factory function to create a voice agent."""
-    vendor = AgentVendor(config.get("vendor", "elevenlabs"))
+    """Factory function to create a voice agent with multi-vendor support."""
+    # For multi-vendor voice agent, we use a generic vendor since each language can have different vendors
+    # The actual vendor is determined per-language in _get_language_config()
+    vendor = AgentVendor.ELEVENLABS  # Default, but not actually used for routing
     return VoiceAgent(vendor, config)

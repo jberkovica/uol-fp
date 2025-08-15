@@ -4,8 +4,8 @@ import uvicorn
 from dotenv import load_dotenv
 from src.api.app import create_app, load_config
 
-# Load environment variables from .env file
-load_dotenv()
+# Load environment variables from root .env file
+load_dotenv("../.env")
 
 # Create the FastAPI app
 app = create_app()

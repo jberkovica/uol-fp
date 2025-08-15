@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import Optional
 from enum import Enum
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 
 class StoryStatus(str, Enum):
@@ -78,18 +78,38 @@ class Story(BaseModel):
     kid_id: str = Field(..., description="Associated kid profile ID")
     child_name: Optional[str] = Field(default=None, description="Child's name (optional, joined from kids table)")
     title: str = Field(..., min_length=1, max_length=200)
-    content: str = Field(default="", max_length=2000)  # Can be empty initially
+    content: str = Field(default="", max_length=5000)  # Can be empty initially - matches story_models.py
     image_description: Optional[str] = Field(None, description="AI-generated image description")
     audio_filename: Optional[str] = Field(None, description="Generated audio filename/URL")
     audio_url: Optional[str] = Field(default=None, description="Full audio URL (computed)")
     background_music_filename: Optional[str] = Field(None, description="Background music filename")
     background_music_url: Optional[str] = Field(default=None, description="Full background music URL (computed)")
+    
+    # Cover image fields
+    cover_image_url: Optional[str] = Field(None, description="URL to the generated cover image in Supabase Storage")
+    cover_image_thumbnail_url: Optional[str] = Field(None, description="URL to the thumbnail version of the cover image")
+    cover_image_metadata: Optional[dict] = Field(default_factory=dict, description="Image generation metadata (prompt, model, etc.)")
+    cover_image_generated_at: Optional[datetime] = Field(None, description="When the cover image was generated")
+    
     language: Language = Field(default=Language.ENGLISH)
     status: StoryStatus = Field(default=StoryStatus.PENDING)
     is_favourite: bool = Field(default=False, description="Whether story is marked as favourite")
     created_at: datetime
     updated_at: Optional[datetime] = None
     metadata: Optional[dict] = Field(default_factory=dict)
+    
+    @validator('cover_image_metadata', pre=True)
+    def parse_cover_image_metadata(cls, v):
+        """Parse JSON string to dict if needed."""
+        if v is None:
+            return {}
+        if isinstance(v, str):
+            try:
+                import json
+                return json.loads(v)
+            except (json.JSONDecodeError, TypeError):
+                return {}
+        return v if isinstance(v, dict) else {}
     
     class Config:
         from_attributes = True

@@ -1,11 +1,13 @@
 """Core story processing logic that orchestrates agents."""
 import uuid
+import asyncio
 from typing import Dict, Any, Optional
 from datetime import datetime
 
 from ..agents.vision.agent import create_vision_agent
 from ..agents.storyteller.agent import create_storyteller_agent
 from ..agents.voice.agent import create_voice_agent
+from ..agents.artist.agent import ArtistAgent
 from ..services.supabase import get_supabase_service
 from ..types.domain import Story, StoryStatus, InputFormat, Language
 from ..types.requests import GenerateStoryRequest
@@ -22,6 +24,16 @@ class StoryProcessor:
         self.vision_agent = create_vision_agent(agents_config["vision"])
         self.storyteller_agent = create_storyteller_agent(agents_config["storyteller"])
         self.voice_agent = create_voice_agent(agents_config["voice"])
+        # Initialize artist agent if configured
+        self.artist_agent = None
+        if "artist" in agents_config:
+            try:
+                logger.info("Initializing artist agent...")
+                self.artist_agent = ArtistAgent(agents_config["artist"])
+                logger.info(f"Artist agent initialized successfully with vendor: {self.artist_agent.vendor}")
+            except Exception as e:
+                logger.error(f"Failed to initialize artist agent: {e}", exc_info=True)
+                self.artist_agent = None
         self.supabase = get_supabase_service()
         
     async def process_image_to_story(self, request: GenerateStoryRequest, story_id: str) -> Story:
@@ -41,8 +53,7 @@ class StoryProcessor:
         """
         
         try:
-            # Update status to processing
-            await self.supabase.update_story_status(story_id, StoryStatus.PROCESSING)
+            # Story already created with PROCESSING status - no need to update
             
             # Step 1: Analyze image
             logger.info(f"Analyzing image for story {story_id}")
@@ -81,29 +92,97 @@ class StoryProcessor:
                 parent_notes=kid.parent_notes
             )
             
-            # Update story with content
+            # Update story with content and cover description
             await self.supabase.update_story(story_id, {
                 "title": story_result["title"],
-                "content": story_result["content"]
+                "content": story_result["content"],
+                "cover_description": story_result.get("cover_description", "")
             })
             
-            # Step 3: Generate audio
-            logger.info(f"Generating audio for story {story_id}")
-            audio_data, content_type = await self.voice_agent.process(
-                story_result["content"],
-                language=request.language.value
-            )
+            # Steps 3 & 4: Generate audio and cover image in parallel
+            logger.info(f"Starting parallel generation of audio and cover image for story {story_id}")
             
-            # Upload audio to storage
-            filename = f"{story_id}.mp3"
-            audio_filename = await self.supabase.upload_audio(audio_data, filename)
+            # Create tasks for parallel execution
+            tasks = []
             
-            # Update story with audio filename
-            await self.supabase.update_story(story_id, {
-                "audio_filename": audio_filename,  # Database stores filename only
-            })
+            # Task 1: Generate audio
+            async def generate_audio():
+                try:
+                    logger.info(f"Generating audio for story {story_id}")
+                    audio_data, content_type = await self.voice_agent.process(
+                        story_result["content"],
+                        language=request.language.value
+                    )
+                    
+                    # Upload audio to storage
+                    filename = f"{story_id}.mp3"
+                    audio_filename = await self.supabase.upload_audio(audio_data, filename)
+                    
+                    # Update story with audio filename
+                    await self.supabase.update_story(story_id, {
+                        "audio_filename": audio_filename,
+                    })
+                    
+                    logger.info(f"Audio generation completed for story {story_id}")
+                    return {"success": True, "audio_filename": audio_filename}
+                except Exception as e:
+                    logger.error(f"Audio generation failed for story {story_id}: {e}", exc_info=True)
+                    return {"success": False, "error": str(e)}
             
-            # Determine final story status based on parent's approval mode
+            # Task 2: Generate cover image (if artist agent is available)
+            async def generate_image():
+                if not self.artist_agent:
+                    logger.warning("Artist agent not available - no cover image will be generated")
+                    return {"success": False, "reason": "Artist agent not available"}
+                
+                try:
+                    logger.info(f"Starting cover image generation for story {story_id}")
+                    logger.info(f"Artist vendor: {self.artist_agent.vendor}, model: {self.artist_agent.model}")
+                    image_result = await self.artist_agent.process({
+                        "story": {
+                            "id": story_id,
+                            "title": story_result["title"],
+                            "cover_description": story_result.get("cover_description", "")  # Use new field
+                        },
+                        "kid": {
+                            "name": kid.name,
+                            "appearance_description": kid.appearance_description
+                        }
+                        # No longer passing image_data or image_description
+                    })
+                    
+                    logger.info(f"Cover image generated successfully for story {story_id}")
+                    return {"success": True, "image_result": image_result}
+                except Exception as e:
+                    logger.error(f"Failed to generate cover image for story {story_id}: {e}", exc_info=True)
+                    return {"success": False, "error": str(e)}
+            
+            # Add tasks
+            tasks.append(generate_audio())
+            tasks.append(generate_image())
+            
+            # Execute tasks in parallel
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+            audio_result, image_result = results
+            
+            # Log results
+            logger.info(f"Audio generation result: {audio_result.get('success', False) if isinstance(audio_result, dict) else 'Exception occurred'}")
+            logger.info(f"Image generation result: {image_result.get('success', False) if isinstance(image_result, dict) else 'Exception occurred'}")
+            
+            # Handle exceptions in results
+            if isinstance(audio_result, Exception):
+                logger.error(f"Audio generation raised exception: {audio_result}")
+                audio_result = {"success": False, "error": str(audio_result)}
+            
+            if isinstance(image_result, Exception):
+                logger.error(f"Image generation raised exception: {image_result}")
+                image_result = {"success": False, "error": str(image_result)}
+            
+            # Check if audio generation failed (this is critical)
+            if not audio_result.get("success", False):
+                raise Exception(f"Audio generation failed: {audio_result.get('error', 'Unknown error')}")
+            
+            # Only determine final status after ALL processing is complete
             final_status = await self._determine_story_status(request.kid_id, story_id)
             story = await self.supabase.update_story(story_id, {
                 "status": final_status.value
@@ -227,29 +306,98 @@ class StoryProcessor:
                 parent_notes=kid.parent_notes
             )
             
-            # Update story with content
+            # Update story with content and cover description
             await self.supabase.update_story(story_id, {
                 "title": story_result["title"],
-                "content": story_result["content"]
+                "content": story_result["content"],
+                "cover_description": story_result.get("cover_description", "")
             })
             
-            # Step 2: Generate audio
-            logger.info(f"Generating audio for story {story_id}")
-            audio_data, content_type = await self.voice_agent.process(
-                story_result["content"],
-                language=language
-            )
+            # Steps 2 & 3: Generate audio and cover image in parallel
+            logger.info(f"Starting parallel generation of audio and cover image for story {story_id}")
             
-            # Upload audio to storage
-            filename = f"{story_id}.mp3"
-            audio_filename = await self.supabase.upload_audio(audio_data, filename)
+            # Create tasks for parallel execution
+            tasks = []
             
-            # Update story with audio filename
-            await self.supabase.update_story(story_id, {
-                "audio_filename": audio_filename,
-            })
+            # Task 1: Generate audio
+            async def generate_audio():
+                try:
+                    logger.info(f"Generating audio for story {story_id}")
+                    audio_data, content_type = await self.voice_agent.process(
+                        story_result["content"],
+                        language=language
+                    )
+                    
+                    # Upload audio to storage
+                    filename = f"{story_id}.mp3"
+                    audio_filename = await self.supabase.upload_audio(audio_data, filename)
+                    
+                    # Update story with audio filename
+                    await self.supabase.update_story(story_id, {
+                        "audio_filename": audio_filename,
+                    })
+                    
+                    logger.info(f"Audio generation completed for story {story_id}")
+                    return {"success": True, "audio_filename": audio_filename}
+                except Exception as e:
+                    logger.error(f"Audio generation failed for story {story_id}: {e}", exc_info=True)
+                    return {"success": False, "error": str(e)}
             
-            # Determine final story status based on parent's approval mode
+            # Task 2: Generate cover image (if artist agent is available)
+            async def generate_image():
+                if not self.artist_agent:
+                    logger.warning("Artist agent not available - no cover image will be generated")
+                    return {"success": False, "reason": "Artist agent not available"}
+                
+                try:
+                    logger.info(f"Starting cover image generation for story {story_id}")
+                    logger.info(f"Artist vendor: {self.artist_agent.vendor}, model: {self.artist_agent.model}")
+                    image_result = await self.artist_agent.process({
+                        "story": {
+                            "id": story_id,
+                            "title": story_result["title"],
+                            "cover_description": story_result.get("cover_description", "")  # Use new field
+                        },
+                        "kid": {
+                            "name": kid.name,
+                            "appearance_description": kid.appearance_description
+                        }
+                        # No image_data or text description for text stories
+                    })
+                    
+                    logger.info(f"Cover image generated successfully for story {story_id}")
+                    return {"success": True, "image_result": image_result}
+                except Exception as e:
+                    logger.error(f"Failed to generate cover image for story {story_id}: {e}", exc_info=True)
+                    return {"success": False, "error": str(e)}
+            
+            # Add tasks
+            tasks.append(generate_audio())
+            tasks.append(generate_image())
+            
+            # Execute tasks in parallel
+            results = await asyncio.gather(*tasks, return_exceptions=True)
+            audio_result, image_result = results
+            
+            # Log results
+            logger.info(f"Audio generation result: {audio_result.get('success', False) if isinstance(audio_result, dict) else 'Exception occurred'}")
+            logger.info(f"Image generation result: {image_result.get('success', False) if isinstance(image_result, dict) else 'Exception occurred'}")
+            
+            # Handle exceptions in results
+            if isinstance(audio_result, Exception):
+                logger.error(f"Audio generation raised exception: {audio_result}")
+                audio_result = {"success": False, "error": str(audio_result)}
+            
+            if isinstance(image_result, Exception):
+                logger.error(f"Image generation raised exception: {image_result}")
+                image_result = {"success": False, "error": str(image_result)}
+            
+            # Check if audio generation failed (this is critical)
+            if not audio_result.get("success", False):
+                raise Exception(f"Audio generation failed: {audio_result.get('error', 'Unknown error')}")
+
+            
+            # Only determine final status after ALL processing is complete
             final_status = await self._determine_story_status(kid_id, story_id)
             await self.supabase.update_story(story_id, {
                 "status": final_status.value

@@ -82,7 +82,6 @@ class KidProfile:
     
     # Appearance (Optional)
     appearance_method: str  # 'photo', 'manual', or null
-    appearance_photo_url: str  # Supabase storage URL
     appearance_description: str  # Natural language description
     appearance_extracted_at: datetime  # When features were extracted
     appearance_metadata: dict  # Extraction details, model used, etc.
@@ -99,7 +98,6 @@ class KidProfile:
 -- Update kids table
 ALTER TABLE kids ADD COLUMN age INTEGER NOT NULL;
 ALTER TABLE kids ADD COLUMN appearance_method VARCHAR(20);  -- 'photo', 'manual', null
-ALTER TABLE kids ADD COLUMN appearance_photo_url TEXT;  -- Supabase storage URL
 ALTER TABLE kids ADD COLUMN appearance_description TEXT;  -- Final description used
 ALTER TABLE kids ADD COLUMN appearance_extracted_at TIMESTAMPTZ;
 ALTER TABLE kids ADD COLUMN appearance_metadata JSONB;  -- Extraction details

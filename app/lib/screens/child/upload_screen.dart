@@ -837,7 +837,8 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       _logger.i('Starting story generation from image for kid: ${_selectedKid!.id}');
       
       // Generate story using AI service with kid ID
-      final Story story = await _aiService.generateStoryFromImageFile(imageFile, _selectedKid!.id);
+      final StoryGenerationResult result = await _aiService.generateStoryFromImageFile(imageFile, _selectedKid!.id);
+      final Story story = result.story;
       _logger.i('Story generated successfully from image: ${story.id}');
 
       // Real-time subscription will automatically update stories
@@ -915,7 +916,8 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       try {
         _logger.i('Submitting story text for story ID: $_currentStoryId, kid: ${_selectedKid!.id}');
         
-        final story = await _aiService.submitStoryText(_currentStoryId!, textInput);
+        final StoryGenerationResult result = await _aiService.submitStoryText(_currentStoryId!, textInput);
+        final Story story = result.story;
         _logger.i('Story text submitted successfully: ${story.id}');
         
         // Real-time subscription will automatically update stories
@@ -1007,7 +1009,8 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       _logger.i('Starting story generation from text for kid: ${_selectedKid!.id}');
       
       // Generate story from text
-      final story = await _aiService.generateStoryFromText(textInput, _selectedKid!.id);
+      final StoryGenerationResult result = await _aiService.generateStoryFromText(textInput, _selectedKid!.id);
+      final Story story = result.story;
       _logger.i('Story generated successfully: ${story.id}');
       
       // Real-time subscription will automatically update stories
@@ -1481,7 +1484,8 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       });
       
       try {
-        final story = await _aiService.submitStoryText(_currentStoryId!, textInput);
+        final StoryGenerationResult result = await _aiService.submitStoryText(_currentStoryId!, textInput);
+        final Story story = result.story;
         
         // Cleanup temporary audio file after successful story submission
         await _cleanupAudioFile();
@@ -1580,7 +1584,8 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
 
     try {
       // Generate story from audio file
-      final story = await _aiService.generateStoryFromAudio(audioPath, _selectedKid!.id);
+      final StoryGenerationResult result = await _aiService.generateStoryFromAudio(audioPath, _selectedKid!.id);
+      final Story story = result.story;
       
       setState(() {
         _isProcessing = false;

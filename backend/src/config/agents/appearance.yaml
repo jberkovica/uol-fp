@@ -1,0 +1,25 @@
+# Appearance Agent Configuration
+# Appearance extraction from child photos for story personalization
+
+vendor: "google"  # Google Vision API works well for photos
+model: "gemini-2.0-flash-exp"
+api_key: ${GOOGLE_API_KEY}
+max_tokens: 200
+temperature: 0.3  # Lower temperature for consistent descriptions
+
+prompts:
+  appearance_extraction: |
+    Analyze this photo of {kid_name} (age {age}) and create a natural, warm description of their appearance suitable for children's story personalization.
+
+    Focus on:
+    - Hair (color, style, length, texture)
+    - Eyes (color, shape)
+    - Distinctive features (glasses, freckles, dimples)
+    - Clothing style preferences if visible
+    - Overall expression/personality that shows through
+
+    Write in a warm, positive tone as if describing the child to a storyteller. Keep it concise (2-3 sentences, under 100 words).
+
+    Example format: "Curly brown hair that bounces when she runs, bright green eyes that sparkle with curiosity, and a gap-toothed smile that lights up her whole face."
+
+    Description:

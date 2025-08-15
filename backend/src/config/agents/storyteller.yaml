@@ -1,0 +1,47 @@
+# Storyteller Agent Configuration
+# AI story generation from image descriptions
+
+# Current: mistral-medium (5.5s, reliable JSON, good quality)
+# Alternatives: gpt-3.5-turbo (faster), gpt-4o-mini (better quality)
+vendor: "mistral"  # Options: mistral, openai, google
+model: "mistral-medium-latest"
+api_key: ${MISTRAL_API_KEY}
+max_tokens: 800
+temperature: 0.7
+word_count: "500"  # Target story length in words
+
+fallback:
+  vendor: "openai"
+  model: "gpt-4o-mini"
+  api_key: ${OPENAI_API_KEY}
+
+prompts:
+  story_generation:
+    system: |
+      You are a creative children's storyteller. Create engaging, family-friendly stories.
+      The stories should be imaginative, positive, and appropriate for children aged 3-8 years old.
+    user: |
+      Create a children's story and return it as valid JSON.
+
+      Story details:
+      - Base story on: {image_description}
+      - Child's name: {kid_name}
+      - Age group: {age_group}
+      - Language: {language}
+      - Target length: {word_count} words
+      - Additional context: {additional_context}
+
+      Requirements:
+      - Story should be imaginative, positive, and age-appropriate
+      - Include the child's name naturally in the story
+      - Format the story with 4-5 paragraphs separated by double newlines (\n\n)
+      - Each paragraph should be 2-4 sentences
+      - Do not include any text except JSON in your response
+      - Do not return Markdown or HTML
+
+      Return ONLY this JSON structure:
+      {{
+        "title": "An engaging story title",
+        "content": "The complete story content...",
+        "cover_description": "A concise visual description for the story cover illustration (20-30 words)"
+      }}

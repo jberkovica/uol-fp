@@ -15,8 +15,12 @@ class LLMStoryResponse(BaseModel):
     content: str = Field(
         ..., 
         min_length=50,
-        max_length=2000,
+        max_length=5000,  # Increased from 2000 to allow for longer stories
         description="The main story content"
+    )
+    cover_description: Optional[str] = Field(
+        None,
+        description="Concise visual description for story cover illustration (20-30 words)"
     )
     
     @validator('title')
@@ -40,12 +44,25 @@ class LLMStoryResponse(BaseModel):
             raise ValueError(f"Story too long: {word_count} words (maximum 500)")
         return v
     
+    @validator('cover_description')
+    def validate_cover_description_length(cls, v):
+        """Ensure cover description is concise (20-30 words)."""
+        if v:
+            word_count = len(v.split())
+            if word_count > 30:  # Truncate if too many words
+                words = v.split()[:30]
+                return ' '.join(words)
+            elif len(v) > 200:  # Truncate if too many characters
+                return v[:197] + '...'
+        return v
+    
     class Config:
         """Pydantic configuration."""
         json_schema_extra = {
             "example": {
                 "title": "The Magical Garden Adventure",
-                "content": "Once upon a time, in a garden filled with rainbow flowers..."
+                "content": "Once upon a time, in a garden filled with rainbow flowers...",
+                "cover_description": "A child standing in a magical garden surrounded by glowing rainbow flowers under a starry sky"
             }
         }
 

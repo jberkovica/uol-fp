@@ -1,0 +1,12 @@
+# Speech Agent Configuration
+# Speech-to-text for voice input processing
+
+vendor: "openai"
+
+vendors:
+  openai:
+    model: "whisper-1"
+    api_key: ${OPENAI_API_KEY}
+    settings:
+      response_format: "text"
+      temperature: 0.0

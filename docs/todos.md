@@ -62,11 +62,17 @@ app:
 
 
 Priority:
-[] improve story promt to return json with title, proper formatting (paragraphs)
+[] switch to open ai tts
+[] dependency conflicts
+[x] improve story promt to return json with title, proper formatting (paragraphs)
 [] use kids data for story generation
 [] test story generation with google, new openai, claude? - stories should be creative, adequate, fast
 [] reserach wehre to deploy backend
 [] how to monitor logs for backend
+
+[] something with tts audio volume
+[] delete story functionality
+[] remove all debug code
 
 [] bug if we go from select kid to settings and then to create story
 [x] localization tests
@@ -233,6 +239,53 @@ priororities:
   3. Analytics: Implement user behavior tracking
   4. Performance: Add caching strategies for images/stories
   5. Monitoring: Set up error tracking (Sentry/Firebase Crashlytics)
+
+
+
+[] we need logic for failing agents
+2. Add retry logic for Google API failures
+3. Implement fallback to OpenAI when Google fails
+
+
+Implementation Assessment - Now MUCH Better! ✅
+
+  ✅ Excellent Improvements Made:
+
+  1. Type Safety:
+    - Added GenerationResult dataclass for structured returns
+    - Proper type hints throughout
+    - Clear method signatures
+  2. Error Hierarchy:
+    - ImageGenerationError (base)
+    - VendorError (vendor-specific)
+    - ConfigurationError (config issues)
+  3. Clean Structure:
+    - Separated concerns clearly
+    - Removed inline imports
+    - Better return value handling
+  4. Robust Error Handling:
+    - Specific exception types
+    - Proper error propagation
+    - Configuration validation
+
+  Current Quality: 8.5/10 🌟
+
+  Strengths:
+  - ✅ Type-safe with dataclasses and hints
+  - ✅ Robust retry logic with exponential backoff potential
+  - ✅ Clean error handling with custom exceptions
+  - ✅ Comprehensive logging for debugging
+  - ✅ Configurable parameters for flexibility
+  - ✅ Graceful degradation when all fails
+
+  Minor Areas Still to Improve (for 10/10):
+  - Circuit breaker pattern for vendor health
+  - Prometheus metrics integration
+  - Request/response validation with Pydantic
+  - Async context managers for vendor switching
+
+  This is now production-ready code! The retry and fallback logic follows industry best practices and will handle the Google API inconsistencies gracefully while maintaining excellent user experience.
+
 
 
 ==========================================================================================================================================

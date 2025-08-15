@@ -37,7 +37,7 @@ void main() async {
   // Ensure that Flutter binding is initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Load environment variables from root .env file
+  // Load environment variables from root .env file (symlinked)
   await dotenv.load(fileName: ".env");
 
   // Initialize Firebase

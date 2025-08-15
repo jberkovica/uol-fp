@@ -509,23 +509,48 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                                 ),
                               ),
                             )
-                          : Image.asset(
-                              'assets/images/stories/default-cover.png',
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  color: AppColors.lightGrey,
-                                  child: Center(
-                                    child: SvgPicture.asset(
-                                      'assets/icons/photo.svg',
-                                      width: 24,
-                                      height: 24,
-                                      colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
+                          : story.coverImageThumbnailUrl != null
+                              ? Image.network(
+                                  story.coverImageThumbnailUrl!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    // Fallback to default cover if network image fails
+                                    return Image.asset(
+                                      'assets/images/stories/default-cover.png',
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) {
+                                        return Container(
+                                          color: AppColors.lightGrey,
+                                          child: Center(
+                                            child: SvgPicture.asset(
+                                              'assets/icons/photo.svg',
+                                              width: 24,
+                                              height: 24,
+                                              colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                )
+                              : Image.asset(
+                                  'assets/images/stories/default-cover.png',
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: AppColors.lightGrey,
+                                      child: Center(
+                                        child: SvgPicture.asset(
+                                          'assets/icons/photo.svg',
+                                          width: 24,
+                                          height: 24,
+                                          colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
                     ),
                     // Favorite heart indicator
                     if (story.isFavourite)

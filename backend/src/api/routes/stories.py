@@ -58,13 +58,13 @@ async def generate_story(
         else:
             logger.warning("No background music tracks available")
         
-        # Create story record
+        # Create story record with PROCESSING status from the start
         story_data = {
             "kid_id": request.kid_id,
             "title": "New Story",
             "content": "",
             "language": request.language.value,
-            "status": StoryStatus.PENDING.value,
+            "status": StoryStatus.PROCESSING.value,  # Start with PROCESSING, not PENDING
             "background_music_filename": background_music_filename
         }
         story = await supabase.create_story(story_data)
@@ -148,6 +148,8 @@ async def get_pending_stories() -> StoryListResponse:
                 content=story.content,
                 audio_url=story.audio_url,
                 background_music_url=story.background_music_url,
+                cover_image_url=story.cover_image_url,
+                cover_image_thumbnail_url=story.cover_image_thumbnail_url,
                 status=story.status,
                 language=story.language,
                 is_favourite=story.is_favourite,
@@ -188,6 +190,8 @@ async def get_story(story_id: str) -> StoryResponse:
             content=story.content,
             audio_url=story.audio_url,
             background_music_url=story.background_music_url,
+            cover_image_url=story.cover_image_url,
+            cover_image_thumbnail_url=story.cover_image_thumbnail_url,
             status=story.status,
             language=story.language,
             is_favourite=story.is_favourite,
@@ -233,6 +237,8 @@ async def get_stories_for_kid(
                 content=story.content,
                 audio_url=story.audio_url,
                 background_music_url=story.background_music_url,
+                cover_image_url=story.cover_image_url,
+                cover_image_thumbnail_url=story.cover_image_thumbnail_url,
                 status=story.status,
                 language=story.language,
                 is_favourite=story.is_favourite,
@@ -295,6 +301,8 @@ async def review_story(
             content=story.content,
             audio_url=story.audio_url,
             background_music_url=story.background_music_url,
+            cover_image_url=story.cover_image_url,
+            cover_image_thumbnail_url=story.cover_image_thumbnail_url,
             status=story.status,
             language=story.language,
             is_favourite=story.is_favourite,
@@ -619,6 +627,8 @@ async def update_story_background_music(
             content=story.content,
             audio_url=story.audio_url,
             background_music_url=story.background_music_url,
+            cover_image_url=story.cover_image_url,
+            cover_image_thumbnail_url=story.cover_image_thumbnail_url,
             status=story.status,
             language=story.language,
             is_favourite=story.is_favourite,
@@ -668,6 +678,8 @@ async def toggle_story_favourite(
             content=story.content,
             audio_url=story.audio_url,
             background_music_url=story.background_music_url,
+            cover_image_url=story.cover_image_url,
+            cover_image_thumbnail_url=story.cover_image_thumbnail_url,
             status=story.status,
             language=story.language,
             is_favourite=story.is_favourite,

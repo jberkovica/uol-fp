@@ -9,6 +9,24 @@ import '../models/story.dart';
 import 'language_service.dart';
 import 'logging_service.dart';
 
+/// Result of story generation with navigation context
+class StoryGenerationResult {
+  final Story story;
+  final StoryCompletionType completionType;
+  
+  const StoryGenerationResult({
+    required this.story,
+    required this.completionType,
+  });
+}
+
+/// How a story generation completed
+enum StoryCompletionType {
+  readyToRead,        // Story is approved and ready to read immediately
+  waitingForApproval, // Story is pending parent approval
+  failed,            // Story generation failed
+}
+
 /// Efficient AI service implementation using backend API with:
 /// - Gemini 2.0 Flash for image captioning
 /// - Mistral Medium for story generation
@@ -50,9 +68,9 @@ class AIStoryService {
       case 'pending':
         return StoryStatus.pending;
       case 'processing':
-        return StoryStatus.pending; // Map processing to pending for UI
+        return StoryStatus.processing;
       default:
-        return StoryStatus.pending;
+        return StoryStatus.processing; // Default to processing for unknown states
     }
   }
 
@@ -60,6 +78,78 @@ class AIStoryService {
   /// Initialize the service
   void initialize() {
     _updateStreams();
+  }
+
+  /// Robust polling for story completion with exponential backoff
+  Future<StoryGenerationResult> _pollForStoryCompletion(String storyId) async {
+    Story? story;
+    int attempts = 0;
+    const maxAttempts = 20; // Reduced max attempts due to exponential backoff
+    
+    // Exponential backoff: start at 1s, max 8s
+    int getDelaySeconds(int attempt) {
+      final delaySeconds = (1 * (1 << attempt)).clamp(1, 8); // 1, 2, 4, 8, 8, 8...
+      return delaySeconds;
+    }
+
+    _logger.d('Starting polling for story completion with exponential backoff...');
+    while (attempts < maxAttempts) {
+      final delaySeconds = getDelaySeconds(attempts);
+      _logger.d('Attempt ${attempts + 1}: waiting ${delaySeconds}s before next poll');
+      await Future.delayed(Duration(seconds: delaySeconds));
+
+      story = await getStory(storyId);
+      _logger.d('Attempt ${attempts + 1}: Story status is ${story.status}');
+
+      // Story is ready to read immediately
+      if (story.status == StoryStatus.approved) {
+        _logger.i('Story generation completed and approved! Status: ${story.status}');
+        return StoryGenerationResult(
+          story: story,
+          completionType: StoryCompletionType.readyToRead,
+        );
+      }
+      
+      // Story needs parent approval - stop polling, this is complete
+      if (story.status == StoryStatus.pending) {
+        _logger.i('Story generation completed, waiting for parent approval. Status: ${story.status}');
+        return StoryGenerationResult(
+          story: story,
+          completionType: StoryCompletionType.waitingForApproval,
+        );
+      }
+      
+      // Story was rejected - this is a failure
+      if (story.status == StoryStatus.rejected) {
+        _logger.e('Story was rejected by backend or parent');
+        return StoryGenerationResult(
+          story: story,
+          completionType: StoryCompletionType.failed,
+        );
+      }
+
+      // Status is still processing - continue polling
+      if (story.status == StoryStatus.processing) {
+        _logger.d('Story still processing, continuing to poll...');
+        attempts++;
+        continue;
+      }
+
+      // Unknown status - treat as processing and continue
+      _logger.w('Unknown story status: ${story.status}, treating as processing');
+      attempts++;
+    }
+
+    // Timeout - return the last known story state
+    if (story != null) {
+      _logger.e('Story generation timed out after $attempts attempts. Last status: ${story.status}');
+      return StoryGenerationResult(
+        story: story,
+        completionType: StoryCompletionType.failed,
+      );
+    } else {
+      throw Exception('Story generation timed out and no story data received');
+    }
   }
 
   /// Pick image from camera or gallery
@@ -79,7 +169,7 @@ class AIStoryService {
 
   /// Generate story directly from image file using efficient base64 processing
   /// No file upload required - processes image in memory
-  Future<Story> generateStoryFromImageFile(
+  Future<StoryGenerationResult> generateStoryFromImageFile(
       XFile imageFile, String kidId) async {
     try {
       _logger.i('Starting efficient story generation from image');
@@ -122,38 +212,8 @@ class AIStoryService {
         String storyId = responseData['story_id'];
         _logger.i('Story generation initiated: $storyId');
 
-        // Poll for story completion
-        Story? story;
-        int attempts = 0;
-        const maxAttempts =
-            30; // 30 attempts with 2-second delays = 1 minute max
-
-        _logger.d('Polling for story completion...');
-        while (attempts < maxAttempts) {
-          await Future.delayed(const Duration(seconds: 2));
-
-          story = await getStory(storyId);
-          _logger.d('Attempt ${attempts + 1}: Story status is ${story.status}');
-
-          if (story.status == StoryStatus.approved || story.status == StoryStatus.pending) {
-            // Story generation completed! 
-            // - approved: Ready for playback
-            // - pending: Ready but needs parent approval
-            _logger.i('Story generation completed! Status: ${story.status}');
-            break;
-          } else if (story.status == StoryStatus.rejected) {
-            throw Exception('Story generation failed on backend');
-          }
-
-          attempts++;
-        }
-
-        if (story == null || (story.status != StoryStatus.approved && story.status != StoryStatus.pending)) {
-          throw Exception(
-              'Story generation timed out or failed after $attempts attempts');
-        }
-
-        return story;
+        // Use robust polling logic
+        return await _pollForStoryCompletion(storyId);
       } else {
         _logger.e('Story generation failed', error: 'HTTP ${response.statusCode}: ${response.body}');
         throw Exception(
@@ -251,7 +311,7 @@ class AIStoryService {
   }
 
   /// Submit final text for story generation
-  Future<Story> submitStoryText(String storyId, String text) async {
+  Future<StoryGenerationResult> submitStoryText(String storyId, String text) async {
     try {
       _logger.i('Submitting story text for generation: $storyId');
       
@@ -270,37 +330,8 @@ class AIStoryService {
         jsonDecode(response.body); // Response received
         _logger.i('Story text submitted successfully');
         
-        // Poll for story completion
-        Story? story;
-        int attempts = 0;
-        const maxAttempts = 30; // 30 attempts with 2-second delays = 1 minute max
-
-        _logger.d('Polling for story completion...');
-        while (attempts < maxAttempts) {
-          await Future.delayed(const Duration(seconds: 2));
-
-          story = await getStory(storyId);
-          _logger.d('Attempt ${attempts + 1}: Story status is ${story.status}');
-
-          if (story.status == StoryStatus.approved || story.status == StoryStatus.pending) {
-            // Story generation completed! 
-            // - approved: Ready for playback
-            // - pending: Ready but needs parent approval
-            _logger.i('Story generation completed! Status: ${story.status}');
-            break;
-          } else if (story.status == StoryStatus.rejected) {
-            throw Exception('Story generation failed on backend');
-          }
-
-          attempts++;
-        }
-
-        if (story == null || (story.status != StoryStatus.approved && story.status != StoryStatus.pending)) {
-          throw Exception(
-              'Story generation timed out or failed after $attempts attempts');
-        }
-
-        return story;
+        // Use robust polling logic
+        return await _pollForStoryCompletion(storyId);
       } else {
         throw Exception('Failed to submit story text: ${response.statusCode}');
       }
@@ -311,7 +342,7 @@ class AIStoryService {
   }
 
   /// Generate story from audio recording (DEPRECATED - use new flow)
-  Future<Story> generateStoryFromAudio(String audioPath, String kidId) async {
+  Future<StoryGenerationResult> generateStoryFromAudio(String audioPath, String kidId) async {
     try {
       _logger.i('Starting story generation from audio recording');
       _logger.d('Audio file path: $audioPath');
@@ -344,31 +375,8 @@ class AIStoryService {
         jsonDecode(response.body); // Response received
         _logger.i('Audio story generation initiated: $storyId');
 
-        // Poll for story completion (same logic as text/image)
-        Story? story;
-        int attempts = 0;
-        const maxAttempts = 30; // 30 attempts with 2-second delays = 1 minute max
-
-        _logger.d('Polling for story completion...');
-        while (attempts < maxAttempts) {
-          await Future.delayed(const Duration(seconds: 2));
-
-          story = await getStory(storyId);
-          _logger.d('Attempt ${attempts + 1}: Story status = ${story.status}');
-
-          if (story.status == StoryStatus.approved || story.status == StoryStatus.pending) {
-            _logger.i('Story generation completed: ${story.id}');
-            return story;
-          }
-
-          if (story.status == StoryStatus.rejected) {
-            throw Exception('Story generation failed on server');
-          }
-
-          attempts++;
-        }
-
-        throw Exception('Story generation timed out after ${maxAttempts * 2} seconds');
+        // Use robust polling logic
+        return await _pollForStoryCompletion(storyId);
       } else {
         final errorData = jsonDecode(response.body);
         throw Exception('Failed to generate story: ${errorData['detail'] ?? 'Unknown error'}');
@@ -380,7 +388,7 @@ class AIStoryService {
   }
 
   /// Generate story from text input
-  Future<Story> generateStoryFromText(String textInput, String kidId) async {
+  Future<StoryGenerationResult> generateStoryFromText(String textInput, String kidId) async {
     try {
       _logger.i('Starting story generation from text input');
       _logger.d('Text input: ${textInput.length} characters');
@@ -428,34 +436,8 @@ class AIStoryService {
         jsonDecode(response.body); // Response received
         _logger.i('Text story generation initiated: $storyId');
 
-        // Poll for story completion (same logic as image)
-        Story? story;
-        int attempts = 0;
-        const maxAttempts = 30; // 30 attempts with 2-second delays = 1 minute max
-
-        _logger.d('Polling for story completion...');
-        while (attempts < maxAttempts) {
-          await Future.delayed(const Duration(seconds: 2));
-
-          story = await getStory(storyId);
-          _logger.d('Attempt ${attempts + 1}: Story status is ${story.status}');
-
-          if (story.status == StoryStatus.approved || story.status == StoryStatus.pending) {
-            _logger.i('Story generation completed! Status: ${story.status}');
-            break;
-          } else if (story.status == StoryStatus.rejected) {
-            throw Exception('Story generation failed on backend');
-          }
-
-          attempts++;
-        }
-
-        if (story == null || (story.status != StoryStatus.approved && story.status != StoryStatus.pending)) {
-          throw Exception(
-              'Story generation timed out or failed after $attempts attempts');
-        }
-
-        return story;
+        // Use robust polling logic
+        return await _pollForStoryCompletion(storyId);
       } else {
         _logger.e('Story generation failed', error: 'HTTP ${response.statusCode}: ${response.body}');
         throw Exception(

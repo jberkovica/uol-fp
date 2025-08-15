@@ -55,7 +55,8 @@ agents:
           Return ONLY this JSON structure:
           {{
             "title": "An engaging story title",
-            "content": "The complete story content..."
+            "content": "The complete story content...",
+            "cover_description": "A concise visual description for the story cover illustration (20-30 words)"
           }}
     
   voice:
@@ -208,7 +209,66 @@ agents:
 
         Description:
 
-  artist:  # Future - Image Generation
-    vendor: "openai"
-    model: "dall-e-3"
-    api_key: ${OPENAI_API_KEY}
+  artist:  # Image Generation for story covers
+    vendor: "google"  # Primary vendor: "openai", "google" - Uses Application Default Credentials (ADC)
+    fallback_vendor: "openai"  # Fallback vendor if primary fails
+    
+    # Retry configuration
+    retry:
+      max_attempts: 2  # Retry once before fallback
+      delay_seconds: 1  # Wait between retries
+      fallback_enabled: true  # Enable vendor fallback
+    
+    # Vendor configurations
+    openai:
+      model: "gpt-image-1"
+      api_key: ${OPENAI_API_KEY}
+      params:
+        size: "1024x1024"  # Supported: 1024x1024, 1024x1536, 1536x1024
+    
+    google:
+      model: "imagen-3.0-generate-002"
+      project_id: ${GOOGLE_PROJECT_ID}  # Required for Vertex AI
+      location: "europe-west4"  # Netherlands - closest to Latvia
+      params:
+        number_of_images: 1  # Parameter for Vertex AI SDK
+    
+    # Style definition (CRITICAL - highest priority in prompts)
+    style:
+      base: |
+        A dreamy, magical square illustration for a children's story book, featuring a soft, whimsical scene on a cloud or starry background with white edges blending into a white background.
+        Style: soft brushstroke, gentle texture like a children's book.
+        Format: square, with soft white border blending into background for seamless app layout.
+        Characters sitting together peacefully on a cloud.
+      emphasis_prefix: "CRITICAL STYLE"  # Emphasizes style importance
+      
+    # Prompt assembly configuration
+    prompt_structure:
+      max_total_words: 120      # Keep prompts concise for better results
+      style_weight: 0.4         # 40% of prompt dedicated to style
+      scene_weight: 0.3         # 30% for scene description
+      character_weight: 0.2     # 20% for character details
+      technical_weight: 0.1     # 10% for technical requirements
+      
+    # Character inclusion rules
+    character:
+      include_probability: 0.7   # 70% chance to include kid in image  
+      max_description_words: 20  # Limit character description length
+      representation_types:
+        close_up: 0.2
+        full_body: 0.4
+        background: 0.3
+        not_shown: 0.1
+        
+    # Reference image handling
+    reference:
+      use_default_cover: false                          # Use default cover for style consistency
+      default_cover_path: "app/assets/images/stories/default-cover.png"  # Path to default cover image
+      use_uploaded_drawing: false                      # Don't use child's drawing as style ref
+      
+    # Technical requirements
+    technical:
+      format: "Square format 1024x1024"
+      restrictions: "No text or words in image"
+      composition: "Leave subtle space at top for UI overlay"
+      

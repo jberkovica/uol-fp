@@ -101,7 +101,8 @@ class StorytellerAgent(BaseAgent):
             
             return {
                 "title": story_response.title,
-                "content": content
+                "content": content,
+                "cover_description": story_response.cover_description
             }
                 
         except Exception as e:
@@ -228,7 +229,8 @@ class StorytellerAgent(BaseAgent):
             # Return a safe fallback rather than the JSON string
             return LLMStoryResponse(
                 title="Story Generation Error",
-                content="Unable to parse the story response. Please try again."
+                content="Unable to parse the story response. Please try again.",
+                cover_description=None
             )
         
         # Extract title using old method for plain text responses
@@ -250,7 +252,8 @@ class StorytellerAgent(BaseAgent):
         
         return LLMStoryResponse(
             title=title or "Generated Story",
-            content=content
+            content=content,
+            cover_description=None
         )
     
     def _add_paragraph_breaks(self, content: str) -> str:

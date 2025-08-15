@@ -7,7 +7,7 @@ python-dotenv==1.0.0
 
 # HTTP client and validation
 requests==2.31.0
-httpx==0.24.1
+httpx>=0.28.1  # Updated for OpenAI compatibility
 email-validator==2.0.0
 
 # Image processing and validation
@@ -25,8 +25,9 @@ pyyaml==6.0.1
 
 # AI Services - Vision Agents
 google-generativeai==0.3.0
-openai==1.54.0
+openai>=1.55.3  # Fixed compatibility with httpx 0.28+
 anthropic==0.40.0
+google-genai>=1.30.0  # New Google Gen AI SDK (replaces deprecated google-cloud-aiplatform)
 
 # AI Services - Storyteller Agents  
 mistralai==1.2.0
