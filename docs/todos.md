@@ -69,6 +69,8 @@ Priority:
 [] test story generation with google, new openai, claude? - stories should be creative, adequate, fast
 [] reserach wehre to deploy backend
 [] how to monitor logs for backend
+[] waiting screen - usually it takes about 30 seconds + timer
+[] artist prompt - soft rounded corners, no moon, but some more options, add lunimuni accasionally?
 
 [] something with tts audio volume
 [] delete story functionality
@@ -215,6 +217,15 @@ priororities:
 
 
 [] public buckets - imporve secutriy?
+[] test failing audio flow
+[] test all sorts of failures so user get proper feedback/screen
+[] labguage preferences are not saved to storages?
+[] kids name is in every story, this is wrong. maybe we need to randomly decide on our end and include/not include to story prompt this data
+[] occasionally include kid or mascot in story and in cover image
+[] no borders in image (add to prompt). make image border or shape look like cloud? 
+[] cover descriotion is truncated often, llm returning more data and we truncate it?
+[] switch to OpenAI fast model for story generation, Mistral content sometimes has mistakes
+[] will prompt as xml work better?
 
 
 
@@ -230,6 +241,7 @@ priororities:
 ☐ Create robust navigation flow with deep linking support
 ☐ Add security measures and session management
 ☐ Implement comprehensive testing for auth flows
+
 
 
  Recommended Next Steps (Optional Enhancements):
@@ -402,3 +414,12 @@ info for parent:
 - you can export stories at any time
 - we will introduce option to order printed version of your stories very soon
 - if you have any questions or problems - feel free to reach us out, we are very open to hear you and improve our product
+
+
+
+
+CLAUDE md template:
+[] no emojis in code and documentation
+[] evaluate your solution with another agent
+[] clean and robust architecture, best practices, no over-engineering, less is more
+[] 

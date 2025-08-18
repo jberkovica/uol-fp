@@ -178,9 +178,19 @@ class StoryProcessor:
                 logger.error(f"Image generation raised exception: {image_result}")
                 image_result = {"success": False, "error": str(image_result)}
             
-            # Check if audio generation failed (this is critical)
+            # Audio is optional - continue even if it fails
             if not audio_result.get("success", False):
-                raise Exception(f"Audio generation failed: {audio_result.get('error', 'Unknown error')}")
+                logger.warning(f"Audio generation failed for story {story_id}, continuing without audio: {audio_result.get('error', 'Unknown error')}")
+                # Store audio error for potential retry later
+                await self.supabase.update_story(story_id, {
+                    "audio_error": audio_result.get('error', 'Unknown error'),
+                    "audio_failed_at": datetime.utcnow().isoformat()
+                })
+            
+            # Handle image generation failure with fallback to default cover
+            if not image_result.get("success", False):
+                logger.info(f"Image generation failed for story {story_id}, assigning default cover")
+                await self._assign_default_cover(story_id, story_result.get("content", ""))
             
             # Only determine final status after ALL processing is complete
             final_status = await self._determine_story_status(request.kid_id, story_id)
@@ -275,6 +285,35 @@ class StoryProcessor:
         except Exception as e:
             logger.error(f"Error sending email notification for story {story_id}: {e}")
             # Don't raise - email failure shouldn't stop story processing
+    
+    async def _assign_default_cover(self, story_id: str, story_content: str) -> None:
+        """Assign a default cover image when AI generation fails."""
+        try:
+            # Build URL for default cover in Supabase Storage
+            # Format: https://[project].supabase.co/storage/v1/object/public/story-covers/default/general.png
+            supabase_service = get_supabase_service()
+            base_url = supabase_service.client.supabase_url
+            
+            # Using single default cover for now
+            cover_url = f"{base_url}/storage/v1/object/public/story-covers/default/general.png"
+            thumbnail_url = f"{base_url}/storage/v1/object/public/story-covers/default/general-thumbnail.png"
+            
+            # Update story with default cover URLs
+            await supabase_service.update_story(story_id, {
+                'cover_image_url': cover_url,
+                'cover_image_thumbnail_url': thumbnail_url,
+                'cover_image_metadata': {
+                    'type': 'default',
+                    'assigned_at': datetime.now().isoformat(),
+                    'reason': 'AI generation failed'
+                }
+            })
+            
+            logger.info(f"Assigned default cover for story {story_id}")
+            
+        except Exception as e:
+            logger.error(f"Error assigning default cover for story {story_id}: {e}")
+            # Don't raise - this is a fallback, shouldn't block story completion
     
     async def process_text_to_story(self, story_id: str, text: str, kid_id: str, language: str) -> None:
         """
@@ -392,10 +431,19 @@ class StoryProcessor:
                 logger.error(f"Image generation raised exception: {image_result}")
                 image_result = {"success": False, "error": str(image_result)}
             
-            # Check if audio generation failed (this is critical)
+            # Audio is optional - continue even if it fails
             if not audio_result.get("success", False):
-                raise Exception(f"Audio generation failed: {audio_result.get('error', 'Unknown error')}")
+                logger.warning(f"Audio generation failed for story {story_id}, continuing without audio: {audio_result.get('error', 'Unknown error')}")
+                # Store audio error for potential retry later
+                await self.supabase.update_story(story_id, {
+                    "audio_error": audio_result.get('error', 'Unknown error'),
+                    "audio_failed_at": datetime.utcnow().isoformat()
+                })
 
+            # Handle image generation failure with fallback to default cover
+            if not image_result.get("success", False):
+                logger.info(f"Image generation failed for story {story_id}, assigning default cover")
+                await self._assign_default_cover(story_id, story_result.get("content", ""))
             
             # Only determine final status after ALL processing is complete
             final_status = await self._determine_story_status(kid_id, story_id)

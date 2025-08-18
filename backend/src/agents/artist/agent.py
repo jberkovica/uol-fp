@@ -78,7 +78,7 @@ class ArtistAgent(BaseAgent):
         self.prompt_structure = config.get("prompt_structure", {})
         self.character_config = config.get("character", {})
         self.reference_config = config.get("reference", {})
-        self.technical_config = config.get("technical", {})
+        # self.technical_config = config.get("technical", {})
         
         # Initialize for primary vendor (after config is set)
         self._setup_vendor(self.primary_vendor)
@@ -275,34 +275,50 @@ class ArtistAgent(BaseAgent):
         """Build optimized image generation prompt with hierarchical structure."""
         
         # 1. STYLE (Critical - 40% of prompt weight)
-        style_base = self.style_config.get("base", "Children's book illustration style.")
-        style_prefix = self.style_config.get("emphasis_prefix", "STYLE PRIORITY")
-        style_section = f"{style_prefix}: {style_base.strip()}"
+        # Use child-neutral style when toggle is disabled to avoid Google safety filters
+        include_kids_enabled = self.character_config.get("include_kids_in_generation", True)
+        if not include_kids_enabled:
+            # Child-neutral style that avoids safety filter triggers
+            style_base = """A dreamy, magical square illustration featuring a soft, whimsical scene on a cloud or starry background with white edges blending into a white background.
+            Style: soft brushstroke, gentle texture like a storybook.
+            Lighting: gentle, glowing, dreamy.
+            Format: square, with soft white border blending into background for seamless app layout.
+            No sharp edges, round soft corners."""
+        else:
+            # Original style with children's book references
+            style_base = self.style_config.get("base", "Children's book illustration style.")
+        
+        style_section = f"{style_base.strip()}"
+        logger.info(f"DEBUG STYLE SECTION (kids_enabled={include_kids_enabled}): {style_section[:100]}...")
         
         # 2. SCENE (30% - extract key visual elements)
         scene_section = self._extract_scene_description(story_data)
+        logger.info(f"DEBUG SCENE SECTION: {scene_section}")
         
         # 3. CHARACTER (20% - optional based on probability)
         character_section = ""
         if self._should_include_kid(kid_data):
             character_section = self._format_character_description(kid_data)
+            logger.info(f"DEBUG CHARACTER SECTION: {character_section}")
+        else:
+            logger.info("DEBUG CHARACTER SECTION: (empty - kids disabled)")
         
         # 4. TECHNICAL (10% - format and restrictions)
-        technical_parts = []
-        if self.technical_config.get("format"):
-            technical_parts.append(self.technical_config["format"])
-        if self.technical_config.get("restrictions"):
-            technical_parts.append(self.technical_config["restrictions"])
-        if self.technical_config.get("composition"):
-            technical_parts.append(self.technical_config["composition"])
-        technical_section = ". ".join(technical_parts)
+        # technical_parts = []
+        # if self.technical_config.get("format"):
+        #     technical_parts.append(self.technical_config["format"])
+        # if self.technical_config.get("restrictions"):
+        #     technical_parts.append(self.technical_config["restrictions"])
+        # if self.technical_config.get("composition"):
+        #     technical_parts.append(self.technical_config["composition"])
+        # technical_section = ". ".join(technical_parts)
         
         # Assemble prompt with clear hierarchy
         prompt_parts = [
             style_section,
             f"Scene: {scene_section}" if scene_section else "",
-            character_section,
-            technical_section
+            character_section
+            # technical_section
         ]
         
         # Filter out empty parts and join
@@ -313,6 +329,10 @@ class ArtistAgent(BaseAgent):
         compressed_prompt = self._compress_to_word_limit(prompt, max_words)
         
         logger.info(f"Generated optimized prompt ({len(compressed_prompt.split())} words): {compressed_prompt[:150]}...")
+        
+        # DEBUG: Log full prompt for debugging Google safety filters
+        logger.info(f"FULL PROMPT SENT TO GOOGLE: {compressed_prompt}")
+        
         return compressed_prompt
     
     def _extract_scene_description(self, story_data: Dict) -> str:
@@ -333,6 +353,11 @@ class ArtistAgent(BaseAgent):
     
     def _should_include_kid(self, kid_data: Dict) -> bool:
         """Determine if kid should be included in the image based on config."""
+        # Check master toggle first - if disabled, never include kids
+        include_kids_enabled = self.character_config.get("include_kids_in_generation", True)
+        if not include_kids_enabled:
+            return False
+            
         if not kid_data or not kid_data.get("appearance_description"):
             return False
             
@@ -345,6 +370,11 @@ class ArtistAgent(BaseAgent):
     
     def _format_character_description(self, kid_data: Dict) -> str:
         """Format kid's appearance for image generation with word limit."""
+        # Double-check master toggle as safety measure
+        include_kids_enabled = self.character_config.get("include_kids_in_generation", True)
+        if not include_kids_enabled:
+            return ""
+            
         appearance = kid_data.get("appearance_description", "").strip()
         name = kid_data.get("name", "the child")
         
@@ -417,13 +447,13 @@ class ArtistAgent(BaseAgent):
     @lru_cache(maxsize=1)
     def _load_default_cover_base64(self) -> Optional[str]:
         """Load and cache default cover image as base64."""
-        default_path = self.reference_config.get("default_cover_path", "app/assets/images/stories/default-cover.png")
+        default_path = self.reference_config.get("default_cover_path", "app/assets/images/stories/general.png")
         
         # Try different possible paths
         paths_to_try = [
             Path(default_path),
             Path(f"/Users/jekaterinaberkovich/Documents/Code/uol-fp-mira/{default_path}"),
-            Path("app/assets/images/stories/default-cover.png")
+            Path("app/assets/images/stories/general.png")
         ]
         
         for path in paths_to_try:
@@ -519,17 +549,20 @@ class ArtistAgent(BaseAgent):
             generated_image = response.generated_images[0]
             
             # Convert image to base64 data URL
-            # The generated_image should have an image attribute
-            if hasattr(generated_image, 'image'):
-                # Convert PIL image to base64
-                image_bytes = BytesIO()
-                generated_image.image.save(image_bytes, format='JPEG')
-                image_bytes.seek(0)
-                image_base64 = base64.b64encode(image_bytes.getvalue()).decode('utf-8')
-                image_url = f"data:image/jpeg;base64,{image_base64}"
+            # The generated_image should have an image attribute with image_bytes
+            if hasattr(generated_image, 'image') and hasattr(generated_image.image, 'image_bytes'):
+                # Get image bytes directly from the response
+                image_bytes = generated_image.image.image_bytes
+                image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+                
+                # Use the mime_type from the response (usually 'image/jpeg')
+                mime_type = getattr(generated_image.image, 'mime_type', 'image/jpeg')
+                image_url = f"data:{mime_type};base64,{image_base64}"
             else:
                 # Log available attributes for debugging
                 logger.error(f"Available attributes on generated_image: {dir(generated_image)}")
+                if hasattr(generated_image, 'image'):
+                    logger.error(f"Available attributes on image: {dir(generated_image.image)}")
                 raise Exception(f"Unable to extract image data from response")
             
             logger.info("Successfully generated image with Google Imagen 3 via Google Gen AI SDK")
@@ -575,14 +608,14 @@ class ArtistAgent(BaseAgent):
                 # Create bucket if it doesn't exist
                 supabase.storage.create_bucket(bucket, public=True)
             
-            # Upload main image
-            path = f"{str(story_id)}/cover.png"
+            # Upload main image to generated/ subfolder
+            path = f"generated/{str(story_id)}/cover.png"
             logger.info(f"Uploading cover image to path: {path}")
             supabase.storage.from_(bucket).upload(path, image_data, file_options={"content-type": "image/png"})
             
-            # Generate and upload thumbnail
+            # Generate and upload thumbnail to generated/ subfolder
             thumbnail_data = self._create_thumbnail(image_data)
-            thumbnail_path = f"{str(story_id)}/thumbnail.png"
+            thumbnail_path = f"generated/{str(story_id)}/thumbnail.png"
             logger.info(f"Uploading thumbnail to path: {thumbnail_path}")
             supabase.storage.from_(bucket).upload(thumbnail_path, thumbnail_data, file_options={"content-type": "image/png"})
             

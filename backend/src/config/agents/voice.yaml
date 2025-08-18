@@ -4,8 +4,10 @@
 # Language-to-vendor mapping - Easy switching point
 languages:
   en:
-    vendor: "elevenlabs"
-    voice: "callum"
+    # vendor: "elevenlabs"
+    # voice: "callum"
+    vendor: "openai"
+    voice: "coral"
   ru:
     # vendor: "elevenlabs" 
     # voice: "nina"
@@ -15,11 +17,15 @@ languages:
     vendor: "openai"
     voice: "nova"
   es:
-    vendor: "elevenlabs"
-    voice: "diego_storyteller"
+    # vendor: "elevenlabs"
+    # voice: "diego_storyteller"
+    vendor: "openai"
+    voice: "coral"
   fr:
-    vendor: "elevenlabs"
-    voice: "gaelle_storyteller"
+    # vendor: "elevenlabs"
+    # voice: "gaelle_storyteller"
+    vendor: "openai"
+    voice: "coral"
 
 # Vendor configurations - API keys and default settings
 vendors:
@@ -53,10 +59,20 @@ vendors:
 
   openai:
     api_key: ${OPENAI_API_KEY}
-    model: "tts-1-hd"               # High quality model for better pronunciation
+    model: "gpt-4o-mini-tts"        # Latest TTS model with emotional control
     default_settings:
-      speed: 0.9                    # Slower for better comprehension
       response_format: "mp3"        # More compatible format than FLAC
+      # Voice instructions for children's storytelling
+      instructions: "Speak warm and engaging as if reading a children's book. Use a gentle, nurturing tone with natural pauses for comprehension. Express emotions appropriate to the story content - excitement for adventures, wonder for magical moments, and comfort for peaceful scenes. Maintain a storytelling pace that's slightly slower than normal conversation to help children follow along."
+    
+    # Language-specific voice instructions for enhanced storytelling
+    language_overrides:
+      ru:
+        settings:
+          instructions: "Говорите тепло и увлекательно, как будто читаете детскую книгу. Используйте мягкий, заботливый тон с естественными паузами для понимания. Выражайте эмоции, соответствующие содержанию истории - возбуждение для приключений, удивление для волшебных моментов и комфорт для мирных сцен. Поддерживайте темп рассказа немного медленнее обычного разговора."
+      lv:
+        settings:
+          instructions: "Runājiet silti un aizraujoši, it kā lasītu bērnu grāmatu. Lietojiet maigi, rūpīgu toni ar dabiskām pauzēm izpratnei. Izsakiet emocijas, kas atbilst stāsta saturam - uztraukumu piedzīvojumiem, brīnumu maģiskajiem brīžiem un mierinājumu mierīgajām ainām. Uzturiet stāstīšanas tempu nedaudz lēnāku nekā parastā saruna."
 
 # Voice alternatives for reference during testing and fallback
 available_voices:
@@ -85,17 +101,18 @@ available_voices:
     luca_expressive: "Ndm6bI6wo3Ycnlx1PPZS"      # Confident, expressive, ideal for storytelling
     
   openai:
-    # Standard TTS API voices (available for all languages)
-    nova: "Bright, engaging female voice"     # Latvian (best for non-English)
-    alloy: "Neutral, versatile voice"         # Fallback option
-    fable: "British accent, good for stories" # Alternative for storytelling
-    shimmer: "Warm female voice"              # Another female option
-    onyx: "Deep male voice"                   # Male alternative
-    echo: "Clear male voice"                  # Another male option
-    coral: ""                                 # TODO
-    sage: ""                                  # TODO
-    
-    # Note: "sage" only available in Realtime API, not standard TTS
+    # GPT-4o-mini-TTS voices (11 premium voices available)
+    alloy: "Neutral, versatile voice - great for balanced storytelling"
+    ash: "Calm, measured voice - perfect for bedtime stories"
+    ballad: "Melodic, musical voice - ideal for fairy tales"
+    coral: "Warm, friendly voice - excellent for character narration"
+    echo: "Clear, articulate voice - good for educational stories"
+    fable: "British accent, expressive voice - perfect for classic tales"
+    nova: "Bright, engaging female voice - excellent for adventure stories"
+    onyx: "Deep, rich male voice - great for wise characters"
+    shimmer: "Gentle, soothing voice - ideal for emotional moments"
+    sage: "Wise, contemplative voice - perfect for meaningful stories"
+    # Note: Additional premium voices available with gpt-4o-mini-tts
 
 # Emotional storytelling configuration for future v3 alpha upgrade
 emotional_storytelling:

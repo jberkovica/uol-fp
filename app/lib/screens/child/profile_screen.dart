@@ -6,7 +6,7 @@ import '../../constants/app_theme.dart';
 import '../../models/input_format.dart';
 import '../../models/kid.dart';
 import '../../models/story.dart';
-import '../../services/story_cache_service.dart';
+import '../../services/data_service.dart';
 import '../../services/app_state_service.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
@@ -28,13 +28,9 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   int _currentNavIndex = 0; // Profile tab
   Kid? _kid;
-  List<Story> _stories = [];
   
   // Parallax scroll variables
   double _scrollOffset = 0.0;
-  
-  // Real-time story subscription
-  StreamSubscription<List<Story>>? _storiesSubscription;
 
   @override
   void initState() {
@@ -44,7 +40,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _kid = widget.kid;
       // Save to local storage for persistence
       AppStateService.saveSelectedKid(widget.kid!);
-      _setupStoriesStream();
     } else {
       // Try route arguments or local storage
       _initializeKid();
@@ -54,9 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _initializeKid() {
     // Try to load from local storage first
     _kid = AppStateService.getSelectedKid();
-    if (_kid != null) {
-      _setupStoriesStream();
-    }
+    // StreamBuilder will automatically handle the stream subscription
   }
   
   @override
@@ -69,30 +62,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _kid = kid;
         // Save to local storage for persistence
         AppStateService.saveSelectedKid(kid);
-        _setupStoriesStream();
       }
     }
   }
 
-  /// Setup real-time stories stream
-  void _setupStoriesStream() {
-    if (_kid == null) return;
-    
-    // Cancel existing subscription
-    _storiesSubscription?.cancel();
-    
-    // Setup new real-time subscription
-    _storiesSubscription = StoryCacheService.getStoriesStream(_kid!.id).listen(
-      (stories) {
-        setState(() {
-          _stories = stories;
-        });
-      },
-      onError: (error) {
-        // Handle error silently for now
-      },
-    );
-  }
+  // Using StreamBuilder instead of manual subscription
 
   void _onNavTap(int index) {
     switch (index) {
@@ -202,10 +176,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void dispose() {
-    _storiesSubscription?.cancel();
-    if (_kid != null) {
-      StoryCacheService.dispose(_kid!.id);
-    }
     super.dispose();
   }
 
@@ -405,24 +375,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
   Widget _buildSimpleStats() {
-    final totalWords = _stories.fold<int>(0, (sum, story) => sum + story.content.split(' ').length);
-    
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildSimpleStat(
-          icon: 'assets/icons/book.svg',
-          value: '${_stories.length}',
-          label: AppLocalizations.of(context)!.storiesCreated,
-          color: AppColors.primary,
-        ),
-        _buildSimpleStat(
-          icon: 'assets/icons/pencil-plus.svg',
-          value: '$totalWords',
-          label: AppLocalizations.of(context)!.wordsWritten,
-          color: AppColors.orange,
-        ),
-      ],
+    // Use StreamBuilder to get real-time story stats
+    return StreamBuilder<List<Story>>(
+      stream: _kid != null ? dataService.getStoriesStream(_kid!.id) : Stream.value([]),
+      builder: (context, snapshot) {
+        final stories = snapshot.data ?? [];
+        final totalWords = stories.fold<int>(0, (sum, story) => sum + story.content.split(' ').length);
+        
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildSimpleStat(
+              icon: 'assets/icons/book.svg',
+              value: '${stories.length}',
+              label: AppLocalizations.of(context)!.storiesCreated,
+              color: AppColors.primary,
+            ),
+            _buildSimpleStat(
+              icon: 'assets/icons/pencil-plus.svg',
+              value: '$totalWords',
+              label: AppLocalizations.of(context)!.wordsWritten,
+              color: AppColors.orange,
+            ),
+          ],
+        );
+      },
     );
   }
 

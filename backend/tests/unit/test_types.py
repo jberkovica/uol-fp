@@ -150,21 +150,22 @@ class TestDomainTypes:
                 content="Once upon a time" * 10
             )
         
-        # Test content too long (over 2000 characters)
+        # Test content too long (over 5000 characters to exceed max_length)
         with pytest.raises(ValidationError):
             Story(
                 **base_data,
                 title="Long Story",
-                content="A" * 2001  # Over max length
+                content="A" * 5001  # Over max_length=5000
             )
         
-        # Test content too long
-        with pytest.raises(ValidationError):
-            Story(
-                **base_data,
-                title="Long Story",
-                content="A" * 2001  # Too long
-            )
+        # Test content too short (empty content should be valid for domain Story model)
+        # Domain Story model allows empty content, so test content length boundary instead
+        story_valid_empty = Story(
+            **base_data,
+            title="Valid Story",
+            content=""  # Empty content is allowed in domain model
+        )
+        assert story_valid_empty.content == ""
     
     def test_enum_values(self):
         """Test enum value definitions."""

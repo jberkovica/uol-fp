@@ -1,17 +1,15 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_theme.dart';
 import '../../generated/app_localizations.dart';
 import '../../services/app_state_service.dart';
-import '../../services/story_cache_service.dart';
+import '../../services/data_service.dart';
 import '../../services/logging_service.dart';
 import '../../models/story.dart';
 import '../../models/kid.dart';
 import '../../widgets/bottom_nav.dart';
 import '../../widgets/profile_avatar.dart';
-import '../../widgets/responsive_wrapper.dart';
 import '../../utils/page_transitions.dart';
 import '../child/profile_screen.dart';
 import '../child/story_display_screen.dart';
@@ -32,17 +30,11 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
   static final _logger = LoggingService.getLogger('ChildHomeScreen');
   
   Kid? _selectedKid;
-  List<Story> _stories = [];
-  List<Story> _favouriteStories = [];
-  List<Story> _latestStories = [];
   int _currentNavIndex = 1; // Home tab is default (middle)
   late AnimationController _animationController;
   
   // Parallax scroll variables
   double _scrollOffset = 0.0;
-  
-  // Real-time story subscription
-  StreamSubscription<List<Story>>? _storiesSubscription;
 
   @override
   void initState() {
@@ -60,23 +52,15 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
       _selectedKid = widget.kid;
       // Save to local storage for persistence
       AppStateService.saveSelectedKid(widget.kid!);
-      _setupStoriesStream();
     } else {
       // Try to load from local storage
       _selectedKid = AppStateService.getSelectedKid();
-      if (_selectedKid != null) {
-        _setupStoriesStream();
-      }
     }
   }
 
   @override
   void dispose() {
     _animationController.dispose();
-    _storiesSubscription?.cancel();
-    if (_selectedKid != null) {
-      StoryCacheService.dispose(_selectedKid!.id);
-    }
     super.dispose();
   }
 
@@ -90,54 +74,12 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
         _selectedKid = kid;
         // Save to local storage for persistence
         AppStateService.saveSelectedKid(kid);
-        _setupStoriesStream();
       }
     }
   }
 
 
-  /// Setup real-time stories stream with automatic updates
-  void _setupStoriesStream() {
-    if (_selectedKid == null) return;
-    
-    _logger.i('Setting up real-time stories stream for kid: ${_selectedKid!.id}');
-    
-    
-    // Cancel existing subscription
-    _storiesSubscription?.cancel();
-    
-    // Setup new real-time subscription
-    _storiesSubscription = StoryCacheService.getStoriesStream(_selectedKid!.id).listen(
-      (stories) {
-        // Only show approved stories on home screen
-        final approvedStories = stories.where((story) => story.status == StoryStatus.approved).toList();
-        
-        setState(() {
-          _stories = approvedStories;
-          // Filter favorites and latest stories from approved stories only
-          _favouriteStories = approvedStories.where((story) => story.isFavourite).take(3).toList();
-          _latestStories = approvedStories.take(3).toList();
-        });
-        
-        if (approvedStories.length != stories.length) {
-          _logger.i('Showing ${approvedStories.length} approved stories (${stories.length} total)');
-        }
-      },
-      onError: (error) {
-        _logger.e('Stories stream error: $error');
-        
-        
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Failed to load stories: $error'),
-              backgroundColor: AppColors.error,
-            ),
-          );
-        }
-      },
-    );
-  }
+  // Using StreamBuilder instead of manual subscription
 
   void _onNavTap(int index) {
     // Don't update state immediately - wait for actual navigation
@@ -371,22 +313,76 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                         top: 24,
                         bottom: 120, // Extra space for bottom nav
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Favourites section
-                          _buildStorySection(AppLocalizations.of(context)!.favourites, _favouriteStories),
+                      child: StreamBuilder<List<Story>>(
+                        stream: dataService.getStoriesStream(_selectedKid!.id),
+                        builder: (context, snapshot) {
+                          // Handle loading state
+                          if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
+                            return const Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.primary,
+                              ),
+                            );
+                          }
                           
-                          const SizedBox(height: 32),
+                          // Handle error state
+                          if (snapshot.hasError) {
+                            _logger.e('Stream error: ${snapshot.error}');
+                            return Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Failed to load stories',
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    '${snapshot.error}',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {}); // Trigger rebuild to retry
+                                    },
+                                    child: Text('Retry'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                           
-                          // Latest section
-                          _buildStorySection(AppLocalizations.of(context)!.latest, _latestStories),
+                          // Handle data state
+                          final allStories = snapshot.data ?? [];
                           
-                          const SizedBox(height: 32),
+                          // Filter stories for display
+                          final approvedStories = allStories.where((story) => 
+                            story.status == StoryStatus.approved
+                          ).toList();
                           
-                          // Kid's stories section
-                          _buildStorySection(AppLocalizations.of(context)!.kidStories(_selectedKid!.name), _stories),
-                        ],
+                          
+                          final favouriteStories = approvedStories.where((story) => story.isFavourite).take(3).toList();
+                          final latestStories = approvedStories.take(3).toList();
+                          
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Favourites section
+                              _buildStorySection(AppLocalizations.of(context)!.favourites, favouriteStories),
+                              
+                              const SizedBox(height: 32),
+                              
+                              // Latest section
+                              _buildStorySection(AppLocalizations.of(context)!.latest, latestStories),
+                              
+                              const SizedBox(height: 32),
+                              
+                              // Kid's stories section
+                              _buildStorySection(AppLocalizations.of(context)!.kidStories(_selectedKid!.name), approvedStories),
+                            ],
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -417,8 +413,15 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
     // Real-time subscription will automatically update stories when returning
   }
 
+  String _getDefaultCoverUrl() {
+    // Build URL for general default cover in Supabase bucket
+    // Format: https://[project].supabase.co/storage/v1/object/public/story-covers/default/general-thumbnail.png
+    const supabaseUrl = 'https://xrnnhkqpvqgrzjkhimqt.supabase.co'; // Your project URL
+    return '$supabaseUrl/storage/v1/object/public/story-covers/default/general-thumbnail.png';
+  }
 
   Widget _buildStorySection(String title, List<Story> stories) {
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -447,12 +450,8 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
               scrollDirection: Axis.horizontal,
               itemCount: stories.length,
               itemBuilder: (context, index) {
-                final cardSpacing = ResponsiveBreakpoints.getResponsivePadding(
-                  context,
-                  mobile: 16.0,
-                  tablet: 20.0,
-                  desktop: 24.0,
-                );
+                // Simple fixed spacing instead of responsive padding
+                final cardSpacing = 16.0;
                 return Padding(
                   padding: EdgeInsets.only(right: index < stories.length - 1 ? cardSpacing : 0),
                   child: _buildStoryCard(stories[index]),
@@ -509,16 +508,47 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                                 ),
                               ),
                             )
-                          : story.coverImageThumbnailUrl != null
+                          : (story.coverImageThumbnailUrl != null && story.coverImageThumbnailUrl!.isNotEmpty)
                               ? Image.network(
                                   story.coverImageThumbnailUrl!,
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
-                                    // Fallback to default cover if network image fails
-                                    return Image.asset(
-                                      'assets/images/stories/default-cover.png',
+                                    // Fallback to default cover from Supabase bucket
+                                    return Image.network(
+                                      _getDefaultCoverUrl(),
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) {
+                                      errorBuilder: (context, error2, stackTrace2) {
+                                        // Final fallback to local asset if bucket is unavailable
+                                        return Image.asset(
+                                          'assets/images/stories/general-thumbnail.png',
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error3, stackTrace3) {
+                                            return Container(
+                                              color: AppColors.lightGrey,
+                                              child: Center(
+                                                child: SvgPicture.asset(
+                                                  'assets/icons/photo.svg',
+                                                  width: 24,
+                                                  height: 24,
+                                                  colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                  },
+                                )
+                              : Image.network(
+                                  _getDefaultCoverUrl(),
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    // Final fallback to local asset if bucket is unavailable
+                                    return Image.asset(
+                                      'assets/images/stories/general-thumbnail.png',
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error2, stackTrace2) {
                                         return Container(
                                           color: AppColors.lightGrey,
                                           child: Center(
@@ -531,23 +561,6 @@ class _ChildHomeScreenState extends State<ChildHomeScreen> with TickerProviderSt
                                           ),
                                         );
                                       },
-                                    );
-                                  },
-                                )
-                              : Image.asset(
-                                  'assets/images/stories/default-cover.png',
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      color: AppColors.lightGrey,
-                                      child: Center(
-                                        child: SvgPicture.asset(
-                                          'assets/icons/photo.svg',
-                                          width: 24,
-                                          height: 24,
-                                          colorFilter: const ColorFilter.mode(AppColors.grey, BlendMode.srcIn),
-                                        ),
-                                      ),
                                     );
                                   },
                                 ),

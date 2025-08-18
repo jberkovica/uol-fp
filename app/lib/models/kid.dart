@@ -164,7 +164,8 @@ class Kid {
            _mapEquals(other.appearanceMetadata, appearanceMetadata) &&
            _listEquals(other.favoriteGenres, favoriteGenres) &&
            other.parentNotes == parentNotes &&
-           other.preferredLanguage == preferredLanguage;
+           other.preferredLanguage == preferredLanguage &&
+           other.createdAt == createdAt;
   }
   
   bool _listEquals<T>(List<T>? a, List<T>? b) {
@@ -199,7 +200,8 @@ class Kid {
            (appearanceMetadata?.hashCode ?? 0) ^
            favoriteGenres.hashCode ^
            (parentNotes?.hashCode ?? 0) ^
-           preferredLanguage.hashCode;
+           preferredLanguage.hashCode ^
+           createdAt.hashCode;
   }
 
   @override

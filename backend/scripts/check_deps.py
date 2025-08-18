@@ -49,10 +49,10 @@ def check_voice_config_loading():
         
         # Test config merging for different vendors
         ru_config = voice_agent._get_language_config('ru')  # OpenAI
-        en_config = voice_agent._get_language_config('en')  # ElevenLabs
+        en_config = voice_agent._get_language_config('en')  # OpenAI
         
         assert ru_config.get('vendor') == 'openai'
-        assert en_config.get('vendor') == 'elevenlabs'
+        assert en_config.get('vendor') == 'openai'
         assert 'settings' in ru_config
         assert 'settings' in en_config
         

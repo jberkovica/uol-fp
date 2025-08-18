@@ -916,7 +916,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       try {
         _logger.i('Submitting story text for story ID: $_currentStoryId, kid: ${_selectedKid!.id}');
         
-        final StoryGenerationResult result = await _aiService.submitStoryText(_currentStoryId!, textInput);
+        final StoryGenerationResult result = await _aiService.submitStoryText(_currentStoryId!, textInput, _selectedKid!.id);
         final Story story = result.story;
         _logger.i('Story text submitted successfully: ${story.id}');
         
@@ -1484,7 +1484,7 @@ class _UploadScreenState extends State<UploadScreen> with TickerProviderStateMix
       });
       
       try {
-        final StoryGenerationResult result = await _aiService.submitStoryText(_currentStoryId!, textInput);
+        final StoryGenerationResult result = await _aiService.submitStoryText(_currentStoryId!, textInput, _selectedKid!.id);
         final Story story = result.story;
         
         // Cleanup temporary audio file after successful story submission

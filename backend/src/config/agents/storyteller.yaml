@@ -36,6 +36,9 @@ prompts:
       - Include the child's name naturally in the story
       - Format the story with 4-5 paragraphs separated by double newlines (\n\n)
       - Each paragraph should be 2-4 sentences
+      - The cover_description should describe visual elements from YOUR STORY, not from the input description
+      - Focus on the main scene, characters, and magical elements from the story you wrote
+      - Use whimsical, children's book illustration language regardless of input style
       - Do not include any text except JSON in your response
       - Do not return Markdown or HTML
 
@@ -43,5 +46,5 @@ prompts:
       {{
         "title": "An engaging story title",
         "content": "The complete story content...",
-        "cover_description": "A concise visual description for the story cover illustration (20-30 words)"
+        "cover_description": "Based on the story you just created, describe the main visual scene/elements from your story that should be illustrated on the cover (20-30 words, whimsical children's book style)"
       }}

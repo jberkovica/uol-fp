@@ -62,6 +62,30 @@ class SupabaseService:
         result = self.client.table("kids").select("*").eq("user_id", user_id).execute()
         return [Kid(**kid) for kid in result.data]
     
+    async def get_kids_with_story_counts(self, user_id: str) -> List[Dict]:
+        """Get all kid profiles for a user with their story counts in a single query.
+        This is MUCH faster than calling get_all_stories_for_kid for each kid separately.
+        """
+        # Use Supabase's ability to count related records efficiently
+        # This creates a single query with a LEFT JOIN to count stories
+        result = self.client.table("kids").select(
+            "*, stories(count)"
+        ).eq("user_id", user_id).execute()
+        
+        kids_with_counts = []
+        for kid_data in result.data:
+            # Extract story count from the nested response
+            stories_data = kid_data.get("stories", [])
+            story_count = stories_data[0].get("count", 0) if stories_data else 0
+            
+            # Remove the stories field and create kid dict with count
+            kid_dict = {k: v for k, v in kid_data.items() if k != "stories"}
+            kid_dict["stories_count"] = story_count
+            
+            kids_with_counts.append(kid_dict)
+        
+        return kids_with_counts
+    
     async def update_kid(self, kid_id: str, request: UpdateKidRequest) -> Optional[Kid]:
         """Update a kid profile."""
         update_data = request.dict(exclude_unset=True)

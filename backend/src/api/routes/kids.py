@@ -101,34 +101,35 @@ async def get_kid(kid_id: str) -> KidResponse:
 
 @router.get("/user/{user_id}", response_model=KidListResponse)
 async def get_kids_for_user(user_id: str) -> KidListResponse:
-    """Get all kid profiles for a user."""
+    """Get all kid profiles for a user with story counts - OPTIMIZED version."""
     try:
         validate_uuid(user_id, "user_id")
         
         supabase = get_supabase_service()
-        kids = await supabase.get_kids_for_user(user_id)
         
-        # Convert to response format with story counts  
+        # Use the optimized method that gets kids + story counts in ONE query
+        kids_with_counts = await supabase.get_kids_with_story_counts(user_id)
+        
+        # Convert to response format - NO additional queries needed!
         kid_responses = []
-        for kid in kids:
-            stories = await supabase.get_all_stories_for_kid(kid.id)
+        for kid_data in kids_with_counts:
             kid_responses.append(
                 KidResponse(
-                    id=kid.id,
-                    user_id=kid.user_id,
-                    name=kid.name,
-                    age=kid.age,
-                    gender=kid.gender,
-                    avatar_type=kid.avatar_type,
-                    appearance_method=kid.appearance_method,
-                    appearance_description=kid.appearance_description,
-                    appearance_extracted_at=kid.appearance_extracted_at,
-                    appearance_metadata=kid.appearance_metadata,
-                    favorite_genres=kid.favorite_genres,
-                    parent_notes=kid.parent_notes,
-                    preferred_language=kid.preferred_language,
-                    stories_count=len(stories),
-                    created_at=kid.created_at
+                    id=kid_data["id"],
+                    user_id=kid_data["user_id"],
+                    name=kid_data["name"],
+                    age=kid_data.get("age"),
+                    gender=kid_data.get("gender"),
+                    avatar_type=kid_data.get("avatar_type"),
+                    appearance_method=kid_data.get("appearance_method"),
+                    appearance_description=kid_data.get("appearance_description"),
+                    appearance_extracted_at=kid_data.get("appearance_extracted_at"),
+                    appearance_metadata=kid_data.get("appearance_metadata"),
+                    favorite_genres=kid_data.get("favorite_genres"),
+                    parent_notes=kid_data.get("parent_notes"),
+                    preferred_language=kid_data.get("preferred_language"),
+                    stories_count=kid_data.get("stories_count", 0),  # Already calculated!
+                    created_at=kid_data.get("created_at")
                 )
             )
         

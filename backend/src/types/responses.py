@@ -13,6 +13,7 @@ class StoryResponse(BaseModel):
     title: str
     content: str
     audio_url: Optional[str]
+    audio_error: Optional[str] = None  # Include audio error info if audio generation failed
     background_music_url: Optional[str]
     cover_image_url: Optional[str] = None
     cover_image_thumbnail_url: Optional[str] = None

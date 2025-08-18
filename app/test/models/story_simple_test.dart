@@ -133,7 +133,7 @@ void main() {
         expect(story.imageUrl, isNull);
         expect(story.audioUrl, isNull);
         expect(story.caption, isNull);
-        expect(story.status, equals(StoryStatus.pending)); // Default status
+        expect(story.status, equals(StoryStatus.processing)); // Default status
       });
 
       test('should handle default values in JSON deserialization', () {
@@ -152,7 +152,7 @@ void main() {
         expect(story.title, equals('Untitled Story'));
         expect(story.content, equals(''));
         expect(story.childName, equals(''));
-        expect(story.status, equals(StoryStatus.pending));
+        expect(story.status, equals(StoryStatus.processing));
       });
     });
 

@@ -97,6 +97,9 @@ dev_dependencies:
     # rules and activating additional ones.
     flutter_lints: ^5.0.0
     
+    # Testing dependencies
+    mockito: ^5.4.2
+    
     # Localization linting
     custom_lint: ^0.7.6
     hardcoded_strings_lint: ^1.0.0

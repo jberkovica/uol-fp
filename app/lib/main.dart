@@ -32,6 +32,7 @@ import 'services/language_service.dart';
 import 'services/auth_service.dart';
 import 'services/logging_service.dart';
 import 'services/analytics_service.dart';
+import 'services/data_service.dart';
 
 void main() async {
   // Ensure that Flutter binding is initialized
@@ -76,6 +77,14 @@ void main() async {
   // Initialize analytics service
   await AnalyticsService.initialize();
   
+  // Initialize DataService if user is already authenticated
+  final currentUser = Supabase.instance.client.auth.currentUser;
+  if (currentUser != null) {
+    final logger = LoggingService.getLogger('main');
+    logger.i('User already authenticated, initializing DataService');
+    dataService.initialize(currentUser.id);
+  }
+  
   // Logging is now automatically initialized when first used
   
   final logger = LoggingService.getLogger('main');
@@ -104,6 +113,13 @@ class _MiraStorytellerAppState extends State<MiraStorytellerApp> {
       if (authState.event == AuthChangeEvent.signedIn) {
         // OAuth/email sign-in successful
         logger.i('User signed in successfully'); // User email not logged for privacy
+        
+        // Initialize DataService with user context
+        final userId = authState.session?.user.id;
+        if (userId != null) {
+          dataService.initialize(userId);
+          logger.i('DataService initialized for user');
+        }
         
         // Sync language from server after a brief delay
         Future.delayed(const Duration(milliseconds: 500), () {

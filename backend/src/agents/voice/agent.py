@@ -190,9 +190,16 @@ class VoiceAgent(BaseAgent):
             "model": model,
             "input": text,
             "voice": voice,
-            "speed": settings.get("speed", 1.0),
             "response_format": settings.get("response_format", "mp3")
         }
+        
+        # Add speed parameter only for older TTS models (not gpt-4o-mini-tts)
+        if model != "gpt-4o-mini-tts":
+            payload["speed"] = settings.get("speed", 1.0)
+        
+        # Add instructions parameter for gpt-4o-mini-tts model
+        if model == "gpt-4o-mini-tts" and "instructions" in settings:
+            payload["instructions"] = settings["instructions"]
         
         format_type = settings.get("response_format", "mp3")
         logger.info(f"OpenAI TTS: voice={voice}, model={model}, speed={settings.get('speed', 1.0)}, format={format_type}")

@@ -11,6 +11,8 @@ import '../../widgets/responsive_wrapper.dart';
 import '../../services/auth_service.dart';
 import '../../services/kid_service.dart';
 import '../../services/app_state_service.dart';
+import '../../services/data_service.dart';
+import 'dart:async';
 import '../../models/kid.dart';
 import '../../generated/app_localizations.dart';
 import 'kid_onboarding_wizard.dart';
@@ -23,39 +25,13 @@ class ProfileSelectScreen extends StatefulWidget {
 }
 
 class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
-  List<Kid> _kids = [];
-  bool _isLoading = true;
-  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    _loadKids();
   }
 
-  Future<void> _loadKids() async {
-    try {
-      final user = AuthService.instance.currentUser;
-      if (user == null) {
-        setState(() {
-          _errorMessage = 'User not authenticated';
-          _isLoading = false;
-        });
-        return;
-      }
-
-      final kids = await KidService.getKidsForUser(user.id);
-      setState(() {
-        _kids = kids;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Failed to load profiles: $e';
-        _isLoading = false;
-      });
-    }
-  }
+  // Using StreamBuilder instead of manual subscription
 
   Future<void> _showCreateKidWizard() async {
     final result = await Navigator.push<Kid>(
@@ -67,9 +43,9 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
     );
     
     if (result != null) {
-      setState(() {
-        _kids.add(result);
-      });
+      // DataService will automatically update the stream with new kid
+      dataService.clearKidCache();
+      setState(() {}); // Trigger rebuild to refresh stream
     }
   }
   
@@ -350,34 +326,59 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
               ),
             ),
           ),
-          // Content
+          // Content with StreamBuilder for clean data management
           Expanded(
-            child: _isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : _errorMessage != null
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              _errorMessage!,
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: AppColors.error,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 16),
-                            ElevatedButton(
-                              onPressed: _loadKids,
-                              child: Text(
-                                'Retry',
-                                style: Theme.of(context).textTheme.headlineLarge,
-                              ),
-                            ),
-                          ],
+            child: StreamBuilder<List<Kid>>(
+              stream: dataService.getKidsStream(),
+              builder: (context, snapshot) {
+                // Handle loading state
+                if (snapshot.connectionState == ConnectionState.waiting && !snapshot.hasData) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primary,
+                    ),
+                  );
+                }
+                
+                // Handle error state
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Failed to load profiles',
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
-                      )
-                    : _buildModernProfileLayout(),
+                        const SizedBox(height: 8),
+                        Text(
+                          '${snapshot.error}',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.error,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            dataService.clearKidCache();
+                            setState(() {}); // Trigger rebuild to retry
+                          },
+                          child: Text(
+                            'Retry',
+                            style: Theme.of(context).textTheme.labelLarge,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                
+                // Handle data state
+                final kids = snapshot.data ?? [];
+                return _buildModernProfileLayout(kids);
+              },
+            ),
           ),
         ],
       ),
@@ -386,28 +387,28 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
 
 
 
-  Widget _buildModernProfileLayout() {
+  Widget _buildModernProfileLayout(List<Kid> kids) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenWidth = constraints.maxWidth;
         
         if (screenWidth < 768) {
           // Mobile/Small tablet: Single column
-          return _buildSingleColumnLayout();
+          return _buildSingleColumnLayout(kids);
         } else {
           // Large tablet/Desktop: Two columns
-          return _buildTwoColumnLayout();
+          return _buildTwoColumnLayout(kids);
         }
       },
     );
   }
 
-  Widget _buildSingleColumnLayout() {
+  Widget _buildSingleColumnLayout(List<Kid> kids) {
     return SingleChildScrollView(
       padding: ResponsiveBreakpoints.getResponsiveAllPadding(context),
       child: Column(
         children: [
-          ..._kids.map((kid) => Padding(
+          ...kids.map((kid) => Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: _buildSimpleProfileCard(
               name: kid.name,
@@ -432,9 +433,9 @@ class _ProfileSelectScreenState extends State<ProfileSelectScreen> {
     );
   }
 
-  Widget _buildTwoColumnLayout() {
+  Widget _buildTwoColumnLayout(List<Kid> kids) {
     final allItems = <Widget>[
-      ..._kids.map((kid) => _buildSimpleProfileCard(
+      ...kids.map((kid) => _buildSimpleProfileCard(
         name: kid.name,
         profileType: _getProfileType(kid.avatarType),
         onTap: () {

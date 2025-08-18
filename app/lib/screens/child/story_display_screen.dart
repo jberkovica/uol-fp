@@ -10,7 +10,7 @@ import '../../widgets/responsive_wrapper.dart';
 import '../../generated/app_localizations.dart';
 import '../../services/logging_service.dart';
 import '../../services/background_music_service.dart';
-import '../../services/story_service.dart';
+import '../../services/data_service.dart';
 
 /// Enum for simplified playback state management
 enum PlaybackState {
@@ -130,7 +130,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
       _logger.d('Refreshing story data for: ${originalStory.id}');
       
       // Get fresh story data from backend
-      final freshStory = await StoryService.getStoryById(originalStory.id);
+      final freshStory = await dataService.getStoryById(originalStory.id);
       
       if (mounted) {
         setState(() {
@@ -289,7 +289,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
                                 errorBuilder: (context, error, stackTrace) {
                                   // Fallback to default cover if network image fails
                                   return Image.asset(
-                                    'assets/images/stories/default-cover.png',
+                                    'assets/images/stories/general.png',
                                     fit: BoxFit.contain,
                                     errorBuilder: (context, error, stackTrace) {
                                       return Container(
@@ -324,7 +324,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
                             child: AspectRatio(
                               aspectRatio: 1.0, // Square aspect ratio to match generated images
                               child: Image.asset(
-                                'assets/images/stories/default-cover.png',
+                                'assets/images/stories/general.png',
                                 fit: BoxFit.contain,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Container(
@@ -545,8 +545,26 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
             Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              child: Center(
-                child: _buildBottomControls(story),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Audio controls
+                  _buildBottomControls(story),
+                  
+                  // Audio status message when unavailable
+                  if (story.audioUrl == null) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      story.audioError != null 
+                        ? 'Audio generation failed - try again later'
+                        : 'Audio temporarily unavailable - try again later',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.grey600,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ],
               ),
             ),
           ],
@@ -590,6 +608,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
                 _buildWhiteMaterialIconButton(
                   Icons.replay_10,
                   onPressed: story.audioUrl != null ? () => _skipBackward() : null,
+                  isDisabled: story.audioUrl == null,
                 ),
                 const SizedBox(width: 4),
                 
@@ -598,12 +617,10 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
                   _getPlayButtonIcon(),
                   onPressed: story.audioUrl != null ? () {
                     _toggleAudio(story.audioUrl!);
-                  } : () {
-                    _logger.w('Play button tapped but no audio URL available');
-                    _showNoAudioDialog(story);
-                  },
+                  } : null, // Disable button instead of showing dialog
                   isLoading: false, // No loading state needed with timeline approach
                   size: 52,
+                  isDisabled: story.audioUrl == null,
                 ),
                 const SizedBox(width: 4),
                 
@@ -611,6 +628,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
                 _buildWhiteMaterialIconButton(
                   Icons.forward_10,
                   onPressed: story.audioUrl != null ? () => _skipForward() : null,
+                  isDisabled: story.audioUrl == null,
                 ),
               ],
             ),
@@ -659,16 +677,17 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
   Widget _buildWhiteMaterialIconButton(
     IconData icon, {
     VoidCallback? onPressed,
+    bool isDisabled = false,
   }) {
     return IconButton(
       onPressed: onPressed,
       icon: Icon(
         icon,
         size: 24,
-        color: AppColors.white,
+        color: isDisabled ? AppColors.white.withOpacity(0.3) : AppColors.white,
       ),
       style: IconButton.styleFrom(
-        foregroundColor: AppColors.white,
+        foregroundColor: isDisabled ? AppColors.white.withOpacity(0.3) : AppColors.white,
         minimumSize: const Size(48, 48),
         maximumSize: const Size(48, 48),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -682,7 +701,10 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
     VoidCallback? onPressed,
     bool isLoading = false,
     double size = 48,
+    bool isDisabled = false,
   }) {
+    final Color iconColor = isDisabled ? AppColors.white.withOpacity(0.3) : AppColors.white;
+    
     return IconButton(
       onPressed: onPressed,
       icon: isLoading
@@ -690,7 +712,7 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
               width: 20,
               height: 20,
               child: CircularProgressIndicator(
-                color: AppColors.white,
+                color: iconColor,
                 strokeWidth: 2,
               ),
             )
@@ -698,10 +720,10 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
               iconPath,
               width: 24,
               height: 24,
-              colorFilter: const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
             ),
       style: IconButton.styleFrom(
-        foregroundColor: AppColors.white,
+        foregroundColor: iconColor,
         minimumSize: Size(size, size),
         maximumSize: Size(size, size),
         tapTargetSize: MaterialTapTargetSize.padded, // Changed from shrinkWrap to padded for better touch area
@@ -1142,14 +1164,12 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
     try {
       _logger.d('Toggling favourite status for story: ${story.id}');
       
-      final updatedStory = await StoryService.toggleStoryFavourite(
+      final updatedStory = await dataService.toggleStoryFavorite(
         story.id,
         !story.isFavourite,
       );
       
-      // Real-time subscriptions will automatically update home screen with favorite status changes
-      
-      // Update local state
+      // Update local state - repository handles cache updates automatically
       setState(() {
         _updatedStory = updatedStory;
       });
@@ -1168,30 +1188,6 @@ class _StoryDisplayScreenState extends State<StoryDisplayScreen> with TickerProv
         );
       }
     }
-  }
-
-  /// Show dialog when story has no audio URL
-  void _showNoAudioDialog(Story story) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Audio Not Available'),
-        content: Text('This story doesn\'t have audio yet. Would you like to refresh and try again?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await _refreshStoryData();
-            },
-            child: Text('Refresh'),
-          ),
-        ],
-      ),
-    );
   }
 
   Future<void> _showMusicSelectionSheet(Story story) async {

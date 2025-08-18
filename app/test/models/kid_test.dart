@@ -209,11 +209,15 @@ void main() {
 
     group('Equality and HashCode', () {
       test('should be equal when all fields match', () {
+        final createdAt = DateTime.now();
+        final favoriteGenres = ['fantasy', 'adventure'];
         final kid1 = TestHelpers.createTestKid(
           id: 'same-id',
           name: 'Alice',
           age: 7,
           gender: 'girl',
+          createdAt: createdAt,
+          favoriteGenres: favoriteGenres,
         );
 
         final kid2 = TestHelpers.createTestKid(
@@ -221,8 +225,11 @@ void main() {
           name: 'Alice', 
           age: 7,
           gender: 'girl',
+          createdAt: createdAt,
+          favoriteGenres: favoriteGenres,
         );
 
+        
         expect(kid1, equals(kid2));
         expect(kid1.hashCode, equals(kid2.hashCode));
       });
