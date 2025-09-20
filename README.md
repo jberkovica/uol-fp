@@ -26,13 +26,20 @@ uol-fp-mira/
 │   ├── scripts/              # Data collection scripts for all 3 model types
 │   ├── data/                 # Test datasets and evaluation materials
 │   ├── results/              # Analysis outputs and performance metrics
-│   └── analysis/             # Research notebooks and comprehensive reports
-├── app/                      # Full application implementation (IN PROGRESS)
-│   ├── mira_storyteller/     # Main Flutter mobile application
-│   ├── backend/              # Python FastAPI backend service
-│   ├── README.md             # Application-specific documentation
-│   └── PROGRESS.md           # Detailed development log
-├── venv/                     # Python virtual environment
+│   ├── analysis/             # Research notebooks and comprehensive reports
+│   └── requirements.txt      # Python dependencies for model analysis
+├── app/                      # Flutter mobile application
+│   ├── lib/                  # Dart/Flutter source code
+│   ├── assets/               # Images, icons, and static resources
+│   ├── pubspec.yaml          # Flutter dependencies and configuration
+│   └── android/ios/          # Platform-specific configurations
+├── backend/                  # Python FastAPI backend service
+│   ├── src/                  # Backend source code
+│   ├── tests/                # Unit and integration tests
+│   ├── requirements.txt      # Python backend dependencies
+│   └── main.py               # FastAPI application entry point
+├── analytics-dashboard/      # Analytics and monitoring dashboard
+├── supabase/                 # Database configuration and migrations
 └── README.md                 # This overview document
 ```
 
@@ -118,8 +125,9 @@ Comprehensive evaluation of contemporary AI models across all three pipeline sta
 #### Backend
 
 -   **Python 3.11+**: Server-side development
--   **FastAPI**: High-performance API framework
--   **Google Cloud Services**: Storage and AI model integration
+-   **FastAPI**: High-performance API framework with async support
+-   **Supabase**: PostgreSQL database with real-time capabilities
+-   **AI Services**: OpenAI, Anthropic, Google, ElevenLabs, Azure integrations
 
 #### AI/ML Integration
 
@@ -132,9 +140,10 @@ Comprehensive evaluation of contemporary AI models across all three pipeline sta
 #### Prerequisites
 
 -   Python 3.11+
--   Flutter SDK (version 3.0+)
--   Dart (version 2.17+)
--   API credentials for AI services
+-   Flutter SDK (version 3.6.0+)
+-   Dart SDK (included with Flutter)
+-   API credentials for AI services (OpenAI, Anthropic, Google, ElevenLabs)
+-   Supabase account for database services
 
 #### Models Analysis Setup
 
@@ -151,7 +160,8 @@ source venv/bin/activate  # macOS/Linux
 pip install -r models_analysis/requirements.txt
 
 # Configure API credentials
-# Create models_analysis/.env with required API keys
+cp .env.example .env
+# Edit .env with your API keys
 ```
 
 #### Application Setup
@@ -160,7 +170,7 @@ pip install -r models_analysis/requirements.txt
 
 ```bash
 # Navigate to Flutter app
-cd app/mira_storyteller
+cd app
 
 # Get dependencies
 flutter pub get
@@ -173,7 +183,7 @@ flutter run
 
 ```bash
 # Navigate to backend
-cd app/backend
+cd backend
 
 # Install dependencies
 pip install -r requirements.txt
@@ -202,10 +212,10 @@ This project serves as a University of London final project with significant aca
 
 ### Documentation
 
--   **Application Details**: See `app/README.md` for implementation specifics
--   **Development Progress**: Detailed log in `app/PROGRESS.md`
 -   **Model Analysis**: Comprehensive evaluation in `models_analysis/`
 -   **Research Results**: Academic findings in `models_analysis/analysis/`
+-   **Backend API**: FastAPI documentation available when server is running
+-   **Flutter Documentation**: Generated docs in `app/` directory
 
 ### Academic Context
 
